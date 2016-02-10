@@ -33,7 +33,9 @@ function lint(ruleName: string, source: string, options): tslint.LintResult {
 }
 
 export function assertFailure(ruleName: string, source: string, fail: IExpectedFailure, options = null) {
-  lint(ruleName, source, options).failures.forEach((ruleFail) => {
+  let result = lint(ruleName, source, options);
+  chai.assert(result.failureCount > 0);
+  result.failures.forEach((ruleFail) => {
     chai.assert(fail.message === ruleFail.getFailure());
     chai.assert.deepEqual(fail.startPosition, ruleFail.getStartPosition().getLineAndCharacter());
     chai.assert.deepEqual(fail.endPosition, ruleFail.getEndPosition().getLineAndCharacter());
