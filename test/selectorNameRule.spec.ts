@@ -1,6 +1,6 @@
 import {assertFailure, assertSuccess} from './testHelper';
 
-describe('selector-name', () => {
+describe('component-selector', () => {
   describe('invalid component selectors', () => {
     it('should fail when component used as attribute', () => {
       let source = `
@@ -8,7 +8,7 @@ describe('selector-name', () => {
         selector: '[foo]'
       })
       class Test {}`;
-      assertFailure('selector-name', source, {
+      assertFailure('component-selector', source, {
         message: 'Invalid selector "[foo]" for component "Test".',
         startPosition: {
           line: 2,
@@ -18,7 +18,7 @@ describe('selector-name', () => {
           line: 2,
           character: 25
         }
-      });
+      }, ['element', 'kebab-case']);
     });
     it('should fail when component named camelCase', () => {
       let source = `
@@ -26,7 +26,7 @@ describe('selector-name', () => {
         selector: 'fooBar'
       })
       class Test {}`;
-      assertFailure('selector-name', source, {
+      assertFailure('component-selector', source, {
         message: 'Invalid selector "fooBar" for component "Test".',
         startPosition: {
           line: 2,
@@ -36,7 +36,7 @@ describe('selector-name', () => {
           line: 2,
           character: 26
         }
-      });
+      }, ['element', 'kebab-case']);
     });
   });
   describe('valid component selector', () => {
@@ -46,10 +46,12 @@ describe('selector-name', () => {
         selector: 'bar-foo'
       })
       class Test {}`;
-      assertSuccess('selector-name', source);
+      assertSuccess('component-selector', source, ['element', 'kebab-case']);
     });
   });
+});
 
+describe('directive-selector', () => {
   describe('invalid directive selector', () => {
     it('should fail when directive used as element', () => {
       let source = `
@@ -57,7 +59,7 @@ describe('selector-name', () => {
         selector: 'foo-bar'
       })
       class Test {}`;
-      assertFailure('selector-name', source, {
+      assertFailure('directive-selector', source, {
         message: 'Invalid selector "foo-bar" for directive "Test".',
         startPosition: {
           line: 2,
@@ -67,7 +69,7 @@ describe('selector-name', () => {
           line: 2,
           character: 27
         }
-      });
+      }, ['attribute', 'camelCase']);
     });
   });
   describe('valid directive selector', () => {
@@ -77,7 +79,7 @@ describe('selector-name', () => {
         selector: '[foo]'
       })
       class Test {}`;
-      assertSuccess('selector-name', source);
+      assertSuccess('directive-selector', source, ['attribute', 'camelCase']);
     });
   });
 });
