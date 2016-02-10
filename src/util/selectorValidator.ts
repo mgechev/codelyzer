@@ -3,6 +3,6 @@ export const SelectorValidator = {
     return /^\[[a-zA-Z0-9]+\]$/.test(selector);
   },
   component(selector: string): boolean {
-    return /^[a-zA-Z0-9\-]+]$/.test(selector);
+    return /^[a-z0-9\-]+$/.test(selector);
   }
 };

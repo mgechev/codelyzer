@@ -32,5 +32,8 @@
     "ts-node": "^0.5.5",
     "tslint": "^3.3.0",
     "typescript": "^1.7.5"
+  },
+  "dependencies": {
+    "sprintf-js": "^1.0.3"
   }
 }

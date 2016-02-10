@@ -2,6 +2,17 @@ import * as Lint from 'tslint';
 import * as tslint from 'tslint/lib/lint';
 import chai = require('chai');
 
+interface ISourcePosition {
+  line: number;
+  character: number;
+}
+
+export interface IExpectedFailure {
+  message: string;
+  startPosition: ISourcePosition;
+  endPosition: ISourcePosition;
+}
+
 function lint(ruleName: string, source: string, options): tslint.LintResult {
   let configuration = {
     rules: {}
@@ -21,10 +32,12 @@ function lint(ruleName: string, source: string, options): tslint.LintResult {
   return linter.lint();
 }
 
-export function assertFailure(ruleName: string, source: string, fail: string[], options = null) {
+export function assertFailure(ruleName: string, source: string, fail: IExpectedFailure, options = null) {
   lint(ruleName, source, options).failures.forEach((ruleFail) => {
-    console.log(ruleFail.getFailure());
-    chai.assert(fail.indexOf(ruleFail.getFailure()) >= 0);
+    console.log(ruleFail.getFailure(), ruleFail.getStartPosition(), ruleFail.getEndPosition());
+    chai.assert(fail.message === ruleFail.getFailure());
+    chai.assert.deepEqual(fail.startPosition, ruleFail.getStartPosition().getLineAndCharacter());
+    chai.assert.deepEqual(fail.endPosition, ruleFail.getEndPosition().getLineAndCharacter());
   });
 };
 

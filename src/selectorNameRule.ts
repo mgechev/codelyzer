@@ -1,9 +1,10 @@
 import * as ts from 'typescript';
 import * as Lint from 'tslint/lib/lint';
 import {SelectorValidator} from './util/selectorValidator';
+import {sprintf} from 'sprintf-js';
 
 export class Rule extends Lint.Rules.AbstractRule {
-  public static FAILURE_STRING = 'Invalid selector %s for component %s.';
+  public static FAILURE_STRING = 'Invalid selector "%s" for %s "%s".';
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     let documentRegistry = ts.createDocumentRegistry();
@@ -24,35 +25,32 @@ class SelectorNameValidatorWalker extends Lint.RuleWalker {
   }
 
   visitClassDeclaration(node: ts.ClassDeclaration) {
-    node.decorators.forEach(this.validateDecorator.bind(this));
+    node.decorators.forEach(this.validateDecorator.bind(this, node.name.text));
     super.visitClassDeclaration(node);
   }
 
-  private validateDecorator(decorator: ts.Decorator) {
-    let baseExpr = (<any>decorator.expression);
+  private validateDecorator(className: string, decorator: ts.Decorator) {
+    let baseExpr = <any>decorator.expression || {};
     let expr = baseExpr.expression || {};
     let name = expr.text;
-    let args = (<any>decorator.expression).arguments || [];
+    let args = baseExpr.arguments || [];
     let arg = args[0];
-    let errorSuffix = null;
-    if (name === 'Component' && !this.validateSelector(arg, SelectorValidator.component)) {
-      errorSuffix = Rule.FAILURE_STRING;
-    } else if (name === 'Directive' && !this.validateSelector(arg, SelectorValidator.directive)) {
-      errorSuffix = Rule.FAILURE_STRING;
-    }
-    if (errorSuffix) {
-      this.addFailure(this.createFailure(decorator.getStart(), decorator.getWidth(), errorSuffix));
+    if (name === 'Component' && arg) {
+      this.validateSelector('component', className, arg, SelectorValidator.component);
+    } else if (name === 'Directive' && arg) {
+      this.validateSelector('directive', className, arg, SelectorValidator.directive);
     }
   }
 
-  private validateSelector(arg: ts.Node, strategy) {
+  private validateSelector(unitType: string, className: string, arg: ts.Node, strategy) {
     if (arg.kind === ts.SyntaxKind.ObjectLiteralExpression) {
-      (<any>arg).properties.forEach(prop => {
-        if (prop.name.text === 'selector') {
-          let type = this.typeChecker.getTypeAtLocation(prop.initializer);
-          if (type.flags === ts.TypeFlags.String && !strategy(prop.initializer.text)) {
-            return false;
-          }
+      (<ts.ObjectLiteralExpression>arg).properties.filter(prop => (<any>prop.name).text === 'selector')
+      .forEach(prop => {
+        let p = <any>prop;
+        let type = this.typeChecker.getTypeAtLocation(p.initializer);
+        if (type.flags === ts.TypeFlags.String && !strategy(p.initializer.text)) {
+          let error = sprintf(Rule.FAILURE_STRING, p.initializer.text, unitType, className);
+          this.addFailure(this.createFailure(p.initializer.getStart(), p.initializer.getWidth(), error));
         }
       });
     }
