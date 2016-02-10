@@ -1,0 +1,36 @@
+{
+  "name": "ng2lint",
+  "version": "0.0.1",
+  "description": "A set of linters for Angular 2 applications, following https://github.com/mgechev/angular2-style-guide.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --compilers ts:ts-node/register",
+    "tsc": "tsc -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mgechev/ng2lint.git"
+  },
+  "keywords": [
+    "Angular",
+    "2",
+    "style",
+    "guide",
+    "ng2lint",
+    "lint",
+    "tslint"
+  ],
+  "author": "Minko Gechev <mgechev@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mgechev/ng2lint/issues"
+  },
+  "homepage": "https://github.com/mgechev/ng2lint#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
+    "ts-node": "^0.5.5",
+    "tslint": "^3.3.0",
+    "typescript": "^1.7.5"
+  }
+}
