@@ -30,9 +30,8 @@ Below you can find a recommended configuration which is based on the [Angular 2 
 - [ ] Do not inject `ElementRef`.
 - [ ] Do not rename inputs.
 - [ ] Do not rename outputs.
-- [ ] Do not use the `@Attribute` decorator.
-- [ ] Do not use the `@Attribute` decorator.
 - [ ] Externalize template above *n* lines of code.
+- [ ] Do not use the `@Attribute` decorator.
 - [ ] Do not use `forwardRef`.
 - [ ] Rise a warning for impure pipes.
 - [ ] Do not declare global providers.
