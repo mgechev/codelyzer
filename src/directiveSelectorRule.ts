@@ -1,7 +1,7 @@
 import * as Lint from 'tslint/lib/lint';
-import {SelectorNameRule} from './selectorBase';
+import {SelectorNameRule} from './selectorNameBase';
 
-const DEFAULT_CONFIG = ['attribute', 'camelCase'];
+const DEFAULT_CONFIG = ['attribute', 'camelCase', 'sg'];
 
 export class Rule extends SelectorNameRule {
   protected normalizeOptions(options: Lint.IOptions) {

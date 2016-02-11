@@ -1,6 +1,6 @@
 import {assertFailure, assertSuccess} from './testHelper';
 
-describe('component-selector', () => {
+describe('input-parameter-decorator', () => {
   it('should fail when "inputs" is used in @Component', () => {
     let source = `
       @Component({

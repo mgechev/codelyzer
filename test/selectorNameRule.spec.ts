@@ -9,7 +9,7 @@ describe('component-selector', () => {
       })
       class Test {}`;
       assertFailure('component-selector', source, {
-        message: 'Invalid selector "[foo]" for component "Test".',
+        message: 'Invalid selector "[foo]" for component "Test". Set your selectors to be elements, named kebab-case with "sg" prefix.',
         startPosition: {
           line: 2,
           character: 18
@@ -18,7 +18,7 @@ describe('component-selector', () => {
           line: 2,
           character: 25
         }
-      }, ['element', 'kebab-case']);
+      }, ['element', 'kebab-case', 'sg']);
     });
     it('should fail when component named camelCase', () => {
       let source = `
@@ -27,7 +27,7 @@ describe('component-selector', () => {
       })
       class Test {}`;
       assertFailure('component-selector', source, {
-        message: 'Invalid selector "fooBar" for component "Test".',
+        message: 'Invalid selector "fooBar" for component "Test". Set your selectors to be elements, named kebab-case with "sg" prefix.',
         startPosition: {
           line: 2,
           character: 18
@@ -36,17 +36,17 @@ describe('component-selector', () => {
           line: 2,
           character: 26
         }
-      }, ['element', 'kebab-case']);
+      }, ['element', 'kebab-case', 'sg']);
     });
   });
   describe('valid component selector', () => {
     it('should succeed when set valid selector in @Component', () => {
       let source = `
       @Component({
-        selector: 'bar-foo'
+        selector: 'sg-bar-foo'
       })
       class Test {}`;
-      assertSuccess('component-selector', source, ['element', 'kebab-case']);
+      assertSuccess('component-selector', source, ['element', 'kebab-case', 'sg']);
     });
   });
 });
@@ -60,7 +60,7 @@ describe('directive-selector', () => {
       })
       class Test {}`;
       assertFailure('directive-selector', source, {
-        message: 'Invalid selector "foo-bar" for directive "Test".',
+        message: 'Invalid selector "foo-bar" for directive "Test". Set your selectors to be attributes, named camelCase with "sg" prefix.',
         startPosition: {
           line: 2,
           character: 18
@@ -69,17 +69,17 @@ describe('directive-selector', () => {
           line: 2,
           character: 27
         }
-      }, ['attribute', 'camelCase']);
+      }, ['attribute', 'camelCase', 'sg']);
     });
   });
   describe('valid directive selector', () => {
     it('should succeed when set valid selector in @Directive', () => {
       let source = `
       @Directive({
-        selector: '[foo]'
+        selector: '[sgFoo]'
       })
       class Test {}`;
-      assertSuccess('directive-selector', source, ['attribute', 'camelCase']);
+      assertSuccess('directive-selector', source, ['attribute', 'camelCase', 'sg']);
     });
   });
 });

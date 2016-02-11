@@ -4,15 +4,8 @@ import {SelectorValidator} from './util/selectorValidator';
 import {compose} from './util/util';
 import {sprintf} from 'sprintf-js';
 
-const VALIDATORS_MAP = {
-  'kebab-case': 'kebabCase',
-  'camelCase': 'camelCase',
-  'attribute': 'attribute',
-  'element': 'element'
-};
-
 export abstract class SelectorNameRule extends Lint.Rules.AbstractRule {
-  public static FAILURE_STRING = 'Invalid selector "%s" for %s "%s".';
+  public static FAILURE_STRING = 'Invalid selector "%s" for %s "%s". Set your selectors to be %ss, named %s with "%s" prefix.';
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     let documentRegistry = ts.createDocumentRegistry();
@@ -31,8 +24,21 @@ class SelectorNameValidatorWalker extends Lint.RuleWalker {
 
   constructor(sourceFile: ts.SourceFile, options: Lint.IOptions, languageService : ts.LanguageService) {
     super(sourceFile, options);
-    this.validator = compose.apply(null, options.ruleArguments.filter(a => typeof a === 'string')
-      .map(a => SelectorValidator[VALIDATORS_MAP[a]]));
+    let args = options.ruleArguments;
+    let name = args[1];
+    if (name === 'kebab-case') {
+      name = 'kebabCase';
+    }
+    let selectorTypeValidator = SelectorValidator[args[0]];
+    let nameValidator = SelectorValidator[name];
+    let prefixValidator = SelectorValidator.prefix(args[2]);
+    if (!selectorTypeValidator) {
+      throw new Error(`${args[0]} is invalid selector type. Use "attribute" or "element".`);
+    }
+    if (!nameValidator) {
+      throw new Error(`${args[1]} is invalid name type. Use "kebab-case" or "camelCase".`)
+    }
+    this.validator = compose(selectorTypeValidator, nameValidator, prefixValidator);
     this.languageService = languageService;
     this.typeChecker = languageService.getProgram().getTypeChecker();
   }
@@ -62,7 +68,8 @@ class SelectorNameValidatorWalker extends Lint.RuleWalker {
         let p = <any>prop;
         let type = this.typeChecker.getTypeAtLocation(p.initializer);
         if (type.flags === ts.TypeFlags.String && !this.validator(p.initializer.text)) {
-          let error = sprintf(SelectorNameRule.FAILURE_STRING, p.initializer.text, unitType, className);
+          let a = this.getOptions();
+          let error = sprintf(SelectorNameRule.FAILURE_STRING, p.initializer.text, unitType, className, a[0], a[1], a[2]);
           this.addFailure(this.createFailure(p.initializer.getStart(), p.initializer.getWidth(), error));
         }
       });

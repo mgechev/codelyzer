@@ -1,7 +1,7 @@
 import * as Lint from 'tslint/lib/lint';
-import {SelectorNameRule} from './selectorBase';
+import {SelectorNameRule} from './selectorNameBase';
 
-const DEFAULT_CONFIG = ['element', 'kebab-case'];
+const DEFAULT_CONFIG = ['element', 'kebab-case', 'sg'];
 
 export class Rule extends SelectorNameRule {
   protected normalizeOptions(options: Lint.IOptions) {

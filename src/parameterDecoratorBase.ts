@@ -4,11 +4,40 @@ import {sprintf} from 'sprintf-js';
 
 export interface IUseParameterDecoratorConfig {
   propertyName: string;
-  decoratorName: string;
+  decoratorName: string | string[];
   errorMessage: string;
 }
 
-export class DirectiveMetadataWalker extends Lint.RuleWalker {
+export class UseParameterDecorator extends Lint.Rules.AbstractRule {
+  private static FAILURE_STRING = 'In the "@%s" class decorator of the class "%s"' +
+  ' you are using the "%s" property, this is considered bad practice. Use %s property decorator instead.';
+
+  public static formatFailureString(config: IUseParameterDecoratorConfig, decoratorName: string, className: string) {
+    let decorators = config.decoratorName;
+    if (decorators instanceof Array) {
+      decorators = (<string[]>decorators).map(d => `"@${d}"`).join(', ');
+    } else {
+      decorators = `"@${decorators}"`;
+    }
+    return sprintf(config.errorMessage, decoratorName, className, config.propertyName, decorators);
+  }
+
+  constructor(private config: IUseParameterDecoratorConfig, ruleName: string, value: any, disabledIntervals: Lint.IDisabledInterval[]) {
+    super(ruleName, value, disabledIntervals);
+    config.errorMessage = config.errorMessage || UseParameterDecorator.FAILURE_STRING;
+  }
+
+  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+    let documentRegistry = ts.createDocumentRegistry();
+    let languageServiceHost = Lint.createLanguageServiceHost('file.ts', sourceFile.getFullText());
+    return this.applyWithWalker(
+      new DirectiveMetadataWalker(sourceFile,
+        this.getOptions(),
+        ts.createLanguageService(languageServiceHost, documentRegistry), this.config));
+  }
+}
+
+class DirectiveMetadataWalker extends Lint.RuleWalker {
   private languageService : ts.LanguageService;
   private typeChecker : ts.TypeChecker;
 
@@ -44,7 +73,7 @@ export class DirectiveMetadataWalker extends Lint.RuleWalker {
           this.createFailure(
             p.getStart(),
             p.getWidth(),
-            sprintf(this.config.errorMessage, decoratorName, className, this.config.propertyName, this.config.decoratorName)));
+            UseParameterDecorator.formatFailureString(this.config, decoratorName, className)));
       });
     }
   }

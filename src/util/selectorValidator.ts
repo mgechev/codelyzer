@@ -10,5 +10,10 @@ export const SelectorValidator = {
   },
   camelCase(selector: string): boolean {
     return /^[a-zA-Z0-9\[\]]+$/.test(selector);
+  },
+  prefix(prefix: string): Function {
+    return (selector: string) => {
+      return new RegExp(`^\\[?${prefix}`).test(selector);
+    };
   }
 };
