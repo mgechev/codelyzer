@@ -18,8 +18,12 @@ Below you can find a recommended configuration which is based on the [Angular 2 
 
 ## Roadmap
 
-- [x] Directive selector type, name and prefix.
-- [x] Component selector type, name and prefix.
+- [x] Directive selector type.
+- [x] Directive selector name convention.
+- [x] Directive selector name prefix.
+- [x] Component selector type.
+- [x] Component selector name convention.
+- [x] Component selector name prefix.
 - [x] Use `@Input` instead of `inputs` decorator property.
 - [x] Use `@Output` instead of `outputs` decorator property.
 - [x] Use `@HostListeners` and `@HostBindings` instead of `host` decorator property.
