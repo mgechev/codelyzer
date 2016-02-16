@@ -34,12 +34,11 @@ function lint(ruleName: string, source: string, options): tslint.LintResult {
 
 export function assertFailure(ruleName: string, source: string, fail: IExpectedFailure, options = null) {
   let result = lint(ruleName, source, options);
-  chai.assert(result.failureCount > 0);
+  chai.assert(result.failureCount > 0, 'no failures');
   result.failures.forEach(ruleFail => {
-    console.log(ruleFail.getFailure());
-    chai.assert(fail.message === ruleFail.getFailure());
-    chai.assert.deepEqual(fail.startPosition, ruleFail.getStartPosition().getLineAndCharacter());
-    chai.assert.deepEqual(fail.endPosition, ruleFail.getEndPosition().getLineAndCharacter());
+    chai.assert.equal(fail.message, ruleFail.getFailure(), 'error messages dont\'t match');
+    chai.assert.deepEqual(fail.startPosition, ruleFail.getStartPosition().getLineAndCharacter(), 'start char doesn\'t match');
+    chai.assert.deepEqual(fail.endPosition, ruleFail.getEndPosition().getLineAndCharacter(),  'end char doesn\'t match');
   });
 };
 
