@@ -1,5 +1,5 @@
 import * as Lint from 'tslint/lib/lint';
-import {SelectorRule} from './selectorNameBase';
+import {SelectorRule, COMPONENT_TYPE} from './selectorNameBase';
 import {SelectorValidator} from './util/selectorValidator';
 
 const FAILURE_STRING = 'The selector of the directive "%s" should be named %s, however its value is "%s".';
@@ -10,6 +10,6 @@ export class Rule extends SelectorRule {
     if (value[1] === 'kebab-case') {
       validator = SelectorValidator.kebabCase;
     }
-    super(ruleName, value, disabledIntervals, validator, FAILURE_STRING);
+    super(ruleName, value, disabledIntervals, validator, FAILURE_STRING, COMPONENT_TYPE.DIRECTIVE);
   }
 }

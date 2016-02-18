@@ -1,10 +1,10 @@
 import {assertFailure, assertSuccess} from './testHelper';
 
 describe('directive-selector-type', () => {
-  describe('invalid component selectors', () => {
-    it('should fail when component used as attribute', () => {
+  describe('invalid directive selectors', () => {
+    it('should fail when directive used as attribute', () => {
       let source = `
-      @Component({
+      @Directive({
         selector: 'foo-bar'
       })
       class Test {}`;
@@ -21,10 +21,10 @@ describe('directive-selector-type', () => {
       }, 'attribute');
     });
   });
-  describe('valid component selector', () => {
-    it('should succeed when set valid selector in @Component', () => {
+  describe('valid directive selector', () => {
+    it('should succeed when set valid selector in @Directive', () => {
       let source = `
-      @Component({
+      @Directive({
         selector: '[sgBarFoo]'
       })
       class Test {}`;

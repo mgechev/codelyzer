@@ -2,9 +2,15 @@ import * as ts from 'typescript';
 import * as Lint from 'tslint/lib/lint';
 import {sprintf} from 'sprintf-js';
 
+export enum COMPONENT_TYPE {
+  COMPONENT,
+  DIRECTIVE,
+  ANY
+};
+
 export abstract class SelectorRule extends Lint.Rules.AbstractRule {
   constructor(ruleName: string, value: any, disabledIntervals: Lint.IDisabledInterval[],
-    private validator: Function, private failureString: string) {
+    private validator: Function, private failureString: string, private target: COMPONENT_TYPE = COMPONENT_TYPE.ANY) {
     super(ruleName, value, disabledIntervals);
   }
 
@@ -25,6 +31,10 @@ export abstract class SelectorRule extends Lint.Rules.AbstractRule {
 
   public validate(selector: string): boolean {
     return this.validator(selector);
+  }
+
+  public get targetType(): COMPONENT_TYPE {
+    return this.target;
   }
 }
 
@@ -49,9 +59,9 @@ class SelectorNameValidatorWalker extends Lint.RuleWalker {
     let name = expr.text;
     let args = baseExpr.arguments || [];
     let arg = args[0];
-    if (name === 'Component' && arg) {
-      this.validateSelector(className, arg);
-    } else if (name === 'Directive' && arg) {
+    if (this.rule.targetType === COMPONENT_TYPE.ANY ||
+        name === 'Component' && this.rule.targetType === COMPONENT_TYPE.COMPONENT ||
+        name === 'Directive' && this.rule.targetType === COMPONENT_TYPE.DIRECTIVE) {
       this.validateSelector(className, arg);
     }
   }
