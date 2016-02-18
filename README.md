@@ -8,12 +8,12 @@ Below you can find a recommended configuration which is based on the [Angular 2 
 
 ```json
 {
-  "directive-selector-name": "camelCase",
-  "component-selector-name": "kebab-case",
-  "directive-selector-type": "attribute",
-  "component-selector-type": "element",
-  "directive-selector-prefix": "sg",
-  "component-selector-prefix": "sg",
+  "directive-selector-name": [true, "camelCase"],
+  "component-selector-name": [true, "kebab-case"],
+  "directive-selector-type": [true, "attribute"],
+  "component-selector-type": [true, "element"],
+  "directive-selector-prefix": [true, "sg"],
+  "component-selector-prefix": [true, "sg"],
   "host-parameter-decorator": true,
   "input-parameter-decorator": true,
   "output-parameter-decorator": true
