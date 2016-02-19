@@ -1,6 +1,6 @@
 {
   "name": "ng2lint",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "A set of linters for Angular 2 applications, following https://github.com/mgechev/angular2-style-guide.",
   "main": "index.js",
   "scripts": {

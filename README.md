@@ -31,7 +31,7 @@ Below you can find a recommended configuration which is based on the [Angular 2 
 - [x] Use `@Input` instead of `inputs` decorator property.
 - [x] Use `@Output` instead of `outputs` decorator property.
 - [x] Use `@HostListeners` and `@HostBindings` instead of `host` decorator property.
-- [ ] Do not inject `ElementRef`.
+- [ ] Do not use `nativeElement` injected with `ElementRef`.
 - [ ] Do not rename inputs.
 - [ ] Do not rename outputs.
 - [ ] Externalize template above *n* lines of code.
