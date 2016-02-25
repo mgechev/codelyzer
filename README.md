@@ -41,6 +41,18 @@ Below you can find a recommended configuration which is based on the [Angular 2 
 - [ ] Do not declare global providers.
 - [ ] Follow convention for naming the routes.
 - [ ] Use `@Injectable` instead of `@Inject`.
+- [ ] Single export per module, except facade modules.
+- [ ] Proper naming of modules (kebab-case followed by module type followed by extension for regular modules, module name plus extension name for facades).
+- [ ] Verify if used directive is declared in the current component or any parent component.
+- [ ] Verify that property or method used in the template exists in the current context.
+- [ ] Proper naming of directives and components (name plus `(Directive|Component)` suffix).
+- [ ] Locate component templates in the same directory.
+- [ ] Locate tests in the same directory (rise optional warning when no test file is found).
+- [ ] Rise warning on complex logic inside of the templates.
+- [ ] Do not manipulate elements referenced within the template.
+- [ ] Implement life-cycle hooks explicitly.
+- [ ] Implement Pipe transform interface for pipes.
+- [ ] Proper naming for pipes (kebab-case, optionally prefixed).
 
 ## License
 
