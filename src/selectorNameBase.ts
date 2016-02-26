@@ -71,8 +71,7 @@ class SelectorNameValidatorWalker extends Lint.RuleWalker {
       (<ts.ObjectLiteralExpression>arg).properties.filter(prop => (<any>prop.name).text === 'selector')
       .forEach(prop => {
         let p = <any>prop;
-        let type = this.typeChecker.getTypeAtLocation(p.initializer);
-        if (type.flags === ts.TypeFlags.String && !this.rule.validate(p.initializer.text)) {
+        if (p.initializer.kind === ts.SyntaxKind.StringLiteral && !this.rule.validate(p.initializer.text)) {
           let error = this.rule.getFailureString({ selector: p.initializer.text, className });
           this.addFailure(this.createFailure(p.initializer.getStart(), p.initializer.getWidth(), error));
         }
