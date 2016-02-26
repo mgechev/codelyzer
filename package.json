@@ -1,13 +1,13 @@
 {
   "name": "ng2lint",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A set of linters for Angular 2 applications, following https://github.com/mgechev/angular2-style-guide.",
   "main": "index.js",
   "scripts": {
     "test": "mocha --compilers ts:ts-node/register",
     "tsc": "tsc",
     "tscw": "tsc -w",
-    "postinstall": "typings install"
+    "postinstall": "typings install && tsc"
   },
   "repository": {
     "type": "git",
@@ -32,9 +32,11 @@
     "chai": "^3.5.0",
     "mocha": "^2.4.5",
     "ts-node": "^0.5.5",
-    "tslint": "^3.3.0",
-    "typescript": "^1.7.5",
     "typings": "^0.6.8"
+  },
+  "peerDependencies": {
+    "tslint": "^3.3.0",
+    "typescript": "^1.7.5"
   },
   "dependencies": {
     "sprintf-js": "^1.0.3"
