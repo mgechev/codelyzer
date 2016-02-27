@@ -1,13 +1,12 @@
 {
   "name": "ng2lint",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A set of linters for Angular 2 applications, following https://github.com/mgechev/angular2-style-guide.",
   "main": "index.js",
   "scripts": {
     "test": "mocha --compilers ts:ts-node/register",
     "tsc": "tsc",
-    "tscw": "tsc -w",
-    "postinstall": "typings install && tsc"
+    "tscw": "tsc -w"
   },
   "repository": {
     "type": "git",
