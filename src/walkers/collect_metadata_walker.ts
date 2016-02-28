@@ -2,6 +2,8 @@ import * as ts from 'typescript';
 import 'reflect-metadata';
 import {ComponentMetadata, DirectiveMetadata} from 'angular2/core';
 import {SyntaxWalker} from './syntax_walker';
+import {FileCache} from '../util/file_cache';
+import * as fs from 'fs';
 
 function getPropValue(p) {
   if (p.initializer.kind === ts.SyntaxKind.StringLiteral) {
@@ -34,8 +36,14 @@ const PROP_MAP = {
   inputs: '_properties',
   properties: '_properties',
   host: 'host',
-  selector: 'selector'
+  selector: 'selector',
+  directives: 'directives'
 };
+
+export class DirectiveInfo {
+  metadata: DirectiveMetadata;
+  classDeclaration: ts.ClassDeclaration;
+}
 
 const classMetadataValueExtracter = {
   selector: getPropValue,
@@ -44,24 +52,84 @@ const classMetadataValueExtracter = {
   host: getObjectLiteralValue
 };
 
-export class CollectMetadataWalker extends SyntaxWalker {
-  metadata: DirectiveMetadata;
-  visitPropertyDeclaration(node: ts.PropertyDeclaration) {
+export class CollectComponentsMetadata {
+  lsHost;
+  ls;
+  fileCache: FileCache;
+  constructor(private bootstrapFile: string) {
+    this.lsHost = {
+      getCompilationSettings: () => { return {}; },
+      getScriptFileNames: () => this.fileCache.getFileNames(),
+      getScriptVersion: (fileName: string) => this.fileCache.getScriptInfo(fileName).version.toString(),
+      getScriptIsOpen: (fileName: string) => this.fileCache.getScriptInfo(fileName).isOpen,
+      getScriptSnapshot: (fileName: string) => this.fileCache.getScriptSnapshot(fileName),
+      getCurrentDirectory: () => ts.sys.getCurrentDirectory(),
+      getDefaultLibFileName:
+        (options: ts.CompilerOptions) => ts.getDefaultLibFileName(options),
+      log: (message) => undefined,
+      trace: (message) => undefined,
+      error: (message) => console.error(message)
+    };
+    this.ls = ts.createLanguageService(this.lsHost,ts.createDocumentRegistry());
+    this.fileCache.ls = this.ls;
+    let walker = new CollectComponentMetadataWalker();
+    let file = ts.createSourceFile(this.bootstrapFile, fs.readFileSync(this.bootstrapFile).toString(), ts.ScriptTarget.ES2015, true);
+    walker.getComponentsMetadata(file).forEach(d => {
+      if (d.metadata instanceof ComponentMetadata) {
+        // Continue the recoursive definition.
+        // this.resolveDirectives((<ComponentMetadata>d).directives, this.bootstrapFile);
+      }
+    });
+  }
+  resolveDirectives(nodes: ts.Identifier[], file?) {
+    return nodes.map(node => {
+      let locs = this.ls.getDefinitionAtPosition(file || this.bootstrapFile, node.pos);
+      let info = locs && locs.map( def => ({
+        def: def,
+        file: def && def.fileName,
+        min: def && this.fileCache.positionToLineCol(def.fileName,def.textSpan.start),
+        lim: def && this.fileCache.positionToLineCol(def.fileName,ts.textSpanEnd(def.textSpan))
+      }));
+      if (locs && info[0] && info[0].file) {
+        let file = ts.createSourceFile(info[0].file, fs.readFileSync(info[0].file).toString(), ts.ScriptTarget.ES2015, true);
+        let visitor = new CollectComponentMetadataWalker();
+        return visitor.getComponentsMetadata(file, [node.text]).pop();
+      }
+      return null;
+    });
+  }
+}
+
+export class CollectComponentMetadataWalker extends SyntaxWalker {
+  directives: DirectiveInfo[] = [];
+  private currentDirective;
+  private directivesName: string[];
+  getComponentsMetadata(file, directivesName?: string[]): DirectiveInfo[] {
+    this.directivesName = directivesName;
+    this.walk(file);
+    return this.directives;
+  }
+  protected visitPropertyDeclaration(node: ts.PropertyDeclaration) {
     let res = this.extractDecorators(node, /^HostBinding/);
     this.collectHostBindingMetadata(res.node, res.args[0]);
     super.visitPropertyDeclaration(node);
   }
-  visitMethodDeclaration(node: ts.MethodDeclaration) {
+  protected visitMethodDeclaration(node: ts.MethodDeclaration) {
     let res = this.extractDecorators(node, /^HostListener$/);
     this.collectHostListenerMetadata(res.node, res.args);
     super.visitMethodDeclaration(node);
   }
-  visitClassDeclaration(node: ts.ClassDeclaration) {
-    let res = this.extractDecorators(node, /^(Component|Directive)$/);
-    this.collectClassDecoratorMetadata(res.node, res.name, res.args[0]);
-    super.visitClassDeclaration(node);
+  protected visitClassDeclaration(node: ts.ClassDeclaration) {
+    if (!this.directivesName || this.directivesName.indexOf(node.name.text) >= 0) {
+      this.currentDirective = new DirectiveInfo();
+      this.currentDirective.classDeclaration = node;
+      let res = this.extractDecorators(node, /^(Component|Directive)$/);
+      this.collectClassDecoratorMetadata(res.node, res.name, res.args[0]);
+      super.visitClassDeclaration(node);
+      this.directives.push(this.currentDirective);
+    }
   }
-  extractDecorators(node: any, decoratorRegexp) {
+  private extractDecorators(node: any, decoratorRegexp) {
     return (node.decorators || []).map(d => {
       let baseExpr = <any>d.expression || {};
       let expr = baseExpr.expression || {};
@@ -75,38 +143,38 @@ export class CollectMetadataWalker extends SyntaxWalker {
       return null;
     }).find(r => !!r);
   }
-  collectClassDecoratorMetadata(node, decoratorName, decoratorArg) {
+  private collectClassDecoratorMetadata(node, decoratorName, decoratorArg) {
     if (decoratorName === 'Directive') {
-      this.metadata = new DirectiveMetadata();
+      this.currentDirective.metadata = new DirectiveMetadata();
     } else {
-      this.metadata = new ComponentMetadata();
+      this.currentDirective.metadata = new ComponentMetadata();
     }
     if (decoratorArg.kind === ts.SyntaxKind.ObjectLiteralExpression) {
       decoratorArg.properties.forEach(prop => {
         let name = prop.name.text;
         let extracter = classMetadataValueExtracter[name];
         if (extracter && PROP_MAP[name]) {
-          this.metadata[PROP_MAP[name]] = extracter(prop);
+          this.currentDirective.metadata[PROP_MAP[name]] = extracter(prop);
         } else {
           console.log(`Cannot extract value for ${name}`);
         }
       });
     }
   }
-  collectHostBindingMetadata(node, decoratorArg) {
+  private collectHostBindingMetadata(node, decoratorArg) {
     let propName = node.name.text;
     if (!decoratorArg || decoratorArg.kind === ts.SyntaxKind.StringLiteral) {
-      this.metadata.host = this.metadata.host || {};
-      this.metadata.host[`[${(decoratorArg && decoratorArg.text) || propName}]`] = propName;
+      this.currentDirective.metadata.host = this.currentDirective.metadata.host || {};
+      this.currentDirective.metadata.host[`[${(decoratorArg && decoratorArg.text) || propName}]`] = propName;
     } else {
       console.log('Unsupported construct');
     }
   }
-  collectHostListenerMetadata(node, decoratorArgs) {
+  private collectHostListenerMetadata(node, decoratorArgs) {
     let methodName = node.name.text;
     if (decoratorArgs[0].kind === ts.SyntaxKind.StringLiteral) {
-      this.metadata.host = this.metadata.host || {};
-      this.metadata.host[`(${decoratorArgs[0].text})`] = `${methodName}()`;
+      this.currentDirective.metadata.host = this.currentDirective.metadata.host || {};
+      this.currentDirective.metadata.host[`(${decoratorArgs[0].text})`] = `${methodName}()`;
     }
   }
 }

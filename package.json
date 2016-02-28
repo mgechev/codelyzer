@@ -4,7 +4,8 @@
   "description": "A set of linters for Angular 2 applications, following https://github.com/mgechev/angular2-style-guide.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --compilers ts:ts-node/register",
+    "test": "mocha ./dist/test/**",
+    "testw": "mocha -w dist/test/**",
     "tsc": "tsc",
     "tscw": "tsc -w"
   },
@@ -29,7 +30,6 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^2.4.5",
-    "ts-node": "^0.5.5",
     "typings": "^0.6.8"
   },
   "peerDependencies": {
