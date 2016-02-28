@@ -16,7 +16,8 @@ Below you can find a recommended configuration which is based on the [Angular 2 
   "component-selector-prefix": [true, "sg"],
   "host-parameter-decorator": true,
   "input-parameter-decorator": true,
-  "output-parameter-decorator": true
+  "output-parameter-decorator": true,
+  "attribute-parameter-decorator":true
 }
 ```
 
@@ -35,7 +36,7 @@ Below you can find a recommended configuration which is based on the [Angular 2 
 - [ ] Do not rename inputs.
 - [ ] Do not rename outputs.
 - [ ] Externalize template above *n* lines of code.
-- [ ] Do not use the `@Attribute` decorator.
+- [x] Do not use the `@Attribute` decorator.
 - [ ] Do not use `forwardRef`.
 - [ ] Rise a warning for impure pipes.
 - [ ] Do not declare global providers.
