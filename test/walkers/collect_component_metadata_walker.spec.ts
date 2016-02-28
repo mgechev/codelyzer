@@ -77,4 +77,17 @@ describe('collect_component_metadata_walker', () => {
     chai.assert.deepEqual(component.metadata.inputs, ['bar', 'baz']);
     chai.assert.deepEqual((<ComponentMetadata>component.metadata).directives, ['Foo']);
   });
+  it('should work with external templates', () => {
+    let file = tsc.createSourceFile('file.ts', `
+      @Component({
+        selector: 'bar',
+        templateUrl: '../../../sample_data/external_template.html'
+      })
+      class Bar {}
+    `, tsc.ScriptTarget.ES2015, true);
+    let visitor = new CollectComponentMetadataWalker();
+    visitor.getMetadata(file);
+    chai.assert.equal(visitor.directives.length, 1);
+    chai.assert.equal(visitor.directives[0].metadata.template, '<div></div>');
+  });
 });

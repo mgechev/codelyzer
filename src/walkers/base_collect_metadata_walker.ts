@@ -1,4 +1,6 @@
 import 'reflect-metadata';
+import * as fs from 'fs';
+import * as path from 'path';
 import * as ts from 'typescript';
 import {SyntaxWalker} from './syntax_walker';
 import {ReferenceExtractorStrategy} from '../reference_extractors/reference_extractor_strategy';
@@ -16,6 +18,7 @@ export const classMetadataValueExtracter = {
   inputs: getArrayLiteralValue,
   outputs: getArrayLiteralValue,
   host: getObjectLiteralValue,
+  templateUrl: getExternalFileFromLiteral,
   // for pipes
   name: getPropValue
 };
@@ -29,6 +32,7 @@ export const PROP_MAP = {
   selector: 'selector',
   directives: 'directives',
   pipes: 'pipes',
+  templateUrl: 'template',
   // for pipes
   name: 'name'
 };
@@ -56,4 +60,8 @@ function getObjectLiteralValue(n) {
     }, {});
   }
   return null;
+}
+
+function getExternalFileFromLiteral(n) {
+  return fs.readFileSync(path.join(__dirname, getPropValue(n))).toString();
 }
