@@ -1,9 +1,9 @@
-import {CollectComponentMetadataWalker} from '../../src/walkers/collect_metadata_walker';
+import {CollectComponentMetadataWalker} from '../../src/walkers/collect_component_metadata_walker';
 import {ComponentMetadata} from 'angular2/core';
 import * as chai from 'chai';
 import * as tsc from 'typescript';
 
-describe('collect_metadata_walker', () => {
+describe('collect_component_metadata_walker', () => {
   it('should collect metadata', () => {
     let file = tsc.createSourceFile('file.ts', `
       @Directive({
@@ -19,7 +19,7 @@ describe('collect_metadata_walker', () => {
       class Foo {}
     `, tsc.ScriptTarget.ES2015, true);
     let visitor = new CollectComponentMetadataWalker();
-    visitor.getComponentsMetadata(file);
+    visitor.getMetadata(file);
     chai.assert.equal(visitor.directives[0].metadata.selector, 'foobar', 'should get the selector value');
     chai.assert.deepEqual(visitor.directives[0].metadata.host,
       { '(click)': 'foobar()', '[baz]': 'baz', 'role': 'button' }, 'should work with inline host');
@@ -46,7 +46,7 @@ describe('collect_metadata_walker', () => {
       }
     `, tsc.ScriptTarget.ES2015, true);
     let visitor = new CollectComponentMetadataWalker();
-    visitor.getComponentsMetadata(file);
+    visitor.getMetadata(file);
     chai.assert.deepEqual(visitor.directives[0].metadata.host,
       { '(click)': 'foobar()', '[baz]': 'baz', '[bar]': 'foobar', 'role': 'button' }, 'should work with inline host');
   });
@@ -68,7 +68,7 @@ describe('collect_metadata_walker', () => {
       class Bar {}
     `, tsc.ScriptTarget.ES2015, true);
     let visitor = new CollectComponentMetadataWalker();
-    visitor.getComponentsMetadata(file);
+    visitor.getMetadata(file);
     chai.assert.equal(visitor.directives.length, 2);
     let dir = visitor.directives[0];
     let component = visitor.directives[1];
