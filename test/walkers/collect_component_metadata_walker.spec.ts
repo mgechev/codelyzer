@@ -75,6 +75,6 @@ describe('collect_metadata_walker', () => {
     chai.assert.equal(dir.metadata.selector, 'foo');
     chai.assert.equal(component.metadata.selector, 'bar');
     chai.assert.deepEqual(component.metadata.inputs, ['bar', 'baz']);
-    // chai.assert.deepEqual((<ComponentMetadata>component.metadata).directives, ['Foo']);
+    chai.assert.deepEqual((<ComponentMetadata>component.metadata).directives, ['Foo']);
   });
 });

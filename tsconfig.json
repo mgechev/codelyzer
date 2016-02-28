@@ -2,11 +2,12 @@
   "compilerOptions": {
       "target": "es5",
       "module": "commonjs",
-      "declaration": false,
+      "declaration": true,
       "noImplicitAny": false,
       "removeComments": true,
       "noLib": false,
-      "outDir": "./dist"
+      "outDir": "./dist",
+      "experimentalDecorators": true
   },
   "exclude": [
       "typings/browser.d.ts",

@@ -56,7 +56,7 @@ export class CollectComponentsMetadata {
   lsHost;
   ls;
   fileCache: FileCache;
-  constructor(private bootstrapFile: string) {
+  constructor() {
     this.lsHost = {
       getCompilationSettings: () => { return {}; },
       getScriptFileNames: () => this.fileCache.getFileNames(),
@@ -70,20 +70,33 @@ export class CollectComponentsMetadata {
       trace: (message) => undefined,
       error: (message) => console.error(message)
     };
-    this.ls = ts.createLanguageService(this.lsHost,ts.createDocumentRegistry());
+    this.ls = ts.createLanguageService(this.lsHost, ts.createDocumentRegistry());
     this.fileCache.ls = this.ls;
-    let walker = new CollectComponentMetadataWalker();
-    let file = ts.createSourceFile(this.bootstrapFile, fs.readFileSync(this.bootstrapFile).toString(), ts.ScriptTarget.ES2015, true);
-    walker.getComponentsMetadata(file).forEach(d => {
-      if (d.metadata instanceof ComponentMetadata) {
-        // Continue the recoursive definition.
-        // this.resolveDirectives((<ComponentMetadata>d).directives, this.bootstrapFile);
-      }
-    });
   }
-  resolveDirectives(nodes: ts.Identifier[], file?) {
+  getDirectivesTree(rootFile: string) {
+    let walker = new CollectComponentMetadataWalker(new RecursiveDirectiveExtractorStrategy(this.fileCache, this.ls));
+    let file = ts.createSourceFile(rootFile, fs.readFileSync(rootFile).toString(), ts.ScriptTarget.ES2015, true);
+    return walker.getComponentsMetadata(file);
+  }
+}
+
+export abstract class DirectivesExtractorStrategy {
+  abstract extract(nodes: ts.Identifier[], file): any[];
+}
+
+export class BasicDirectiveExtractorStrategy extends DirectivesExtractorStrategy {
+  extract(nodes: ts.Identifier[], file): any[] {
+    return nodes.map(n => n.text);
+  }
+}
+
+export class RecursiveDirectiveExtractorStrategy extends DirectivesExtractorStrategy {
+  constructor(private fileCache, private ls) {
+    super();
+  }
+  extract(nodes: ts.Identifier[], file): any[] {
     return nodes.map(node => {
-      let locs = this.ls.getDefinitionAtPosition(file || this.bootstrapFile, node.pos);
+      let locs = this.ls.getDefinitionAtPosition(file, node.pos);
       let info = locs && locs.map( def => ({
         def: def,
         file: def && def.fileName,
@@ -92,7 +105,7 @@ export class CollectComponentsMetadata {
       }));
       if (locs && info[0] && info[0].file) {
         let file = ts.createSourceFile(info[0].file, fs.readFileSync(info[0].file).toString(), ts.ScriptTarget.ES2015, true);
-        let visitor = new CollectComponentMetadataWalker();
+        let visitor = new CollectComponentMetadataWalker(new RecursiveDirectiveExtractorStrategy(this.fileCache, this.ls));
         return visitor.getComponentsMetadata(file, [node.text]).pop();
       }
       return null;
@@ -104,8 +117,13 @@ export class CollectComponentMetadataWalker extends SyntaxWalker {
   directives: DirectiveInfo[] = [];
   private currentDirective;
   private directivesName: string[];
+  private file;
+  constructor(private directivesExtractorStrategy: DirectivesExtractorStrategy = new BasicDirectiveExtractorStrategy()) {
+    super();
+  }
   getComponentsMetadata(file, directivesName?: string[]): DirectiveInfo[] {
     this.directivesName = directivesName;
+    this.file = file;
     this.walk(file);
     return this.directives;
   }
@@ -152,11 +170,15 @@ export class CollectComponentMetadataWalker extends SyntaxWalker {
     if (decoratorArg.kind === ts.SyntaxKind.ObjectLiteralExpression) {
       decoratorArg.properties.forEach(prop => {
         let name = prop.name.text;
-        let extracter = classMetadataValueExtracter[name];
-        if (extracter && PROP_MAP[name]) {
-          this.currentDirective.metadata[PROP_MAP[name]] = extracter(prop);
+        if (name === 'directives') {
+          this.currentDirective.metadata[name] = this.directivesExtractorStrategy.extract(prop.initializer.elements, this.file);
         } else {
-          console.log(`Cannot extract value for ${name}`);
+          let extracter = classMetadataValueExtracter[name];
+          if (extracter && PROP_MAP[name]) {
+            this.currentDirective.metadata[PROP_MAP[name]] = extracter(prop);
+          } else {
+            console.log(`Cannot extract value for ${name}`);
+          }
         }
       });
     }
