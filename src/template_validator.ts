@@ -13,7 +13,7 @@ import {CompileDirectiveMetadata, CompilePipeMetadata, CompileTypeMetadata} from
 import {TemplateParser} from 'angular2/src/compiler/template_parser';
 import {COMPILER_PROVIDERS} from 'angular2/src/compiler/compiler';
 import {Parse5DomAdapter} from 'angular2/src/platform/server/parse5_adapter'
-import {ComponentInfo} from './walkers/base_collect_metadata_walker';
+import {DirectiveInfo} from './walkers/collect_component_metadata_walker';
 import {ComponentMetadataCollector} from './component_metadata_collector';
 
 Parse5DomAdapter.makeCurrent();
@@ -31,17 +31,17 @@ export class TemplateValidator {
     return tree.map(c => this._validateDirectivesInTemplate(c)).filter(e => !!e).concat(
            tree.map(c => this._validateExpressionsInTemplate(c)).filter(e => !!e));
   }
-  private _validateDirectivesInTemplate(component: ComponentInfo, directives = COMMON_DIRECTIVES, pipes = COMMON_PIPES) {
+  private _validateDirectivesInTemplate(component: any, _directives = COMMON_DIRECTIVES, _pipes = COMMON_PIPES) {
     let meta = component.metadata;
     if (meta instanceof ComponentMetadata) {
-      directives = directives.concat((meta.directives || []).map(this._getDirective.bind(this)));
-      pipes = pipes.concat((meta.pipes || []).map(this._getPipe.bind(this)));
+      let directives: any[] = (meta.directives || []).map(this._getDirective.bind(this)).concat(_directives);
+      let pipes: any[] = (meta.pipes || []).map(this._getPipe.bind(this)).concat(_pipes);
       try {
         this.parser.parse(meta.template, directives, pipes, '');
       } catch (e) {
         return e;
       }
-      return (meta.directives || []).map(c => this._validateComponent(c, directives, pipes));
+      return (meta.directives || []).map(c => this._validateDirectivesInTemplate(c, directives, pipes));
     } else {
       return null;
     }
@@ -62,7 +62,7 @@ export class TemplateValidator {
       type: new CompileTypeMetadata({ name: pipe.classDeclaration.name.text })
     });
   }
-  _validateExpressionsInTemplate() {
+  _validateExpressionsInTemplate(c) {
     return [];
   }
 }

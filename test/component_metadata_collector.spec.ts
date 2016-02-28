@@ -12,9 +12,8 @@ describe('collect_components_metadata', () => {
     let result = collector.getComponentTree(cmpPath);
     let a = (<ComponentMetadata>result[0].metadata);
     let b = a.directives[0];
-    chai.assert.equal((<PipeInfo>a.pipes[0]).metadata.name, 'p1');
-    chai.assert.equal((<DirectiveInfo>b).metadata.selector, 'b');
-    chai.assert.deepEqual((<ComponentMetadata>(<DirectiveInfo>b).metadata)
-      .directives.map(d => d.metadata.selector), ['[d]', 'c']);
+    chai.assert.equal((<any>a.pipes[0]).metadata.name, 'p1');
+    chai.assert.equal((<any>b).metadata.selector, 'b');
+    chai.assert.deepEqual((<any>b).metadata.directives.map(d => d.metadata.selector), ['[d]', 'c']);
   });
 });

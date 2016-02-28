@@ -88,6 +88,6 @@ describe('collect_component_metadata_walker', () => {
     let visitor = new CollectComponentMetadataWalker();
     visitor.getMetadata(file);
     chai.assert.equal(visitor.directives.length, 1);
-    chai.assert.equal(visitor.directives[0].metadata.template, '<div></div>');
+    chai.assert.equal((<any>visitor.directives[0].metadata).template, '<div></div>');
   });
 });
