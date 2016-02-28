@@ -4,6 +4,7 @@ import {P1} from './pipe_p1';
 
 @Component({
   selector: 'foo',
+  templateUrl: './a.html',
   directives: [B],
   pipes: [P1]
 })

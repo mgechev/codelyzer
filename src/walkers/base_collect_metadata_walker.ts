@@ -19,6 +19,7 @@ export const classMetadataValueExtracter = {
   outputs: getArrayLiteralValue,
   host: getObjectLiteralValue,
   templateUrl: getExternalFileFromLiteral,
+  template: getPropValue,
   // for pipes
   name: getPropValue
 };
@@ -33,6 +34,7 @@ export const PROP_MAP = {
   directives: 'directives',
   pipes: 'pipes',
   templateUrl: 'template',
+  template: 'template',
   // for pipes
   name: 'name'
 };
@@ -62,6 +64,7 @@ function getObjectLiteralValue(n) {
   return null;
 }
 
-function getExternalFileFromLiteral(n) {
-  return fs.readFileSync(path.join(__dirname, getPropValue(n))).toString();
+function getExternalFileFromLiteral(n, fileName) {
+  let dir = path.dirname(fileName);
+  return fs.readFileSync(path.join(dir, getPropValue(n))).toString();
 }

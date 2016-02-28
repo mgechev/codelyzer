@@ -1,6 +1,6 @@
-import {PipeInfo} from '../../src/walkers/collect_pipe_metadata_walker';
-import {DirectiveInfo} from '../../src/walkers/collect_component_metadata_walker';
-import {ComponentMetadataCollector} from '../../src/component_metadata_collector';
+import {PipeInfo} from '../src/walkers/collect_pipe_metadata_walker';
+import {DirectiveInfo} from '../src/walkers/collect_component_metadata_walker';
+import {ComponentMetadataCollector} from '../src/component_metadata_collector';
 import {ComponentMetadata} from 'angular2/core';
 import * as chai from 'chai';
 import {join, normalize} from 'path';
@@ -8,7 +8,7 @@ import {join, normalize} from 'path';
 describe('collect_components_metadata', () => {
   it('should collect metadata', () => {
     let collector = new ComponentMetadataCollector();
-    let cmpPath = normalize(join(__dirname, '..', '..', '..', 'sample_data', 'cmp_a.ts'));
+    let cmpPath = normalize(join(__dirname, '..', '..', 'sample_data', 'cmp_a.ts'));
     let result = collector.getComponentTree(cmpPath);
     let a = (<ComponentMetadata>result[0].metadata);
     let b = a.directives[0];

@@ -81,7 +81,7 @@ describe('collect_component_metadata_walker', () => {
     let file = tsc.createSourceFile('file.ts', `
       @Component({
         selector: 'bar',
-        templateUrl: '../../../sample_data/external_template.html'
+        templateUrl: './sample_data/external_template.html'
       })
       class Bar {}
     `, tsc.ScriptTarget.ES2015, true);

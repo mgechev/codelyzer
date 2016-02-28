@@ -74,9 +74,9 @@ export class CollectComponentMetadataWalker extends BaseCollectMetadataWalker<Di
         } else {
           let extracter = classMetadataValueExtracter[name];
           if (extracter && PROP_MAP[name]) {
-            this.currentDirective.metadata[PROP_MAP[name]] = extracter(prop);
+            this.currentDirective.metadata[PROP_MAP[name]] = extracter(prop, this.file.fileName);
           } else {
-            console.log(`Cannot extract value for ${name}`);
+            console.log(`Cannot extract value for ${name} in ${node.name.text}`);
           }
         }
       });
