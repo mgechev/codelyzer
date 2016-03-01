@@ -17,7 +17,9 @@ Below you can find a recommended configuration which is based on the [Angular 2 
   "host-parameter-decorator": true,
   "input-parameter-decorator": true,
   "output-parameter-decorator": true,
-  "attribute-parameter-decorator":true
+  "attribute-parameter-decorator":true,
+  "input-property-directive":true,
+  "output-property-directive":true
 }
 ```
 
@@ -33,8 +35,8 @@ Below you can find a recommended configuration which is based on the [Angular 2 
 - [x] Use `@Output` instead of `outputs` decorator property.
 - [x] Use `@HostListeners` and `@HostBindings` instead of `host` decorator property.
 - [ ] Do not use `nativeElement` injected with `ElementRef`.
-- [ ] Do not rename inputs.
-- [ ] Do not rename outputs.
+- [x] Do not rename inputs.
+- [x] Do not rename outputs.
 - [ ] Externalize template above *n* lines of code.
 - [x] Do not use the `@Attribute` decorator.
 - [ ] Do not use `forwardRef`.

@@ -10,7 +10,7 @@ describe('attribute-parameter-decorator', () => {
                     this.label = label;
                 }
             }`;
-            assertFailure('decorator-attribute', source, {
+            assertFailure('attribute-parameter-decorator', source, {
                 message: 'In the constructor of class "ButtonComponent", the parameter "label" uses the @Attribute decorator, ' +
                 'which is considered as a bad practice. Please, consider construction of type "@Input() label: string"',
                 startPosition: {
