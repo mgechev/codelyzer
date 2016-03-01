@@ -8,7 +8,7 @@ describe('output-property-directive', () => {
                 @Output('changeEvent') change = new EventEmitter<any>();
             }`;
             assertFailure('output-property-directive', source, {
-                message: 'In the class "ButtonComponent", the directive output property "change" cannot be renamed.'+
+                message: 'In the class "ButtonComponent", the directive output property "change" should not be renamed.'+
                 'Please, consider the following use "@Output() change = new EventEmitter();"',
                 startPosition: {
                     line: 2,

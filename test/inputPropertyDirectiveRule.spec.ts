@@ -8,7 +8,7 @@ describe('input-property-directive', () => {
                 @Input('labelAttribute') label: string;
             }`;
             assertFailure('input-property-directive', source, {
-                message: 'In the class "ButtonComponent", the directive input property "label" cannot be renamed.' +
+                message: 'In the class "ButtonComponent", the directive input property "label" should not be renamed.' +
                 'Please, consider the following use "@Input() label: string"',
                 startPosition: {
                     line: 2,
