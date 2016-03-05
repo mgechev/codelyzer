@@ -1,5 +1,5 @@
-import {PipeInfo} from '../src/walkers/collect_pipe_metadata_walker';
-import {DirectiveInfo} from '../src/walkers/collect_component_metadata_walker';
+import {PipeInfo} from '../src/walkers/ts/collect_pipe_metadata_walker';
+import {DirectiveInfo} from '../src/walkers/ts/collect_component_metadata_walker';
 import {ComponentMetadataCollector} from '../src/component_metadata_collector';
 import {ComponentMetadata} from 'angular2/core';
 import * as chai from 'chai';

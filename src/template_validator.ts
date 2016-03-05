@@ -11,10 +11,11 @@ import {
 } from 'angular2/common';
 import {CompileDirectiveMetadata, CompilePipeMetadata, CompileTypeMetadata} from 'angular2/src/compiler/directive_metadata';
 import {TemplateParser} from 'angular2/src/compiler/template_parser';
-import {COMPILER_PROVIDERS} from 'angular2/src/compiler/compiler';
+import {COMPILER_PROVIDERS, TemplateAst, templateVisitAll} from 'angular2/src/compiler/compiler';
 import {Parse5DomAdapter} from 'angular2/src/platform/server/parse5_adapter'
-import {DirectiveInfo} from './walkers/collect_component_metadata_walker';
+import {DirectiveInfo} from './walkers/ts/collect_component_metadata_walker';
 import {ComponentMetadataCollector} from './component_metadata_collector';
+import {TemplateValidationWalker} from './walkers/template/template_validation_walker';
 
 Parse5DomAdapter.makeCurrent();
 
@@ -37,7 +38,8 @@ export class TemplateValidator {
       let directives: any[] = (meta.directives || []).map(this._getDirective.bind(this)).concat(_directives);
       let pipes: any[] = (meta.pipes || []).map(this._getPipe.bind(this)).concat(_pipes);
       try {
-        this.parser.parse(meta.template, directives, pipes, '');
+        let ast = this.parser.parse(meta.template, directives, pipes, '');
+        this._validateDirectives(ast);
       } catch (e) {
         return e;
       }
@@ -45,6 +47,9 @@ export class TemplateValidator {
     } else {
       return null;
     }
+  }
+  private _validateDirectives(ast: TemplateAst[]) {
+    templateVisitAll(new TemplateValidationWalker(), ast);
   }
   private _getDirective(dir) {
     let m = dir.metadata;

@@ -1,4 +1,4 @@
-import {CollectComponentMetadataWalker} from '../../src/walkers/collect_component_metadata_walker';
+import {CollectComponentMetadataWalker} from '../../src/walkers/ts/collect_component_metadata_walker';
 import {ComponentMetadata} from 'angular2/core';
 import * as chai from 'chai';
 import * as tsc from 'typescript';

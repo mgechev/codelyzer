@@ -4,7 +4,7 @@ import * as ts from 'typescript';
 import * as fs from 'fs';
 
 import {FileCache} from './util/file_cache';
-import {CollectComponentMetadataWalker} from './walkers/collect_component_metadata_walker';
+import {CollectComponentMetadataWalker} from './walkers/ts/collect_component_metadata_walker';
 import {RecursiveReferenceExtractorStrategy} from './reference_extractors/recursive_reference_extractor_strategy';
 
 export class ComponentMetadataCollector {
