@@ -17,9 +17,9 @@ Below you can find a recommended configuration which is based on the [Angular 2 
   "host-parameter-decorator": true,
   "input-parameter-decorator": true,
   "output-parameter-decorator": true,
-  "attribute-parameter-decorator":true,
-  "input-property-directive":true,
-  "output-property-directive":true
+  "attribute-parameter-decorator": true,
+  "input-property-directive": true,
+  "output-property-directive": true
 }
 ```
 
