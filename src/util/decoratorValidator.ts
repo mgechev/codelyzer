@@ -8,7 +8,7 @@ export const decoratorValidator = (condition)=> {
                 let name = expr.text;
                 let args = baseExpr.arguments || [];
                 let arg = args[0];
-                if (condition(name, arg)) {
+                if (condition(name, arg,element)) {
                     isValid = false;
                 }
             })
