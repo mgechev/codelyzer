@@ -21,11 +21,20 @@ describe('output-property-directive', () => {
             });
         });
     });
-    describe('valid directive input property', () => {
+    describe('valid directive output property', () => {
         it('should succeed, when a directive output property is properly used', () => {
             let source = `
             class ButtonComponent {
                @Output() change = new EventEmitter<any>();
+            }`;
+            assertSuccess('output-property-directive', source);
+        });
+    });
+    describe('valid directive output property', () => {
+        it('should succeed, when a directive output property rename is the same as the property name', () => {
+            let source = `
+            class ButtonComponent {
+               @Output('change') change = new EventEmitter<any>();
             }`;
             assertSuccess('output-property-directive', source);
         });

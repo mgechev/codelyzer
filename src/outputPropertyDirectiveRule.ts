@@ -6,8 +6,9 @@ import {decoratorValidator} from './util/decoratorValidator';
 const FAILURE_STRING = 'In the class "%s", the directive output property "%s" should not be renamed.' +
     'Please, consider the following use "@Output() %s = new EventEmitter();"';
 
-const renameOutputCondition = (name, arg)=> {
-    return (name === 'Output' && arg);
+const renameOutputCondition = (name, arg, element)=> {
+    let memberName = element.name.text;
+    return (name === 'Output' && arg && memberName !== arg.text);
 };
 
 export class Rule extends ClassParameterRule {

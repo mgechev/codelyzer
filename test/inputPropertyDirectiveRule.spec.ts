@@ -30,4 +30,13 @@ describe('input-property-directive', () => {
             assertSuccess('input-property-directive', source);
         });
     });
+    describe('valid directive input property', () => {
+        it('should succeed, when a directive input property rename is the same as the name of the property', () => {
+            let source = `
+            class ButtonComponent {
+              @Input('label') label: string;
+            }`;
+            assertSuccess('input-property-directive', source);
+        });
+    });
 });
