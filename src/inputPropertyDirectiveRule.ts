@@ -17,4 +17,4 @@ export class Rule extends ClassParameterRule {
         super(ruleName, value, disabledIntervals, decoratorValidator(renameInputCondition), FAILURE_STRING);
     }
 
-}j
+}
