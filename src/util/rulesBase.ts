@@ -21,11 +21,11 @@ export class RuleBase extends Lint.Rules.AbstractRule {
         return this.applyWithWalker(walker);
     }
 
-    public validate(parameter:ts.ParameterDeclaration) {
+    public validate(parameter:ts.ParameterDeclaration):boolean {
         return this.validator(parameter);
     }
 
-    public getFailureString(failureConfig:string[]) {
+    public getFailureString(failureConfig:string[]):string {
         failureConfig.unshift(this.errorMessage);
         return sprintf.apply(this, failureConfig);
     }
