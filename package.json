@@ -29,6 +29,7 @@
   "homepage": "https://github.com/mgechev/ng2lint#readme",
   "devDependencies": {
     "chai": "^3.5.0",
+    "chai-spies": "^0.7.1",
     "mocha": "^2.4.5",
     "ts-node": "^0.5.5",
     "typings": "^0.6.8"
