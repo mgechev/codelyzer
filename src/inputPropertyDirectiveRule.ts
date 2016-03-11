@@ -1,23 +1,35 @@
 import * as Lint from 'tslint/lib/lint';
 import * as ts from 'typescript';
-import {decoratorValidator} from './util/decoratorValidator';
-import {RuleBase} from './util/rulesBase';
-import {ClassMetadataWalker} from "./classMetadataWalker";
+import {sprintf} from 'sprintf-js';
+import {Ng2Walker} from "./util/ng2Walker";
 
-const FAILURE_STRING = 'In the class "%s", the directive input property "%s" should not be renamed.' +
-    'Please, consider the following use "@Input() %s: string"';
+export class Rule extends Lint.Rules.AbstractRule {
 
-const renameInputCondition = (name, arg, element)=> {
-    let memberName = element.name.text;
-    return (name === 'Input' && arg && memberName != arg.text);
-};
-
-export class Rule extends RuleBase {
-
-    constructor(ruleName:string, value:any, disabledIntervals:Lint.IDisabledInterval[]) {
-        super(ruleName, value, disabledIntervals,
-            decoratorValidator(renameInputCondition),
-            FAILURE_STRING, ClassMetadataWalker);
+    public apply(sourceFile:ts.SourceFile):Lint.RuleFailure[] {
+        return this.applyWithWalker(
+            new InputMetadataWalker(sourceFile,
+                this.getOptions()));
     }
 
+    static FAILURE_STRING:string = 'In the class "%s", the directive input property "%s" should not be renamed.' +
+        'Please, consider the following use "@Input() %s: string"';
+}
+
+
+export class InputMetadataWalker extends Ng2Walker {
+
+    visitNg2Input(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]){
+        let className = (<any>property).parent.name.text;
+        let memberName = (<any>property.name).text;
+        let name = (<any>input.expression).expression.text;
+        if (name === 'Input' && args.length!=0 && memberName != args[0]) {
+            let failureConfig:string[] = [className, memberName, memberName];
+            failureConfig.unshift(Rule.FAILURE_STRING);
+            this.addFailure(
+                this.createFailure(
+                    property.getStart(),
+                    property.getWidth(),
+                    sprintf.apply(this, failureConfig)));
+        }
+    }
 }
