@@ -15,11 +15,11 @@ describe('attribute-parameter-decorator', () => {
                 'which is considered as a bad practice. Please, consider construction of type "@Input() label: string"',
                 startPosition: {
                     line: 3,
-                    character: 35
+                    character: 28
                 },
                 endPosition: {
                     line: 3,
-                    character: 60
+                    character: 53
                 }
             });
         });
