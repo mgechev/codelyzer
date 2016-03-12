@@ -11,18 +11,18 @@ export class Rule extends Lint.Rules.AbstractRule {
                 this.getOptions()));
     }
 
-    static FAILURE_STRING:string = 'In the class "%s", the directive input property "%s" should not be renamed.' +
+    static FAILURE_STRING:string = 'In the class "%s", the directive ' +
+        'input property "%s" should not be renamed.' +
         'Please, consider the following use "@Input() %s: string"';
 }
 
 
 export class InputMetadataWalker extends Ng2Walker {
 
-    visitNg2Input(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]){
+    visitNg2Input(property:ts.PropertyDeclaration, input:ts.Decorator, args:string[]) {
         let className = (<any>property).parent.name.text;
         let memberName = (<any>property.name).text;
-        let name = (<any>input.expression).expression.text;
-        if (name === 'Input' && args.length!=0 && memberName != args[0]) {
+        if (args.length != 0 && memberName != args[0]) {
             let failureConfig:string[] = [className, memberName, memberName];
             failureConfig.unshift(Rule.FAILURE_STRING);
             this.addFailure(

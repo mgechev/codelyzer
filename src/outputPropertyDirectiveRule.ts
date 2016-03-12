@@ -11,18 +11,18 @@ export class Rule extends Lint.Rules.AbstractRule {
                 this.getOptions()));
     }
 
-    static FAILURE_STRING:string = 'In the class "%s", the directive output property "%s" should not be renamed.' +
+    static FAILURE_STRING:string = 'In the class "%s", the directive output ' +
+        'property "%s" should not be renamed.' +
         'Please, consider the following use "@Output() %s = new EventEmitter();"';
 }
 
 
 export class OutputMetadataWalker extends Ng2Walker {
 
-    visitNg2Output(property: ts.PropertyDeclaration, output: ts.Decorator, args: string[]){
+    visitNg2Output(property:ts.PropertyDeclaration, output:ts.Decorator, args:string[]) {
         let className = (<any>property).parent.name.text;
         let memberName = (<any>property.name).text;
-        let name = (<any>output.expression).expression.text;
-        if (name === 'Output' && args.length!=0 && memberName != args[0]) {
+        if (args.length != 0 && memberName != args[0]) {
             let failureConfig:string[] = [className, memberName, memberName];
             failureConfig.unshift(Rule.FAILURE_STRING);
             this.addFailure(

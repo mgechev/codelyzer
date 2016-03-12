@@ -6,7 +6,7 @@ describe('attribute-parameter-decorator', () => {
             let source = `
             class ButtonComponent {
                 label: string;
-                constructor(public @Attribute('label') label) {
+                constructor(@Attribute('label') label) {
                     this.label = label;
                 }
             }`;
