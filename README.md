@@ -19,7 +19,8 @@ Below you can find a recommended configuration which is based on the [Angular 2 
   "output-parameter-decorator": true,
   "attribute-parameter-decorator": true,
   "input-property-directive": true,
-  "output-property-directive": true
+  "output-property-directive": true,
+  "call-forward-ref":true
 }
 ```
 
@@ -39,7 +40,7 @@ Below you can find a recommended configuration which is based on the [Angular 2 
 - [x] Do not rename outputs.
 - [ ] Externalize template above *n* lines of code.
 - [x] Do not use the `@Attribute` decorator.
-- [ ] Do not use `forwardRef`.
+- [x] Do not use `forwardRef`.
 - [ ] Rise a warning for impure pipes.
 - [ ] Do not declare global providers.
 - [ ] Follow convention for naming the routes.
