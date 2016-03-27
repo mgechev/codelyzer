@@ -29,8 +29,6 @@ describe('output-property-directive', () => {
             }`;
             assertSuccess('output-property-directive', source);
         });
-    });
-    describe('valid directive output property', () => {
         it('should succeed, when a directive output property rename is the same as the property name', () => {
             let source = `
             class ButtonComponent {
