@@ -1,4 +1,4 @@
-# ng2lint
+# Codelyzer
 
 A set of tslint rules for static code analysis of Angular 2 TypeScript projects.
 
