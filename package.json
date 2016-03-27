@@ -1,5 +1,5 @@
 {
-  "name": "ng2lint",
+  "name": "codelyzer",
   "version": "0.0.10",
   "description": "A set of linters for Angular 2 applications, following https://github.com/mgechev/angular2-style-guide.",
   "main": "index.js",
@@ -21,7 +21,10 @@
     "lint",
     "tslint"
   ],
-  "author": "Minko Gechev <mgechev@gmail.com>",
+  "author": {
+    "name": "Minko Gechev",
+     "email": "mgechev@gmail.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mgechev/ng2lint/issues"
