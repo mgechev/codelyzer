@@ -1,10 +1,11 @@
 {
   "name": "codelyzer",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "A set of linters for Angular 2 applications, following https://github.com/mgechev/angular2-style-guide.",
   "main": "index.js",
   "scripts": {
     "test": "mocha --compilers ts:ts-node/register",
+    "postinstal": "npm run tsc",
     "tsc": "tsc",
     "tscw": "tsc -w"
   },
@@ -38,8 +39,8 @@
     "typings": "^0.6.8"
   },
   "peerDependencies": {
-    "tslint": "^3.5.0",
-    "typescript": "~1.8.0"
+    "tslint": "^3.6.0",
+    "typescript": "^1.8.7"
   },
   "dependencies": {
     "sprintf-js": "^1.0.3"
