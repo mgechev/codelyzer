@@ -2,6 +2,8 @@ import * as Lint from 'tslint/lib/lint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
 
+import SyntaxKind = require('./util/syntaxKind');
+
 export interface IUseParameterDecoratorConfig {
   propertyName: string;
   decoratorName: string | string[];
@@ -65,7 +67,7 @@ class DirectiveMetadataWalker extends Lint.RuleWalker {
   }
 
   private validateProperty(className: string, decoratorName: string, arg: ts.ObjectLiteralExpression) {
-    if (arg.kind === ts.SyntaxKind.ObjectLiteralExpression) {
+    if (arg.kind === SyntaxKind.current().ObjectLiteralExpression) {
       (<ts.ObjectLiteralExpression>arg).properties.filter(prop => (<any>prop.name).text === this.config.propertyName)
       .forEach(prop => {
         let p = <any>prop;
