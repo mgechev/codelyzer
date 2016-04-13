@@ -2,6 +2,8 @@ import * as ts from 'typescript';
 import * as Lint from 'tslint/lib/lint';
 import {sprintf} from 'sprintf-js';
 
+import SyntaxKind = require('./util/syntaxKind');
+
 export enum COMPONENT_TYPE {
   COMPONENT,
   DIRECTIVE,
@@ -67,11 +69,11 @@ class SelectorNameValidatorWalker extends Lint.RuleWalker {
   }
 
   private validateSelector(className: string, arg: ts.Node) {
-    if (arg.kind === ts.SyntaxKind.ObjectLiteralExpression) {
+    if (arg.kind === SyntaxKind.current().ObjectLiteralExpression) {
       (<ts.ObjectLiteralExpression>arg).properties.filter(prop => (<any>prop.name).text === 'selector')
       .forEach(prop => {
         let p = <any>prop;
-        if (p.initializer.kind === ts.SyntaxKind.StringLiteral && !this.rule.validate(p.initializer.text)) {
+        if (p.initializer.kind === SyntaxKind.current().StringLiteral && !this.rule.validate(p.initializer.text)) {
           let error = this.rule.getFailureString({ selector: p.initializer.text, className });
           this.addFailure(this.createFailure(p.initializer.getStart(), p.initializer.getWidth(), error));
         }
