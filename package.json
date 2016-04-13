@@ -4,6 +4,7 @@
   "description": "A set of linters for Angular 2 applications, following https://github.com/mgechev/angular2-style-guide.",
   "main": "index.js",
   "scripts": {
+    "prepublish": "tsc && npm t",
     "test": "mocha --compilers ts:ts-node/register",
     "tsc": "tsc",
     "tscw": "tsc -w"
