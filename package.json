@@ -38,10 +38,6 @@
     "ts-node": "^0.5.5",
     "typings": "^0.6.8"
   },
-  "peerDependencies": {
-    "tslint": "^3.6.0",
-    "typescript": "^1.8.7"
-  },
   "dependencies": {
     "sprintf-js": "^1.0.3"
   }
