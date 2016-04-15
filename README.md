@@ -21,7 +21,8 @@ Below you can find a recommended configuration which is based on the [Angular 2 
   "input-property-directive": true,
   "output-property-directive": true,
   "call-forward-ref":true,
-  "life-cycle-hook":true
+  "life-cycle-hook":true,
+  "pipe-transform-interface":true
 }
 ```
 
@@ -56,7 +57,7 @@ Below you can find a recommended configuration which is based on the [Angular 2 
 - [ ] Rise warning on complex logic inside of the templates.
 - [ ] Do not manipulate elements referenced within the template.
 - [x] Implement life-cycle hooks explicitly.
-- [ ] Implement Pipe transform interface for pipes.
+- [x] Implement Pipe transform interface for pipes.
 - [ ] Proper naming for pipes (kebab-case, optionally prefixed).
 
 ## License

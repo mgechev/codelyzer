@@ -55,6 +55,7 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
                     node.getWidth(),
                     sprintf.apply(this, this.formatFailure(className, missing))));
         }
+        super.visitClassDeclaration(node);
     }
 
 
