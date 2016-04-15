@@ -20,7 +20,8 @@ Below you can find a recommended configuration which is based on the [Angular 2 
   "attribute-parameter-decorator": true,
   "input-property-directive": true,
   "output-property-directive": true,
-  "call-forward-ref":true
+  "call-forward-ref":true,
+  "life-cycle-hook":true
 }
 ```
 
@@ -54,7 +55,7 @@ Below you can find a recommended configuration which is based on the [Angular 2 
 - [ ] Locate tests in the same directory (rise optional warning when no test file is found).
 - [ ] Rise warning on complex logic inside of the templates.
 - [ ] Do not manipulate elements referenced within the template.
-- [ ] Implement life-cycle hooks explicitly.
+- [x] Implement life-cycle hooks explicitly.
 - [ ] Implement Pipe transform interface for pipes.
 - [ ] Proper naming for pipes (kebab-case, optionally prefixed).
 
