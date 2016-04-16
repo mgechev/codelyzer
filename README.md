@@ -22,7 +22,8 @@ Below you can find a recommended configuration which is based on the [Angular 2 
   "output-property-directive": true,
   "call-forward-ref":true,
   "life-cycle-hook":true,
-  "pipe-transform-interface":true
+  "pipe-transform-interface":true,
+  "pipe-naming": [true, "kebab-case","sg"]
 }
 ```
 
@@ -58,7 +59,7 @@ Below you can find a recommended configuration which is based on the [Angular 2 
 - [ ] Do not manipulate elements referenced within the template.
 - [x] Implement life-cycle hooks explicitly.
 - [x] Implement Pipe transform interface for pipes.
-- [ ] Proper naming for pipes (kebab-case, optionally prefixed).
+- [x] Proper naming for pipes (kebab-case, optionally prefixed).
 
 ## License
 
