@@ -23,7 +23,8 @@ Below you can find a recommended configuration which is based on the [Angular 2 
   "call-forward-ref":true,
   "life-cycle-hook":true,
   "pipe-transform-interface":true,
-  "pipe-naming": [true, "kebab-case","sg"]
+  "pipe-naming": [true, "kebab-case","sg"],
+  "no-inject-decorator":true
 }
 ```
 
@@ -47,7 +48,7 @@ Below you can find a recommended configuration which is based on the [Angular 2 
 - [ ] Rise a warning for impure pipes.
 - [ ] Do not declare global providers.
 - [ ] Follow convention for naming the routes.
-- [ ] Use `@Injectable` instead of `@Inject`.
+- [x] Use `@Injectable` instead of `@Inject`.
 - [ ] Single export per module, except facade modules.
 - [ ] Proper naming of modules (kebab-case followed by module type followed by extension for regular modules, module name plus extension name for facades).
 - [ ] Verify if used directive is declared in the current component or any parent component.
