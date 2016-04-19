@@ -2,6 +2,23 @@
 
 A set of tslint rules for static code analysis of Angular 2 TypeScript projects.
 
+## Install
+
+`npm install --save-dev codelyzer`
+
+Then hop to your `tslint.json` and add rulesDirectory which points to codelyzer, like this:
+```json
+{
+  "rulesDirectory": [
+    "node_modules/codelyzer/dist/src"
+  ],
+  "rules":{
+  }
+}
+```
+
+Now you can apply codelyzer rules to your tslint config. Enjoy!
+
 ## Recommended configuration
 
 Below you can find a recommended configuration which is based on the [Angular 2 Style Guide](https://github.com/mgechev/angular2-style-guide).
