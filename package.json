@@ -1,10 +1,10 @@
 {
   "name": "codelyzer",
-  "version": "0.0.13",
+  "version": "0.0.15",
   "description": "A set of linters for Angular 2 applications, following https://github.com/mgechev/angular2-style-guide.",
   "main": "index.js",
   "scripts": {
-    "release": "rimraf dist && tsc && npm t && cp package.json dist/src",
+    "release": "rimraf dist && tsc && npm t && cp package.json README.md dist/src",
     "test": "mocha --compilers ts:ts-node/register",
     "tsc": "tsc",
     "tscw": "tsc -w"
