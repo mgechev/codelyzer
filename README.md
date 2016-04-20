@@ -10,7 +10,7 @@ Then hop to your `tslint.json` and add rulesDirectory which points to codelyzer,
 ```json
 {
   "rulesDirectory": [
-    "node_modules/codelyzer/dist/src"
+    "node_modules/codelyzer"
   ],
   "rules":{
   }
