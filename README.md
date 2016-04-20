@@ -37,9 +37,9 @@ Below you can find a recommended configuration which is based on the [Angular 2 
   "attribute-parameter-decorator": true,
   "input-property-directive": true,
   "output-property-directive": true,
-  "call-forward-ref":true,
-  "life-cycle-hook":true,
-  "pipe-transform-interface":true,
+  "call-forward-ref" :true,
+  "life-cycle-hook": true,
+  "pipe-transform-interface": true,
   "pipe-naming": [true, "kebab-case","sg"]
 }
 ```

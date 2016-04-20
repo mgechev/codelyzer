@@ -4,7 +4,7 @@
   "description": "A set of linters for Angular 2 applications, following https://github.com/mgechev/angular2-style-guide.",
   "main": "index.js",
   "scripts": {
-    "prepublish": "tsc && npm t",
+    "release": "rimraf dist && tsc && npm t && cp package.json dist/src",
     "test": "mocha --compilers ts:ts-node/register",
     "tsc": "tsc",
     "tscw": "tsc -w"
@@ -24,7 +24,7 @@
   ],
   "author": {
     "name": "Minko Gechev",
-     "email": "mgechev@gmail.com"
+    "email": "mgechev@gmail.com"
   },
   "license": "MIT",
   "bugs": {
@@ -35,8 +35,9 @@
     "chai": "^3.5.0",
     "chai-spies": "^0.7.1",
     "mocha": "^2.4.5",
+    "rimraf": "^2.5.2",
     "ts-node": "^0.5.5",
-    "typings": "^0.6.8"
+    "typings": "^0.8.1"
   },
   "dependencies": {
     "sprintf-js": "^1.0.3"
