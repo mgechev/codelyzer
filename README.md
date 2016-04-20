@@ -31,18 +31,18 @@ Below you can find a recommended configuration which is based on the [Angular 2 
   "component-selector-type": [true, "element"],
   "directive-selector-prefix": [true, "sg"],
   "component-selector-prefix": [true, "sg"],
-  "host-parameter-decorator": true,
-  "input-parameter-decorator": true,
-  "output-parameter-decorator": true,
-  "attribute-parameter-decorator": true,
-  "input-property-directive": true,
-  "output-property-directive": true,
-  "call-forward-ref" :true,
-  "life-cycle-hook": true,
-  "pipe-transform-interface": true,
-  "pipe-naming": [true, "kebab-case","sg"],
-  "component-class-suffix":true,
-  "directive-class-suffix":true
+  "use-host-parameter-decorator": true,
+  "use-input-parameter-decorator": true,
+  "use-output-parameter-decorator": true,
+  "no-attribute-parameter-decorator": true,
+  "no-input-rename": true,
+  "no-output-rename": true,
+  "no-forward-ref" :true,
+  "use-life-cycle-interface": true,
+  "use-pipe-transform-interface": true,
+  "pipe-naming": [true, "camelCase", "sg"],
+  "component-class-suffix": true,
+  "directive-class-suffix": true
 }
 ```
 
