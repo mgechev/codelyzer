@@ -40,7 +40,8 @@ Below you can find a recommended configuration which is based on the [Angular 2 
   "call-forward-ref" :true,
   "life-cycle-hook": true,
   "pipe-transform-interface": true,
-  "pipe-naming": [true, "kebab-case","sg"]
+  "pipe-naming": [true, "kebab-case","sg"],
+  "no-missed-decorator":true
 }
 ```
 
@@ -77,6 +78,7 @@ Below you can find a recommended configuration which is based on the [Angular 2 
 - [x] Implement life-cycle hooks explicitly.
 - [x] Implement Pipe transform interface for pipes.
 - [x] Proper naming for pipes (kebab-case, optionally prefixed).
+- [x] Do not miss one of the decorators @Component, @Directive, @Pipe or @Injectable in every class declaration.
 
 ## License
 
