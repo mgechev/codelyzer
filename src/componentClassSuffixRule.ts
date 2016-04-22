@@ -2,6 +2,7 @@ import * as Lint from 'tslint/lib/lint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
 import SyntaxKind = require('./util/syntaxKind');
+import {Ng2Walker} from "./util/ng2Walker";
 
 export class Rule extends Lint.Rules.AbstractRule {
 
@@ -18,25 +19,17 @@ export class Rule extends Lint.Rules.AbstractRule {
     }
 }
 
-export class ClassMetadataWalker extends Lint.RuleWalker {
+export class ClassMetadataWalker extends Ng2Walker {
 
-    visitClassDeclaration(node:ts.ClassDeclaration) {
-        let decorators = node.decorators;
-        if (decorators) {
-            let components:Array<string> = decorators.map(d=>(<any>d.expression).expression.text).filter(t=>t === 'Component');
-            if (components.length !== 0) {
-                let name = node.name;
-                let className:string = name.text;
-                if (!Rule.validate(className)) {
-                    this.addFailure(
-                        this.createFailure(
-                            name.getStart(),
-                            name.getWidth(),
-                            sprintf.apply(this, [Rule.FAILURE, className])));
-                }
-            }
+    visitNg2Component(controller:ts.ClassDeclaration, decorator:ts.Decorator) {
+        let name = controller.name;
+        let className:string = name.text;
+        if (!Rule.validate(className)) {
+            this.addFailure(
+                this.createFailure(
+                    name.getStart(),
+                    name.getWidth(),
+                    sprintf.apply(this, [Rule.FAILURE, className])));
         }
-        super.visitClassDeclaration(node);
     }
-
 }
