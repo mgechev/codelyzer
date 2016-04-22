@@ -40,7 +40,9 @@ Below you can find a recommended configuration which is based on the [Angular 2 
   "call-forward-ref" :true,
   "life-cycle-hook": true,
   "pipe-transform-interface": true,
-  "pipe-naming": [true, "kebab-case","sg"]
+  "pipe-naming": [true, "kebab-case","sg"],
+  "component-class-suffix":true,
+  "directive-class-suffix":true
 }
 ```
 
@@ -69,7 +71,7 @@ Below you can find a recommended configuration which is based on the [Angular 2 
 - [ ] Proper naming of modules (kebab-case followed by module type followed by extension for regular modules, module name plus extension name for facades).
 - [ ] Verify if used directive is declared in the current component or any parent component.
 - [ ] Verify that property or method used in the template exists in the current context.
-- [ ] Proper naming of directives and components (name plus `(Directive|Component)` suffix).
+- [x] Proper naming of directives and components (name plus `(Directive|Component)` suffix).
 - [ ] Locate component templates in the same directory.
 - [ ] Locate tests in the same directory (rise optional warning when no test file is found).
 - [ ] Rise warning on complex logic inside of the templates.
