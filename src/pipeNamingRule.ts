@@ -14,8 +14,8 @@ export class Rule extends Lint.Rules.AbstractRule {
 
     constructor(ruleName:string, value:any, disabledIntervals:Lint.IDisabledInterval[]) {
         super(ruleName, value, disabledIntervals);
-        if (value[1] === 'kebab-case') {
-            this.validator = SelectorValidator.kebabCase;
+        if (value[1] === 'camelCase') {
+            this.validator = SelectorValidator.camelCase;
         }
         if (value[2]) {
             this.hasPrefix = true;
@@ -38,10 +38,10 @@ export class Rule extends Lint.Rules.AbstractRule {
     }
 
     static  FAILURE_WITHOUT_PREFIX:string = 'The name of the Pipe decorator of class %s should' +
-        ' be named kebab-case, however its value is "%s".';
+        ' be named camelCase, however its value is "%s".';
 
     static  FAILURE_WITH_PREFIX:string = 'The name of the Pipe decorator of class %s should' +
-        ' be named kebab-case with prefix %s, however its value is "%s".';
+        ' be named camelCase with prefix %s, however its value is "%s".';
 }
 
 export class ClassMetadataWalker extends Lint.RuleWalker {
