@@ -4,17 +4,17 @@ import {sprintf} from 'sprintf-js';
 
 import SyntaxKind = require('./util/syntaxKind');
 
-export interface IUseParameterDecoratorConfig {
+export interface IUsePropertyDecoratorConfig {
   propertyName: string;
   decoratorName: string | string[];
   errorMessage: string;
 }
 
-export class UseParameterDecorator extends Lint.Rules.AbstractRule {
+export class UsePropertyDecorator extends Lint.Rules.AbstractRule {
   private static FAILURE_STRING = 'In the "@%s" class decorator of the class "%s"' +
   ' you are using the "%s" property, this is considered bad practice. Use %s property decorator instead.';
 
-  public static formatFailureString(config: IUseParameterDecoratorConfig, decoratorName: string, className: string) {
+  public static formatFailureString(config: IUsePropertyDecoratorConfig, decoratorName: string, className: string) {
     let decorators = config.decoratorName;
     if (decorators instanceof Array) {
       decorators = (<string[]>decorators).map(d => `"@${d}"`).join(', ');
@@ -24,9 +24,9 @@ export class UseParameterDecorator extends Lint.Rules.AbstractRule {
     return sprintf(config.errorMessage, decoratorName, className, config.propertyName, decorators);
   }
 
-  constructor(private config: IUseParameterDecoratorConfig, ruleName: string, value: any, disabledIntervals: Lint.IDisabledInterval[]) {
+  constructor(private config: IUsePropertyDecoratorConfig, ruleName: string, value: any, disabledIntervals: Lint.IDisabledInterval[]) {
     super(ruleName, value, disabledIntervals);
-    config.errorMessage = config.errorMessage || UseParameterDecorator.FAILURE_STRING;
+    config.errorMessage = config.errorMessage || UsePropertyDecorator.FAILURE_STRING;
   }
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
@@ -44,7 +44,7 @@ class DirectiveMetadataWalker extends Lint.RuleWalker {
   private typeChecker : ts.TypeChecker;
 
   constructor(sourceFile: ts.SourceFile, options: Lint.IOptions,
-    languageService : ts.LanguageService, private config: IUseParameterDecoratorConfig) {
+    languageService : ts.LanguageService, private config: IUsePropertyDecoratorConfig) {
       super(sourceFile, options);
       this.languageService = languageService;
       this.typeChecker = languageService.getProgram().getTypeChecker();
@@ -75,7 +75,7 @@ class DirectiveMetadataWalker extends Lint.RuleWalker {
           this.createFailure(
             p.getStart(),
             p.getWidth(),
-            UseParameterDecorator.formatFailureString(this.config, decoratorName, className)));
+            UsePropertyDecorator.formatFailureString(this.config, decoratorName, className)));
       });
     }
   }

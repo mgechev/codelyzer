@@ -1,8 +1,8 @@
 import * as Lint from 'tslint/lib/lint';
 
-import {UseParameterDecorator} from './parameterDecoratorBase';
+import {UsePropertyDecorator} from './propertyDecoratorBase';
 
-export class Rule extends UseParameterDecorator {
+export class Rule extends UsePropertyDecorator {
   constructor(ruleName: string, value: any, disabledIntervals: Lint.IDisabledInterval[]) {
     super({
       decoratorName: 'Output',
