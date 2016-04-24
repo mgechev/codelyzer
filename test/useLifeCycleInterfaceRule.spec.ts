@@ -1,6 +1,6 @@
 import {assertFailure, assertSuccess} from './testHelper';
 
-describe('life-cycle-hook', () => {
+describe('use-life-cycle-interface', () => {
     describe('invalid declaration of life hook', () => {
         it(`should fail, when a life cycle hook is used without implementing it's interface`, () => {
             let source = `
@@ -8,7 +8,7 @@ describe('life-cycle-hook', () => {
                 ngOnInit(){
                 }
             }`;
-            assertFailure('life-cycle-hook', source, {
+            assertFailure('use-life-cycle-interface', source, {
                 message: 'In class App the method ngOnInit is a life cycle hook and should implement the OnInit interface',
                 startPosition: {
                     line: 1,
@@ -30,7 +30,7 @@ describe('life-cycle-hook', () => {
                 ngOnDestroy(){
                 }
             }`;
-            assertFailure('life-cycle-hook', source, {
+            assertFailure('use-life-cycle-interface', source, {
                 message: 'In class App the methods - ngOnInit, ngOnDestroy are life cycle hooks and ' +
                 'should implement the interfaces: OnInit, OnDestroy',
                 startPosition: {
@@ -53,7 +53,7 @@ describe('life-cycle-hook', () => {
                 ngOnDestroy(){
                 }
             }`;
-            assertFailure('life-cycle-hook', source, {
+            assertFailure('use-life-cycle-interface', source, {
                 message: 'In class App the method ngOnDestroy is a life cycle hook and should implement the OnDestroy interface',
                 startPosition: {
                     line: 1,
@@ -73,7 +73,7 @@ describe('life-cycle-hook', () => {
                 ngOnInit(){
                 }
             }`;
-            assertSuccess('life-cycle-hook', source);
+            assertSuccess('use-life-cycle-interface', source);
         });
     });
     describe('valid declaration of life hooks', () => {
@@ -91,14 +91,14 @@ describe('life-cycle-hook', () => {
                 ngOnSmth{
                 }
             }`;
-            assertSuccess('life-cycle-hook', source);
+            assertSuccess('use-life-cycle-interface', source);
         });
     });
     describe('valid use of class without interfaces and life cycle hooks', () => {
         it(`should succeed when life cycle hooks are not used`, () => {
             let source = `
             class App{}`;
-            assertSuccess('life-cycle-hook', source);
+            assertSuccess('use-life-cycle-interface', source);
         });
     });
 });

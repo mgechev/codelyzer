@@ -10,12 +10,8 @@ export class Rule extends Lint.Rules.AbstractRule {
                 this.getOptions()));
     }
 
-    static FAILURE_STRING:string = 'In the class "%s" you are calling forwardRef,' +
-        ' which is considered a bad practice ' +
-        'and indicates either a cyclic dependency or ' +
-        'inconsistency in the services declaration';
+    static FAILURE_STRING:string = 'Avoid using forwardRef in class "%s"';
 }
-
 
 export class ExpressionCallMetadataWalker extends Lint.RuleWalker {
 

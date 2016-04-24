@@ -1,6 +1,6 @@
 import {assertFailure, assertSuccess} from './testHelper';
 
-describe('output-parameter-decorator', () => {
+describe('use-output-parameter-decorator', () => {
   it('should fail when "outputs" is used in @Component', () => {
     let source = `
       @Component({
@@ -10,7 +10,7 @@ describe('output-parameter-decorator', () => {
       })
       class Bar {}
     `;
-    assertFailure('output-parameter-decorator', source, {
+    assertFailure('use-output-parameter-decorator', source, {
       message: 'In the "@Component" class decorator of the class "Bar" you are using the "outputs" property, this is considered bad practice. Use "@Output" property decorator instead.',
       startPosition: {
         line: 2,
@@ -29,7 +29,7 @@ describe('output-parameter-decorator', () => {
       })
       class Bar {}
     `;
-    assertSuccess('output-parameter-decorator', source);
+    assertSuccess('use-output-parameter-decorator', source);
   });
   it('should fail when "outputs" is used in @Directive', () => {
     let source = `
@@ -40,7 +40,7 @@ describe('output-parameter-decorator', () => {
       })
       class Baz {}
     `;
-    assertFailure('output-parameter-decorator', source, {
+    assertFailure('use-output-parameter-decorator', source, {
       message: 'In the "@Directive" class decorator of the class "Baz" you are using the "outputs" property, this is considered bad practice. Use "@Output" property decorator instead.',
       startPosition: {
         line: 2,
