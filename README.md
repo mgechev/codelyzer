@@ -33,6 +33,7 @@ Below you can find a recommended configuration which is based on the [Angular 2 
   "component-selector-prefix": [true, "sg"],
   "use-input-property-decorator": true,
   "use-output-property-decorator": true,
+  "use-host-property-decorator": true,
   "no-attribute-parameter-decorator": true,
   "no-input-rename": true,
   "no-output-rename": true,
@@ -56,12 +57,16 @@ Below you can find a recommended configuration which is based on the [Angular 2 
 - [x] Use `@Input` instead of `inputs` decorator property.
 - [x] Use `@Output` instead of `outputs` decorator property.
 - [x] Use `@HostListeners` and `@HostBindings` instead of `host` decorator property.
-- [ ] Do not use `nativeElement` injected with `ElementRef`.
-- [x] Do not rename inputs.
+- [x] Implement life-cycle hooks explicitly.
+- [x] Implement Pipe transform interface for pipes.
+- [x] Proper naming for pipes (kebab-case, optionally prefixed).
 - [x] Do not rename outputs.
-- [ ] Externalize template above *n* lines of code.
-- [x] Do not use the `@Attribute` decorator.
+- [x] Do not rename inputs.
 - [x] Do not use `forwardRef`.
+- [x] Do not use the `@Attribute` decorator.
+- [x] Proper naming of directives and components (name plus `(Directive|Component)` suffix).
+- [ ] Do not use `nativeElement` injected with `ElementRef`.
+- [ ] Externalize template above *n* lines of code.
 - [ ] Rise a warning for impure pipes.
 - [ ] Do not declare global providers.
 - [ ] Follow convention for naming the routes.
@@ -70,14 +75,10 @@ Below you can find a recommended configuration which is based on the [Angular 2 
 - [ ] Proper naming of modules (kebab-case followed by module type followed by extension for regular modules, module name plus extension name for facades).
 - [ ] Verify if used directive is declared in the current component or any parent component.
 - [ ] Verify that property or method used in the template exists in the current context.
-- [x] Proper naming of directives and components (name plus `(Directive|Component)` suffix).
 - [ ] Locate component templates in the same directory.
 - [ ] Locate tests in the same directory (rise optional warning when no test file is found).
 - [ ] Rise warning on complex logic inside of the templates.
 - [ ] Do not manipulate elements referenced within the template.
-- [x] Implement life-cycle hooks explicitly.
-- [x] Implement Pipe transform interface for pipes.
-- [x] Proper naming for pipes (kebab-case, optionally prefixed).
 
 ## License
 
