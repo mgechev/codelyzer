@@ -1,6 +1,6 @@
 import {assertFailure, assertSuccess} from './testHelper';
 
-describe('use-input-parameter-decorator', () => {
+describe('use-input-property-decorator', () => {
   it('should fail when "inputs" is used in @Component', () => {
     let source = `
       @Component({
@@ -10,7 +10,7 @@ describe('use-input-parameter-decorator', () => {
       })
       class Bar {}
     `;
-    assertFailure('use-input-parameter-decorator', source, {
+    assertFailure('use-input-property-decorator', source, {
       message: 'In the "@Component" class decorator of the class "Bar" you are using the "inputs" property, this is considered bad practice. Use "@Input" property decorator instead.',
       startPosition: {
         line: 2,
@@ -29,7 +29,7 @@ describe('use-input-parameter-decorator', () => {
       })
       class Bar {}
     `;
-    assertSuccess('use-input-parameter-decorator', source);
+    assertSuccess('use-input-property-decorator', source);
   });
   it('should fail when "inputs" is used in @Directive', () => {
     let source = `
@@ -40,7 +40,7 @@ describe('use-input-parameter-decorator', () => {
       })
       class Baz {}
     `;
-    assertFailure('use-input-parameter-decorator', source, {
+    assertFailure('use-input-property-decorator', source, {
       message: 'In the "@Directive" class decorator of the class "Baz" you are using the "inputs" property, this is considered bad practice. Use "@Input" property decorator instead.',
       startPosition: {
         line: 2,

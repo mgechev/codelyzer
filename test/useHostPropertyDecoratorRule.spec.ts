@@ -1,6 +1,6 @@
 import {assertFailure, assertSuccess} from './testHelper';
 
-describe('use-host-parameter-decorator', () => {
+describe('use-host-property-decorator', () => {
   it('should fail when "host" is used in @Component', () => {
     let source = `
       @Component({
@@ -10,7 +10,7 @@ describe('use-host-parameter-decorator', () => {
       })
       class Bar {}
     `;
-    assertFailure('use-host-parameter-decorator', source, {
+    assertFailure('use-host-property-decorator', source, {
       message: 'In the "@Component" class decorator of the class "Bar" you are using the "host" property, this is considered bad practice. Use "@HostBindings", "@HostListeners" property decorator instead.',
       startPosition: {
         line: 2,
@@ -29,7 +29,7 @@ describe('use-host-parameter-decorator', () => {
       })
       class Bar {}
     `;
-    assertSuccess('use-host-parameter-decorator', source);
+    assertSuccess('use-host-property-decorator', source);
   });
   it('should fail when "host" is used in @Directive', () => {
     let source = `
@@ -40,7 +40,7 @@ describe('use-host-parameter-decorator', () => {
       })
       class Baz {}
     `;
-    assertFailure('use-host-parameter-decorator', source, {
+    assertFailure('use-host-property-decorator', source, {
       message: 'In the "@Directive" class decorator of the class "Baz" you are using the "host" property, this is considered bad practice. Use "@HostBindings", "@HostListeners" property decorator instead.',
       startPosition: {
         line: 2,
