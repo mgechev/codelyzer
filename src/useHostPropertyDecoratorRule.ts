@@ -7,7 +7,7 @@ export class Rule extends UsePropertyDecorator {
     super({
       decoratorName: ['HostBindings', 'HostListeners'],
       propertyName: 'host',
-      errorMessage: null
+      errorMessage: 'Use @HostBindings and @HostListeners instead of the host property (https://goo.gl/NMgSUQ)'
     }, ruleName, value, disabledIntervals);
   }
 }

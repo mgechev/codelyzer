@@ -12,7 +12,7 @@ export class Rule extends Lint.Rules.AbstractRule {
                 this.getOptions()));
     }
 
-    static FAILURE:string = "The name of the class %s should end with the suffix Component";
+    static FAILURE:string = "The name of the class %s should end with the suffix Component (https://goo.gl/dWO74s)";
 
     static validate(className:string):boolean {
         return /.*Component$/.test(className);

@@ -9,7 +9,7 @@ describe('directive-selector-name', () => {
       })
       class Test {}`;
       assertFailure('directive-selector-name', source, {
-        message: 'The selector of the directive "Test" should be named camelCase, however its value is "foo-bar".',
+        message: 'The selector of the directive "Test" should be named camelCase (https://goo.gl/enzefr)',
         startPosition: {
           line: 2,
           character: 18

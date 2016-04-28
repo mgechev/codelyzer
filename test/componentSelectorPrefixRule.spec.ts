@@ -9,7 +9,7 @@ describe('component-selector-prefix', () => {
       })
       class Test {}`;
       assertFailure('component-selector-prefix', source, {
-        message: 'The selector of the component "Test" should have prefix "sg", however its value is "foo-bar".',
+        message: 'The selector of the component "Test" should have prefix "sg" (https://goo.gl/llULUp)',
         startPosition: {
           line: 2,
           character: 18

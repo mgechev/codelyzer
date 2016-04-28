@@ -11,7 +11,7 @@ describe('use-output-property-decorator', () => {
       class Bar {}
     `;
     assertFailure('use-output-property-decorator', source, {
-      message: 'In the "@Component" class decorator of the class "Bar" you are using the "outputs" property, this is considered bad practice. Use "@Output" property decorator instead.',
+      message: 'Use the @Output property decorator instead of the outputs property (https://goo.gl/79yChE)',
       startPosition: {
         line: 2,
         character: 8
@@ -41,7 +41,7 @@ describe('use-output-property-decorator', () => {
       class Baz {}
     `;
     assertFailure('use-output-property-decorator', source, {
-      message: 'In the "@Directive" class decorator of the class "Baz" you are using the "outputs" property, this is considered bad practice. Use "@Output" property decorator instead.',
+      message: 'Use the @Output property decorator instead of the outputs property (https://goo.gl/79yChE)',
       startPosition: {
         line: 2,
         character: 8

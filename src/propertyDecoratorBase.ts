@@ -11,9 +11,6 @@ export interface IUsePropertyDecoratorConfig {
 }
 
 export class UsePropertyDecorator extends Lint.Rules.AbstractRule {
-  private static FAILURE_STRING = 'In the "@%s" class decorator of the class "%s"' +
-  ' you are using the "%s" property, this is considered bad practice. Use %s property decorator instead.';
-
   public static formatFailureString(config: IUsePropertyDecoratorConfig, decoratorName: string, className: string) {
     let decorators = config.decoratorName;
     if (decorators instanceof Array) {
@@ -26,7 +23,6 @@ export class UsePropertyDecorator extends Lint.Rules.AbstractRule {
 
   constructor(private config: IUsePropertyDecoratorConfig, ruleName: string, value: any, disabledIntervals: Lint.IDisabledInterval[]) {
     super(ruleName, value, disabledIntervals);
-    config.errorMessage = config.errorMessage || UsePropertyDecorator.FAILURE_STRING;
   }
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {

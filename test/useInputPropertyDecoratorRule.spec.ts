@@ -11,7 +11,7 @@ describe('use-input-property-decorator', () => {
       class Bar {}
     `;
     assertFailure('use-input-property-decorator', source, {
-      message: 'In the "@Component" class decorator of the class "Bar" you are using the "inputs" property, this is considered bad practice. Use "@Input" property decorator instead.',
+      message: 'Use the @Input property decorator instead of the inputs property (https://goo.gl/79yChE)',
       startPosition: {
         line: 2,
         character: 8
@@ -41,7 +41,7 @@ describe('use-input-property-decorator', () => {
       class Baz {}
     `;
     assertFailure('use-input-property-decorator', source, {
-      message: 'In the "@Directive" class decorator of the class "Baz" you are using the "inputs" property, this is considered bad practice. Use "@Input" property decorator instead.',
+      message: 'Use the @Input property decorator instead of the inputs property (https://goo.gl/79yChE)',
       startPosition: {
         line: 2,
         character: 8

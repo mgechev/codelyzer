@@ -2,3 +2,5 @@ node_modules
 typings
 dist
 .idea
+npm-debug.log
+

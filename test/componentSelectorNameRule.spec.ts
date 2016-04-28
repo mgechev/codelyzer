@@ -9,7 +9,7 @@ describe('component-selector-name', () => {
       })
       class Test {}`;
       assertFailure('component-selector-name', source, {
-        message: 'The selector of the component "Test" should be named kebab-case, however its value is "fooBar".',
+        message: 'The selector of the component "Test" should be named kebab-case (https://goo.gl/R0v6Xu)',
         startPosition: {
           line: 2,
           character: 18

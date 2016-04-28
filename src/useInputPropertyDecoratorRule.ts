@@ -7,7 +7,7 @@ export class Rule extends UsePropertyDecorator {
     super({
       decoratorName: 'Input',
       propertyName: 'inputs',
-      errorMessage: null
+      errorMessage: 'Use the @Input property decorator instead of the inputs property (https://goo.gl/79yChE)'
     }, ruleName, value, disabledIntervals);
   }
 }

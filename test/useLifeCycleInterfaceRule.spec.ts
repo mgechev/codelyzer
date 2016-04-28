@@ -9,7 +9,7 @@ describe('use-life-cycle-interface', () => {
                 }
             }`;
             assertFailure('use-life-cycle-interface', source, {
-                message: 'In class App the method ngOnInit is a life cycle hook and should implement the OnInit interface',
+                message: 'Implement lifecycle hook interfaces (https://goo.gl/EjwlfB)',
                 startPosition: {
                     line: 1,
                     character: 12
@@ -31,8 +31,7 @@ describe('use-life-cycle-interface', () => {
                 }
             }`;
             assertFailure('use-life-cycle-interface', source, {
-                message: 'In class App the methods - ngOnInit, ngOnDestroy are life cycle hooks and ' +
-                'should implement the interfaces: OnInit, OnDestroy',
+                message: 'Implement lifecycle hook interfaces (https://goo.gl/EjwlfB)',
                 startPosition: {
                     line: 1,
                     character: 12
@@ -54,7 +53,7 @@ describe('use-life-cycle-interface', () => {
                 }
             }`;
             assertFailure('use-life-cycle-interface', source, {
-                message: 'In class App the method ngOnDestroy is a life cycle hook and should implement the OnDestroy interface',
+                message: 'Implement lifecycle hook interfaces (https://goo.gl/EjwlfB)',
                 startPosition: {
                     line: 1,
                     character: 12

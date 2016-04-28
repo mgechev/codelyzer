@@ -11,7 +11,7 @@ describe('use-host-property-decorator', () => {
       class Bar {}
     `;
     assertFailure('use-host-property-decorator', source, {
-      message: 'In the "@Component" class decorator of the class "Bar" you are using the "host" property, this is considered bad practice. Use "@HostBindings", "@HostListeners" property decorator instead.',
+      message: 'Use @HostBindings and @HostListeners instead of the host property (https://goo.gl/NMgSUQ)',
       startPosition: {
         line: 2,
         character: 8
@@ -41,7 +41,7 @@ describe('use-host-property-decorator', () => {
       class Baz {}
     `;
     assertFailure('use-host-property-decorator', source, {
-      message: 'In the "@Directive" class decorator of the class "Baz" you are using the "host" property, this is considered bad practice. Use "@HostBindings", "@HostListeners" property decorator instead.',
+      message: 'Use @HostBindings and @HostListeners instead of the host property (https://goo.gl/NMgSUQ)',
       startPosition: {
         line: 2,
         character: 8

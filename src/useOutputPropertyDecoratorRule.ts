@@ -7,7 +7,7 @@ export class Rule extends UsePropertyDecorator {
     super({
       decoratorName: 'Output',
       propertyName: 'outputs',
-      errorMessage: null
+      errorMessage: 'Use the @Output property decorator instead of the outputs property (https://goo.gl/79yChE)'
     }, ruleName, value, disabledIntervals);
   }
 }
