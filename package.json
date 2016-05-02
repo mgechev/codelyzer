@@ -4,7 +4,7 @@
   "description": "A set of linters for Angular 2 applications, following https://github.com/mgechev/angular2-style-guide.",
   "main": "index.js",
   "scripts": {
-    "release": "rimraf dist && tsc && npm t && cp package.json README.md dist/src",
+    "release": "rimraf dist && tsc && npm t && cp package.json README.md dist/src && ts-node build/links.ts --src ./dist/src",
     "test": "mocha --compilers ts:ts-node/register",
     "tsc": "tsc",
     "tscw": "tsc -w"
@@ -37,7 +37,8 @@
     "mocha": "^2.4.5",
     "rimraf": "^2.5.2",
     "ts-node": "^0.5.5",
-    "typings": "^0.8.1"
+    "typings": "^0.8.1",
+    "minimalist": "0.0.8"
   },
   "dependencies": {
     "sprintf-js": "^1.0.3"
