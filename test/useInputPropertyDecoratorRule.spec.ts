@@ -11,7 +11,7 @@ describe('use-input-property-decorator', () => {
       class Bar {}
     `;
     assertFailure('use-input-property-decorator', source, {
-      message: 'Use the @Input property decorator instead of the inputs property (https://goo.gl/79yChE)',
+      message: 'Use the @Input property decorator instead of the inputs property ($$05-12$$)',
       startPosition: {
         line: 2,
         character: 8
@@ -41,7 +41,7 @@ describe('use-input-property-decorator', () => {
       class Baz {}
     `;
     assertFailure('use-input-property-decorator', source, {
-      message: 'Use the @Input property decorator instead of the inputs property (https://goo.gl/79yChE)',
+      message: 'Use the @Input property decorator instead of the inputs property ($$05-12$$)',
       startPosition: {
         line: 2,
         character: 8

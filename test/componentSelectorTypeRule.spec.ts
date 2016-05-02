@@ -9,7 +9,7 @@ describe('component-selector-type', () => {
       })
       class Test {}`;
       assertFailure('component-selector-type', source, {
-        message: 'The selector of the component "Test" should be used as element (https://goo.gl/fECva3)',
+        message: 'The selector of the component "Test" should be used as element ($$05-03$$)',
         startPosition: {
           line: 2,
           character: 18

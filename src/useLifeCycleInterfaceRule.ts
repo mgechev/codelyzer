@@ -11,9 +11,9 @@ export class Rule extends Lint.Rules.AbstractRule {
                 this.getOptions()));
     }
 
-    static  FAILURE_SINGLE:string = 'Implement lifecycle hook interfaces (https://goo.gl/EjwlfB)';
+    static  FAILURE_SINGLE:string = 'Implement lifecycle hook interfaces ($$09-01$$)';
 
-    static FAILURE_MANY = 'Implement lifecycle hook interfaces (https://goo.gl/EjwlfB)';
+    static FAILURE_MANY = 'Implement lifecycle hook interfaces ($$09-01$$)';
 
     static HOOKS_PREFIX = 'ng';
 

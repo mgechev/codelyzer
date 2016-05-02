@@ -12,7 +12,7 @@ export class Rule extends Lint.Rules.AbstractRule {
                 this.getOptions()));
     }
 
-    static FAILURE:string = "The name of the class %s should end with the suffix Directive (https://goo.gl/dWO74s)";
+    static FAILURE:string = "The name of the class %s should end with the suffix Directive ($$02-03$$)";
 
     static validate(className:string):boolean {
         return /.*Directive/.test(className);

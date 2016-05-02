@@ -11,7 +11,7 @@ describe('use-host-property-decorator', () => {
       class Bar {}
     `;
     assertFailure('use-host-property-decorator', source, {
-      message: 'Use @HostBindings and @HostListeners instead of the host property (https://goo.gl/NMgSUQ)',
+      message: 'Use @HostBindings and @HostListeners instead of the host property ($$06-03$$)',
       startPosition: {
         line: 2,
         character: 8
@@ -41,7 +41,7 @@ describe('use-host-property-decorator', () => {
       class Baz {}
     `;
     assertFailure('use-host-property-decorator', source, {
-      message: 'Use @HostBindings and @HostListeners instead of the host property (https://goo.gl/NMgSUQ)',
+      message: 'Use @HostBindings and @HostListeners instead of the host property ($$06-03$$)',
       startPosition: {
         line: 2,
         character: 8

@@ -9,7 +9,7 @@ describe('use-life-cycle-interface', () => {
                 }
             }`;
             assertFailure('use-life-cycle-interface', source, {
-                message: 'Implement lifecycle hook interfaces (https://goo.gl/EjwlfB)',
+                message: 'Implement lifecycle hook interfaces ($$09-01$$)',
                 startPosition: {
                     line: 1,
                     character: 12
@@ -31,7 +31,7 @@ describe('use-life-cycle-interface', () => {
                 }
             }`;
             assertFailure('use-life-cycle-interface', source, {
-                message: 'Implement lifecycle hook interfaces (https://goo.gl/EjwlfB)',
+                message: 'Implement lifecycle hook interfaces ($$09-01$$)',
                 startPosition: {
                     line: 1,
                     character: 12
@@ -53,7 +53,7 @@ describe('use-life-cycle-interface', () => {
                 }
             }`;
             assertFailure('use-life-cycle-interface', source, {
-                message: 'Implement lifecycle hook interfaces (https://goo.gl/EjwlfB)',
+                message: 'Implement lifecycle hook interfaces ($$09-01$$)',
                 startPosition: {
                     line: 1,
                     character: 12
