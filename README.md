@@ -21,7 +21,7 @@ Now you can apply codelyzer rules to your tslint config. Enjoy!
 
 ## Recommended configuration
 
-Below you can find a recommended configuration which is based on the [Angular 2 Style Guide](https://github.com/mgechev/angular2-style-guide).
+Below you can find a recommended configuration which is based on the [Angular 2 Style Guide](https://angular.io/docs/ts/latest/guide/style-guide.html).
 
 ```json
 {
