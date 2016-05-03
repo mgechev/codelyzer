@@ -30,5 +30,9 @@ describe('component-selector-name', () => {
       class Test {}`;
       assertSuccess('component-selector-name', source, 'kebab-case');
     });
+    it('should succeed with empty file', () => {
+      let source = ``;
+      assertSuccess('component-selector-name', source, 'kebab-case');
+    });
   });
 });
