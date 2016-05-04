@@ -2,6 +2,8 @@
 
 A set of tslint rules for static code analysis of Angular 2 TypeScript projects.
 
+You can run the static code analyzer over web apps, NativeScript, Ionic, etc.
+
 ## Install
 
 `npm install --save-dev codelyzer`
