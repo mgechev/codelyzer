@@ -1,6 +1,7 @@
 import * as Lint from 'tslint/lib/lint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
+import SyntaxKind = require('./util/syntaxKind');
 
 export class Rule extends Lint.Rules.AbstractRule {
 
@@ -20,7 +21,14 @@ export class Rule extends Lint.Rules.AbstractRule {
 export class ConstructorMetadataWalker extends Lint.RuleWalker {
 
     visitConstructorDeclaration(node:ts.ConstructorDeclaration) {
-        let parentName = (<ts.ClassDeclaration>node.parent).name.text;
+        let syntaxKind = SyntaxKind.current();
+        let parentName:string="";
+        let parent = (<any>node.parent);
+        if(parent.kind===syntaxKind.ClassExpression){
+            parentName= parent.parent.name.text;
+        }else if(parent.kind = syntaxKind.ClassDeclaration){
+            parentName= parent.name.text;
+        }
         (node.parameters || []).forEach(this.validateParameter.bind(this, parentName));
         super.visitConstructorDeclaration(node);
     }
