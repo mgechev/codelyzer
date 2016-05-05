@@ -9,7 +9,7 @@ describe('directive-selector-type', () => {
       })
       class Test {}`;
       assertFailure('directive-selector-type', source, {
-        message: 'The selector of the directive "Test" should be used as attribute (https://goo.gl/ydeyIO)',
+        message: 'The selector of the directive "Test" should be used as attribute ($$02-06$$)',
         startPosition: {
           line: 2,
           character: 18

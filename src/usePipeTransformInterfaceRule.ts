@@ -11,8 +11,8 @@ export class Rule extends Lint.Rules.AbstractRule {
                 this.getOptions()));
     }
 
-    static  FAILURE:string = 'The %s class has the Pipe decorator, so it should implement the PipeTransform interface';
-    static  PIPE_INTERFACE_NAME='PipeTransform';
+    static FAILURE: string = 'The %s class has the Pipe decorator, so it should implement the PipeTransform interface';
+    static PIPE_INTERFACE_NAME = 'PipeTransform';
 }
 
 export class ClassMetadataWalker extends Lint.RuleWalker {

@@ -9,7 +9,7 @@ describe('component-selector-name', () => {
       })
       class Test {}`;
       assertFailure('component-selector-name', source, {
-        message: 'The selector of the component "Test" should be named kebab-case (https://goo.gl/R0v6Xu)',
+        message: 'The selector of the component "Test" should be named kebab-case ($$05-02$$)',
         startPosition: {
           line: 2,
           character: 18
@@ -28,6 +28,10 @@ describe('component-selector-name', () => {
         selector: 'sg-bar-foo'
       })
       class Test {}`;
+      assertSuccess('component-selector-name', source, 'kebab-case');
+    });
+    it('should succeed with empty file', () => {
+      let source = ``;
       assertSuccess('component-selector-name', source, 'kebab-case');
     });
   });

@@ -9,7 +9,7 @@ describe('component-class-suffix', () => {
               })
               class Test {}`;
             assertFailure('component-class-suffix', source, {
-                message: 'The name of the class Test should end with the suffix Component (https://goo.gl/dWO74s)',
+                message: 'The name of the class Test should end with the suffix Component ($$02-03$$)',
                 startPosition: {
                     line: 4,
                     character: 20

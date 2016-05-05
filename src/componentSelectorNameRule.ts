@@ -2,7 +2,7 @@ import * as Lint from 'tslint/lib/lint';
 import {SelectorRule, COMPONENT_TYPE} from './selectorNameBase';
 import {SelectorValidator} from './util/selectorValidator';
 
-const FAILURE_STRING = 'The selector of the component "%s" should be named %s (https://goo.gl/R0v6Xu)';
+const FAILURE_STRING = 'The selector of the component "%s" should be named %s ($$05-02$$)';
 
 export class Rule extends SelectorRule {
   constructor(ruleName: string, value: any, disabledIntervals: Lint.IDisabledInterval[]) {

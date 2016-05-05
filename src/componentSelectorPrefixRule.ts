@@ -2,7 +2,7 @@ import * as Lint from 'tslint/lib/lint';
 import {SelectorRule, COMPONENT_TYPE} from './selectorNameBase';
 import {SelectorValidator} from './util/selectorValidator';
 
-const FAILURE_STRING = 'The selector of the component "%s" should have prefix "%s" (https://goo.gl/llULUp)';
+const FAILURE_STRING = 'The selector of the component "%s" should have prefix "%s" ($$02-07$$)';
 
 export class Rule extends SelectorRule {
   constructor(ruleName: string, value: any, disabledIntervals: Lint.IDisabledInterval[]) {

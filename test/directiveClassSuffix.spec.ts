@@ -9,7 +9,7 @@ describe('directive-class-suffix', () => {
               })
               class Test {}`;
             assertFailure('directive-class-suffix', source, {
-                message: 'The name of the class Test should end with the suffix Directive (https://goo.gl/dWO74s)',
+                message: 'The name of the class Test should end with the suffix Directive ($$02-03$$)',
                 startPosition: {
                     line: 4,
                     character: 20

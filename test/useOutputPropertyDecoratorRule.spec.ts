@@ -11,7 +11,7 @@ describe('use-output-property-decorator', () => {
       class Bar {}
     `;
     assertFailure('use-output-property-decorator', source, {
-      message: 'Use the @Output property decorator instead of the outputs property (https://goo.gl/79yChE)',
+      message: 'Use the @Output property decorator instead of the outputs property ($$05-12$$)',
       startPosition: {
         line: 2,
         character: 8
@@ -41,7 +41,7 @@ describe('use-output-property-decorator', () => {
       class Baz {}
     `;
     assertFailure('use-output-property-decorator', source, {
-      message: 'Use the @Output property decorator instead of the outputs property (https://goo.gl/79yChE)',
+      message: 'Use the @Output property decorator instead of the outputs property ($$05-12$$)',
       startPosition: {
         line: 2,
         character: 8

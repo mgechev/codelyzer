@@ -7,10 +7,10 @@ import {SelectorValidator} from "./util/selectorValidator";
 export class Rule extends Lint.Rules.AbstractRule {
 
 
-    public prefix:string;
-    public hasPrefix:boolean;
-    private prefixChecker:Function;
-    private validator:Function;
+    public prefix: string;
+    public hasPrefix: boolean;
+    private prefixChecker: Function;
+    private validator: Function;
 
     constructor(ruleName:string, value:any, disabledIntervals:Lint.IDisabledInterval[]) {
         super(ruleName, value, disabledIntervals);

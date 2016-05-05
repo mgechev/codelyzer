@@ -9,7 +9,7 @@ describe('directive-selector-prefix', () => {
       })
       class Test {}`;
       assertFailure('directive-selector-prefix', source, {
-        message: 'The selector of the directive "Test" should have prefix "sg" (https://goo.gl/nzFdUm)',
+        message: 'The selector of the directive "Test" should have prefix "sg" ($$02-08$$)',
         startPosition: {
           line: 2,
           character: 18
