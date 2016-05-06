@@ -85,3 +85,4 @@ Below you can find a recommended configuration which is based on the [Angular 2 
 ## License
 
 MIT
+
