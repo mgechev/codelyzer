@@ -1,5 +1,7 @@
 # Codelyzer
 
+[![](http://s32.postimg.org/vo1xrbgw5/codelyzer.png)](https://youtu.be/bci-Z6nURgE)
+
 A set of tslint rules for static code analysis of Angular 2 TypeScript projects.
 
 You can run the static code analyzer over web apps, NativeScript, Ionic, etc.
