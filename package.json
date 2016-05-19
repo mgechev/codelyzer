@@ -30,9 +30,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mgechev/ng2lint/issues"
+    "url": "https://github.com/mgechev/codelyzer/issues"
   },
-  "homepage": "https://github.com/mgechev/ng2lint#readme",
+  "homepage": "https://github.com/mgechev/codelyzer#readme",
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-spies": "^0.7.1",
