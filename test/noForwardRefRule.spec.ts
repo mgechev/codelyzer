@@ -39,6 +39,25 @@ describe('no-forward-ref', () => {
         }
       });
     });
+    it('should fail when we are calling forwardRef in variable', () => {
+      let source = `
+      const TAGS_INPUT_CONTROL_VALUE_ACCESSOR = new Provider(
+          NG_VALUE_ACCESSOR, {
+            useExisting: forwardRef(() => TagsInput),
+            multi: true
+      });`;
+      assertFailure('no-forward-ref', source, {
+        message: 'Avoid using forwardRef in variable "TAGS_INPUT_CONTROL_VALUE_ACCESSOR"',
+        startPosition: {
+          line: 3,
+          character: 25
+        },
+        endPosition: {
+          line: 3,
+          character: 52
+        }
+      });
+    });
   });
   describe('valid function call', ()=> {
     it('should succeed, when we are not calling forwardRef', () => {
