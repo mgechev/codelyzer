@@ -20,30 +20,20 @@ describe('component-selector-name', () => {
         }
       }, 'kebab-case');
     });
-    it('should fail when the selector of component does not contain hyphen character', () => {
-      let source = `
-      @Component({
-        selector: 'foobar'
-      })
-      class Test {}`;
-      assertFailure('component-selector-name', source, {
-        message: 'The selector of the component "Test" should be named kebab-case ($$05-02$$)',
-        startPosition: {
-          line: 2,
-          character: 18
-        },
-        endPosition: {
-          line: 2,
-          character: 26
-        }
-      }, 'kebab-case');
-    });
   });
   describe('valid component selector', () => {
     it('should succeed when set valid selector in @Component', () => {
       let source = `
       @Component({
         selector: 'sg-bar-foo'
+      })
+      class Test {}`;
+      assertSuccess('component-selector-name', source, 'kebab-case');
+    });
+    it('should succeed when selector is single word', () => {
+      let source = `
+      @Component({
+        selector: 'foo'
       })
       class Test {}`;
       assertSuccess('component-selector-name', source, 'kebab-case');

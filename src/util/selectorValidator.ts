@@ -6,7 +6,7 @@ export const SelectorValidator = {
     return /^[^\[].+[^\]]$/.test(selector);
   },
   kebabCase(selector: string): boolean {
-    return /^[a-z0-9\-]+\-[a-z0-9\-]+$/.test(selector);
+    return /^[a-z0-9\-]+(\-[a-z0-9\-]+)?$/.test(selector);
   },
   camelCase(selector: string): boolean {
     return /^[a-zA-Z0-9\[\]]+$/.test(selector);
