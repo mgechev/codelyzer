@@ -59,6 +59,21 @@ describe('no-forward-ref', () => {
       });
     });
   });
+  it('should work with NG_VALUE_ACCESSORs', () => {
+    let source = `const CUSTOM_VALUE_ACCESSOR = new Provider(
+    NG_VALUE_ACCESSOR, { useExisting: forwardRef(() => CountryListValueAccessor)});`;
+    assertFailure('no-forward-ref', source, {
+      message: 'Avoid using forwardRef in variable "CUSTOM_VALUE_ACCESSOR"',
+      startPosition: {
+        line: 1,
+        character: 38
+      },
+      endPosition: {
+        line: 1,
+        character: 80
+      }
+    });
+  });
   describe('valid function call', ()=> {
     it('should succeed, when we are not calling forwardRef', () => {
       let source = `

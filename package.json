@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "typings install",
     "release": "rimraf dist && tsc && npm t && cp package.json README.md dist/src && ts-node build/links.ts --src ./dist/src",
-    "test": "mocha --compilers ts:ts-node/register",
+    "test": "rimraf dist && tsc && mocha --compilers ts:ts-node/register",
     "test:watch": "npm run test -- -w",
     "tsc": "tsc",
     "tscw": "tsc -w"
