@@ -46,7 +46,8 @@ Below you can find a recommended configuration which is based on the [Angular 2 
   "use-pipe-transform-interface": true,
   "pipe-naming": [true, "camelCase", "sg"],
   "component-class-suffix": true,
-  "directive-class-suffix": true
+  "directive-class-suffix": true,
+  "import-destructuring-spacing": true
 }
 ```
 

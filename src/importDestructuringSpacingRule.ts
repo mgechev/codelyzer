@@ -32,6 +32,9 @@ class ImportDestructuringSpacingWalker extends Lint.SkippableTokenAwareRuleWalke
   }
 
   private checkForWhiteSpace(text: string) {
+    if (/\s*\*\s+as\s+[^\s]/.test(text)) {
+      return true;
+    }
     return /{\s[^]*\s}/.test(text);
   }
 }
