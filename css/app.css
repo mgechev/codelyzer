@@ -4,6 +4,7 @@ html, body {
   padding: 0;
   margin: 0;
   font-family: San Francisco, Verdana;
+  background-color: #1D1E1C;
 }
 
 header {
@@ -35,7 +36,6 @@ nav li a:hover {
 }
 
 .content {
-  background-color: #1D1E1C;
   height: calc(100% - 35px);
 }
 
@@ -58,4 +58,14 @@ nav li a:hover {
 .warnings h4 {
   color: #666;
   margin: 0;
+  margin-left: 10px;
+}
+
+@media only screen and (max-width: 580px) {
+  .CodeMirror, #editor, .warnings {
+    width: 100%;
+  }
+  #editor, .warnings {
+    display: block;
+  }
 }
