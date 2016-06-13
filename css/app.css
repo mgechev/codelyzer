@@ -1,0 +1,61 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: San Francisco, Verdana;
+}
+
+header {
+  height: 35px;
+  background-color: #1D1E1C;
+}
+
+nav ul {
+  margin: 0;
+  padding: 0;
+}
+
+nav li {
+  display: inline-block;
+  list-style: none;
+  margin: 0;
+  padding: 10px;
+  font-size: 13px;
+}
+
+nav li a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+nav li a:hover {
+  color: #FED37F;
+}
+
+.content {
+  background-color: #1D1E1C;
+  height: calc(100% - 35px);
+}
+
+#editor {
+  width: 60%;
+  height: 100%;
+  float: left;
+}
+
+.CodeMirror {
+  height: 100%;
+}
+
+.warnings {
+  width: 36%;
+  float: right;
+  padding: 2%;
+}
+
+.warnings h4 {
+  color: #666;
+  margin: 0;
+}

@@ -1,0 +1,14 @@
+{
+  "name": "codelyzer-gh-pages",
+  "version": "1.0.0",
+  "description": "Demo page for codelyzer",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Minko Gechev <mgechev@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "codemirror": "^5.15.2"
+  }
+}
