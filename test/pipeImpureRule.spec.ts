@@ -9,7 +9,7 @@ describe('pipe-impure', () => {
                       })
                       class Test {}`;
             assertFailure('pipe-impure', source, {
-                message: 'The Pipe decorator of class Test should be pure.',
+                message: 'Warning: impure pipe declared in class Test.',
                 startPosition: {
                     line: 2,
                     character: 24
