@@ -10,7 +10,7 @@ export class Rule extends Lint.Rules.AbstractRule {
             new ClassMetadataWalker(sourceFile, this));
     }
 
-    static  FAILURE:string = 'The Pipe decorator of class %s should be pure.';
+    static  FAILURE:string = 'Warning: impure pipe declared in class %s.';
 }
 
 export class ClassMetadataWalker extends Lint.RuleWalker {
