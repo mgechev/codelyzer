@@ -100,4 +100,15 @@ describe('use-life-cycle-interface', () => {
             assertSuccess('use-life-cycle-interface', source);
         });
     });
+    describe('valid declaration of class using Iterator', () => {
+        it(`should succeed, when is used iterator`, () => {
+            let source = `
+            export class Heroes implements Iterable<Hero> {
+              [Symbol.iterator]() {
+                return this.currentHeroes.values();
+              }
+            }`;
+            assertSuccess('use-life-cycle-interface', source);
+        });
+    });
 });

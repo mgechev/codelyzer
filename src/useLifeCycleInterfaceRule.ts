@@ -62,7 +62,7 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
                            interfaces:Array<string>):Array<string> {
         let ngMembers = members.filter(m=>m.kind === syntaxKind.MethodDeclaration)
             .map(m=>(<any>m.name).text)
-            .filter(n=>n.substr(0, 2) === Rule.HOOKS_PREFIX)
+            .filter(n=>(n && n.substr(0, 2) === Rule.HOOKS_PREFIX))
             .map(n=>n.substr(2, n.lenght))
             .filter(n=>Rule.LIFE_CYCLE_HOOKS_NAMES.indexOf(n) !== -1);
         return ngMembers.filter(m=>interfaces.indexOf(m) === -1);
