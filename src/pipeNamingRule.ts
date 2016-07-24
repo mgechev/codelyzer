@@ -6,7 +6,6 @@ import {SelectorValidator} from "./util/selectorValidator";
 
 export class Rule extends Lint.Rules.AbstractRule {
 
-
     public prefix: string;
     public hasPrefix: boolean;
     private prefixChecker: Function;
@@ -17,10 +16,11 @@ export class Rule extends Lint.Rules.AbstractRule {
         if (value[1] === 'camelCase') {
             this.validator = SelectorValidator.camelCase;
         }
-        if (value[2]) {
+        if (value.length>2) {
             this.hasPrefix = true;
-            this.prefix = value[2];
-            this.prefixChecker = SelectorValidator.prefix(value[2]);
+            let prefixExpression:string = (value.slice(2)||[]).join('|');
+            this.prefix =(value.slice(2)||[]).join(',');
+            this.prefixChecker = SelectorValidator.multiPrefix(prefixExpression);
         }
     }
 
