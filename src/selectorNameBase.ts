@@ -28,7 +28,7 @@ export abstract class SelectorRule extends Lint.Rules.AbstractRule {
   }
 
   public getFailureString(failureConfig): string {
-    return sprintf(this.failureString, failureConfig.className, this.getOptions().ruleArguments[0], failureConfig.selector);
+    return sprintf(this.failureString, failureConfig.className, this.getOptions().ruleArguments, failureConfig.selector);
   }
 
   public validate(selector: string): boolean {

@@ -15,5 +15,10 @@ export const SelectorValidator = {
     return (selector: string) => {
       return new RegExp(`^\\[?${prefix}`).test(selector);
     };
+  },
+  multiPrefix(prefixes: string): Function {
+    return (selector: string) => {
+        return new RegExp(`^\\[?(${prefixes})`).test(selector);
+    };
   }
 };
