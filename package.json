@@ -1,6 +1,6 @@
 {
   "name": "codelyzer",
-  "version": "0.0.27",
+  "version": "0.0.28",
   "description": "A set of linters for Angular 2 applications, following https:/angular.io/styleguide.",
   "main": "index.js",
   "scripts": {
