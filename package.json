@@ -43,6 +43,9 @@
     "tslint": "3.9.0",
     "typings": "0.8.1"
   },
+  "peerDependencies": {
+    "tslint": "3.9.0"
+  },
   "dependencies": {
     "sprintf-js": "^1.0.3"
   }
