@@ -39,4 +39,12 @@ describe('use-pipe-transform-interface', () => {
       assertSuccess('use-pipe-transform-interface', source);
     });
   });
+  describe('valid use with @Injectable', () => {
+    it(`should succeed, when Pipe is not used`, () => {
+      let source = `@Injectable
+        class App{}`;
+      assertSuccess('use-pipe-transform-interface', source);
+    });
+  });
+
 });
