@@ -25,7 +25,8 @@ describe('component-class-suffix', () => {
         it('should succeed when the component class name ends with Component', () => {
             let source = `
             @Component({
-                selector: 'sg-foo-bar'
+                selector: 'sg-foo-bar',
+                template: '<foo-bar [foo]="bar">{{baz + 42}}</foo-bar>'
             })
             class TestComponent {}`;
             assertSuccess('component-class-suffix', source);

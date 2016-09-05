@@ -1,7 +1,7 @@
 import * as ts from 'typescript';
 import * as tslint from 'tslint/lib/lint';
 
-import {Ng2Walker} from '../../src/util/ng2Walker';
+import {Ng2Walker, RecursiveAngularExpressionVisitor} from '../../src/util/ng2Walker';
 import chai = require('chai');
 import * as spies from 'chai-spies';
 
@@ -59,4 +59,46 @@ describe('ng2Walker', () => {
     (<any>chai.expect(outputsSpy).to.have.been).called();
     (<any>chai.expect(inputsSpy).to.have.been).called();
   });
+
+  it('should visit component templates', () => {
+    let source = `
+      @Component({
+        selector: 'foo',
+        template: '<div></div>'
+      })
+      class Baz {}
+    `;
+    let ruleArgs: tslint.IOptions = {
+      ruleName: 'foo',
+      ruleArguments: ['foo'],
+      disabledIntervals: null
+    };
+    let sf = ts.createSourceFile('foo', source, null);
+    let walker = new Ng2Walker(sf, ruleArgs);
+    let templateSpy = chaiSpy.on(walker, 'visitNg2Template');
+    walker.walk(sf);
+    (<any>chai.expect(templateSpy).to.have.been).called();
+  });
+
+  it('should visit component template expressions', () => {
+    let source = `
+      @Component({
+        selector: 'foo',
+        template: '{{foo}}'
+      })
+      class Baz {}
+    `;
+    let ruleArgs: tslint.IOptions = {
+      ruleName: 'foo',
+      ruleArguments: ['foo'],
+      disabledIntervals: null
+    };
+    let sf = ts.createSourceFile('foo', source, null);
+    let walker = new Ng2Walker(sf, ruleArgs);
+    let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
+    walker.walk(sf);
+    (<any>chai.expect(templateSpy).to.have.been).called();
+  });
+
 });
+
