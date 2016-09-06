@@ -15,11 +15,11 @@ describe('access-missing-declaration', () => {
           message: 'The field "foo" that you\'re trying to access does not exist in the class declaration.',
           startPosition: {
             line: 3,
-            character: 20
+            character: 29
           },
           endPosition: {
             line: 3,
-            character: 29
+            character: 32
           }
        });
     });
@@ -36,11 +36,11 @@ describe('access-missing-declaration', () => {
           message: 'The field "baz" that you\'re trying to access does not exist in the class declaration. Probably you mean: "bar".',
           startPosition: {
             line: 3,
-            character: 20
+            character: 29
           },
           endPosition: {
             line: 3,
-            character: 31
+            character: 32
           }
        });
     });
@@ -48,20 +48,20 @@ describe('access-missing-declaration', () => {
       let source = `
         @Component({
           selector: 'foobar',
-          template: '<div>{{ baz() + foo }}</div>
+          template: '<div>{{ baz2() + foo }}</div>
         })
         class Test {
-          baz() {}
+          baz2() {}
         }`;
         assertFailure('access-missing-declaration', source, {
           message: 'The field "foo" that you\'re trying to access does not exist in the class declaration.',
           startPosition: {
             line: 3,
-            character: 28
+            character: 38
           },
           endPosition: {
             line: 3,
-            character: 45
+            character: 41
           }
        });
     });
@@ -69,7 +69,7 @@ describe('access-missing-declaration', () => {
       let source = `
         @Component({
           selector: 'foobar',
-          template: '<div>{{ baz() + getPrsonName() }}</div>
+          template: '<div>{{ baz() + getPrsonName(1, 2, 3) }}</div>
         })
         class Test {
           baz() {}
@@ -79,11 +79,11 @@ describe('access-missing-declaration', () => {
           message: 'The field "getPrsonName" that you\'re trying to access does not exist in the class declaration. Probably you mean: "getPersonName".',
           startPosition: {
             line: 3,
-            character: 28
+            character: 37
           },
           endPosition: {
             line: 3,
-            character: 56
+            character: 49
           }
        });
     });

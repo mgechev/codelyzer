@@ -8,7 +8,7 @@
     "release": "rimraf dist && tsc && npm t && cp package.json README.md dist/src && ts-node build/links.ts --src ./dist/src",
     "test": "rimraf dist && tsc && mocha dist/test/**",
     "test:watch": "npm run test -- -w",
-    "test:watch:debug": "npm run test -- -w --debug-brk=5891",
+    "test:watch:debug": "npm run test -- -w --debug-brk=5898",
     "tsc": "tsc",
     "tscw": "tsc -w"
   },

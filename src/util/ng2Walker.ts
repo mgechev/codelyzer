@@ -228,7 +228,9 @@ export class Ng2Walker extends Lint.RuleWalker {
             return null;
           }).filter((el: any) => !!el).map((prop: any) => prop.initializer).pop();
       if (inlineTemplate) {
-        this.visitNg2TemplateHelper(parseTemplate(inlineTemplate.text), <ts.ClassDeclaration>decorator.parent, inlineTemplate.pos);
+        debugger;
+        this.visitNg2TemplateHelper(parseTemplate(inlineTemplate.text),
+            <ts.ClassDeclaration>decorator.parent, inlineTemplate.pos + 2); // skip the quote
       }
     } else if (name === 'Directive') {
       this.visitNg2Directive(<ts.ClassDeclaration>decorator.parent, decorator);
@@ -243,16 +245,16 @@ export class Ng2Walker extends Lint.RuleWalker {
 
   protected visitNg2TemplateBoundText(text: BoundTextAst, context: ts.ClassDeclaration, templateStart: number) {
     if (ExpTypes.ASTWithSource(text.value)) {
-      this.visitNg2TemplateAST((<e.ASTWithSource>text.value).ast, context, templateStart);
+      this.visitNg2TemplateAST((<e.ASTWithSource>text.value).ast, context, templateStart + text.sourceSpan.start.offset + 2); // because of {{
     }
   }
 
   protected visitNg2TemplateBoundElementPropertyAst(prop: BoundElementPropertyAst, context: ts.ClassDeclaration, templateStart: number) {
-    this.visitNg2TemplateAST(prop.value, context, templateStart);
+    this.visitNg2TemplateAST(prop.value, context, templateStart + prop.sourceSpan.start.offset + 1); // because of [
   }
 
   protected visitNg2TemplateBoundElementEventAst(event: BoundEventAst, context: ts.ClassDeclaration, templateStart: number) {
-    this.visitNg2TemplateAST(event.handler, context, templateStart);
+    this.visitNg2TemplateAST(event.handler, context, templateStart + event.sourceSpan.start.offset + 1); // because of (
   }
 
   protected visitNg2TemplateElement(element: ElementAst, context: ts.ClassDeclaration, templateStart: number) {
