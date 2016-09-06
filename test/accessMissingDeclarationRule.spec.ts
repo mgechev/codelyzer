@@ -12,7 +12,7 @@ describe('access-missing-declaration', () => {
           bar: number;
         }`;
         assertFailure('access-missing-declaration', source, {
-          message: 'The field "foo" that you\'re trying to access does not exist in the class declaration.',
+          message: 'The property "foo" that you\'re trying to access does not exist in the class declaration.',
           startPosition: {
             line: 3,
             character: 29
@@ -33,7 +33,7 @@ describe('access-missing-declaration', () => {
           bar() {}
         }`;
         assertFailure('access-missing-declaration', source, {
-          message: 'The field "baz" that you\'re trying to access does not exist in the class declaration. Probably you mean: "bar".',
+          message: 'The method "baz" that you\'re trying to access does not exist in the class declaration. Probably you mean: "bar".',
           startPosition: {
             line: 3,
             character: 29
@@ -54,7 +54,7 @@ describe('access-missing-declaration', () => {
           baz2() {}
         }`;
         assertFailure('access-missing-declaration', source, {
-          message: 'The field "foo" that you\'re trying to access does not exist in the class declaration.',
+          message: 'The property "foo" that you\'re trying to access does not exist in the class declaration.',
           startPosition: {
             line: 3,
             character: 38
@@ -76,7 +76,7 @@ describe('access-missing-declaration', () => {
           getPersonName() {}
         }`;
         assertFailure('access-missing-declaration', source, {
-          message: 'The field "getPrsonName" that you\'re trying to access does not exist in the class declaration. Probably you mean: "getPersonName".',
+          message: 'The method "getPrsonName" that you\'re trying to access does not exist in the class declaration. Probably you mean: "getPersonName".',
           startPosition: {
             line: 3,
             character: 37
@@ -84,6 +84,48 @@ describe('access-missing-declaration', () => {
           endPosition: {
             line: 3,
             character: 49
+          }
+       });
+    });
+    it('should fail when the selector of component does not contain hyphen character', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<div [className]="bar()"></div>
+        })
+        class Test {
+          baz() {}
+        }`;
+        assertFailure('access-missing-declaration', source, {
+          message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
+          startPosition: {
+            line: 3,
+            character: 27
+          },
+          endPosition: {
+            line: 3,
+            character: 30
+          }
+       });
+    });
+    it('should fail when the selector of component does not contain hyphen character', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<div (click)="bar()"></div>
+        })
+        class Test {
+          baz() {}
+        }`;
+        assertFailure('access-missing-declaration', source, {
+          message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
+          startPosition: {
+            line: 3,
+            character: 27
+          },
+          endPosition: {
+            line: 3,
+            character: 30
           }
        });
     });

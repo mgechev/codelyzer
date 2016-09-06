@@ -7,24 +7,38 @@ import {Ng2Walker, RecursiveAngularExpressionVisitor} from './util/ng2Walker';
 import {getDeclaredMethodNames, getDeclaredPropertyNames} from './util/classDeclarationUtils';
 import * as e from '@angular/compiler/src/expression_parser/ast';
 
+enum DeclarationType {
+  Property,
+  Method
+};
+
 class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
   visitPropertyRead(ast: e.PropertyRead, context: any): any {
-    return this.doCheck(ast, getDeclaredPropertyNames(this.context), context);
+    return this.doCheck(ast, DeclarationType.Property, context);
   }
 
   visitMethodCall(ast: e.MethodCall, context: any): any {
-    this.doCheck(ast, getDeclaredMethodNames(this.context), context);
+    this.doCheck(ast, DeclarationType.Method, context);
   }
 
   visitPropertyWrite(ast: e.PropertyWrite, context: any): any {
-    this.doCheck(ast, getDeclaredPropertyNames(this.context), context);
+    this.doCheck(ast, DeclarationType.Property, context);
   }
 
-  private doCheck(ast: { receiver: any, name: string, span: { start: number, end: number } }, available: string[], context: any): any {
+  private doCheck(ast: e.MethodCall | e.PropertyRead | e.PropertyWrite, type: DeclarationType, context: any): any {
+    let symbolType: string;
+    let available: string[];
+    if (type === DeclarationType.Method) {
+      symbolType = 'method';
+      available = getDeclaredMethodNames(this.context);
+    } else {
+      symbolType = 'property';
+      available = getDeclaredPropertyNames(this.context);
+    }
     ast.receiver.visit(this);
     if (available.indexOf(ast.name) < 0) {
       const top = this.getTopSuggestion(available, ast.name);
-      let failureString = sprintf.apply(this, [Rule.FAILURE, ast.name]);
+      let failureString = sprintf.apply(this, [Rule.FAILURE, symbolType, ast.name]);
       const getSuggestion = (list: string[]) => {
         if (list.length === 1) {
           return `"${list[0]}"`;
@@ -72,7 +86,7 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
 }
 
 export class Rule extends Lint.Rules.AbstractRule {
-  static FAILURE: string = 'The field "%s" that you\'re trying to access does not exist in the class declaration.';
+  static FAILURE: string = 'The %s "%s" that you\'re trying to access does not exist in the class declaration.';
 
   public apply(sourceFile:ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
