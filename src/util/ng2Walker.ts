@@ -228,7 +228,6 @@ export class Ng2Walker extends Lint.RuleWalker {
             return null;
           }).filter((el: any) => !!el).map((prop: any) => prop.initializer).pop();
       if (inlineTemplate) {
-        debugger;
         this.visitNg2TemplateHelper(parseTemplate(inlineTemplate.text),
             <ts.ClassDeclaration>decorator.parent, inlineTemplate.pos + 2); // skip the quote
       }
@@ -245,16 +244,22 @@ export class Ng2Walker extends Lint.RuleWalker {
 
   protected visitNg2TemplateBoundText(text: BoundTextAst, context: ts.ClassDeclaration, templateStart: number) {
     if (ExpTypes.ASTWithSource(text.value)) {
+      // Note that will not be reliable on different interpolation symbols
       this.visitNg2TemplateAST((<e.ASTWithSource>text.value).ast, context, templateStart + text.sourceSpan.start.offset + 2); // because of {{
     }
   }
 
   protected visitNg2TemplateBoundElementPropertyAst(prop: BoundElementPropertyAst, context: ts.ClassDeclaration, templateStart: number) {
-    this.visitNg2TemplateAST(prop.value, context, templateStart + prop.sourceSpan.start.offset + 1); // because of [
+    const sf = this.getSourceFile().text;
+    const start = templateStart + prop.sourceSpan.start.offset;
+    const width = prop.sourceSpan.end.offset - prop.sourceSpan.start.offset;
+    let equalIdx = start + sf.substr(start, width).indexOf('=');
+    while (/\s/.test(sf[++equalIdx]) && sf[equalIdx]) {}
+    this.visitNg2TemplateAST(prop.value, context, start + sf.substr(start, width).indexOf('=') + 2); // because of [name]="
   }
 
   protected visitNg2TemplateBoundElementEventAst(event: BoundEventAst, context: ts.ClassDeclaration, templateStart: number) {
-    this.visitNg2TemplateAST(event.handler, context, templateStart + event.sourceSpan.start.offset + 1); // because of (
+    this.visitNg2TemplateAST(event.handler, context, templateStart + event.sourceSpan.start.offset + event.name.length + 4); // because of (name)="
   }
 
   protected visitNg2TemplateElement(element: ElementAst, context: ts.ClassDeclaration, templateStart: number) {

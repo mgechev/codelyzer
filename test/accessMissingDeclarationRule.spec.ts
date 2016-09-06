@@ -1,8 +1,8 @@
 import {assertFailure, assertSuccess} from './testHelper';
 
 describe('access-missing-declaration', () => {
-  describe('invalid component class suffix', () => {
-    it('should fail when the selector of component does not contain hyphen character', () => {
+  describe('invalid expressions', () => {
+    it('should fail when interpolating missing property', () => {
       let source = `
         @Component({
           selector: 'foobar',
@@ -23,7 +23,7 @@ describe('access-missing-declaration', () => {
           }
        });
     });
-    it('should fail when the selector of component does not contain hyphen character', () => {
+    it('should fail when using missing method', () => {
       let source = `
         @Component({
           selector: 'foobar',
@@ -44,7 +44,7 @@ describe('access-missing-declaration', () => {
           }
        });
     });
-    it('should fail when the selector of component does not contain hyphen character', () => {
+    it('should fail in binary operation with missing property', () => {
       let source = `
         @Component({
           selector: 'foobar',
@@ -65,7 +65,7 @@ describe('access-missing-declaration', () => {
           }
        });
     });
-    it('should fail when the selector of component does not contain hyphen character', () => {
+    it('should fail fail in binary operation with missing method', () => {
       let source = `
         @Component({
           selector: 'foobar',
@@ -87,7 +87,7 @@ describe('access-missing-declaration', () => {
           }
        });
     });
-    it('should fail when the selector of component does not contain hyphen character', () => {
+    it('should fail with property binding and missing method', () => {
       let source = `
         @Component({
           selector: 'foobar',
@@ -100,15 +100,36 @@ describe('access-missing-declaration', () => {
           message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
           startPosition: {
             line: 3,
-            character: 27
+            character: 39
           },
           endPosition: {
             line: 3,
-            character: 30
+            character: 42
           }
        });
     });
-    it('should fail when the selector of component does not contain hyphen character', () => {
+    it('should fail with style binding and missing method', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<div [style.color]="bar()"></div>
+        })
+        class Test {
+          baz() {}
+        }`;
+        assertFailure('access-missing-declaration', source, {
+          message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
+          startPosition: {
+            line: 3,
+            character: 41
+          },
+          endPosition: {
+            line: 3,
+            character: 44
+          }
+       });
+    });
+    it('should fail fail on event handling with missing method', () => {
       let source = `
         @Component({
           selector: 'foobar',
@@ -121,18 +142,18 @@ describe('access-missing-declaration', () => {
           message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
           startPosition: {
             line: 3,
-            character: 27
+            character: 35
           },
           endPosition: {
             line: 3,
-            character: 30
+            character: 38
           }
        });
     });
   });
 
-  describe('valid component class name', () => {
-    it('should fail when the selector of component does not contain hyphen character', () => {
+  describe('valid expressions', () => {
+    it('should succeed with declared property', () => {
       let source = `
         @Component({
           selector: 'foobar',
@@ -143,7 +164,7 @@ describe('access-missing-declaration', () => {
         }`;
         assertSuccess('access-missing-declaration', source);
     });
-    it('should fail when the selector of component does not contain hyphen character', () => {
+    it('should succeed on declared method', () => {
       let source = `
         @Component({
           selector: 'foobar',
