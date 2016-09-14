@@ -69,7 +69,7 @@ class SelectorNameValidatorWalker extends Lint.RuleWalker {
   }
 
   private validateSelector(className: string, arg: ts.Node) {
-    if (arg.kind === SyntaxKind.current().ObjectLiteralExpression) {
+    if (arg && arg.kind === SyntaxKind.current().ObjectLiteralExpression) {
       (<ts.ObjectLiteralExpression>arg).properties.filter(prop => (<any>prop.name).text === 'selector')
       .forEach(prop => {
         let p = <any>prop;
