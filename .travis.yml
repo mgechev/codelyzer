@@ -11,5 +11,5 @@ os:
 branches:
   only: master
 
-script: typings install && npm run lint && npm t
+script: npm run lint && npm t
 
