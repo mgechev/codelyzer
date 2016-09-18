@@ -30,5 +30,15 @@ describe('directive-selector-name', () => {
       class Test {}`;
       assertSuccess('component-selector-name', source, 'camelCase');
     });
+    it('should ignore when the @Directive selector is a not a literal', () => {
+      let source = `
+      const selector = 'sgBarFoo';
+      @Component({
+        selector
+      })
+      class Test {}`;
+      assertSuccess('component-selector-name', source, 'camelCase');
+    });
   });
 });
+

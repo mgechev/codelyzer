@@ -87,5 +87,14 @@ describe('pipe-naming', () => {
                     class Test {}`;
             assertSuccess('pipe-naming', source, ['camelCase']);
         });
+        it('should do nothing if the name of the pipe is not a literal', () => {
+            let source = `
+                      const pipeName = 'foo-bar';
+                      @Pipe({
+                        name: pipeName
+                      })
+                      class Test {}`;
+            assertSuccess('pipe-naming', source, ['camelCase']);
+        });
     });
 });

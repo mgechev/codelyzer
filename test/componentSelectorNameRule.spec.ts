@@ -52,5 +52,14 @@ describe('component-selector-name', () => {
       let source = ``;
       assertSuccess('component-selector-name', source, 'kebab-case');
     });
+    it('should ignore the selector when it\'s not literal', () => {
+      let source = `
+      const selectorName = 'fooBar';
+      @Component({
+        selector: selectorName
+      })
+      class Test {}`;
+      assertSuccess('component-selector-name', source, 'kebab-case');
+    });
   });
 });
