@@ -1,0 +1,15 @@
+language: node_js
+
+node_js:
+  - 4
+  - 5
+  - stable
+os:
+  - linux
+  - osx
+
+branches:
+  only: master
+
+script: npm run lint && npm t
+
