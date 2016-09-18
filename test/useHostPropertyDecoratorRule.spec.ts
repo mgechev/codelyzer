@@ -22,6 +22,7 @@ describe('use-host-property-decorator', () => {
       }
     });
   });
+
   it('should succeed when "host" is not used', () => {
     let source = `
       @Component({
@@ -31,6 +32,7 @@ describe('use-host-property-decorator', () => {
     `;
     assertSuccess('use-host-property-decorator', source);
   });
+
   it('should fail when "host" is used in @Directive', () => {
     let source = `
       @Directive({

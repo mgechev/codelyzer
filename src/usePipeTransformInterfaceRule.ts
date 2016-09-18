@@ -1,7 +1,7 @@
 import * as Lint from 'tslint/lib/lint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
-import SyntaxKind = require('./util/syntaxKind');
+import SyntaxKind = require('./util/syntax-kind');
 
 export class Rule extends Lint.Rules.AbstractRule {
 
@@ -49,3 +49,4 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
     return interfaces.indexOf(Rule.PIPE_INTERFACE_NAME)!==-1;
   }
 }
+

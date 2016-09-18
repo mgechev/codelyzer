@@ -20,6 +20,7 @@ describe('no-forward-ref', () => {
         }
       });
     });
+
     it('should fail when we are calling forwardRef in Component directives array', () => {
       let source = `
       @Component({
@@ -39,6 +40,7 @@ describe('no-forward-ref', () => {
         }
       });
     });
+
     it('should fail when we are calling forwardRef in variable', () => {
       let source = `
       const TAGS_INPUT_CONTROL_VALUE_ACCESSOR = new Provider(

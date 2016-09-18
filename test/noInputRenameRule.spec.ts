@@ -21,6 +21,7 @@ describe('no-input-rename', () => {
       });
     });
   });
+
   describe('valid directive input property', () => {
     it('should succeed, when a directive input property is properly used', () => {
       let source = `
@@ -29,6 +30,7 @@ describe('no-input-rename', () => {
       }`;
       assertSuccess('no-input-rename', source);
     });
+
     it('should succeed, when a directive input property rename is the same as the name of the property', () => {
       let source = `
       class ButtonComponent {

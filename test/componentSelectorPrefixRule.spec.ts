@@ -20,6 +20,7 @@ describe('component-selector-prefix', () => {
                 }
             }, 'sg');
         });
+
         it('should fail when component used without prefix applying multiple prefixes', () => {
             let source = `
           @Component({
@@ -39,6 +40,7 @@ describe('component-selector-prefix', () => {
             }, ['sg', 'mg', 'ng']);
         });
     });
+
     describe('valid component selector', () => {
         it('should succeed when set valid selector in @Component', () => {
             let source = `
@@ -48,6 +50,7 @@ describe('component-selector-prefix', () => {
       class Test {}`;
             assertSuccess('component-selector-prefix', source, 'sg');
         });
+
         it('should succeed when set valid selector in @Component using multiple prefixes', () => {
             let source = `
       @Component({

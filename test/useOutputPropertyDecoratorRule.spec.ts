@@ -22,6 +22,7 @@ describe('use-output-property-decorator', () => {
       }
     });
   });
+
   it('should succeed when "outputs" is not used', () => {
     let source = `
       @Component({
@@ -31,6 +32,7 @@ describe('use-output-property-decorator', () => {
     `;
     assertSuccess('use-output-property-decorator', source);
   });
+
   it('should fail when "outputs" is used in @Directive', () => {
     let source = `
       @Directive({

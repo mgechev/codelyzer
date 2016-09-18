@@ -2,7 +2,7 @@ import * as Lint from 'tslint/lib/lint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
 
-import SyntaxKind = require('./util/syntaxKind');
+import SyntaxKind = require('./util/syntax-kind');
 
 export interface IUsePropertyDecoratorConfig {
   propertyName: string;
@@ -76,3 +76,4 @@ class DirectiveMetadataWalker extends Lint.RuleWalker {
     }
   }
 }
+

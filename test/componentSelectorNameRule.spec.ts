@@ -20,6 +20,7 @@ describe('component-selector-name', () => {
         }
       }, 'kebab-case');
     });
+
     it('should fail when the selector of component does not contain hyphen character', () => {
       let source = `
       @Component({
@@ -39,6 +40,7 @@ describe('component-selector-name', () => {
       }, 'kebab-case');
     });
   });
+
   describe('valid component selector', () => {
     it('should succeed when set valid selector in @Component', () => {
       let source = `
@@ -48,6 +50,7 @@ describe('component-selector-name', () => {
       class Test {}`;
       assertSuccess('component-selector-name', source, 'kebab-case');
     });
+
     it('should succeed with empty file', () => {
       let source = ``;
       assertSuccess('component-selector-name', source, 'kebab-case');

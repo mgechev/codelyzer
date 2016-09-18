@@ -1,7 +1,7 @@
 import * as ts from 'typescript';
 import * as tslint from 'tslint/lib/lint';
 
-import {Ng2Walker, RecursiveAngularExpressionVisitor} from '../../src/util/ng2Walker';
+import {Ng2Walker, RecursiveAngularExpressionVisitor} from '../../src/angular/ng2-walker';
 import chai = require('chai');
 import * as spies from 'chai-spies';
 
@@ -34,6 +34,7 @@ describe('ng2Walker', () => {
     (<any>chai.expect(cmpSpy).to.have.been).called();
     (<any>chai.expect(dirSpy).to.have.been).called();
   });
+
   it('should visit inputs and outputs with args', () => {
     let source = `
       @Component({
@@ -99,6 +100,5 @@ describe('ng2Walker', () => {
     walker.walk(sf);
     (<any>chai.expect(templateSpy).to.have.been).called();
   });
-
 });
 

@@ -22,6 +22,7 @@ describe('use-pipe-transform-interface', () => {
       });
     });
   });
+
   describe('valid use of Pipe with the implementation of the PipeTransform interface', () => {
     it(`should succeed when Pipe is declared properly`, () => {
       let source = `
@@ -33,12 +34,14 @@ describe('use-pipe-transform-interface', () => {
       assertSuccess('use-pipe-transform-interface', source);
     });
   });
+
   describe('valid use of empty class', () => {
     it(`should succeed, when Pipe is not used`, () => {
       let source = `class App{}`;
       assertSuccess('use-pipe-transform-interface', source);
     });
   });
+
   describe('valid use with @Injectable', () => {
     it(`should succeed, when Pipe is not used`, () => {
       let source = `@Injectable
@@ -46,5 +49,4 @@ describe('use-pipe-transform-interface', () => {
       assertSuccess('use-pipe-transform-interface', source);
     });
   });
-
 });

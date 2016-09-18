@@ -20,6 +20,7 @@ describe('directive-selector-prefix', () => {
                 }
             }, 'sg');
         });
+
         it('should fail when directive used without prefix applying multiple prefixes', () => {
             let source = `
           @Directive({
@@ -48,6 +49,7 @@ describe('directive-selector-prefix', () => {
       class Test {}`;
             assertSuccess('directive-selector-prefix', source, 'sg');
         });
+
         it('should succeed when set valid selector in @Directive using multiple prefixes', () => {
             let source = `
       @Directive({

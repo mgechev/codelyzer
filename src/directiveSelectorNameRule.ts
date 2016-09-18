@@ -1,6 +1,6 @@
 import * as Lint from 'tslint/lib/lint';
 import {SelectorRule, COMPONENT_TYPE} from './selectorNameBase';
-import {SelectorValidator} from './util/selectorValidator';
+import {SelectorValidator} from './util/selector-validator';
 
 const FAILURE_STRING = 'The selector of the directive "%s" should be named %s ($$02-06$$)';
 

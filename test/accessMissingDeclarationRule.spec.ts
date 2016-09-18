@@ -23,6 +23,7 @@ describe('access-missing-declaration', () => {
           }
        });
     });
+
     it('should fail when using missing method', () => {
       let source = `
         @Component({
@@ -44,6 +45,7 @@ describe('access-missing-declaration', () => {
           }
        });
     });
+
     it('should fail in binary operation with missing property', () => {
       let source = `
         @Component({
@@ -65,6 +67,7 @@ describe('access-missing-declaration', () => {
           }
        });
     });
+
     it('should fail fail in binary operation with missing method', () => {
       let source = `
         @Component({
@@ -87,6 +90,7 @@ describe('access-missing-declaration', () => {
           }
        });
     });
+
     it('should fail with property binding and missing method', () => {
       let source = `
         @Component({
@@ -108,6 +112,7 @@ describe('access-missing-declaration', () => {
           }
        });
     });
+
     it('should fail with style binding and missing method', () => {
       let source = `
         @Component({
@@ -129,6 +134,7 @@ describe('access-missing-declaration', () => {
           }
        });
     });
+
     it('should fail fail on event handling with missing method', () => {
       let source = `
         @Component({
@@ -164,6 +170,7 @@ describe('access-missing-declaration', () => {
         }`;
         assertSuccess('access-missing-declaration', source);
     });
+
     it('should succeed on declared method', () => {
       let source = `
         @Component({

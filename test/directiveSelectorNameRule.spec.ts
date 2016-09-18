@@ -21,6 +21,7 @@ describe('directive-selector-name', () => {
       }, 'camelCase');
     });
   });
+
   describe('valid directive selector', () => {
     it('should succeed when set valid selector in @Directive', () => {
       let source = `
