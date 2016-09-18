@@ -2,9 +2,9 @@ import * as Lint from 'tslint/lib/lint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
 import { stringDistance } from './util/utils';
-import SyntaxKind = require('./util/syntax-kind');
-import {Ng2Walker, RecursiveAngularExpressionVisitor} from './angular/ng2-walker';
-import {getDeclaredMethodNames, getDeclaredPropertyNames} from './util/class-declaration-utils';
+import {Ng2Walker} from './angular/ng2Walker';
+import {RecursiveAngularExpressionVisitor} from './angular/recursiveAngularExpressionVisitor';
+import {getDeclaredMethodNames, getDeclaredPropertyNames} from './util/classDeclarationUtils';
 import * as e from '@angular/compiler/src/expression_parser/ast';
 
 enum DeclarationType {

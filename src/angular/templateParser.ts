@@ -17,4 +17,3 @@ export const parseTemplate = (template: string) => {
       compiler.CompileDirectiveMetadata.create({ type }),
       template, [], [], [NO_ERRORS_SCHEMA], null);
 };
-

@@ -1,16 +1,15 @@
 import * as Lint from 'tslint/lib/lint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
-import SyntaxKind = require('./util/syntax-kind');
+import SyntaxKind = require('./util/syntaxKind');
 
 export class Rule extends Lint.Rules.AbstractRule {
+  static FAILURE: string = 'Warning: impure pipe declared in class %s.';
 
   public apply(sourceFile:ts.SourceFile):Lint.RuleFailure[] {
     return this.applyWithWalker(
       new ClassMetadataWalker(sourceFile, this));
   }
-
-  static  FAILURE:string = 'Warning: impure pipe declared in class %s.';
 }
 
 export class ClassMetadataWalker extends Lint.RuleWalker {
@@ -45,7 +44,7 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
 
   private validateProperty(className:string, property:any) {
     let propValue:string = property.initializer.getText();
-    if (propValue === "false") {
+    if (propValue === 'false') {
       this.addFailure(
         this.createFailure(
           property.getStart(),
@@ -58,4 +57,3 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
     return [Rule.FAILURE, className];
   }
 }
-

@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import { current } from './syntax-kind';
+import { current } from './syntaxKind';
 
 const SyntaxKind = current();
 

@@ -1,22 +1,20 @@
 import * as Lint from 'tslint/lib/lint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
-import SyntaxKind = require('./util/syntax-kind');
+import SyntaxKind = require('./util/syntaxKind');
 
 export class Rule extends Lint.Rules.AbstractRule {
+  static FAILURE: string = 'The %s class has the Pipe decorator, so it should implement the PipeTransform interface';
+  static PIPE_INTERFACE_NAME = 'PipeTransform';
 
   public apply(sourceFile:ts.SourceFile):Lint.RuleFailure[] {
     return this.applyWithWalker(
       new ClassMetadataWalker(sourceFile,
         this.getOptions()));
   }
-
-  static FAILURE: string = 'The %s class has the Pipe decorator, so it should implement the PipeTransform interface';
-  static PIPE_INTERFACE_NAME = 'PipeTransform';
 }
 
 export class ClassMetadataWalker extends Lint.RuleWalker {
-
   visitClassDeclaration(node:ts.ClassDeclaration) {
     let decorators = node.decorators;
     if (decorators) {
@@ -46,7 +44,6 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
         interfaces = interfacesClause[0].types.map(t=>(<any>t.expression).text);
       }
     }
-    return interfaces.indexOf(Rule.PIPE_INTERFACE_NAME)!==-1;
+    return interfaces.indexOf(Rule.PIPE_INTERFACE_NAME) !== -1;
   }
 }
-

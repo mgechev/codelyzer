@@ -1,16 +1,9 @@
 import * as Lint from 'tslint/lib/lint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
-import SyntaxKind = require('./util/syntax-kind');
+import SyntaxKind = require('./util/syntaxKind');
 
 export class Rule extends Lint.Rules.AbstractRule {
-
-  public apply(sourceFile:ts.SourceFile):Lint.RuleFailure[] {
-    return this.applyWithWalker(
-      new ClassMetadataWalker(sourceFile,
-        this.getOptions()));
-  }
-
   static  FAILURE_SINGLE:string = 'Implement lifecycle hook interfaces ($$09-01$$)';
 
   static FAILURE_MANY = 'Implement lifecycle hook interfaces ($$09-01$$)';
@@ -26,7 +19,13 @@ export class Rule extends Lint.Rules.AbstractRule {
     'AfterViewInit',
     'AfterViewChecked',
     'OnDestroy'
-  ]
+  ];
+
+  public apply(sourceFile:ts.SourceFile):Lint.RuleFailure[] {
+    return this.applyWithWalker(
+      new ClassMetadataWalker(sourceFile,
+        this.getOptions()));
+  }
 }
 
 export class ClassMetadataWalker extends Lint.RuleWalker {
@@ -79,4 +78,3 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
     return failureConfig;
   }
 }
-

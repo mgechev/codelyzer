@@ -12,9 +12,9 @@ import {
 } from '@angular/compiler';
 import * as e from '@angular/compiler/src/expression_parser/ast';
 
-import { parseTemplate } from './template-parser';
-import { RecursiveAngularExpressionVisitor } from './recursive-angular-expression-visitor';
-import { ExpTypes } from './expression-types';
+import { parseTemplate } from './templateParser';
+import { RecursiveAngularExpressionVisitor } from './recursiveAngularExpressionVisitor';
+import { ExpTypes } from './expressionTypes';
 
 const getDecoratorName = (decorator: ts.Decorator) => {
   let baseExpr = <any>decorator.expression || {};

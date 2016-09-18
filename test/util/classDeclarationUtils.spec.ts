@@ -1,8 +1,8 @@
 import * as ts from 'typescript';
 import * as tslint from 'tslint/lib/lint';
 
-import {Ng2Walker, RecursiveAngularExpressionVisitor} from '../../src/angular/ng2-walker';
-import {getDeclaredMethodNames, getDeclaredPropertyNames} from '../../src/util/class-declaration-utils';
+import {Ng2Walker} from '../../src/angular/ng2Walker';
+import {getDeclaredMethodNames, getDeclaredPropertyNames} from '../../src/util/classDeclarationUtils';
 import chai = require('chai');
 
 describe('ng2Walker', () => {
@@ -36,4 +36,3 @@ describe('ng2Walker', () => {
     (<any>chai.expect(properties.join())).to.equal(['foo'].join());
   });
 });
-

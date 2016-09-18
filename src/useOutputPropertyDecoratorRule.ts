@@ -11,4 +11,3 @@ export class Rule extends UsePropertyDecorator {
     }, ruleName, value, disabledIntervals);
   }
 }
-

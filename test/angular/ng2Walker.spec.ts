@@ -1,7 +1,8 @@
 import * as ts from 'typescript';
 import * as tslint from 'tslint/lib/lint';
 
-import {Ng2Walker, RecursiveAngularExpressionVisitor} from '../../src/angular/ng2-walker';
+import {Ng2Walker} from '../../src/angular/ng2Walker';
+import {RecursiveAngularExpressionVisitor} from '../../src/angular/recursiveAngularExpressionVisitor';
 import chai = require('chai');
 import * as spies from 'chai-spies';
 

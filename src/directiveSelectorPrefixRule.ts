@@ -1,6 +1,6 @@
 import * as Lint from 'tslint/lib/lint';
 import {SelectorRule, COMPONENT_TYPE} from './selectorNameBase';
-import {SelectorValidator} from './util/selector-validator';
+import {SelectorValidator} from './util/selectorValidator';
 
 const FAILURE_SINGLE = 'The selector of the directive "%s" should have prefix "%s" ($$02-08$$)';
 const FAILURE_MANY = 'The selector of the directive "%s" should have one of the prefixes: %s ($$02-08$$)';

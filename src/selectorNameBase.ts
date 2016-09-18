@@ -2,7 +2,7 @@ import * as ts from 'typescript';
 import * as Lint from 'tslint/lib/lint';
 import {sprintf} from 'sprintf-js';
 
-import SyntaxKind = require('./util/syntax-kind');
+import SyntaxKind = require('./util/syntaxKind');
 
 export enum COMPONENT_TYPE {
   COMPONENT,

@@ -1,10 +1,15 @@
 import * as Lint from 'tslint/lib/lint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
-import SyntaxKind = require('./util/syntax-kind');
-import {SelectorValidator} from './util/selector-validator';
+import SyntaxKind = require('./util/syntaxKind');
+import {SelectorValidator} from './util/selectorValidator';
 
 export class Rule extends Lint.Rules.AbstractRule {
+  static  FAILURE_WITHOUT_PREFIX: string = 'The name of the Pipe decorator of class %s should' +
+    ' be named camelCase, however its value is "%s".';
+
+  static  FAILURE_WITH_PREFIX: string = 'The name of the Pipe decorator of class %s should' +
+    ' be named camelCase with prefix %s, however its value is "%s".';
 
   public prefix: string;
   public hasPrefix: boolean;
@@ -36,12 +41,6 @@ export class Rule extends Lint.Rules.AbstractRule {
   public validatePrefix(prefix:string):boolean {
     return this.prefixChecker(prefix);
   }
-
-  static  FAILURE_WITHOUT_PREFIX:string = 'The name of the Pipe decorator of class %s should' +
-    ' be named camelCase, however its value is "%s".';
-
-  static  FAILURE_WITH_PREFIX:string = 'The name of the Pipe decorator of class %s should' +
-    ' be named camelCase with prefix %s, however its value is "%s".';
 }
 
 export class ClassMetadataWalker extends Lint.RuleWalker {
@@ -93,6 +92,4 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
     }
     return [Rule.FAILURE_WITHOUT_PREFIX, className, pipeName];
   }
-
 }
-
