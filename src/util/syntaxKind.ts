@@ -323,7 +323,7 @@ module SyntaxKind {
     LastJSDocTagNode?: number; // 2.0
   }
 
-  var cachedKinds: SyntaxKind.SyntaxKind;
+  var cachedKinds: SyntaxKind.SyntaxKind = null;
 
   /* tslint:disable:variable-name */
   var SyntaxKind_1_5: SyntaxKind = {
@@ -2131,4 +2131,3 @@ module SyntaxKind {
 }
 
 export = SyntaxKind;
-
