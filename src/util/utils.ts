@@ -19,4 +19,5 @@ export const stringDistance = (s: string, t: string, ls: number = s.length, lt: 
     memo = currRowMemo;
   }
   return memo[lt];
-}
+};
+
