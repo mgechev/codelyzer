@@ -8,7 +8,8 @@ import {
   TextAst,
   BoundTextAst,
   BoundElementPropertyAst,
-  BoundEventAst
+  BoundEventAst,
+  PropertyBindingType
 } from '@angular/compiler';
 import * as e from '@angular/compiler/src/expression_parser/ast';
 
@@ -31,6 +32,59 @@ const getDecoratorStringArgs = (decorator: ts.Decorator) => {
 export interface RecursiveAngularExpressionVisitorCtr {
   new(sourceFile: ts.SourceFile, options: Lint.IOptions, context: ts.ClassDeclaration, basePosition: number);
 }
+
+const getExpressionDisplacement = (binding: any) => {
+  let attrLen = 0;
+  let valLen = 0;
+  let totalLength = 0;
+  let result = 0;
+  if (binding instanceof BoundEventAst || binding instanceof BoundElementPropertyAst) {
+    // subBindingLen is for [class.foo], [style.foo], the length of
+    // the binding type. For event it is 0. (+1 because of the ".")
+    let subBindingLen = 0;
+    if (binding instanceof BoundElementPropertyAst) {
+      let prop: BoundElementPropertyAst = <BoundElementPropertyAst>binding;
+      // The length of the binding type
+      switch (prop.type) {
+        case PropertyBindingType.Animation:
+        subBindingLen = 'animate'.length + 1;
+        break;
+        case PropertyBindingType.Attribute:
+        subBindingLen = 'attr'.length + 1;
+        break;
+        case PropertyBindingType.Class:
+        subBindingLen = 'class'.length + 1;
+        break;
+        case PropertyBindingType.Style:
+        subBindingLen = 'style'.length + 1;
+        break;
+      }
+    }
+    // For [class.foo]=":
+    // - Add the name of the binding (binding.name.length).
+    // - 4 characters because of []=" (we already have the "." from above).
+    // - subBindingLen is from above and applies only for elements.
+    attrLen = binding.name.length + 4 + subBindingLen;
+    // Total length of the attribute value
+    if (binding instanceof BoundEventAst) {
+      valLen = binding.handler.span.end;
+    } else {
+      valLen = binding.value.span.end;
+    }
+    // Total length of the entire part of the template AST corresponding to this AST.
+    totalLength = binding.sourceSpan.end.offset - binding.sourceSpan.start.offset;
+    // The whitespace are possible only in:
+    // `[foo.bar]          =         "...."`,
+    // and they are verything except the attrLen and the valLen (-1 because of the close quote).
+    let whitespace = totalLength - (attrLen + valLen) - 1
+    // The resulted displacement is the length of the attribute + the whitespaces which
+    // can be located ONLY before the value (the binding).
+    result = whitespace + attrLen + binding.sourceSpan.start.offset;
+  } else if (binding instanceof BoundTextAst) {
+    result = binding.sourceSpan.start.offset;
+  }
+  return result;
+};
 
 export class Ng2Walker extends Lint.RuleWalker {
   constructor(sourceFile: ts.SourceFile,
@@ -110,26 +164,22 @@ export class Ng2Walker extends Lint.RuleWalker {
 
   protected visitNg2TemplateBoundText(text: BoundTextAst, context: ts.ClassDeclaration, templateStart: number) {
     if (ExpTypes.ASTWithSource(text.value)) {
-      // Note that will not be reliable on different interpolation symbols
-      this.visitNg2TemplateAST((<e.ASTWithSource>text.value).ast,
-          context, templateStart + text.sourceSpan.start.offset + 2); // because of {{
+      // Note that will not be reliable for different interpolation symbols
+      const ast: any = (<e.ASTWithSource>text.value).ast;
+      ast.expression = (<any>text.value).source;
+      this.visitNg2TemplateAST(ast,
+          context, templateStart + getExpressionDisplacement(text));
     }
   }
 
   protected visitNg2TemplateBoundElementPropertyAst(prop: BoundElementPropertyAst,
       context: ts.ClassDeclaration, templateStart: number) {
-    const sf = this.getSourceFile().text;
-    const start = templateStart + prop.sourceSpan.start.offset;
-    const width = prop.sourceSpan.end.offset - prop.sourceSpan.start.offset;
-    let equalIdx = start + sf.substr(start, width).indexOf('=');
-    while (/\s/.test(sf[++equalIdx]) && sf[equalIdx]) {}
-    // because of [name]="
-    this.visitNg2TemplateAST(prop.value, context, start + sf.substr(start, width).indexOf('=') + 2);
+    this.visitNg2TemplateAST(prop.value, context, templateStart + getExpressionDisplacement(prop));
   }
 
   protected visitNg2TemplateBoundElementEventAst(event: BoundEventAst, context: ts.ClassDeclaration, templateStart: number) {
     this.visitNg2TemplateAST(event.handler, context,
-        templateStart + event.sourceSpan.start.offset + event.name.length + 4); // because of (name)="
+        templateStart + getExpressionDisplacement(event));
   }
 
   protected visitNg2TemplateElement(element: ElementAst, context: ts.ClassDeclaration,

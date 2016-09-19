@@ -46,6 +46,72 @@ describe('access-missing-declaration', () => {
        });
     });
 
+    it('should fail when using missing method in an interpolation mixed with text', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<div> test {{ baz() }}</div>
+        })
+        class Test {
+          bar() {}
+        }`;
+        assertFailure('access-missing-declaration', source, {
+          message: 'The method "baz" that you\'re trying to access does not exist in the class declaration. Probably you mean: "bar".',
+          startPosition: {
+            line: 3,
+            character: 35
+          },
+          endPosition: {
+            line: 3,
+            character: 38
+          }
+       });
+    });
+
+    it('should fail when using missing method in an interpolation mixed with text and interpolation', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<div> test {{ bar() }} {{ baz() }}</div>
+        })
+        class Test {
+          bar() {}
+        }`;
+        assertFailure('access-missing-declaration', source, {
+          message: 'The method "baz" that you\'re trying to access does not exist in the class declaration. Probably you mean: "bar".',
+          startPosition: {
+            line: 3,
+            character: 47
+          },
+          endPosition: {
+            line: 3,
+            character: 50
+          }
+       });
+    });
+
+    it('should fail when using missing method in an interpolation mixed with text, interpolation & binary expression', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<div> test {{ bar() }} {{ bar() + baz() }}</div>
+        })
+        class Test {
+          bar() {}
+        }`;
+        assertFailure('access-missing-declaration', source, {
+          message: 'The method "baz" that you\'re trying to access does not exist in the class declaration. Probably you mean: "bar".',
+          startPosition: {
+            line: 3,
+            character: 55
+          },
+          endPosition: {
+            line: 3,
+            character: 58
+          }
+       });
+    });
+
     it('should fail in binary operation with missing property', () => {
       let source = `
         @Component({
@@ -135,7 +201,7 @@ describe('access-missing-declaration', () => {
        });
     });
 
-    it('should fail fail on event handling with missing method', () => {
+    it('should fail on event handling with missing method', () => {
       let source = `
         @Component({
           selector: 'foobar',
@@ -153,6 +219,51 @@ describe('access-missing-declaration', () => {
           endPosition: {
             line: 3,
             character: 38
+          }
+       });
+    });
+
+    it('should fail on event handling on the right position with a lot of whitespace', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<div (click)=   "   bar()"></div>
+        })
+        class Test {
+          baz() {}
+        }`;
+        assertFailure('access-missing-declaration', source, {
+          message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
+          startPosition: {
+            line: 3,
+            character: 41
+          },
+          endPosition: {
+            line: 3,
+            character: 44
+          }
+       });
+    });
+
+    it('should fail on event handling on the right position with spaces and newlines', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: \`<div [class.foo]=   "
+            bar()"></div>\`
+        })
+        class Test {
+          baz() {}
+        }`;
+        assertFailure('access-missing-declaration', source, {
+          message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
+          startPosition: {
+            line: 4,
+            character: 12
+          },
+          endPosition: {
+            line: 4,
+            character: 15
           }
        });
     });

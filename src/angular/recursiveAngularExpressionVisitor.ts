@@ -43,7 +43,22 @@ export class RecursiveAngularExpressionVisitor extends Lint.RuleWalker implement
   visitImplicitReceiver(ast: e.ImplicitReceiver, context: any): any { return null; }
 
   visitInterpolation(ast: e.Interpolation, context: any): any {
-    return this.visitAll(ast.expressions, context);
+    let oldDisplacement = this.basePosition;
+    // Note that we add the expression property in ng2Walker.
+    // This is due an issue in the ParseSpan in the child expressions
+    // of the interpolation AST.
+    const parts: string[] = (<any>ast).expression.split(/\{\{|\}\}/g).map((s: string) => {
+      return s.replace('}}', '');
+    }).filter((e: string, i: number) => (i % 2));
+    ast.expressions.forEach((e: any, i: number) => {
+      // for {{
+      this.basePosition += ast.strings[i].length + 2;
+      this.visit(e, context);
+      // for }}
+      this.basePosition += 2 + parts[i].length;
+    });
+    this.basePosition = oldDisplacement;
+    return null;
   }
 
   visitKeyedRead(ast: e.KeyedRead, context: any): any {
