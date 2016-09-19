@@ -76,7 +76,7 @@ const getExpressionDisplacement = (binding: any) => {
     // The whitespace are possible only in:
     // `[foo.bar]          =         "...."`,
     // and they are verything except the attrLen and the valLen (-1 because of the close quote).
-    let whitespace = totalLength - (attrLen + valLen) - 1
+    let whitespace = totalLength - (attrLen + valLen) - 1;
     // The resulted displacement is the length of the attribute + the whitespaces which
     // can be located ONLY before the value (the binding).
     result = whitespace + attrLen + binding.sourceSpan.start.offset;
