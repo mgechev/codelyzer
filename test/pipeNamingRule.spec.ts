@@ -20,6 +20,7 @@ describe('pipe-naming', () => {
                 }
             }, ['camelCase', 'ng']);
         });
+
         it('should fail when Pipe is named camelCase without prefix applying multiple prefixes', () => {
             let source = `
                       @Pipe({
@@ -38,6 +39,7 @@ describe('pipe-naming', () => {
                 }
             }, ['camelCase', 'ng','mg','sg']);
         });
+
         it('should fail when Pipe is not named camelCase without prefix', () => {
             let source = `
                       @Pipe({
@@ -57,6 +59,7 @@ describe('pipe-naming', () => {
             }, 'camelCase');
         });
     });
+
     describe('valid pipe name', () => {
         it('should succeed when set valid name with prefix ng in @Pipe', () => {
             let source = `
@@ -66,6 +69,7 @@ describe('pipe-naming', () => {
                     class Test {}`;
             assertSuccess('pipe-naming', source, ['camelCase', 'ng']);
         });
+
         it('should succeed when set valid name applying multiple prefixes in @Pipe', () => {
             let source = `
                     @Pipe({
@@ -74,6 +78,7 @@ describe('pipe-naming', () => {
                     class Test {}`;
             assertSuccess('pipe-naming', source, ['camelCase', 'ng','sg','mg']);
         });
+
         it('should succeed when set valid name in @Pipe', () => {
             let source = `
                     @Pipe({
@@ -82,6 +87,7 @@ describe('pipe-naming', () => {
                     class Test {}`;
             assertSuccess('pipe-naming', source, ['camelCase']);
         });
+
         it('should succeed when the class is not a Pipe', () => {
             let source = `
                     class Test {}`;

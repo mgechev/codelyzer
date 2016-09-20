@@ -21,6 +21,7 @@ describe('use-life-cycle-interface', () => {
             });
         });
     });
+
     describe('invalid declaration of life hooks', () => {
         it(`should fail, when life cycle hooks are used without implementing their interfaces`, () => {
             let source = `
@@ -43,6 +44,7 @@ describe('use-life-cycle-interface', () => {
             });
         });
     });
+
     describe('invalid declaration of life hooks', () => {
         it(`should fail, when some of the life cycle hooks are used without implementing their interfaces`, () => {
             let source = `
@@ -65,6 +67,7 @@ describe('use-life-cycle-interface', () => {
             });
         });
     });
+
     describe('valid declaration of life hook', () => {
         it(`should succeed, when life cycle hook is used with it's corresponding interface`, () => {
             let source = `
@@ -75,6 +78,7 @@ describe('use-life-cycle-interface', () => {
             assertSuccess('use-life-cycle-interface', source);
         });
     });
+
     describe('valid declaration of life hooks', () => {
         it(`should succeed, when life cycle hooks are used with their corresponding interfaces`, () => {
             let source = `
@@ -93,6 +97,7 @@ describe('use-life-cycle-interface', () => {
             assertSuccess('use-life-cycle-interface', source);
         });
     });
+
     describe('valid use of class without interfaces and life cycle hooks', () => {
         it(`should succeed when life cycle hooks are not used`, () => {
             let source = `
@@ -100,6 +105,7 @@ describe('use-life-cycle-interface', () => {
             assertSuccess('use-life-cycle-interface', source);
         });
     });
+
     describe('valid declaration of class using Iterator', () => {
         it(`should succeed, when is used iterator`, () => {
             let source = `

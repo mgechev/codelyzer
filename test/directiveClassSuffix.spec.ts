@@ -21,6 +21,7 @@ describe('directive-class-suffix', () => {
             });
         });
     });
+
     describe('valid directive class name', () => {
         it('should succeed when the directive class name ends with Directive', () => {
             let source = `
@@ -31,6 +32,7 @@ describe('directive-class-suffix', () => {
             assertSuccess('directive-class-suffix', source);
         });
     });
+
     describe('valid directive class', () => {
         it('should succeed when is used @Component decorator', () => {
             let source = `
@@ -41,6 +43,7 @@ describe('directive-class-suffix', () => {
             assertSuccess('directive-class-suffix', source);
         });
     });
+
     describe('valid pipe class', () => {
         it('should succeed when is used @Pipe decorator', () => {
             let source = `
@@ -51,6 +54,7 @@ describe('directive-class-suffix', () => {
             assertSuccess('directive-class-suffix', source);
         });
     });
+
     describe('valid service class', () => {
         it('should succeed when is used @Injectable decorator', () => {
             let source = `
@@ -59,6 +63,7 @@ describe('directive-class-suffix', () => {
             assertSuccess('directive-class-suffix', source);
         });
     });
+
     describe('valid empty class', () => {
         it('should succeed when the class is empty', () => {
             let source = `

@@ -22,6 +22,7 @@ describe('use-input-property-decorator', () => {
       }
     });
   });
+
   it('should succeed when "inputs" is not used', () => {
     let source = `
       @Component({
@@ -31,6 +32,7 @@ describe('use-input-property-decorator', () => {
     `;
     assertSuccess('use-input-property-decorator', source);
   });
+
   it('should fail when "inputs" is used in @Directive', () => {
     let source = `
       @Directive({

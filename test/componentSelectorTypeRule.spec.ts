@@ -31,8 +31,9 @@ describe('component-selector-type', () => {
       class Test {}`;
 
       assertFailure('component-selector-type', source, expectedFailure, 'element');
-    } );
+    });
   });
+
   describe('valid component selector', () => {
     it('should succeed when set valid selector in @Component', () => {
       let source = `

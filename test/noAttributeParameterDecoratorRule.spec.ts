@@ -23,6 +23,7 @@ describe('no-attribute-parameter-decorator', () => {
                 }
             });
         });
+
         it('should fail, when property class declaration uses @Attribute decorator', () => {
             let source = `
             class TestCaseSample {
@@ -43,8 +44,8 @@ describe('no-attribute-parameter-decorator', () => {
                 }
             });
         });
-
     });
+
     describe('valid class constructor', () => {
         it('should succeed, when is not used attribute decorator', () => {
             let source = `
@@ -53,6 +54,7 @@ describe('no-attribute-parameter-decorator', () => {
               }`;
             assertSuccess('no-attribute-parameter-decorator', source);
         });
+
         it('should succeed, when is not used attribute decorator in property class declaration', () => {
             let source = `
             class TestCaseSample {

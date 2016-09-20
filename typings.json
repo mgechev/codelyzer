@@ -4,6 +4,7 @@
   "devDependencies": {},
   "globalDependencies": {
     "chai": "registry:dt/chai#3.4.0+20160601211834",
+    "es6-shim": "registry:dt/es6-shim#0.31.2+20160602141504",
     "mocha": "registry:dt/mocha#2.2.5+20160720003353",
     "node": "registry:dt/node#6.0.0+20160807145350",
     "sprintf-js": "registry:dt/sprintf-js#0.0.0+20160317120654"

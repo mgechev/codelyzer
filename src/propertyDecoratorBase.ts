@@ -1,7 +1,6 @@
 import * as Lint from 'tslint/lib/lint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
-
 import SyntaxKind = require('./util/syntaxKind');
 
 export interface IUsePropertyDecoratorConfig {

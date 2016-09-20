@@ -21,6 +21,7 @@ describe('no-output-rename', () => {
       });
     });
   });
+
   describe('valid directive output property', () => {
     it('should succeed, when a directive output property is properly used', () => {
       let source = `
@@ -29,6 +30,7 @@ describe('no-output-rename', () => {
       }`;
       assertSuccess('no-output-rename', source);
     });
+
     it('should succeed, when a directive output property rename is the same as the property name', () => {
       let source = `
       class ButtonComponent {
