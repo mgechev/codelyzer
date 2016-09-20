@@ -13,7 +13,7 @@ export const parseTemplate = (template: string) => {
   const tmplParser =
     new TemplateParser(expressionParser, elementSchemaRegistry, htmlParser, ngConsole, []);
   const type = new compiler.CompileTypeMetadata({ diDeps: [] });
-  return tmplParser.parse(
+  return tmplParser.tryParse(
       compiler.CompileDirectiveMetadata.create({ type }),
-      template, [], [], [NO_ERRORS_SCHEMA], null);
+      template, [], [], [NO_ERRORS_SCHEMA], null).templateAst;
 };

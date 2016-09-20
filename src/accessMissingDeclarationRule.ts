@@ -36,6 +36,14 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
       available = getDeclaredPropertyNames(this.context);
     }
     ast.receiver.visit(this);
+    // Do not support nested properties yet
+    if (ast.receiver && (<any>ast.receiver).name) {
+      let receiver: any = ast.receiver;
+      while (receiver.receiver.name) {
+        receiver = receiver.receiver;
+      }
+      ast = <e.PropertyRead>receiver;
+    }
     if (available.indexOf(ast.name) < 0) {
       const top = this.getTopSuggestion(available, ast.name);
       let failureString = sprintf.apply(this, [Rule.FAILURE, symbolType, ast.name]);

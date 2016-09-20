@@ -46,6 +46,50 @@ describe('access-missing-declaration', () => {
        });
     });
 
+    it('should fail when interpolating protected nested property', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<div>{{ foo.bar }}</div>
+        })
+        class Test {
+          protected foo: number;
+        }`;
+        assertFailure('templates-use-public', source, {
+          message: 'You can bind only to public class members.',
+          startPosition: {
+            line: 3,
+            character: 29
+          },
+          endPosition: {
+            line: 3,
+            character: 32
+          }
+       });
+    });
+
+    it('should fail when interpolating protected nested property', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<div (click)="foo.bar = 2"></div>
+        })
+        class Test {
+          protected foo: number;
+        }`;
+        assertFailure('templates-use-public', source, {
+          message: 'You can bind only to public class members.',
+          startPosition: {
+            line: 3,
+            character: 35
+          },
+          endPosition: {
+            line: 3,
+            character: 38
+          }
+       });
+    });
+
     it('should fail when binding to protected method', () => {
       let source = `
         @Component({
@@ -102,6 +146,18 @@ describe('access-missing-declaration', () => {
         })
         class Test {
           public foo() {}
+        }`;
+        assertSuccess('templates-use-public', source);
+    });
+
+    it('should succeed on public nested props', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<div>{{ foo.baz.bar }}</div>
+        })
+        class Test {
+          foo = {};
         }`;
         assertSuccess('templates-use-public', source);
     });

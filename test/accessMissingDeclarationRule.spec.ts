@@ -294,4 +294,53 @@ describe('access-missing-declaration', () => {
         assertSuccess('access-missing-declaration', source);
     });
   });
+
+  describe('nested properties and pipes', () => {
+    it('should work with existing single-level nested properties', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<div>{{ foo.bar }}</div>
+        })
+        class Test {
+          foo = {};
+        }`;
+        assertSuccess('access-missing-declaration', source);
+    });
+
+    it('should work with existing single-level non-existing nested properties', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<div>{{ foo.bar }}</div>
+        })
+        class Test {
+          foo1 = {};
+        }`;
+        assertFailure('access-missing-declaration', source, {
+          message: 'The property "foo" that you\'re trying to access does not exist in the class declaration. Probably you mean: "foo1".',
+          startPosition: {
+            line: 3,
+            character: 29
+          },
+          endPosition: {
+            line: 3,
+            character: 32
+          }
+       });
+    });
+
+    it('should work with existing properties and pipes', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<div>{{ foo | baz }}</div>
+        })
+        class Test {
+          foo = {};
+        }`;
+        assertSuccess('access-missing-declaration', source);
+    });
+
+  });
 });

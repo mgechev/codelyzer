@@ -27,6 +27,14 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
   }
 
   private doCheck(ast: e.MethodCall | e.PropertyRead | e.PropertyWrite, type: DeclarationType, context: any): any {
+    // Do not support nested properties yet
+    if (ast.receiver && (<any>ast.receiver).name) {
+      let receiver: any = ast.receiver;
+      while (receiver.receiver.name) {
+        receiver = receiver.receiver;
+      }
+      ast = <e.PropertyRead>receiver;
+    }
     const member = this.context.members.filter((m: any) => m.name && m.name.text === ast.name).pop();
     if (member) {
       let isPublic = !member.modifiers;
