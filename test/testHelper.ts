@@ -47,6 +47,21 @@ export function assertFailure(ruleName: string, source: string, fail: IExpectedF
   });
 };
 
+export function assertFailures(ruleName: string, source: string, fails: IExpectedFailure[], options = null) {
+    let result;
+    try {
+        result = lint(ruleName, source, options);
+    } catch (e) {
+        console.log(e.stack);
+    }
+    chai.assert(result.failureCount > 0, 'no failures');
+    result.failures.forEach((ruleFail,index) => {
+            chai.assert.equal(fails[index].message, ruleFail.getFailure(), 'error messages dont\'t match');
+            chai.assert.deepEqual(fails[index].startPosition, ruleFail.getStartPosition().getLineAndCharacter(), 'start char doesn\'t match');
+            chai.assert.deepEqual(fails[index].endPosition, ruleFail.getEndPosition().getLineAndCharacter(), 'end char doesn\'t match');
+    });
+};
+
 export function assertSuccess(ruleName: string, source: string, options = null) {
   chai.assert.equal(lint(ruleName, source, options).failureCount, 0);
 };

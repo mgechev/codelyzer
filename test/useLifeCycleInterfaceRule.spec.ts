@@ -1,4 +1,4 @@
-import {assertFailure, assertSuccess} from './testHelper';
+import {assertFailure, assertSuccess, assertFailures} from './testHelper';
 
 describe('use-life-cycle-interface', () => {
     describe('invalid declaration of life hook', () => {
@@ -9,19 +9,17 @@ describe('use-life-cycle-interface', () => {
                 }
             }`;
             assertFailure('use-life-cycle-interface', source, {
-                message: 'Implement lifecycle hook interfaces ($$09-01$$)',
+                message: 'Implement lifecycle hook interface OnInit for method ngOnInit in class App ($$09-01$$)',
                 startPosition: {
-                    line: 1,
-                    character: 12
+                    line: 2,
+                    character: 16
                 },
                 endPosition: {
-                    line: 4,
-                    character: 13
+                    line: 2,
+                    character: 24
                 }
             });
         });
-    });
-    describe('invalid declaration of life hooks', () => {
         it(`should fail, when life cycle hooks are used without implementing their interfaces`, () => {
             let source = `
             class App {
@@ -30,20 +28,29 @@ describe('use-life-cycle-interface', () => {
                 ngOnDestroy(){
                 }
             }`;
-            assertFailure('use-life-cycle-interface', source, {
-                message: 'Implement lifecycle hook interfaces ($$09-01$$)',
+            assertFailures('use-life-cycle-interface', source, [{
+                message: 'Implement lifecycle hook interface OnInit for method ngOnInit in class App ($$09-01$$)',
                 startPosition: {
-                    line: 1,
-                    character: 12
+                    line: 2,
+                    character: 16
                 },
                 endPosition: {
-                    line: 6,
-                    character: 13
+                    line: 2,
+                    character: 24
                 }
-            });
+            }, {
+                message: 'Implement lifecycle hook interface OnDestroy for method ngOnDestroy in class App ($$09-01$$)',
+                startPosition: {
+                    line: 4,
+                    character: 16
+                },
+                endPosition: {
+                    line: 4,
+                    character: 27
+                }
+            }
+            ]);
         });
-    });
-    describe('invalid declaration of life hooks', () => {
         it(`should fail, when some of the life cycle hooks are used without implementing their interfaces`, () => {
             let source = `
             class App extends Component implements OnInit{
@@ -53,14 +60,36 @@ describe('use-life-cycle-interface', () => {
                 }
             }`;
             assertFailure('use-life-cycle-interface', source, {
-                message: 'Implement lifecycle hook interfaces ($$09-01$$)',
+                message: 'Implement lifecycle hook interface OnDestroy for method ngOnDestroy in class App ($$09-01$$)',
                 startPosition: {
-                    line: 1,
-                    character: 12
+                    line: 4,
+                    character: 16
                 },
                 endPosition: {
-                    line: 6,
-                    character: 13
+                    line: 4,
+                    character: 27
+                }
+            });
+        });
+    });
+    describe('invalid declaration of life hooks, using ng.hookName', () => {
+        it(`should fail, when life cycle hooks are used without implementing all interfaces, using ng.hookName`, () => {
+            let source = `
+            class App extends Component implements ng.OnInit{
+                ngOnInit(){
+                }
+                ngOnDestroy(){
+                }
+            }`;
+            assertFailure('use-life-cycle-interface', source, {
+                message: 'Implement lifecycle hook interface OnDestroy for method ngOnDestroy in class App ($$09-01$$)',
+                startPosition: {
+                    line: 4,
+                    character: 16
+                },
+                endPosition: {
+                    line: 4,
+                    character: 27
                 }
             });
         });
@@ -74,11 +103,36 @@ describe('use-life-cycle-interface', () => {
             }`;
             assertSuccess('use-life-cycle-interface', source);
         });
-    });
-    describe('valid declaration of life hooks', () => {
         it(`should succeed, when life cycle hooks are used with their corresponding interfaces`, () => {
             let source = `
             class App extends Component implements OnInit,OnDestroy  {
+                ngOnInit(){
+                }
+
+                private ngOnChanges:string="";
+
+                ngOnDestroy(){
+                }
+
+                ngOnSmth{
+                }
+            }`;
+            assertSuccess('use-life-cycle-interface', source);
+        });
+    });
+    describe('valid declaration of life hooks, using ng.hookName', () => {
+
+        it(`should succeed, when life cycle hook is used with it's interface`, () => {
+            let source = `
+            class App implements ng.OnInit {
+                ngOnInit(){
+                }
+            }`;
+            assertSuccess('use-life-cycle-interface', source);
+        });
+        it(`should succeed, when life cycle hooks are used with their corresponding interfaces`, () => {
+            let source = `
+            class App extends Component implements ng.OnInit, ng.OnDestroy  {
                 ngOnInit(){
                 }
 
