@@ -3,6 +3,13 @@ import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
 import SyntaxKind = require('./util/syntaxKind');
 
+const getInterfaceName = (t: any) => {
+  if (t.expression && t.expression.name) {
+    return t.expression.name.text;
+  }
+  return t.expression.text;
+};
+
 export class Rule extends Lint.Rules.AbstractRule {
 
   static FAILURE:string = 'Implement lifecycle hook interface %s for method %s in class %s ($$09-01$$)';
@@ -43,14 +50,7 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
         if (node.heritageClauses) {
             let interfacesClause = node.heritageClauses.filter(h=>h.token === syntaxKind.ImplementsKeyword);
             if (interfacesClause.length !== 0) {
-                interfaces = interfacesClause[0].types.map(t=>{
-                    let expr =(<any>t.expression);
-                    if(expr.expression && expr.expression.text == Rule.HOOKS_PREFIX){
-                        return expr.name.text;
-                    } else {
-                        return expr.text;
-                    }
-                });
+                interfaces = interfacesClause[0].types.map(getInterfaceName);
             }
         }
         return interfaces;
@@ -78,5 +78,5 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
         let isNotIn:boolean = interfaces.indexOf(hookName) === -1;
         return isNg && isHook && isNotIn;
     }
- 
+
 }
