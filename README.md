@@ -23,7 +23,15 @@ Then hop to your `tslint.json` and add rulesDirectory which points to codelyzer,
 }
 ```
 
-Now you can apply codelyzer rules to your tslint config. Enjoy!
+Now you can apply codelyzer rules to your tslint config.
+
+In order to run the rules through tslint use:
+
+```bash
+tslint -c tslint.json **/*.ts
+```
+
+Enjoy!
 
 ## Recommended configuration
 
