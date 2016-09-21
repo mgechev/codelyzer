@@ -43,7 +43,7 @@ Below you can find a recommended configuration which is based on the [Angular 2 
   "no-attribute-parameter-decorator": true,
   "no-input-rename": true,
   "no-output-rename": true,
-  "no-forward-ref" :true,
+  "no-forward-ref": true,
   "use-life-cycle-interface": true,
   "use-pipe-transform-interface": true,
   "pipe-naming": [true, "camelCase", "sg"],
