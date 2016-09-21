@@ -21,6 +21,7 @@ describe('pipe-impure', () => {
             });
         });
     });
+
     describe('pure pipe', () => {
         it('should succeed when Pipe is pure', () => {
             let source = `
@@ -31,6 +32,7 @@ describe('pipe-impure', () => {
             assertSuccess('pipe-impure', source);
         });
     });
+
     describe('default pipe', () => {
         it('should succeed when Pipe pure property is not set', () => {
             let source = `

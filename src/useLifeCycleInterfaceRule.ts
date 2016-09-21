@@ -5,27 +5,26 @@ import SyntaxKind = require('./util/syntaxKind');
 
 export class Rule extends Lint.Rules.AbstractRule {
 
-    public apply(sourceFile:ts.SourceFile):Lint.RuleFailure[] {
-        return this.applyWithWalker(
-            new ClassMetadataWalker(sourceFile,
-                this.getOptions()));
-    }
+  static FAILURE:string = 'Implement lifecycle hook interface %s for method %s in class %s ($$09-01$$)';
 
-    static FAILURE:string = 'Implement lifecycle hook interface %s for method %s in class %s ($$09-01$$)';
+  static HOOKS_PREFIX = 'ng';
 
-    static HOOKS_PREFIX = 'ng';
+  static LIFE_CYCLE_HOOKS_NAMES:Array<any> = [
+    'OnChanges',
+    'OnInit',
+    'DoCheck',
+    'AfterContentInit',
+    'AfterContentChecked',
+    'AfterViewInit',
+    'AfterViewChecked',
+    'OnDestroy'
+  ];
 
-    static LIFE_CYCLE_HOOKS_NAMES:Array<any> = [
-        "OnChanges",
-        "OnInit",
-        "DoCheck",
-        "AfterContentInit",
-        "AfterContentChecked",
-        "AfterViewInit",
-        "AfterViewChecked",
-        "OnDestroy"
-    ]
-
+  public apply(sourceFile:ts.SourceFile):Lint.RuleFailure[] {
+    return this.applyWithWalker(
+      new ClassMetadataWalker(sourceFile,
+        this.getOptions()));
+  }
 }
 
 export class ClassMetadataWalker extends Lint.RuleWalker {
@@ -79,4 +78,5 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
         let isNotIn:boolean = interfaces.indexOf(hookName) === -1;
         return isNg && isHook && isNotIn;
     }
+ 
 }

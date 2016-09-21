@@ -49,6 +49,7 @@ describe('import-destructruing-spacing', () => {
         }
       });
     });
+
     it('should fail with only one whitespace in the left', () => {
       let source = `import { Foo} from './foo';`
 
@@ -87,6 +88,7 @@ describe('import-destructruing-spacing', () => {
       let source = `import { Foo } from './foo';`
       assertSuccess('import-destructuring-spacing', source);
     });
+
     it('should work with alias imports', () => {
       let source = `import * as Foo from './foo';`
       assertSuccess('import-destructuring-spacing', source);

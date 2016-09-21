@@ -4,12 +4,13 @@
   "description": "A set of linters for Angular 2 applications, following https:/angular.io/styleguide.",
   "main": "index.js",
   "scripts": {
-    "typings": "typings",
+    "postinstall": "typings install",
+    "lint": "tslint -c tslint.json src/**/*.ts test/**/*.ts",
     "release": "rimraf dist && tsc && npm t && cp package.json README.md dist/src && ts-node build/links.ts --src ./dist/src",
-    "test": "rimraf dist && tsc && mocha --compilers ts:ts-node/register",
-    "test:watch": "npm run test -- -w",
+    "test": "rimraf dist && tsc && mocha dist/test/*.js dist/test/**/*.js",
+    "test:watch": "rimraf dist && tsc && mocha dist/test/*.js dist/test/**/*.js --watch",
     "tsc": "tsc",
-    "tscw": "tsc -w"
+    "tscw": "tsc --w"
   },
   "repository": {
     "type": "git",
@@ -47,6 +48,10 @@
     "tslint": "^3.9.0"
   },
   "dependencies": {
-    "sprintf-js": "^1.0.3"
+    "@angular/compiler": "^2.0.0",
+    "@angular/core": "^2.0.0",
+    "rxjs": "^5.0.0-beta.12",
+    "sprintf-js": "^1.0.3",
+    "zone.js": "^0.6.21"
   }
 }
