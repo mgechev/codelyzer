@@ -3,6 +3,13 @@ import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
 import SyntaxKind = require('./util/syntaxKind');
 
+const getInterfaceName = (t: any) => {
+  if (t.expression && t.expression.name) {
+    return t.expression.name.text;
+  }
+  return t.expression.text;
+};
+
 export class Rule extends Lint.Rules.AbstractRule {
   static FAILURE: string = 'The %s class has the Pipe decorator, so it should implement the PipeTransform interface';
   static PIPE_INTERFACE_NAME = 'PipeTransform';
@@ -41,7 +48,7 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
       let interfacesClause = node.heritageClauses
         .filter(h=>h.token === SyntaxKind.current().ImplementsKeyword);
       if (interfacesClause.length !== 0) {
-        interfaces = interfacesClause[0].types.map(t=>(<any>t.expression).text);
+        interfaces = interfacesClause[0].types.map(getInterfaceName);
       }
     }
     return interfaces.indexOf(Rule.PIPE_INTERFACE_NAME) !== -1;

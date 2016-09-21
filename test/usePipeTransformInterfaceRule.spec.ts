@@ -33,6 +33,16 @@ describe('use-pipe-transform-interface', () => {
         }`;
       assertSuccess('use-pipe-transform-interface', source);
     });
+
+    it(`should succeed when Pipe is declared properly`, () => {
+      let source = `
+        @Pipe({name: 'fetch'})
+        export class NewPipe  implements ng.PipeTransform {
+          transform(url:string):any {
+          }
+        }`;
+      assertSuccess('use-pipe-transform-interface', source);
+    });
   });
 
   describe('valid use of empty class', () => {

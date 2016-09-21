@@ -120,6 +120,7 @@ describe('use-life-cycle-interface', () => {
             assertSuccess('use-life-cycle-interface', source);
         });
     });
+
     describe('valid declaration of life hooks, using ng.hookName', () => {
 
         it(`should succeed, when life cycle hook is used with it's interface`, () => {
@@ -130,6 +131,25 @@ describe('use-life-cycle-interface', () => {
             }`;
             assertSuccess('use-life-cycle-interface', source);
         });
+
+        it('should succeed when life cycle hook is implemented by using any prefix', () => {
+            let source = `
+            class App implements bar.OnInit {
+                ngOnInit(){
+                }
+            }`;
+            assertSuccess('use-life-cycle-interface', source);
+        });
+
+        it('should succeed when life cycle hook is implemented by using nested interfaces', () => {
+            let source = `
+            class App implements bar.foo.baz.OnInit {
+                ngOnInit(){
+                }
+            }`;
+            assertSuccess('use-life-cycle-interface', source);
+        });
+
         it(`should succeed, when life cycle hooks are used with their corresponding interfaces`, () => {
             let source = `
             class App extends Component implements ng.OnInit, ng.OnDestroy  {
