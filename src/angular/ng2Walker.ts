@@ -94,17 +94,17 @@ export class Ng2Walker extends Lint.RuleWalker {
   }
 
   visitClassDeclaration(declaration: ts.ClassDeclaration) {
-    (declaration.decorators || []).forEach(this.visitClassDecorator.bind(this));
+    (<ts.Decorator[]>declaration.decorators || []).forEach(this.visitClassDecorator.bind(this));
     super.visitClassDeclaration(declaration);
   }
 
   visitMethodDeclaration(method: ts.MethodDeclaration) {
-    (method.decorators || []).forEach(this.visitMethodDecorator.bind(this));
+    (<ts.Decorator[]>method.decorators || []).forEach(this.visitMethodDecorator.bind(this));
     super.visitMethodDeclaration(method);
   }
 
   visitPropertyDeclaration(prop: ts.PropertyDeclaration) {
-    (prop.decorators || []).forEach(this.visitPropertyDecorator.bind(this));
+    (<ts.Decorator[]>prop.decorators || []).forEach(this.visitPropertyDecorator.bind(this));
     super.visitPropertyDeclaration(prop);
   }
 

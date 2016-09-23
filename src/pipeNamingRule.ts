@@ -51,8 +51,8 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
 
   visitClassDeclaration(node:ts.ClassDeclaration) {
     let className = node.name.text;
-    let decorators = node.decorators || [];
-    decorators.filter(d=> {
+    let decorators = <ts.Decorator[]>node.decorators || [];
+    decorators.filter(d => {
       let baseExpr = <any>d.expression || {};
       return baseExpr.expression.text === 'Pipe'
     }).forEach(this.validateProperties.bind(this, className));

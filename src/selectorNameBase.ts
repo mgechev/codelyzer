@@ -51,7 +51,8 @@ class SelectorNameValidatorWalker extends Lint.RuleWalker {
   }
 
   visitClassDeclaration(node: ts.ClassDeclaration) {
-    (node.decorators || []).forEach(this.validateDecorator.bind(this, node.name.text));
+    (<ts.Decorator[]>node.decorators || [])
+      .forEach(this.validateDecorator.bind(this, node.name.text));
     super.visitClassDeclaration(node);
   }
 

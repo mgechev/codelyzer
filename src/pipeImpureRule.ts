@@ -20,8 +20,8 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
 
   visitClassDeclaration(node:ts.ClassDeclaration) {
     let className = node.name.text;
-    let decorators = node.decorators || [];
-    decorators.filter(d=> {
+    let decorators = <ts.Decorator[]>node.decorators || [];
+    decorators.filter(d => {
       let baseExpr = <any>d.expression || {};
       return baseExpr.expression.text === 'Pipe'
     }).forEach(this.validateProperties.bind(this, className));
@@ -31,7 +31,7 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
   private validateProperties(className:string, pipe:any) {
     let argument = this.extractArgument(pipe);
     if (argument.kind === SyntaxKind.current().ObjectLiteralExpression) {
-      argument.properties.filter(n=>n.name.text === 'pure')
+      argument.properties.filter(n => n.name.text === 'pure')
       .forEach(this.validateProperty.bind(this, className))
     }
   }

@@ -26,11 +26,11 @@ export class ConstructorMetadataWalker extends Lint.RuleWalker {
     } else if (parent.kind = syntaxKind.ClassDeclaration) {
       parentName= parent.name.text;
     }
-    (node.parameters || []).forEach(this.validateParameter.bind(this, parentName));
+    (<any[]>node.parameters || []).forEach(this.validateParameter.bind(this, parentName));
     super.visitConstructorDeclaration(node);
   }
 
-  validateParameter(className:string, parameter) {
+  validateParameter(className: string, parameter) {
     let parameterName = (<ts.Identifier>parameter.name).text;
     if (parameter.decorators) {
       parameter.decorators.forEach((decorator)=> {
