@@ -11,5 +11,5 @@ os:
 branches:
   only: master
 
-script: npm run lint && npm t
+script: npm run tscv && npm run lint && npm t
 
