@@ -7,7 +7,7 @@
     "noImplicitAny": false,
     "removeComments": true,
     "noLib": false,
-    "outDir": "./dist"
+    "outDir": "./dist",
     "typeRoots": [
       "./node_modules/@types",
       "./node_modules"
