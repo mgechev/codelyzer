@@ -1,6 +1,6 @@
 import {assertFailure, assertSuccess} from './testHelper';
 
-describe('access-missing-declaration', () => {
+describe('no-access-missing-member', () => {
   describe('invalid expressions', () => {
     it('should fail when interpolating missing property', () => {
       let source = `
@@ -11,7 +11,7 @@ describe('access-missing-declaration', () => {
         class Test {
           bar: number;
         }`;
-        assertFailure('access-missing-declaration', source, {
+        assertFailure('no-access-missing-member', source, {
           message: 'The property "foo" that you\'re trying to access does not exist in the class declaration.',
           startPosition: {
             line: 3,
@@ -33,7 +33,7 @@ describe('access-missing-declaration', () => {
         class Test {
           bar() {}
         }`;
-        assertFailure('access-missing-declaration', source, {
+        assertFailure('no-access-missing-member', source, {
           message: 'The method "baz" that you\'re trying to access does not exist in the class declaration. Probably you mean: "bar".',
           startPosition: {
             line: 3,
@@ -55,7 +55,7 @@ describe('access-missing-declaration', () => {
         class Test {
           bar() {}
         }`;
-        assertFailure('access-missing-declaration', source, {
+        assertFailure('no-access-missing-member', source, {
           message: 'The method "baz" that you\'re trying to access does not exist in the class declaration. Probably you mean: "bar".',
           startPosition: {
             line: 3,
@@ -77,7 +77,7 @@ describe('access-missing-declaration', () => {
         class Test {
           bar() {}
         }`;
-        assertFailure('access-missing-declaration', source, {
+        assertFailure('no-access-missing-member', source, {
           message: 'The method "baz" that you\'re trying to access does not exist in the class declaration. Probably you mean: "bar".',
           startPosition: {
             line: 3,
@@ -99,7 +99,7 @@ describe('access-missing-declaration', () => {
         class Test {
           bar() {}
         }`;
-        assertFailure('access-missing-declaration', source, {
+        assertFailure('no-access-missing-member', source, {
           message: 'The method "baz" that you\'re trying to access does not exist in the class declaration. Probably you mean: "bar".',
           startPosition: {
             line: 3,
@@ -121,7 +121,7 @@ describe('access-missing-declaration', () => {
         class Test {
           baz2() {}
         }`;
-        assertFailure('access-missing-declaration', source, {
+        assertFailure('no-access-missing-member', source, {
           message: 'The property "foo" that you\'re trying to access does not exist in the class declaration.',
           startPosition: {
             line: 3,
@@ -144,7 +144,7 @@ describe('access-missing-declaration', () => {
           baz() {}
           getPersonName() {}
         }`;
-        assertFailure('access-missing-declaration', source, {
+        assertFailure('no-access-missing-member', source, {
           message: 'The method "getPrsonName" that you\'re trying to access does not exist in the class declaration. Probably you mean: "getPersonName".',
           startPosition: {
             line: 3,
@@ -166,7 +166,7 @@ describe('access-missing-declaration', () => {
         class Test {
           baz() {}
         }`;
-        assertFailure('access-missing-declaration', source, {
+        assertFailure('no-access-missing-member', source, {
           message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
           startPosition: {
             line: 3,
@@ -188,7 +188,7 @@ describe('access-missing-declaration', () => {
         class Test {
           baz() {}
         }`;
-        assertFailure('access-missing-declaration', source, {
+        assertFailure('no-access-missing-member', source, {
           message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
           startPosition: {
             line: 3,
@@ -210,7 +210,7 @@ describe('access-missing-declaration', () => {
         class Test {
           baz() {}
         }`;
-        assertFailure('access-missing-declaration', source, {
+        assertFailure('no-access-missing-member', source, {
           message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
           startPosition: {
             line: 3,
@@ -232,7 +232,7 @@ describe('access-missing-declaration', () => {
         class Test {
           baz() {}
         }`;
-        assertFailure('access-missing-declaration', source, {
+        assertFailure('no-access-missing-member', source, {
           message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
           startPosition: {
             line: 3,
@@ -255,7 +255,7 @@ describe('access-missing-declaration', () => {
         class Test {
           baz() {}
         }`;
-        assertFailure('access-missing-declaration', source, {
+        assertFailure('no-access-missing-member', source, {
           message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
           startPosition: {
             line: 4,
@@ -279,7 +279,7 @@ describe('access-missing-declaration', () => {
         class Test {
           foo: number;
         }`;
-        assertSuccess('access-missing-declaration', source);
+        assertSuccess('no-access-missing-member', source);
     });
 
     it('should succeed on declared method', () => {
@@ -291,7 +291,7 @@ describe('access-missing-declaration', () => {
         class Test {
           foo() {}
         }`;
-        assertSuccess('access-missing-declaration', source);
+        assertSuccess('no-access-missing-member', source);
     });
   });
 
@@ -305,7 +305,7 @@ describe('access-missing-declaration', () => {
         class Test {
           foo = {};
         }`;
-        assertSuccess('access-missing-declaration', source);
+        assertSuccess('no-access-missing-member', source);
     });
 
     it('should work with existing single-level non-existing nested properties', () => {
@@ -317,7 +317,7 @@ describe('access-missing-declaration', () => {
         class Test {
           foo1 = {};
         }`;
-        assertFailure('access-missing-declaration', source, {
+        assertFailure('no-access-missing-member', source, {
           message: 'The property "foo" that you\'re trying to access does not exist in the class declaration. Probably you mean: "foo1".',
           startPosition: {
             line: 3,
@@ -339,7 +339,7 @@ describe('access-missing-declaration', () => {
         class Test {
           foo = {};
         }`;
-        assertSuccess('access-missing-declaration', source);
+        assertSuccess('no-access-missing-member', source);
     });
 
   });

@@ -57,7 +57,9 @@ Below you can find a recommended configuration which is based on the [Angular 2 
   "pipe-naming": [true, "camelCase", "sg"],
   "component-class-suffix": true,
   "directive-class-suffix": true,
-  "import-destructuring-spacing": true
+  "import-destructuring-spacing": true,
+  "templates-use-public": true,
+  "no-access-missing-member": true
 }
 ```
 
