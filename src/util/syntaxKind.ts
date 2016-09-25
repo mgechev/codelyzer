@@ -326,6 +326,10 @@ module SyntaxKind {
     JSDocNullKeyword?: number; // 2.1
     JSDocUndefinedKeyword?: number; // 2.1
     JSDocNeverKeyword?: number; // 2.1
+    NotEmittedStatement?: number;
+    PartiallyEmittedExpression?: number;
+    FirstCompoundAssignment?: number;
+    LastCompoundAssignment?: number;
   }
 
   var cachedKinds: SyntaxKind.SyntaxKind = null;
