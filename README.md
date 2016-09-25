@@ -59,7 +59,8 @@ Below you can find a recommended configuration which is based on the [Angular 2 
   "directive-class-suffix": true,
   "import-destructuring-spacing": true,
   "templates-use-public": true,
-  "no-access-missing-member": true
+  "no-access-missing-member": true,
+  "invoke-injectable": true
 }
 ```
 
