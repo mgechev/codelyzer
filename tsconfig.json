@@ -1,12 +1,26 @@
 {
   "compilerOptions": {
-      "experimentalDecorators": true,
-      "target": "es5",
-      "module": "commonjs",
-      "declaration": false,
-      "noImplicitAny": false,
-      "removeComments": true,
-      "noLib": false,
-      "outDir": "./dist"
+    "experimentalDecorators": true,
+    "target": "es5",
+    "module": "commonjs",
+    "declaration": false,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "noLib": false,
+    "outDir": "./dist"
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules"
+    ],
+    "types": [
+      "mocha",
+      "chai",
+      "node",
+      "sprintf-js",
+      "es6-shim"
+    ],
+    "exclude": [
+      "node_modules"
+    ]
   }
 }
