@@ -8,10 +8,5 @@
       "removeComments": true,
       "noLib": false,
       "outDir": "./dist"
-  },
-  "exclude": [
-      "typings/browser.d.ts",
-      "typings/browser",
-      "node_modules"
-  ]
+  }
 }
