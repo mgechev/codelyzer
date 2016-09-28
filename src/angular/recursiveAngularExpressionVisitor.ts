@@ -47,7 +47,7 @@ export class RecursiveAngularExpressionVisitor extends Lint.RuleWalker implement
     // Note that we add the expression property in ng2Walker.
     // This is due an issue in the ParseSpan in the child expressions
     // of the interpolation AST.
-    const parts: string[] = (<any>ast).expression.split(/\{\{|\}\}/g).map((s: string) => {
+    const parts: string[] = (<any>ast).interpolateExpression.split(/\{\{|\}\}/g).map((s: string) => {
       return s.replace('}}', '');
     }).filter((e: string, i: number) => (i % 2));
     ast.expressions.forEach((e: any, i: number) => {
