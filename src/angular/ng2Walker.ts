@@ -138,6 +138,9 @@ export class Ng2Walker extends Lint.RuleWalker {
     let name = getDecoratorName(decorator);
     if (name === 'Component') {
       this.visitNg2Component(<ts.ClassDeclaration>decorator.parent, decorator);
+      if (!(<ts.ObjectLiteralExpression>(<ts.CallExpression>decorator.expression).arguments[0]).properties) {
+        return;
+      }
       const inlineTemplate = (<ts.ObjectLiteralExpression>
           (<ts.CallExpression>decorator.expression).arguments[0])
             .properties.map((prop: any) => {
