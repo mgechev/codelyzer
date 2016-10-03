@@ -146,5 +146,44 @@ describe('ng2Walker', () => {
       (<any>chai.expect(templateSpy).to.not.have.been).called();
     }).not.to.throw();
   });
+
+  it('should ignore empty @Component decorator', () => {
+    let source = `
+      @Component()
+      class Baz {}
+    `;
+    let ruleArgs: tslint.IOptions = {
+      ruleName: 'foo',
+      ruleArguments: ['foo'],
+      disabledIntervals: null
+    };
+    let sf = ts.createSourceFile('foo', source, null);
+    let walker = new Ng2Walker(sf, ruleArgs);
+    (<any>chai).expect(() => {
+      let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
+      walker.walk(sf);
+      (<any>chai.expect(templateSpy).to.not.have.been).called();
+    }).not.to.throw();
+  });
+
+  it('should ignore non-invoked @Component decorator', () => {
+    let source = `
+      @Component
+      class Baz {}
+    `;
+    let ruleArgs: tslint.IOptions = {
+      ruleName: 'foo',
+      ruleArguments: ['foo'],
+      disabledIntervals: null
+    };
+    let sf = ts.createSourceFile('foo', source, null);
+    let walker = new Ng2Walker(sf, ruleArgs);
+    (<any>chai).expect(() => {
+      let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
+      walker.walk(sf);
+      (<any>chai.expect(templateSpy).to.not.have.been).called();
+    }).not.to.throw();
+  });
+
 });
 
