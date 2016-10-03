@@ -170,7 +170,7 @@ export class Ng2Walker extends Lint.RuleWalker {
     if (ExpTypes.ASTWithSource(text.value)) {
       // Note that will not be reliable for different interpolation symbols
       const ast: any = (<e.ASTWithSource>text.value).ast;
-      ast.expression = (<any>text.value).source;
+      ast.interpolateExpression = (<any>text.value).source;
       this.visitNg2TemplateAST(ast,
           context, templateStart + getExpressionDisplacement(text));
     }
@@ -178,6 +178,8 @@ export class Ng2Walker extends Lint.RuleWalker {
 
   protected visitNg2TemplateBoundElementPropertyAst(prop: BoundElementPropertyAst,
       context: ts.ClassDeclaration, templateStart: number) {
+    const ast: any = (<e.ASTWithSource>prop.value).ast;
+    ast.interpolateExpression = (<any>prop.value).source;
     this.visitNg2TemplateAST(prop.value, context, templateStart + getExpressionDisplacement(prop));
   }
 
