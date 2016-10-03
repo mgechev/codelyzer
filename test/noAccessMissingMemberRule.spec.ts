@@ -342,5 +342,17 @@ describe('no-access-missing-member', () => {
         assertSuccess('no-access-missing-member', source);
     });
 
+    it('should work with existing properties and pipes', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<div>{{ foo.baz() }}</div>
+        })
+        class Test {
+          foo = {};
+        }`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
   });
 });

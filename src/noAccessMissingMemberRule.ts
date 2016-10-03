@@ -30,11 +30,11 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
     let available: string[];
     if (type === DeclarationType.Method) {
       symbolType = 'method';
-      available = getDeclaredMethodNames(this.context);
     } else {
       symbolType = 'property';
-      available = getDeclaredPropertyNames(this.context);
     }
+    available = getDeclaredMethodNames(this.context)
+      .concat(getDeclaredPropertyNames(this.context));
     ast.receiver.visit(this);
     // Do not support nested properties yet
     if (ast.receiver && (<any>ast.receiver).name) {
