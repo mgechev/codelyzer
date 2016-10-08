@@ -1,6 +1,9 @@
 import * as Lint from 'tslint/lib/lint';
 import * as ts from 'typescript';
 import * as e from '@angular/compiler/src/expression_parser/ast';
+import { INTERPOLATION } from './config';
+
+const escapeString = require('escape-string-regexp');
 
 export class RecursiveAngularExpressionVisitor extends Lint.RuleWalker implements e.AstVisitor {
   constructor(sourceFile: ts.SourceFile, options: Lint.IOptions,
@@ -47,8 +50,9 @@ export class RecursiveAngularExpressionVisitor extends Lint.RuleWalker implement
     // Note that we add the expression property in ng2Walker.
     // This is due an issue in the ParseSpan in the child expressions
     // of the interpolation AST.
-    const parts: string[] = (<any>ast).interpolateExpression.split(/\{\{|\}\}/g).map((s: string) => {
-      return s.replace('}}', '');
+    const regexp = new RegExp(escapeString(INTERPOLATION[0]) + '|' + escapeString(INTERPOLATION[1]), 'g');
+    const parts: string[] = (<any>ast).interpolateExpression.split(regexp).map((s: string) => {
+      return s.replace(INTERPOLATION[1], '');
     }).filter((e: string, i: number) => (i % 2));
     ast.expressions.forEach((e: any, i: number) => {
       // for {{

@@ -63,10 +63,11 @@
   },
   "peerDependencies": {
     "tslint": "^3.9.0",
-    "@angular/compiler": "^2.0.0",
-    "@angular/core": "^2.0.0"
+    "@angular/compiler": "^2.0.2",
+    "@angular/core": "^2.0.2"
   },
   "dependencies": {
+    "escape-string-regexp": "^1.0.5",
     "sprintf-js": "^1.0.3"
   }
 }
