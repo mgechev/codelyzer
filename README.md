@@ -17,7 +17,10 @@ You can run the static code analyzer over web apps, NativeScript, Ionic, etc.
 
 ```
 ng new codelyzer
+ng lint
 ```
+
+Note that by default all components are aligned with the style guide so you won't see any errors in the console.
 
 ### Angular Seed
 
@@ -33,6 +36,8 @@ cd angular-seed && npm i
 # Run all the tslint and codelyzer rules
 npm run lint
 ```
+
+Note that by default all components are aligned with the style guide so you won't see any errors in the console.
 
 ### Custom Setup
 
