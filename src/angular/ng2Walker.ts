@@ -17,6 +17,8 @@ import { parseTemplate } from './templateParser';
 import { RecursiveAngularExpressionVisitor } from './recursiveAngularExpressionVisitor';
 import { ExpTypes } from './expressionTypes';
 
+import SyntaxKind = require('../util/syntaxKind');
+
 const getDecoratorName = (decorator: ts.Decorator) => {
   let baseExpr = <any>decorator.expression || {};
   let expr = baseExpr.expression || {};
@@ -151,8 +153,15 @@ export class Ng2Walker extends Lint.RuleWalker {
             return null;
           }).filter((el: any) => !!el).map((prop: any) => prop.initializer).pop();
       if (inlineTemplate) {
-        this.visitNg2TemplateHelper(parseTemplate(inlineTemplate.text),
-            <ts.ClassDeclaration>decorator.parent, inlineTemplate.pos + 2); // skip the quote
+        try {
+          if (inlineTemplate.kind === ts.SyntaxKind.StringLiteral ||
+              inlineTemplate.kind === SyntaxKind.current().FirstTemplateToken) {
+            this.visitNg2TemplateHelper(parseTemplate(inlineTemplate.text),
+                <ts.ClassDeclaration>decorator.parent, inlineTemplate.pos + 2); // skip the quote
+          }
+        } catch (e) {
+          console.error('Cannot parse the template', e);
+        }
       }
     } else if (name === 'Directive') {
       this.visitNg2Directive(<ts.ClassDeclaration>decorator.parent, decorator);

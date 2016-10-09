@@ -125,6 +125,52 @@ describe('ng2Walker', () => {
     }).not.to.throw();
   });
 
+  it('should not thow when a template is dynamically injected', () => {
+    let source = `
+      const template = '{{foo}}';
+      @Component({
+        selector: 'foo',
+        template: require('template') as string
+      })
+      class Baz {}
+    `;
+    let ruleArgs: tslint.IOptions = {
+      ruleName: 'foo',
+      ruleArguments: ['foo'],
+      disabledIntervals: null
+    };
+    let sf = ts.createSourceFile('foo', source, null);
+    let walker = new Ng2Walker(sf, ruleArgs);
+    (<any>chai).expect(() => {
+      let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
+      walker.walk(sf);
+      (<any>chai.expect(templateSpy).to.not.have.been).called();
+    }).not.to.throw();
+  });
+
+  it('should not thow when a template is template string', () => {
+    let source = `
+      const template = '{{foo}}';
+      @Component({
+        selector: 'foo',
+        template: \`foo \${test} \`
+      })
+      class Baz {}
+    `;
+    let ruleArgs: tslint.IOptions = {
+      ruleName: 'foo',
+      ruleArguments: ['foo'],
+      disabledIntervals: null
+    };
+    let sf = ts.createSourceFile('foo', source, null);
+    let walker = new Ng2Walker(sf, ruleArgs);
+    (<any>chai).expect(() => {
+      let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
+      walker.walk(sf);
+      (<any>chai.expect(templateSpy).to.not.have.been).called();
+    }).not.to.throw();
+  });
+
   it('should ignore templateUrl', () => {
     let source = `
       @Component({
