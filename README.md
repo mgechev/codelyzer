@@ -131,7 +131,7 @@ Codelyzer should work out of the box with Atom but for VSCode you will have to o
 
 Now you should have the following result:
 
-![VSCode Codelyzer](http://gifyu.com/images/out7f731.gif)
+![VSCode Codelyzer](http://gifyu.com/images/cd.gif)
 
 Enjoy!
 
