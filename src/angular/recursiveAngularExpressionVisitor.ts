@@ -54,6 +54,7 @@ export class RecursiveAngularExpressionVisitor extends Lint.RuleWalker implement
     const parts: string[] = (<any>ast).interpolateExpression.split(regexp).map((s: string) => {
       return s.replace(INTERPOLATION[1], '');
     }).filter((e: string, i: number) => (i % 2));
+
     ast.expressions.forEach((e: any, i: number) => {
       // for {{
       this.basePosition += ast.strings[i].length + 2;
