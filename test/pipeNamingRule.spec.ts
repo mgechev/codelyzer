@@ -60,6 +60,15 @@ describe('pipe-naming', () => {
         });
     });
 
+    describe('empty pipe', () => {
+        it('should not fail when @Pipe not invoked', () => {
+            let source = `
+                    @Pipe
+                    class Test {}`;
+            assertSuccess('pipe-naming', source, ['camelCase', 'ng']);
+        });
+    });
+
     describe('valid pipe name', () => {
         it('should succeed when set valid name with prefix ng in @Pipe', () => {
             let source = `
