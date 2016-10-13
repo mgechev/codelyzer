@@ -20,7 +20,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 export class ClassMetadataWalker extends Ng2Walker {
   visitNg2Component(controller:ts.ClassDeclaration, decorator:ts.Decorator) {
     let name = controller.name;
-    let className:string = name.text;
+    let className: string = name.text;
     if (!Rule.validate(className)) {
       this.addFailure(
         this.createFailure(

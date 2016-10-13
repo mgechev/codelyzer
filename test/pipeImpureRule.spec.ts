@@ -33,6 +33,15 @@ describe('pipe-impure', () => {
         });
     });
 
+    describe('empty pipe', () => {
+        it('should not fail', () => {
+            let source = `
+                    @Pipe
+                    class Test {}`;
+            assertSuccess('pipe-impure', source);
+        });
+    });
+
     describe('default pipe', () => {
         it('should succeed when Pipe pure property is not set', () => {
             let source = `

@@ -33,6 +33,15 @@ describe('directive-class-suffix', () => {
         });
     });
 
+    describe('not called decorator', () => {
+        it('should not fail when @Directive is not called', () => {
+            let source = `
+            @Directive
+            class TestDirective {}`;
+            assertSuccess('directive-class-suffix', source);
+        });
+    });
+
     describe('valid directive class', () => {
         it('should succeed when is used @Component decorator', () => {
             let source = `

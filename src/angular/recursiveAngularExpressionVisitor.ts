@@ -1,9 +1,6 @@
 import * as Lint from 'tslint/lib/lint';
 import * as ts from 'typescript';
 import * as e from '@angular/compiler/src/expression_parser/ast';
-import { INTERPOLATION } from './config';
-
-const escapeString = require('escape-string-regexp');
 
 export class RecursiveAngularExpressionVisitor extends Lint.RuleWalker implements e.AstVisitor {
   constructor(sourceFile: ts.SourceFile, options: Lint.IOptions,
@@ -46,22 +43,7 @@ export class RecursiveAngularExpressionVisitor extends Lint.RuleWalker implement
   visitImplicitReceiver(ast: e.ImplicitReceiver, context: any): any { return null; }
 
   visitInterpolation(ast: e.Interpolation, context: any): any {
-    let oldDisplacement = this.basePosition;
-    // Note that we add the expression property in ng2Walker.
-    // This is due an issue in the ParseSpan in the child expressions
-    // of the interpolation AST.
-    const regexp = new RegExp(escapeString(INTERPOLATION[0]) + '|' + escapeString(INTERPOLATION[1]), 'g');
-    const parts: string[] = (<any>ast).interpolateExpression.split(regexp).map((s: string) => {
-      return s.replace(INTERPOLATION[1], '');
-    }).filter((e: string, i: number) => (i % 2));
-    ast.expressions.forEach((e: any, i: number) => {
-      // for {{
-      this.basePosition += ast.strings[i].length + 2;
-      this.visit(e, context);
-      // for }}
-      this.basePosition += 2 + parts[i].length;
-    });
-    this.basePosition = oldDisplacement;
+    ast.expressions.forEach((e: any, i: number) => this.visit(e, context));
     return null;
   }
 

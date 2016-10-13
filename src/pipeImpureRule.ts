@@ -1,6 +1,7 @@
 import * as Lint from 'tslint/lib/lint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
+import {Ng2Walker} from './angular/ng2Walker';
 import SyntaxKind = require('./util/syntaxKind');
 
 export class Rule extends Lint.Rules.AbstractRule {
@@ -12,20 +13,14 @@ export class Rule extends Lint.Rules.AbstractRule {
   }
 }
 
-export class ClassMetadataWalker extends Lint.RuleWalker {
+export class ClassMetadataWalker extends Ng2Walker {
 
   constructor(sourceFile:ts.SourceFile, private rule:Rule) {
     super(sourceFile, rule.getOptions());
   }
 
-  visitClassDeclaration(node:ts.ClassDeclaration) {
-    let className = node.name.text;
-    let decorators = <ts.Decorator[]>node.decorators || [];
-    decorators.filter(d => {
-      let baseExpr = <any>d.expression || {};
-      return baseExpr.expression.text === 'Pipe'
-    }).forEach(this.validateProperties.bind(this, className));
-    super.visitClassDeclaration(node);
+  visitNg2Pipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
+    this.validateProperties(controller.name.text, decorator);
   }
 
   private validateProperties(className:string, pipe:any) {
