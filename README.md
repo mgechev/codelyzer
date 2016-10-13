@@ -120,6 +120,8 @@ component.ts[6, 18]: The property "nme" that you're trying to access does not ex
 
 ### Editor Configuration
 
+**Note that you need to have tslint plugin install on your editor**.
+
 Codelyzer should work out of the box with Atom but for VSCode you will have to open `Code > Preferences > User Settings`, and enter the following config:
 
 ```json
