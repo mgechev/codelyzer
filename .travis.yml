@@ -11,5 +11,7 @@ os:
 branches:
   only: master
 
+before_install: npm i rxjs@5.0.0-beta.12 @angular/core @angular/compiler zone.js@0.6.25
+
 script: npm run tscv && npm run lint && npm t
 

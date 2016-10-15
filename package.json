@@ -1,6 +1,6 @@
 {
   "name": "codelyzer",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "Linting for Angular 2 applications, following https:/angular.io/styleguide.",
   "scripts": {
     "lint": "tslint -c tslint.json src/**/*.ts test/**/*.ts",
@@ -63,11 +63,10 @@
   },
   "peerDependencies": {
     "tslint": "^3.9.0",
-    "@angular/compiler": "^2.0.2",
-    "@angular/core": "^2.0.2"
+    "@angular/compiler": "~2.1.0",
+    "@angular/core": "~2.1.0"
   },
   "dependencies": {
-    "escape-string-regexp": "^1.0.5",
     "sprintf-js": "^1.0.3"
   }
 }

@@ -138,11 +138,14 @@ export class Ng2Walker extends Lint.RuleWalker {
 
   protected visitClassDecorator(decorator: ts.Decorator) {
     let name = getDecoratorName(decorator);
+    // Not invoked @Component or @Pipe, or @Directive
+    if (!(<ts.CallExpression>decorator.expression).arguments ||
+        !(<ts.CallExpression>decorator.expression).arguments.length ||
+        !(<ts.ObjectLiteralExpression>(<ts.CallExpression>decorator.expression).arguments[0]).properties) {
+      return;
+    }
+
     if (name === 'Component') {
-      if (!(<ts.CallExpression>decorator.expression).arguments.length ||
-          !(<ts.ObjectLiteralExpression>(<ts.CallExpression>decorator.expression).arguments[0]).properties) {
-        return;
-      }
       this.visitNg2Component(<ts.ClassDeclaration>decorator.parent, decorator);
       const inlineTemplate = (<ts.ObjectLiteralExpression>
           (<ts.CallExpression>decorator.expression).arguments[0])
@@ -165,6 +168,8 @@ export class Ng2Walker extends Lint.RuleWalker {
       }
     } else if (name === 'Directive') {
       this.visitNg2Directive(<ts.ClassDeclaration>decorator.parent, decorator);
+    } else if (name === 'Pipe') {
+      this.visitNg2Pipe(<ts.ClassDeclaration>decorator.parent, decorator);
     }
   }
 
@@ -208,6 +213,8 @@ export class Ng2Walker extends Lint.RuleWalker {
   protected visitNg2Component(controller: ts.ClassDeclaration, decorator: ts.Decorator) {}
 
   protected visitNg2Directive(controller: ts.ClassDeclaration, decorator: ts.Decorator) {}
+
+  protected visitNg2Pipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {}
 
   protected visitNg2Input(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {}
 
