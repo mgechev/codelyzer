@@ -2,7 +2,8 @@ import * as ts from 'typescript';
 import * as tslint from 'tslint/lib/lint';
 
 import {Ng2Walker} from '../../src/angular/ng2Walker';
-import {RecursiveAngularExpressionVisitor} from '../../src/angular/recursiveAngularExpressionVisitor';
+import {RecursiveAngularExpressionVisitor} from '../../src/angular/templates/recursiveAngularExpressionVisitor';
+import {BasicTemplateAstVisitor} from '../../src/angular/templates/basicTemplateAstVisitor';
 import chai = require('chai');
 import * as spies from 'chai-spies';
 
@@ -76,8 +77,10 @@ describe('ng2Walker', () => {
       disabledIntervals: null
     };
     let sf = ts.createSourceFile('foo', source, null);
-    let walker = new Ng2Walker(sf, ruleArgs);
-    let templateSpy = chaiSpy.on(walker, 'visitNg2Template');
+    let walker = new Ng2Walker(sf, ruleArgs, {
+      templateVisitorCtrl: BasicTemplateAstVisitor
+    });
+    let templateSpy = chaiSpy.on(BasicTemplateAstVisitor.prototype, 'visit');
     walker.walk(sf);
     (<any>chai.expect(templateSpy).to.have.been).called();
   });
@@ -229,6 +232,33 @@ describe('ng2Walker', () => {
       walker.walk(sf);
       (<any>chai.expect(templateSpy).to.not.have.been).called();
     }).not.to.throw();
+  });
+
+  describe('inline styles', () => {
+
+    it('should not throw when there are inline styles', () => {
+      let source = `
+        @Component({
+          styles: [
+            \`foo\`
+          ]
+        })
+        class Baz {}
+      `;
+      let ruleArgs: tslint.IOptions = {
+        ruleName: 'foo',
+        ruleArguments: ['foo'],
+        disabledIntervals: null
+      };
+      let sf = ts.createSourceFile('foo', source, null);
+      let walker = new Ng2Walker(sf, ruleArgs);
+      (<any>chai).expect(() => {
+        let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
+        walker.walk(sf);
+        (<any>chai.expect(templateSpy).to.not.have.been).called();
+      }).not.to.throw();
+    });
+
   });
 
 });

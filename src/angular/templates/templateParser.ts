@@ -1,5 +1,5 @@
 import { __core_private__ as r, NO_ERRORS_SCHEMA } from '@angular/core';
-import { INTERPOLATION } from './config';
+import { INTERPOLATION } from '../config';
 import * as compiler from '@angular/compiler';
 
 export const parseTemplate = (template: string) => {

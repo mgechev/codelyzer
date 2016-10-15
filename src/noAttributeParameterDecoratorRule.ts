@@ -37,7 +37,7 @@ export class ConstructorMetadataWalker extends Lint.RuleWalker {
         let baseExpr = <any>decorator.expression || {};
         let expr = baseExpr.expression || {};
         let name = expr.text;
-        if (name == 'Attribute') {
+        if (name === 'Attribute') {
           let failureConfig:string[] = [className, parameterName, parameterName];
           failureConfig.unshift(Rule.FAILURE_STRING);
           this.addFailure(
