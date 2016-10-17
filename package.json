@@ -67,6 +67,7 @@
     "@angular/core": "~2.1.0"
   },
   "dependencies": {
+    "cssauron": "^1.4.0",
     "sprintf-js": "^1.0.3"
   }
 }

@@ -4,38 +4,19 @@ import * as compiler from '@angular/compiler';
 import {
   TemplateAst
 } from '@angular/compiler';
+import { parseTemplate } from './templates/templateParser';
 
 import {parseCss} from './styles/parseCss';
 import {CssAst} from './styles/cssAst';
 import {BasicCssAstVisitor, CssAstVisitorCtrl} from './styles/basicCssAstVisitor';
 
 import {RecursiveAngularExpressionVisitorCtr, BasicTemplateAstVisitor, TemplateAstVisitorCtr} from './templates/basicTemplateAstVisitor';
-import { parseTemplate } from './templates/templateParser';
 import { RecursiveAngularExpressionVisitor } from './templates/recursiveAngularExpressionVisitor';
+
+import {getDecoratorName, isSimpleTemplateString, getDecoratorPropertyInitializer} from '../util/utils';
 
 import SyntaxKind = require('../util/syntaxKind');
 
-const isSimpleTemplateString = (e: any) => {
-  return e.kind === ts.SyntaxKind.StringLiteral ||
-         e.kind === SyntaxKind.current().FirstTemplateToken;
-};
-
-const getDecoratorPropertyInitializer = (decorator: ts.Decorator, name: string) => {
-  return (<ts.ObjectLiteralExpression>
-    (<ts.CallExpression>decorator.expression).arguments[0])
-      .properties.map((prop: any) => {
-      if (prop.name.text === name) {
-        return prop;
-      }
-      return null;
-    }).filter((el: any) => !!el).map((prop: any) => prop.initializer).pop();
-};
-
-const getDecoratorName = (decorator: ts.Decorator) => {
-  let baseExpr = <any>decorator.expression || {};
-  let expr = baseExpr.expression || {};
-  return expr.text;
-};
 
 const getDecoratorStringArgs = (decorator: ts.Decorator) => {
   let baseExpr = <any>decorator.expression || {};
@@ -51,7 +32,7 @@ export interface Ng2WalkerConfig {
 
 export class Ng2Walker extends Lint.RuleWalker {
   constructor(sourceFile: ts.SourceFile,
-    private _originalOptions: Lint.IOptions,
+    protected _originalOptions: Lint.IOptions,
     private _config?: Ng2WalkerConfig) {
     super(sourceFile, _originalOptions);
     this._normalizeConfig(_config);
@@ -158,24 +139,25 @@ export class Ng2Walker extends Lint.RuleWalker {
 
   protected visitNg2HostListener(method: ts.MethodDeclaration, decorator: ts.Decorator, args: string[]) {}
 
-  private visitNg2TemplateHelper(roots: compiler.TemplateAst[], context: ts.ClassDeclaration, baseStart: number) {
+  protected visitNg2TemplateHelper(roots: compiler.TemplateAst[], context: ts.ClassDeclaration, baseStart: number) {
     if (!roots || !roots.length) {
       return;
     } else {
       const visitor =
         new this._config.templateVisitorCtrl(
           this.getSourceFile(), this._originalOptions, context, baseStart, this._config.expressionVisitorCtrl);
-      roots.forEach((root: compiler.TemplateAst) => visitor.visit(root));
+      roots.forEach(r => r.visit(visitor, null));
+      // roots.forEach((root: compiler.TemplateAst) => visitor.visit(root));
       visitor.getFailures().forEach(f => this.addFailure(f));
     }
   }
 
-  private visitNg2StyleHelper(style: CssAst, context: ts.ClassDeclaration, baseStart: number) {
+  protected visitNg2StyleHelper(style: CssAst, context: ts.ClassDeclaration, baseStart: number) {
     if (!style) {
       return;
     } else {
       const visitor = new this._config.cssVisitorCtrl(this.getSourceFile(), this._originalOptions, context, baseStart);
-      visitor.visitCssValue(style);
+      style.visit(visitor);
       visitor.getFailures().forEach(f => this.addFailure(f));
     }
   }
