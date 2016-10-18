@@ -3,7 +3,7 @@ import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
 import { stringDistance } from './util/utils';
 import {Ng2Walker} from './angular/ng2Walker';
-import {RecursiveAngularExpressionVisitor} from './angular/recursiveAngularExpressionVisitor';
+import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAngularExpressionVisitor';
 import {getDeclaredMethodNames, getDeclaredPropertyNames} from './util/classDeclarationUtils';
 import * as e from '@angular/compiler/src/expression_parser/ast';
 
@@ -99,8 +99,9 @@ export class Rule extends Lint.Rules.AbstractRule {
   public apply(sourceFile:ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
         new Ng2Walker(sourceFile,
-            this.getOptions(),
-            SymbolAccessValidator));
+            this.getOptions(), {
+              expressionVisitorCtrl: SymbolAccessValidator
+            }));
   }
 }
 
