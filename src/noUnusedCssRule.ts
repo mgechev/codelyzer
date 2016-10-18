@@ -6,11 +6,15 @@ import {BasicCssAstVisitor} from './angular/styles/basicCssAstVisitor';
 import {BasicTemplateAstVisitor} from './angular/templates/basicTemplateAstVisitor';
 import {
   TemplateAst,
-  ElementAst
+  ElementAst,
+  PropertyBindingType
 } from '@angular/compiler';
 import {parseTemplate} from './angular/templates/templateParser';
-import {CssAst, CssSelectorAst} from './angular/styles/cssAst';
+import {CssAst, CssSelectorRuleAst, CssSelectorAst} from './angular/styles/cssAst';
 
+const CssSelectorTokenizer = require('css-selector-tokenizer');
+
+// Initialize the selector accessors
 const lang = require('cssauron')({
   tag(node: ElementAst) {
     return (node.name || '').toLowerCase();
@@ -18,11 +22,18 @@ const lang = require('cssauron')({
   // We do not support it for now
   contents(node: ElementAst) { return ''; },
   id(node: ElementAst) {
-    return node.attrs.filter(a => a.name.toLowerCase() === 'id').pop().value;
+    return this.attr(node, 'id');
   },
-  // Will get more complicated with ngClass and [class.foo]
   'class'(node: ElementAst) {
-    return node.attrs.filter(a => a.name.toLowerCase() === 'class').pop().value;
+    const classBindings = (node.inputs || [])
+      .filter(b => b.type === PropertyBindingType.Class)
+      .map(b => b.name).join(' ');
+    const classAttr = node.attrs.filter(a => a.name.toLowerCase() === 'class').pop();
+    let staticClasses = '';
+    if (classAttr) {
+      staticClasses = classAttr.value + ' ';
+    }
+    return staticClasses + classBindings;
   },
   parent(node: any) {
     return node.parentNode;
@@ -31,10 +42,15 @@ const lang = require('cssauron')({
     return node.children;
   },
   attr(node: ElementAst, attr: string) {
-    return node.attrs.filter(a => a.name === attr).pop().value;
+    const targetAttr = node.attrs.filter(a => a.name === attr).pop();
+    if (targetAttr) {
+      return targetAttr.value;
+    }
+    return undefined;
   }
 });
 
+// Visitor which normalizes the elements and finds out if we have a match
 class ElementVisitor extends BasicTemplateAstVisitor {
   visitElement(ast: ElementAst, fn: any) {
     fn(ast);
@@ -44,6 +60,44 @@ class ElementVisitor extends BasicTemplateAstVisitor {
       }
       this.visit(c, fn);
     });
+  }
+}
+
+// Finds out if selector of given type has been used
+const hasSelector = (s: any, type: string) => {
+  if (!s) {
+    return false;
+  }
+  if (s.type === 'selector' || s.type === 'selectors') {
+    return (s.nodes || []).some(n => hasSelector(n, type));
+  } else {
+    return s.type === type;
+  }
+};
+
+const dynamicFilters = {
+  id(ast: ElementAst, selector: any) {
+    return (ast.inputs || []).some(i => i.name === 'id');
+  },
+  attribute(ast: ElementAst, selector: any) {
+    return (ast.inputs || []).some(i => i.type === PropertyBindingType.Attribute);
+  },
+  'class'(ast: ElementAst, selector: any) {
+    return (ast.inputs || []).some(i => i.name === 'className' || i.name === 'ngClass');
+  }
+};
+
+// Filters elements following the strategies:
+// - If has selector by id and any of the elements has a dynamically set id we just skip it.
+// - If has selector by class and any of the elements has a dynamically set class we just skip it.
+// - If has selector by attribute and any of the elements has a dynamically set attribute we just skip it.
+class ElementFilterVisitor extends BasicTemplateAstVisitor {
+  shouldVisit(ast: ElementAst, strategies: any, selectorTypes: any): boolean {
+    return Object.keys(strategies).every(s => {
+      const strategy = strategies[s];
+      return !selectorTypes[s] || !strategy(ast);
+    }) && (ast.children || [])
+      .every(c => ast instanceof ElementAst && this.shouldVisit(<ElementAst>c, strategies, selectorTypes));
   }
 }
 
@@ -61,16 +115,42 @@ export class Rule extends Lint.Rules.AbstractRule {
 
 class UnusedCssVisitor extends BasicCssAstVisitor {
   templateAst: TemplateAst;
+
+  visitCssSelectorRule(ast: CssSelectorRuleAst) {
+    const match = ast.selectors.some(s => this.visitCssSelector(s));
+    if (!match) {
+      this.addFailure(this.createFailure(this.templateStart + ast.start.offset,
+        ast.end.offset - ast.start.offset, 'Unused styles'));
+    }
+  }
+
   visitCssSelector(ast: CssSelectorAst) {
     const parts = [];
     for (let i = 0; i < ast.selectorParts.length; i += 1) {
       const c = ast.selectorParts[i];
-      if (c.strValue.indexOf('::') >= 0) {
+      c.strValue = c.strValue.split('::').shift();
+      // Stop on /deep/ and >>>
+      if (c.strValue.endsWith('/') ||
+          c.strValue.endsWith('>')) {
+        parts.push(c.strValue);
         break;
+      } else if (!c.strValue.startsWith(':')) { // skip :host
+        parts.push(c.strValue);
       }
-      parts.push(c.strValue);
+    }
+    if (!parts.length) {
+      return true;
     }
     const strippedSelector = parts.map(s => s.replace(/\/|>$/, '').trim()).join(' ');
+    const elementFilterVisitor = new ElementFilterVisitor(this.getSourceFile(), this._originalOptions, this.context, 0);
+    const tokenized = CssSelectorTokenizer.parse(strippedSelector);
+    const selectorTypesCache = Object.keys(dynamicFilters).reduce((a: any, key: string) => {
+      a[key] = hasSelector(tokenized, key);
+      return a;
+    }, {});
+    if (!elementFilterVisitor.shouldVisit(<ElementAst>this.templateAst, dynamicFilters, selectorTypesCache)) {
+      return true;
+    }
     let matchFound = false;
     const selector = (element: ElementAst) => {
       if (lang(strippedSelector)(element)) {
@@ -81,13 +161,11 @@ class UnusedCssVisitor extends BasicCssAstVisitor {
     };
     const visitor = new ElementVisitor(this.getSourceFile(), this._originalOptions, this.context, 0);
     visitor.visit(this.templateAst, selector);
-    if (!matchFound) {
-      this.addFailure(this.createFailure(this.templateStart + ast.start.offset,
-        strippedSelector.length, 'Unused style'));
-    }
+    return matchFound;
   }
 }
 
+// Finds the template and wrapes the parsed content into a root element
 export class UnusedCssNg2Visitor extends Ng2Walker {
   private templateAst: TemplateAst;
 
