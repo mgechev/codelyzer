@@ -50,7 +50,6 @@ describe('component-selector-name', () => {
       class Test {}`;
       assertSuccess('component-selector-name', source, 'kebab-case');
     });
-
     it('should succeed with empty file', () => {
       let source = ``;
       assertSuccess('component-selector-name', source, 'kebab-case');
@@ -60,6 +59,14 @@ describe('component-selector-name', () => {
       const selectorName = 'fooBar';
       @Component({
         selector: selectorName
+      })
+      class Test {}`;
+      assertSuccess('component-selector-name', source, 'kebab-case');
+    });
+    it('should succeed when is used, with multiple selectors', () => {
+      let source = `
+      @Component({
+        selector: 'sg-foo-bar.test[test2]:not(p)'
       })
       class Test {}`;
       assertSuccess('component-selector-name', source, 'kebab-case');

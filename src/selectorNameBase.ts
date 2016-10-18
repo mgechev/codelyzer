@@ -1,6 +1,7 @@
 import * as ts from 'typescript';
 import * as Lint from 'tslint/lib/lint';
 import {sprintf} from 'sprintf-js';
+import * as compiler from "@angular/compiler";
 
 import SyntaxKind = require('./util/syntaxKind');
 
@@ -62,29 +63,66 @@ class SelectorNameValidatorWalker extends Lint.RuleWalker {
     let name = expr.text;
     let args = baseExpr.arguments || [];
     let arg = args[0];
+
     if (this.rule.targetType === COMPONENT_TYPE.ANY ||
         name === 'Component' && this.rule.targetType === COMPONENT_TYPE.COMPONENT ||
         name === 'Directive' && this.rule.targetType === COMPONENT_TYPE.DIRECTIVE) {
-      this.validateSelector(className, arg);
+      this.validateSelector(className, arg,name);
     }
   }
 
-  private validateSelector(className: string, arg: ts.Node) {
+  private validateSelector(className: string, arg: ts.Node,name:string) {
     if (arg.kind === SyntaxKind.current().ObjectLiteralExpression) {
       (<ts.ObjectLiteralExpression>arg).properties.filter(prop => (<any>prop.name).text === 'selector')
       .forEach(prop => {
         let p = <any>prop;
-        if (p.initializer && isSupportedKind(p.initializer.kind) && !this.rule.validate(p.initializer.text)) {
-          let error = this.rule.getFailureString({ selector: p.initializer.text, className });
-          this.addFailure(this.createFailure(p.initializer.getStart(), p.initializer.getWidth(), error));
+        if (!this.validateParsedSelector(p,name)) {
+          console.log("1");
+          const FAILURE_COMPONENT = 'The selector of the component "%s" should be used as %s ($$05-03$$)';
+          const FAILURE_DIRECTIVE = 'The selector of the directive "%s" should be used as %s ($$02-06$$)';
+          let FAILURE:string = name==='Component'?FAILURE_COMPONENT:FAILURE_DIRECTIVE;
+          if(this.isSupportedKind(p.initializer.kind)){
+            let error = sprintf(FAILURE, className, this.rule.getOptions().ruleArguments, p.initializer.text);
+            this.addFailure(this.createFailure(p.initializer.getStart(), p.initializer.getWidth(),error));
+          }
+        }else if(name === 'Component' && !this.rule.validate(this.extractMainSelector(p,name))){
+            console.log("2");
+            let error = this.rule.getFailureString({ selector: this.extractMainSelector(p,name), className });
+            this.addFailure(this.createFailure(p.initializer.getStart(), p.initializer.getWidth(), error));
+        }
+        else if(name ==='Directive' && !(this.extractMainSelector(p,name).some((a)=>this.rule.validate(a)))){
+            console.log("3");
+            let error = this.rule.getFailureString({ selector: this.extractMainSelector(p,name), className });
+            this.addFailure(this.createFailure(p.initializer.getStart(), p.initializer.getWidth(), error));
+        }else{
+          console.log("4");
         }
       });
     }
+  }
 
-    function isSupportedKind( kind: number ): boolean {
-      const current = SyntaxKind.current();
-      return [current.StringLiteral, current.NoSubstitutionTemplateLiteral].some(kindType => kindType === kind)
+  private isSupportedKind(kind: number): boolean {
+    const current = SyntaxKind.current();
+    return [current.StringLiteral, current.NoSubstitutionTemplateLiteral].some(kindType => kindType === kind)
+  }
+
+  private parse(text:string):any{
+    return compiler.__compiler_private__.CssSelector.parse(text)[0];
+  }
+
+  private validateParsedSelector(p:any,name:string):boolean{
+    return p.initializer && this.isSupportedKind(p.initializer.kind) &&
+        ((name === 'Component' &&  this.parse(p.initializer.text).element!=null) ||
+        (name === 'Directive' && this.parse(p.initializer.text).attrs.length!=0));
+  }
+
+  private extractMainSelector(p:any,name:string){
+    if(name === 'Component'){
+      return  this.parse(p.initializer.text).element;
+    }else if(name==='Directive'){
+      return this.parse(p.initializer.text).attrs;
     }
+    return null;
   }
 }
 
