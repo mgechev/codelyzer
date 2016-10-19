@@ -100,7 +100,7 @@ export class Ng2Walker extends Lint.RuleWalker {
                 <ts.ClassDeclaration>decorator.parent, inlineTemplate.pos + 2); // skip the quote
           }
         } catch (e) {
-          console.error('Cannot parse the template', e);
+          console.error('Cannot parse the template of', ((<any>decorator.parent || {}).name || {}).text);
         }
       }
       const inlineStyles = getDecoratorPropertyInitializer(decorator, 'styles');
@@ -114,7 +114,7 @@ export class Ng2Walker extends Lint.RuleWalker {
                 inlineStyle.pos + 2);
             }
           } catch (e) {
-            console.error('Cannot parse style', e);
+            console.error('Cannot parse styles of', ((<any>decorator.parent || {}).name || {}).text);
           }
         });
       }

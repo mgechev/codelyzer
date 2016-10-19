@@ -67,6 +67,7 @@
     "@angular/core": "~2.1.0"
   },
   "dependencies": {
+    "css-selector-tokenizer": "^0.7.0",
     "cssauron": "^1.4.0",
     "sprintf-js": "^1.0.3"
   }
