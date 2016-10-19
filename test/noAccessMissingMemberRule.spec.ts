@@ -430,19 +430,19 @@ describe('no-access-missing-member', () => {
         assertSuccess('no-access-missing-member', source);
     });
 
-    // it('should work with getters', () => {
-    //   let source = `
-    //     @Component({
-    //       template: \`<form #loginForm="ngForm">
-    //         <button type="submit" [disabled]="!loginForm.valid"></button>
-    //       </form>\`
-    //     })
-    //     class Test {
-    //       set bar() {
-    //       }
-    //     }`;
-    //     assertSuccess('no-access-missing-member', source);
-    // });
+//    it('should work with getters', () => {
+//      let source = `
+//        @Component({
+//          template: \`<form #loginForm="ngForm">
+//            <button type="submit" [disabled]="!loginForm.valid"></button>
+//          </form>\`
+//        })
+//        class Test {
+//          set bar() {
+//          }
+//        }`;
+//        assertSuccess('no-access-missing-member', source);
+//    });
 
     it('should work with getters', () => {
       let source = `
@@ -455,6 +455,22 @@ describe('no-access-missing-member', () => {
         })
         class Test {
           foo = [];
+        }`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
+
+    it('should work with local template variables', () => {
+      let source = `
+        @Component({
+          template: \`
+          <ul>
+            <li (click)="handler($event)"></li>
+          </ul>
+            \`
+        })
+        class Test {
+          handler() {}
         }`;
         assertSuccess('no-access-missing-member', source);
     });
