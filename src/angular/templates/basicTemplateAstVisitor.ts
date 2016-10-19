@@ -72,6 +72,7 @@ export interface TemplateAstVisitorCtr {
 }
 
 export class BasicTemplateAstVisitor extends Lint.RuleWalker implements ast.TemplateAstVisitor {
+  private _variables = [];
 
   constructor(sourceFile: ts.SourceFile,
     private _originalOptions: Lint.IOptions,
@@ -84,6 +85,7 @@ export class BasicTemplateAstVisitor extends Lint.RuleWalker implements ast.Temp
   protected visitNg2TemplateAST(ast: e.AST, templateStart: number) {
     const templateVisitor =
       new this.expressionVisitorCtrl(this.getSourceFile(), this._originalOptions, this.context, templateStart);
+    templateVisitor.preDefinedVariables = this._variables;
     templateVisitor.visit(ast);
     templateVisitor.getFailures().forEach(f => this.addFailure(f));
   }
@@ -113,11 +115,11 @@ export class BasicTemplateAstVisitor extends Lint.RuleWalker implements ast.Temp
   }
 
   visitReference(ast: ast.ReferenceAst, context: any): any {
-    console.log(ast);
+    // console.log(ast);
   }
 
   visitVariable(ast: ast.VariableAst, context: any): any {
-    console.log(ast);
+    this._variables.push(ast.name);
   }
 
   visitEvent(ast: ast.BoundEventAst, context: any): any {

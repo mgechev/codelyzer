@@ -149,8 +149,6 @@ export class Ng2Walker extends Lint.RuleWalker {
         new this._config.templateVisitorCtrl(
           this.getSourceFile(), this._originalOptions, context, baseStart, this._config.expressionVisitorCtrl);
       compiler.templateVisitAll(visitor, roots, context);
-      // roots.forEach(r => r.visit(visitor, null));
-      // roots.forEach((root: compiler.TemplateAst) => visitor.visit(root));
       visitor.getFailures().forEach(f => this.addFailure(f));
     }
   }

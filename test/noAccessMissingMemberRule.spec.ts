@@ -417,7 +417,7 @@ describe('no-access-missing-member', () => {
         assertSuccess('no-access-missing-member', source);
     });
 
-    it('should work with getters', () => {
+    it('should work with setters', () => {
       let source = `
         @Component({
           selector: 'foobar',
@@ -434,7 +434,7 @@ describe('no-access-missing-member', () => {
     //   let source = `
     //     @Component({
     //       template: \`<form #loginForm="ngForm">
-    //         <button type="submit" [disabled]="!loginForm.valid">Se connecter</button>
+    //         <button type="submit" [disabled]="!loginForm.valid"></button>
     //       </form>\`
     //     })
     //     class Test {
@@ -443,6 +443,21 @@ describe('no-access-missing-member', () => {
     //     }`;
     //     assertSuccess('no-access-missing-member', source);
     // });
+
+    it('should work with getters', () => {
+      let source = `
+        @Component({
+          template: \`
+          <ul>
+            <li *ngFor="let bar of foo">{{ bar }}</li>
+          </ul>
+            \`
+        })
+        class Test {
+          foo = [];
+        }`;
+        assertSuccess('no-access-missing-member', source);
+    });
 
 //    TODO
 //    it('should work with getters', () => {
