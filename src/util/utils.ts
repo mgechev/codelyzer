@@ -45,3 +45,18 @@ export const getDecoratorName = (decorator: ts.Decorator) => {
   let expr = baseExpr.expression || {};
   return expr.text;
 };
+
+export const getComponentDecorator = (declaration: ts.ClassDeclaration) => {
+    return (<ts.Decorator[]>declaration.decorators || [])
+      .filter((d: any) => {
+        if (!(<ts.CallExpression>d.expression).arguments ||
+            !(<ts.CallExpression>d.expression).arguments.length ||
+            !(<ts.ObjectLiteralExpression>(<ts.CallExpression>d.expression).arguments[0]).properties) {
+          return false;
+        }
+        const name = getDecoratorName(d);
+        if (name === 'Component') {
+          return true;
+        }
+      }).pop();
+};
