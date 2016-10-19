@@ -89,29 +89,36 @@ export class BasicTemplateAstVisitor extends Lint.RuleWalker implements ast.Temp
   }
 
   visit?(node: ast.TemplateAst, context: any): any {
-    if (node instanceof ast.ElementAst) {
-      return this.visitElement(<ast.ElementAst>node, context);
-    } else if (node instanceof ast.TextAst) {
-      return this.visitText(<ast.TextAst>node, context);
-    } else if (node instanceof ast.BoundTextAst) {
-      return this.visitBoundText(node, context);
-    }
+    node.visit(this, context);
   }
 
   visitNgContent(ast: ast.NgContentAst, context: any): any {}
 
-  visitEmbeddedTemplate(ast: ast.EmbeddedTemplateAst, context: any): any {}
-
-  visitElement(element: ast.ElementAst, context: any): any {
-    element.inputs.forEach(i => this.visitElementProperty(i, context));
-    element.outputs.forEach(o => this.visitEvent(o, context));
-    element.attrs.forEach(a => this.visitAttr(a, context));
-    element.children.forEach(e => this.visit(e, context));
+  visitEmbeddedTemplate(ast: ast.EmbeddedTemplateAst, context: any): any {
+    ast.variables.forEach(v => this.visit(v, context));
+    ast.children.forEach(e => this.visit(e, context));
+    ast.outputs.forEach(o => this.visit(o, context));
+    ast.attrs.forEach(a => this.visit(a, context));
+    ast.references.forEach(r => this.visit(r, context));
+    ast.directives.forEach(d => this.visit(d, context));
   }
 
-  visitReference(ast: ast.ReferenceAst, context: any): any {}
+  visitElement(element: ast.ElementAst, context: any): any {
+    element.inputs.forEach(i => this.visit(i, context));
+    element.outputs.forEach(o => this.visit(o, context));
+    element.attrs.forEach(a => this.visit(a, context));
+    element.children.forEach(e => this.visit(e, context));
+    element.references.forEach(r => this.visit(r, context));
+    element.directives.forEach(d => this.visit(d, context));
+  }
 
-  visitVariable(ast: ast.VariableAst, context: any): any {}
+  visitReference(ast: ast.ReferenceAst, context: any): any {
+    console.log(ast);
+  }
+
+  visitVariable(ast: ast.VariableAst, context: any): any {
+    console.log(ast);
+  }
 
   visitEvent(ast: ast.BoundEventAst, context: any): any {
     this.visitNg2TemplateAST(ast.handler,

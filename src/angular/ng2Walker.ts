@@ -100,7 +100,8 @@ export class Ng2Walker extends Lint.RuleWalker {
                 <ts.ClassDeclaration>decorator.parent, inlineTemplate.pos + 2); // skip the quote
           }
         } catch (e) {
-          console.error('Cannot parse the template of', ((<any>decorator.parent || {}).name || {}).text);
+          // stderr breaks the VSCode extension
+          // console.error('Cannot parse the template of', ((<any>decorator.parent || {}).name || {}).text);
         }
       }
       const inlineStyles = getDecoratorPropertyInitializer(decorator, 'styles');
@@ -114,7 +115,8 @@ export class Ng2Walker extends Lint.RuleWalker {
                 inlineStyle.pos + 2);
             }
           } catch (e) {
-            console.error('Cannot parse styles of', ((<any>decorator.parent || {}).name || {}).text);
+           // stderr breaks the VSCode extension
+           // console.error('Cannot parse styles of', ((<any>decorator.parent || {}).name || {}).text);
           }
         });
       }
@@ -146,7 +148,8 @@ export class Ng2Walker extends Lint.RuleWalker {
       const visitor =
         new this._config.templateVisitorCtrl(
           this.getSourceFile(), this._originalOptions, context, baseStart, this._config.expressionVisitorCtrl);
-      roots.forEach(r => r.visit(visitor, null));
+      compiler.templateVisitAll(visitor, roots, context);
+      // roots.forEach(r => r.visit(visitor, null));
       // roots.forEach((root: compiler.TemplateAst) => visitor.visit(root));
       visitor.getFailures().forEach(f => this.addFailure(f));
     }
