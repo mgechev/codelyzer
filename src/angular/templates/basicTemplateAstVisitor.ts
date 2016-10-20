@@ -123,8 +123,12 @@ export class BasicTemplateAstVisitor extends Lint.RuleWalker implements ast.Temp
   }
 
   visitEvent(ast: ast.BoundEventAst, context: any): any {
+    if (this._variables.indexOf('$event') < 0) {
+      this._variables.push('$event');
+    }
     this.visitNg2TemplateAST(ast.handler,
         this.templateStart + getExpressionDisplacement(ast));
+    this._variables.splice(this._variables.indexOf('$event'), 1);
   }
 
   visitElementProperty(prop: ast.BoundElementPropertyAst, context: any): any {

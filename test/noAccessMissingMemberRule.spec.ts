@@ -465,7 +465,7 @@ describe('no-access-missing-member', () => {
         @Component({
           template: \`
           <ul>
-            <li (click)="handler($event)"></li>
+            <li (click)="$event.stopPropagation()"></li>
           </ul>
             \`
         })
