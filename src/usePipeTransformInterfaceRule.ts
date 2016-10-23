@@ -46,7 +46,7 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
     let interfaces = [];
     if (node.heritageClauses) {
       let interfacesClause = node.heritageClauses
-        .filter(h=>h.token === SyntaxKind.current().ImplementsKeyword);
+        .filter(h => h.token === SyntaxKind.current().ImplementsKeyword);
       if (interfacesClause.length !== 0) {
         interfaces = interfacesClause[0].types.map(getInterfaceName);
       }

@@ -43,8 +43,8 @@
   },
   "homepage": "https://github.com/mgechev/codelyzer#readme",
   "devDependencies": {
-    "@angular/compiler": "^2.0.0",
-    "@angular/core": "^2.0.0",
+    "@angular/compiler": "^2.1.1",
+    "@angular/core": "^2.1.1",
     "@types/chai": "^3.4.33",
     "@types/es6-shim": "^0.31.32",
     "@types/mocha": "^2.2.32",
@@ -55,7 +55,7 @@
     "minimalist": "1.0.0",
     "mocha": "3.0.2",
     "rimraf": "^2.5.2",
-    "rxjs": "^5.0.0-beta.12",
+    "rxjs": "5.0.0-beta.12",
     "ts-node": "1.2.2",
     "tslint": "3.14.0",
     "typescript": "^2.0.3",
@@ -63,8 +63,8 @@
   },
   "peerDependencies": {
     "tslint": "^3.9.0",
-    "@angular/compiler": "~2.1.0",
-    "@angular/core": "~2.1.0"
+    "@angular/compiler": "~2.1.1",
+    "@angular/core": "~2.1.1"
   },
   "dependencies": {
     "css-selector-tokenizer": "^0.7.0",

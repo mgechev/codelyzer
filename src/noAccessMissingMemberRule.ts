@@ -34,7 +34,8 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
       symbolType = 'property';
     }
     available = getDeclaredMethodNames(this.context)
-      .concat(getDeclaredPropertyNames(this.context));
+      .concat(getDeclaredPropertyNames(this.context))
+      .concat(this.preDefinedVariables);
     ast.receiver.visit(this);
     // Do not support nested properties yet
     if (ast.receiver && (<any>ast.receiver).name) {

@@ -573,4 +573,127 @@ describe('no-unused-css', () => {
     });
   });
 
+  describe('ViewEncapsulation', () => {
+    it('should ignore before and after', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          encapsulation: whatever,
+          template: \`<div></div>\`,
+          styles: [
+            \`
+            p {
+              color: red;
+            }
+            \`
+          ]
+        })
+        class Test {}`;
+        assertSuccess('no-unused-css', source);
+    });
+
+    it('should ignore before and after', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          encapsulation: ViewEncapsulation.None,
+          template: \`<div></div>\`,
+          styles: [
+            \`
+            p {
+              color: red;
+            }
+            \`
+          ]
+        })
+        class Test {}`;
+        assertSuccess('no-unused-css', source);
+    });
+
+    it('should ignore before and after', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          encapsulation: ViewEncapsulation.Native,
+          template: \`<div></div>\`,
+          styles: [
+            \`
+            p {
+              color: red;
+            }
+            \`
+          ]
+        })
+        class Test {}`;
+        assertFailure('no-unused-css', source, {
+          message: 'Unused styles',
+          startPosition: {
+            line: 7,
+            character: 0
+          },
+          endPosition: {
+            line: 9,
+            character: 0
+          }
+      });
+    });
+
+    it('should ignore before and after', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          encapsulation: ViewEncapsulation.Emulated,
+          template: \`<div></div>\`,
+          styles: [
+            \`
+            p {
+              color: red;
+            }
+            \`
+          ]
+        })
+        class Test {}`;
+        assertFailure('no-unused-css', source, {
+          message: 'Unused styles',
+          startPosition: {
+            line: 7,
+            character: 0
+          },
+          endPosition: {
+            line: 9,
+            character: 0
+          }
+      });
+    });
+
+    it('should ignore before and after', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          encapsulation: prefix.foo.ViewEncapsulation.Emulated,
+          template: \`<div></div>\`,
+          styles: [
+            \`
+            p {
+              color: red;
+            }
+            \`
+          ]
+        })
+        class Test {}`;
+        assertFailure('no-unused-css', source, {
+          message: 'Unused styles',
+          startPosition: {
+            line: 7,
+            character: 0
+          },
+          endPosition: {
+            line: 9,
+            character: 0
+          }
+      });
+    });
+
+  });
+
 });

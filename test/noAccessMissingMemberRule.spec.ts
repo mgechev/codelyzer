@@ -402,5 +402,101 @@ describe('no-access-missing-member', () => {
         }`;
         assertSuccess('no-access-missing-member', source);
     });
+
+    it('should work with getters', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: \`{{ bar }}\`
+        })
+        class Test {
+          get bar() {
+            return 42;
+          }
+        }`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
+    it('should work with setters', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: \`<div (click)="bar = 42"></div>\`
+        })
+        class Test {
+          set bar() {
+          }
+        }`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
+//    it('should work with getters', () => {
+//      let source = `
+//        @Component({
+//          template: \`<form #loginForm="ngForm">
+//            <button type="submit" [disabled]="!loginForm.valid"></button>
+//          </form>\`
+//        })
+//        class Test {
+//          set bar() {
+//          }
+//        }`;
+//        assertSuccess('no-access-missing-member', source);
+//    });
+
+    it('should work with getters', () => {
+      let source = `
+        @Component({
+          template: \`
+          <ul>
+            <li *ngFor="let bar of foo">{{ bar }}</li>
+          </ul>
+            \`
+        })
+        class Test {
+          foo = [];
+        }`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
+
+    it('should work with local template variables', () => {
+      let source = `
+        @Component({
+          template: \`
+          <ul>
+            <li (click)="$event.stopPropagation()"></li>
+          </ul>
+            \`
+        })
+        class Test {
+          handler() {}
+        }`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
+//    TODO
+//    it('should work with getters', () => {
+//      let source = `
+//        @Component({
+//          selector: 'foobar',
+//          template: \`<div (click)="bar = 42"></div>\`
+//        })
+//        class Test {
+//          get bar() {
+//          }
+//        }`;
+//        assertFailure('no-access-missing-member', source, {
+//          message: 'The property "bar" that you\'re trying to access does not exist in the class declaration.',
+//          startPosition: {
+//            line: 3,
+//            character: 29
+//          },
+//          endPosition: {
+//            line: 3,
+//            character: 32
+//          }
+//       });
+//    });
   });
 });

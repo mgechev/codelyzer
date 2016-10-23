@@ -1,7 +1,7 @@
 import * as Lint from 'tslint/lib/lint';
 import * as ts from 'typescript';
 import {Ng2Walker} from './angular/ng2Walker';
-import {getDecoratorName, isSimpleTemplateString, getDecoratorPropertyInitializer} from './util/utils';
+import {getComponentDecorator, isSimpleTemplateString, getDecoratorPropertyInitializer} from './util/utils';
 import {BasicCssAstVisitor} from './angular/styles/basicCssAstVisitor';
 import {BasicTemplateAstVisitor} from './angular/templates/basicTemplateAstVisitor';
 import {
@@ -13,6 +13,31 @@ import {parseTemplate} from './angular/templates/templateParser';
 import {CssAst, CssSelectorRuleAst, CssSelectorAst} from './angular/styles/cssAst';
 
 const CssSelectorTokenizer = require('css-selector-tokenizer');
+
+const getSymbolName = (t: any) => {
+  let expr = t.expression;
+  if (t.expression && t.expression.name) {
+    expr = t.expression.name;
+  }
+  return expr.text;
+};
+
+const isEncapsulationEnabled = (encapsulation: any) => {
+  if (!encapsulation) {
+    return true;
+  } else {
+    // By default consider the encapsulation disabled
+    if (getSymbolName(encapsulation) !== 'ViewEncapsulation') {
+      return false;
+    } else {
+      const encapsulationType = encapsulation.name.text;
+      if (/^(Emulated|Native)$/.test(encapsulationType)) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
 
 // Initialize the selector accessors
 const lang = require('cssauron')({
@@ -175,30 +200,22 @@ export class UnusedCssNg2Visitor extends Ng2Walker {
   private templateAst: TemplateAst;
 
   visitClassDeclaration(declaration: ts.ClassDeclaration) {
-    (<ts.Decorator[]>declaration.decorators || [])
-      .forEach((d: any) => {
-        if (!(<ts.CallExpression>d.expression).arguments ||
-            !(<ts.CallExpression>d.expression).arguments.length ||
-            !(<ts.ObjectLiteralExpression>(<ts.CallExpression>d.expression).arguments[0]).properties) {
-          return;
-        }
-        const name = getDecoratorName(d);
-        if (name === 'Component') {
-          this.visitNg2Component(<ts.ClassDeclaration>d.parent, d);
-          const inlineTemplate = getDecoratorPropertyInitializer(d, 'template');
-          if (inlineTemplate) {
-            try {
-              if (isSimpleTemplateString(inlineTemplate)) {
-                this.templateAst =
-                  new ElementAst('*', [], [], [], [], [], [], false, parseTemplate(inlineTemplate.text), 0, null, null);
-              }
-            } catch (e) {
-              console.error('Cannot parse the template', e);
-            }
+    const d = getComponentDecorator(declaration);
+    if (d) {
+      this.visitNg2Component(<ts.ClassDeclaration>d.parent, d);
+      const inlineTemplate = getDecoratorPropertyInitializer(d, 'template');
+      if (inlineTemplate) {
+        try {
+          if (isSimpleTemplateString(inlineTemplate)) {
+            this.templateAst =
+              new ElementAst('*', [], [], [], [], [], [], false, parseTemplate(inlineTemplate.text), 0, null, null);
           }
+        } catch (e) {
+          console.error('Cannot parse the template', e);
         }
-      });
-      super.visitClassDeclaration(declaration);
+      }
+    }
+    super.visitClassDeclaration(declaration);
   }
 
   protected visitNg2StyleHelper(style: CssAst, context: ts.ClassDeclaration, baseStart: number) {
@@ -207,8 +224,12 @@ export class UnusedCssNg2Visitor extends Ng2Walker {
     } else {
       const visitor = new UnusedCssVisitor(this.getSourceFile(), this._originalOptions, context, baseStart);
       visitor.templateAst = this.templateAst;
-      style.visit(visitor);
-      visitor.getFailures().forEach(f => this.addFailure(f));
+      const d = getComponentDecorator(context);
+      const encapsulation = getDecoratorPropertyInitializer(d, 'encapsulation');
+      if (isEncapsulationEnabled(encapsulation)) {
+        style.visit(visitor);
+        visitor.getFailures().forEach(f => this.addFailure(f));
+      }
     }
   }
 }

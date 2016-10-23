@@ -3,14 +3,12 @@ import { INTERPOLATION } from '../config';
 import * as compiler from '@angular/compiler';
 
 export const parseTemplate = (template: string) => {
-  const _ = compiler.__compiler_private__;
-
-  const TemplateParser = _.TemplateParser;
-  const expressionParser = new _.Parser(new _.Lexer());
-  const elementSchemaRegistry = new _.DomElementSchemaRegistry();
+  const TemplateParser = compiler.TemplateParser;
+  const expressionParser = new compiler.Parser(new compiler.Lexer());
+  const elementSchemaRegistry = new compiler.DomElementSchemaRegistry();
   const ngConsole = new r.Console();
   const htmlParser =
-      new compiler.I18NHtmlParser(new _.HtmlParser());
+      new compiler.I18NHtmlParser(new compiler.HtmlParser());
   const tmplParser =
     new TemplateParser(expressionParser, elementSchemaRegistry, htmlParser, ngConsole, []);
   const interpolation = INTERPOLATION;
