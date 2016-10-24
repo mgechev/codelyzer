@@ -1,3 +1,22 @@
+# 1.0.0-beta.3
+
+### Features
+
+- Introduce support for unused CSS styles in components.
+
+### Bug Fixes
+
+- Migrate to API changes introduced by Angular 2.1.1 [#128](https://github.com/mgechev/codelyzer/issues/128) [787ff3b](https://github.com/mgechev/codelyzer/pull/124/commits/787ff3bad21be0309896ef6a7508e2bb1e8991fc).
+- Do not consider `$event` as non-declared variable [#129](https://github.com/mgechev/codelyzer/issues/129) [8751184](https://github.com/mgechev/codelyzer/pull/124/commits/875118402a3cd051085499ac3403a7caad450860).
+- Consider template variables such as `let foo of bars` [#123](https://github.com/mgechev/codelyzer/issues/123) [cbd86e1](https://github.com/mgechev/codelyzer/pull/124/commits/cbd86e1925410f647c82ae6a05db249996483585).
+- Consider getters and setters when listing all the declared in controller symbols [#118](https://github.com/mgechev/codelyzer/issues/118) [6060ce0](https://github.com/mgechev/codelyzer/pull/124/commits/6060ce0442a22c8dfb694138b51854f721fd00ef).
+
+# 1.0.0-beta.2
+
+### Bug Fixes
+
+- Migrate to the compiler API changes introduced by Angular 2.1.
+
 # 1.0.0-beta.1
 
 ### Features
