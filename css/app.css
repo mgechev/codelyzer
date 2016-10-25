@@ -69,3 +69,13 @@ nav li a:hover {
     display: block;
   }
 }
+
+.codelyzer-logo {
+  font-family: Verdana;
+  font-size: 27px;
+  color: #fff;
+}
+
+.codelyzer-logo span {
+  color: #CBCBCB;
+}
