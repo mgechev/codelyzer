@@ -1,0 +1,63 @@
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Lint = require('tslint/lib/lint');
+var sprintf_js_1 = require('sprintf-js');
+var SyntaxKind = require('./util/syntaxKind');
+var getInterfaceName = function (t) {
+    if (t.expression && t.expression.name) {
+        return t.expression.name.text;
+    }
+    return t.expression.text;
+};
+var Rule = (function (_super) {
+    __extends(Rule, _super);
+    function Rule() {
+        _super.apply(this, arguments);
+    }
+    Rule.prototype.apply = function (sourceFile) {
+        return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this.getOptions()));
+    };
+    Rule.FAILURE = 'The %s class has the Pipe decorator, so it should implement the PipeTransform interface';
+    Rule.PIPE_INTERFACE_NAME = 'PipeTransform';
+    return Rule;
+}(Lint.Rules.AbstractRule));
+exports.Rule = Rule;
+var ClassMetadataWalker = (function (_super) {
+    __extends(ClassMetadataWalker, _super);
+    function ClassMetadataWalker() {
+        _super.apply(this, arguments);
+    }
+    ClassMetadataWalker.prototype.visitClassDeclaration = function (node) {
+        var decorators = node.decorators;
+        if (decorators) {
+            var pipes = decorators.map(function (d) {
+                return d.expression.text ||
+                    (d.expression.expression || {}).text;
+            }).filter(function (t) { return t === 'Pipe'; });
+            if (pipes.length !== 0) {
+                var className = node.name.text;
+                if (!this.hasIPipeTransform(node)) {
+                    this.addFailure(this.createFailure(node.getStart(), node.getWidth(), sprintf_js_1.sprintf.apply(this, [Rule.FAILURE, className])));
+                }
+            }
+        }
+        _super.prototype.visitClassDeclaration.call(this, node);
+    };
+    ClassMetadataWalker.prototype.hasIPipeTransform = function (node) {
+        var interfaces = [];
+        if (node.heritageClauses) {
+            var interfacesClause = node.heritageClauses
+                .filter(function (h) { return h.token === SyntaxKind.current().ImplementsKeyword; });
+            if (interfacesClause.length !== 0) {
+                interfaces = interfacesClause[0].types.map(getInterfaceName);
+            }
+        }
+        return interfaces.indexOf(Rule.PIPE_INTERFACE_NAME) !== -1;
+    };
+    return ClassMetadataWalker;
+}(Lint.RuleWalker));
+exports.ClassMetadataWalker = ClassMetadataWalker;
