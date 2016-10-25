@@ -3,7 +3,7 @@ import { INTERPOLATION } from '../config';
 import * as compiler from '@angular/compiler';
 
 export const parseTemplate = (template: string) => {
-  const TemplateParser = compiler.TemplateParser;
+  const TemplateParser = <any>compiler.TemplateParser;
   const expressionParser = new compiler.Parser(new compiler.Lexer());
   const elementSchemaRegistry = new compiler.DomElementSchemaRegistry();
   const ngConsole = new r.Console();
