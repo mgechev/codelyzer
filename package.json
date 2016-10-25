@@ -9,6 +9,12 @@
   "author": "Minko Gechev <mgechev@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "codemirror": "^5.15.2"
+    "@angular/core": "^2.1.1",
+    "codelyzer": "^1.0.0-beta.3",
+    "codemirror": "^5.15.2",
+    "rxjs": "^5.0.0-beta.12",
+    "tslint": "^3.15.1",
+    "typescript": "^2.0.3",
+    "zone.js": "^0.6.21"
   }
 }

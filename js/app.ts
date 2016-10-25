@@ -12,9 +12,10 @@ const bar = baz => {
   return 42;
 }
 `;
-var myCodeMirror = CodeMirror(document.getElementById('editor'), {
+var myCodeMirror = (window as any).CodeMirror(document.getElementById('editor'), {
   value: sampleCode,
-  mode: 'javascript',
+  mode:  'javascript',
   theme: 'material',
   lineNumbers: true
 });
+
