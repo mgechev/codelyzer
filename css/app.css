@@ -7,8 +7,12 @@ html, body {
   background-color: #1D1E1C;
 }
 
+.CodeMirror, #editor, .warnings {
+  width: 100%;
+}
+
 header {
-  height: 35px;
+  height: 60px;
   background-color: #1D1E1C;
 }
 
@@ -27,23 +31,23 @@ nav li {
 }
 
 nav li a {
-  color: #fff;
+  color: #CBCBCB;
+  text-shadow: none;
   text-decoration: none;
-  transition: color 0.3s;
+  transition: all 0.3s;
 }
 
 nav li a:hover {
-  color: #FED37F;
+  color: #fff;
+  text-shadow: 0 0 1px #fff;
 }
 
 .content {
-  height: calc(100% - 35px);
+  height: calc(100% - 60px);
 }
 
 #editor {
-  width: 60%;
-  height: 100%;
-  float: left;
+  height: 70%;
 }
 
 .CodeMirror {
@@ -51,9 +55,8 @@ nav li a:hover {
 }
 
 .warnings {
-  width: 36%;
-  float: right;
   padding: 2%;
+  max-width: 300px;
 }
 
 .warnings h4 {
@@ -62,12 +65,23 @@ nav li a:hover {
   margin-left: 10px;
 }
 
-@media only screen and (max-width: 580px) {
-  .CodeMirror, #editor, .warnings {
-    width: 100%;
-  }
+@media screen and (orientation:landscape) {
   #editor, .warnings {
-    display: block;
+    float: right;
+  }
+
+  #editor {
+    height: 100%;
+  }
+
+  .warnings {
+    width: 36%;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
 }
 
