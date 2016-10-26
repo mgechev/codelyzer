@@ -1,4 +1,4 @@
-import {Linter, Editor, HtmlFormatter, ErrorReportingEditor} from './app-linter/index';
+import {Linter, Editor, HtmlFormatter, ErrorReportingEditor, PlainReporter} from './app-linter/index';
 
 console.log(`
 Welcome to        __     __
@@ -71,9 +71,10 @@ editor.on('change', () => {
 new Linter({
   workerBundle: './dist/worker.bundle.js',
   textEditor: editor,
-  errorLabelContainer: document.getElementById('warnings-header'),
-  formatter: new HtmlFormatter(),
-  errorsContainer: document.getElementById('warnings'),
+  reporter: new PlainReporter(
+    new HtmlFormatter(),
+    document.getElementById('warnings-header'),
+    document.getElementById('warnings')),
   onError(e: any) {
     if (checkbox.checked) {
       (window as any).Raven.captureMessage(e, editor.getValue());

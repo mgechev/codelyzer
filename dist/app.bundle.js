@@ -87,8 +87,9 @@ function __export(m) {
 __export(require('./html-formatter'));
 __export(require('./linter'));
 __export(require('./error-reporting-editor'));
+__export(require('./plain-reporter'));
 
-},{"./error-reporting-editor":1,"./html-formatter":2,"./linter":4}],4:[function(require,module,exports){
+},{"./error-reporting-editor":1,"./html-formatter":2,"./linter":4,"./plain-reporter":5}],4:[function(require,module,exports){
 "use strict";
 var Linter = (function () {
     function Linter(config) {
@@ -124,12 +125,12 @@ var Linter = (function () {
     };
     Linter.prototype.renderErrors = function (errors) {
         if (!errors || !errors.length) {
-            this.config.errorLabelContainer.innerHTML = 'Good job! No warnings in your code!';
-            this.config.errorsContainer.innerHTML = '';
+            this.config.reporter.setHeader('Good job! No warnings in your code!');
+            this.config.reporter.clearContent();
         }
         else {
-            this.config.errorLabelContainer.innerHTML = 'Warnings';
-            this.config.errorsContainer.innerHTML = this.config.formatter.formatErrors(errors);
+            this.config.reporter.setHeader('Warnings');
+            this.config.reporter.reportErrors(errors);
         }
     };
     return Linter;
@@ -137,6 +138,30 @@ var Linter = (function () {
 exports.Linter = Linter;
 
 },{}],5:[function(require,module,exports){
+"use strict";
+var PlainReporter = (function () {
+    function PlainReporter(formatter, header, content) {
+        this.formatter = formatter;
+        this.header = header;
+        this.content = content;
+    }
+    PlainReporter.prototype.setHeader = function (header) {
+        this.header.innerHTML = header;
+    };
+    PlainReporter.prototype.reportErrors = function (errors) {
+        this.content.innerHTML = this.formatter.formatErrors(errors);
+    };
+    PlainReporter.prototype.clearHeader = function () {
+        this.header.innerHTML = '';
+    };
+    PlainReporter.prototype.clearContent = function () {
+        this.content.innerHTML = '';
+    };
+    return PlainReporter;
+}());
+exports.PlainReporter = PlainReporter;
+
+},{}],6:[function(require,module,exports){
 "use strict";
 var index_1 = require('./app-linter/index');
 console.log("\nWelcome to        __     __\n  _________  ____/ /__  / /_  ______  ___  _____\n / ___/ __ \\/ __  / _ \\/ / / / /_  / / _ \\/ ___/\n/ /__/ /_/ / /_/ /  __/ / /_/ / / /_/  __/ /\n\\___/\\____/\\__,_/\\___/_/\\__, / /___/\\___/_/\n                       /____/\n");
@@ -165,9 +190,7 @@ editor.on('change', function () {
 new index_1.Linter({
     workerBundle: './dist/worker.bundle.js',
     textEditor: editor,
-    errorLabelContainer: document.getElementById('warnings-header'),
-    formatter: new index_1.HtmlFormatter(),
-    errorsContainer: document.getElementById('warnings'),
+    reporter: new index_1.PlainReporter(new index_1.HtmlFormatter(), document.getElementById('warnings-header'), document.getElementById('warnings')),
     onError: function (e) {
         if (checkbox.checked) {
             window.Raven.captureMessage(e, editor.getValue());
@@ -188,4 +211,4 @@ checkbox.onchange = function (e) {
     console.log(checkbox.checked);
 };
 
-},{"./app-linter/index":3}]},{},[5]);
+},{"./app-linter/index":3}]},{},[6]);

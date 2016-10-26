@@ -1,11 +1,10 @@
 import {Formatter} from './formatter-interface';
 import {RichEditor} from './rich-editor-interface';
+import {Reporter} from './reporter-interface';
 
 export interface LinterConfig {
-  formatter: Formatter;
+  reporter: Reporter;
   textEditor: RichEditor;
-  errorsContainer: HTMLElement;
-  errorLabelContainer: HTMLElement;
   workerBundle: string;
   onError: Function;
 }
@@ -44,11 +43,11 @@ export class Linter {
 
   renderErrors(errors: any[]) {
     if (!errors || !errors.length) {
-      this.config.errorLabelContainer.innerHTML = 'Good job! No warnings in your code!';
-      this.config.errorsContainer.innerHTML = '';
+      this.config.reporter.setHeader('Good job! No warnings in your code!')
+      this.config.reporter.clearContent();
     } else {
-      this.config.errorLabelContainer.innerHTML = 'Warnings';
-      this.config.errorsContainer.innerHTML = this.config.formatter.formatErrors(errors);
+      this.config.reporter.setHeader('Warnings')
+      this.config.reporter.reportErrors(errors);
     }
   }
 }
