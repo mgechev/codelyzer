@@ -2,7 +2,7 @@ import {Formatter} from './formatter-interface';
 
 export class HtmlFormatter implements Formatter {
   format(e: any) {
-    return `<li><span class="position">[${e.startPosition.line} - ${e.endPosition.line}]</span> ${this.linkify(e.failure)} <span class="rule-name">(${e.ruleName})</span></li>`;
+    return `<li><span class="position">[${e.startPosition.line + 1} - ${e.endPosition.line + 1}]</span> ${this.linkify(e.failure)} <span class="rule-name">(${e.ruleName})</span></li>`;
   }
 
   formatErrors(errors: any) {
