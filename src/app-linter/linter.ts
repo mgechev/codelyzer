@@ -23,7 +23,7 @@ export class Linter {
         if (res.data.output) {
           const output = JSON.parse(res.data.output);
           console.log(res.data.output);
-          output.forEach((e: any) => e.id = ++this.errorId);
+          output.forEach((e: any) => e.id = `cdlz-${++this.errorId}`);
           this.config.textEditor.showErrors(output);
           if (this.errorId > 1e10) {
             this.errorId = 0;

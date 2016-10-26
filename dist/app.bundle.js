@@ -119,7 +119,7 @@ var Linter = (function () {
                 if (res.data.output) {
                     var output = JSON.parse(res.data.output);
                     console.log(res.data.output);
-                    output.forEach(function (e) { return e.id = ++_this.errorId; });
+                    output.forEach(function (e) { return e.id = "cdlz-" + ++_this.errorId; });
                     _this.config.textEditor.showErrors(output);
                     if (_this.errorId > 1e10) {
                         _this.errorId = 0;
