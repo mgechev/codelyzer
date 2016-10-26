@@ -20,7 +20,7 @@ const sampleCode = `// Welcome to Codelyzer!
 // It processes your TypeScript, templates, template expressions and
 // even inline styles! Most rules are inspired by the Angular style guide.
 // They have a URL associated with them that is going to link to the exact
-// section from angular.io/styleguide.
+// section in angular.io/styleguide.
 //
 // Give it a try!
 
