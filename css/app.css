@@ -186,6 +186,9 @@ nav li a:hover {
 }
 
 .codelyzer-logo {
+  text-transform: none;
+  text-decoration: none;
+  cursor: pointer;
   font-family: Verdana;
   font-size: 27px;
   color: #fff;
