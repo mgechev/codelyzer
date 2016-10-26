@@ -13,7 +13,7 @@ const sampleCode = `// Welcome to Codelyzer!
 @Component({
   selector: 'hero-cmp',
   template: \`
-    <h1>Hello <span>{{ hero.name }}</span></h1>
+    <h1>Hello <span>{{ her.name }}</span></h1>
   \`,
   styles: [
     \`
@@ -23,8 +23,12 @@ const sampleCode = `// Welcome to Codelyzer!
     \`
   ]
 })
-class HeroComponent {
+class Hero {
   private hero: Hero;
+
+  ngOnInit() {
+    console.log('Initialized');
+  }
 }
 `;
 

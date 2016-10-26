@@ -2,7 +2,6 @@
   "name": "codelyzer-gh-pages",
   "version": "1.0.0",
   "description": "Demo page for codelyzer",
-  "main": "lib/index.js",
   "scripts": {
     "build": "npm run clean && tsc -p tsconfig.json && npm run bundle:worker && npm run bundle:app",
     "bundle:worker": "browserify dist/worker.js > dist/worker.bundle.js",
