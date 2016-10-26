@@ -12,7 +12,7 @@ console.log(`Your code is being processed in a Web Worker.
 You can see the errors in the web user interface
 as well as in the console of your browser.\n\n`);
 
-const sampleCode = `// Welcome to Codelyzer!
+const sampleCode = localStorage.getItem('code') || `// Welcome to Codelyzer!
 //
 // Codelyzer is a tool great for teams and individuals, which helps you
 // write consistent code, and discover potential errors.
@@ -53,6 +53,19 @@ const editor = new ErrorReportingEditor('CodeMirror-lint-markers', (window as an
   theme: 'material',
   lineNumbers: true
 }) as Editor);
+
+let unlocked = true;
+editor.on('change', () => {
+  if (!unlocked) {
+    return;
+  } else {
+    setTimeout(() => {
+      localStorage.setItem('code', editor.getValue());
+      unlocked = true;
+    }, 100);
+    unlocked = false;
+  }
+});
 
 // Start the linter
 new Linter({
