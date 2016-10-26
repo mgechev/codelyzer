@@ -185,6 +185,10 @@ nav li a:hover {
   color: #666;
   margin: 0;
   margin-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
 }
 
 @media screen and (min-width: 950px) and (orientation: landscape) {

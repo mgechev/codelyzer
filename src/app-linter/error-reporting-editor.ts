@@ -60,7 +60,7 @@ export class ErrorReportingEditor implements RichEditor, Editor {
 
   private renderErrors(errors: any[]) {
     if (!errors || !errors.length) {
-      this.reporter.setHeader('Good job! No warnings in your code!')
+      this.reporter.setHeader('No warnings. Good job!')
       this.reporter.clearContent();
     } else {
       this.reporter.setHeader('Warnings')
