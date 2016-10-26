@@ -29,8 +29,9 @@ function __export(m) {
 }
 __export(require('./html-formatter'));
 __export(require('./linter'));
+__export(require('./rich-editor'));
 
-},{"./html-formatter":1,"./linter":3}],3:[function(require,module,exports){
+},{"./html-formatter":1,"./linter":3,"./rich-editor":4}],3:[function(require,module,exports){
 "use strict";
 var Linter = (function () {
     function Linter(config) {
@@ -45,7 +46,7 @@ var Linter = (function () {
                 console.log(res.data);
                 var errors = JSON.parse(res.data);
                 _this.renderErrors(errors);
-                _this.reportInlineErrors(errors);
+                _this.config.textEditor.showErrors(errors);
             }
             catch (e) {
                 console.error(e);
@@ -69,9 +70,35 @@ var Linter = (function () {
             this.config.errorsContainer.innerHTML = this.config.formatter.formatErrors(errors);
         }
     };
-    Linter.prototype.reportInlineErrors = function (errors) {
+    return Linter;
+}());
+exports.Linter = Linter;
+
+},{}],4:[function(require,module,exports){
+"use strict";
+var ErrorReportingEditor = (function () {
+    function ErrorReportingEditor(delegate) {
+        this.delegate = delegate;
+        this.widgets = [];
+    }
+    ErrorReportingEditor.prototype.getValue = function () {
+        return this.delegate.getValue();
+    };
+    ErrorReportingEditor.prototype.on = function (event, cb) {
+        this.delegate.on(event, cb);
+    };
+    ErrorReportingEditor.prototype.operation = function (cb) {
+        this.delegate.operation(cb);
+    };
+    ErrorReportingEditor.prototype.removeLineWidget = function (widget) {
+        this.delegate.removeLineWidget(widget);
+    };
+    ErrorReportingEditor.prototype.addLineWidget = function (line, msg, config) {
+        this.delegate.addLineWidget(line, msg, config);
+    };
+    ErrorReportingEditor.prototype.showErrors = function (errors) {
         var _this = this;
-        var editor = this.config.textEditor;
+        var editor = this.delegate;
         editor.operation(function () {
             for (var i = 0; i < _this.widgets.length; ++i)
                 editor.removeLineWidget(_this.widgets[i]);
@@ -102,11 +129,11 @@ var Linter = (function () {
             }
         });
     };
-    return Linter;
+    return ErrorReportingEditor;
 }());
-exports.Linter = Linter;
+exports.ErrorReportingEditor = ErrorReportingEditor;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 var index_1 = require('./app-linter/index');
 console.log("\nWelcome to        __     __\n  _________  ____/ /__  / /_  ______  ___  _____\n / ___/ __ \\/ __  / _ \\/ / / / /_  / / _ \\/ ___/\n/ /__/ /_/ / /_/ /  __/ / /_/ / / /_/  __/ /\n\\___/\\____/\\__,_/\\___/_/\\__, / /___/\\___/_/\n                       /____/\n");
@@ -114,15 +141,15 @@ console.log("Your code is being processed in a Web Worker.\nYou can see the erro
 var sampleCode = "// Welcome to Codelyzer!\n//\n// Codelyzer is a tool great for teams and individuals, which helps you\n// write consistent code, and discover potential errors.\n//\n// It processes your TypeScript, templates, template expressions and\n// even inline styles! Most rules are inspired by the Angular style guide.\n// They have a URL associated with them that is going to link to the exact\n// section in angular.io/styleguide.\n//\n// Give it a try!\n\n@Component({\n  selector: 'hero-cmp',\n  template: `\n    <h1>Hello <span>{{ her.name }}</span></h1>\n  `,\n  styles: [\n    `\n    h1 spam {\n      color: red;\n    }\n    `\n  ]\n})\nclass Hero {\n  private hero: Hero;\n\n  ngOnInit() {\n    console.log('Initialized');\n  }\n}\n";
 new index_1.Linter({
     workerBundle: './dist/worker.bundle.js',
-    textEditor: window.CodeMirror(document.getElementById('editor'), {
+    textEditor: new index_1.ErrorReportingEditor(window.CodeMirror(document.getElementById('editor'), {
         value: sampleCode,
         mode: 'javascript',
         theme: 'material',
         lineNumbers: true
-    }),
+    })),
     errorLabelContainer: document.getElementById('warnings-header'),
     formatter: new index_1.HtmlFormatter(),
     errorsContainer: document.getElementById('warnings')
 }).init();
 
-},{"./app-linter/index":2}]},{},[4]);
+},{"./app-linter/index":2}]},{},[5]);

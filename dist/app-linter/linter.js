@@ -12,7 +12,7 @@ var Linter = (function () {
                 console.log(res.data);
                 var errors = JSON.parse(res.data);
                 _this.renderErrors(errors);
-                _this.reportInlineErrors(errors);
+                _this.config.textEditor.showErrors(errors);
             }
             catch (e) {
                 console.error(e);
@@ -35,39 +35,6 @@ var Linter = (function () {
             this.config.errorLabelContainer.innerHTML = 'Warnings';
             this.config.errorsContainer.innerHTML = this.config.formatter.formatErrors(errors);
         }
-    };
-    Linter.prototype.reportInlineErrors = function (errors) {
-        var _this = this;
-        var editor = this.config.textEditor;
-        editor.operation(function () {
-            for (var i = 0; i < _this.widgets.length; ++i)
-                editor.removeLineWidget(_this.widgets[i]);
-            _this.widgets.length = 0;
-            var _loop_1 = function(i) {
-                var err = errors[i];
-                if (!err)
-                    return "continue";
-                var wrapper = document.createElement('div');
-                var msg = document.createElement('div');
-                var error = document.createElement('div');
-                wrapper.className = 'lint-error';
-                wrapper.appendChild(msg);
-                wrapper.appendChild(error);
-                error.className = 'error-tooltip';
-                error.innerHTML = err.failure;
-                msg.className = 'lint-icon';
-                msg.onmouseenter = function () {
-                    error.classList.add('visible');
-                };
-                msg.onmouseleave = function () {
-                    error.classList.remove('visible');
-                };
-                _this.widgets.push(editor.addLineWidget(err.startPosition.line - 1, wrapper, { coverGutter: false, noHScroll: true }));
-            };
-            for (var i = 0; i < errors.length; ++i) {
-                _loop_1(i);
-            }
-        });
     };
     return Linter;
 }());

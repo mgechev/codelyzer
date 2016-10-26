@@ -1,4 +1,4 @@
-import {Linter, Editor, HtmlFormatter} from './app-linter/index';
+import {Linter, Editor, HtmlFormatter, ErrorReportingEditor} from './app-linter/index';
 
 console.log(`
 Welcome to        __     __
@@ -48,12 +48,12 @@ class Hero {
 
 new Linter({
   workerBundle: './dist/worker.bundle.js',
-  textEditor: (window as any).CodeMirror(document.getElementById('editor'), {
+  textEditor: new ErrorReportingEditor((window as any).CodeMirror(document.getElementById('editor'), {
     value: sampleCode,
     mode:  'javascript',
     theme: 'material',
     lineNumbers: true
-  }) as Editor,
+  }) as Editor),
   errorLabelContainer: document.getElementById('warnings-header'),
   formatter: new HtmlFormatter(),
   errorsContainer: document.getElementById('warnings')
