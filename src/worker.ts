@@ -1,4 +1,4 @@
-import {WebLinter} from './web-linter';
+import {WebLinter} from './worker/web-linter';
 import * as rules from 'codelyzer';
 
 const rulesConfig = {
@@ -39,10 +39,9 @@ const linter = new WebLinter();
 
 self.addEventListener('message', (e: any) => {
   const config = JSON.parse(e.data);
-  linter.lint('file.ts', config.file, getRules(rulesConfig));
+  linter.lint('file.ts', config.program, getRules(rulesConfig));
   const output = linter.getResult().output;
-  const result = JSON.stringify(output);
-  (self as any).postMessage(result);
+  (self as any).postMessage(output);
   linter.reset();
 });
 

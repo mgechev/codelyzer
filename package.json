@@ -5,10 +5,12 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "npm run clean && tsc -p tsconfig.json && npm run bundle:worker && npm run bundle:app",
-    "bundle:worker": "browserify dist/worker.js > dist/worker.bundle.js && uglifyjs dist/worker.bundle.js --screw-ie8 --compress --mangle --output dist/worker.min.js",
-    "bundle:app": "browserify dist/app.js > dist/app.bundle.js && uglifyjs dist/app.js --screw-ie8 --compress --mangle --output dist/app.min.js",
-    "clean": "rimraf dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "bundle:worker": "browserify dist/worker.js > dist/worker.bundle.js",
+    "minify:worker": "uglifyjs dist/worker.bundle.js --screw-ie8 --compress --mangle --output dist/worker.js",
+    "bundle:app": "browserify dist/app.js > dist/app.bundle.js",
+    "minify:app": "uglifyjs dist/app.js --screw-ie8 --compress --mangle --output dist/app.js",
+    "build:prod": "npm run build && npm run minify:worker && npm run minify:app",
+    "clean": "rimraf dist"
   },
   "author": "Minko Gechev <mgechev@gmail.com>",
   "license": "MIT",
@@ -18,7 +20,7 @@
     "codelyzer": "^1.0.0-beta.3",
     "codemirror": "^5.15.2",
     "rxjs": "^5.0.0-beta.12",
-    "tslint": "3.11.0",
+    "tslint": "3.14.0",
     "typescript": "^2.0.3",
     "zone.js": "^0.6.21"
   },

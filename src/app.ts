@@ -1,3 +1,5 @@
+import {Linter, Editor, HtmlFormatter} from './app-linter/index';
+
 const sampleCode = `// Welcome to Codelyzer!
 //
 // Codelyzer is a tool great for teams and individuals, which helps you
@@ -26,26 +28,16 @@ class HeroComponent {
 }
 `;
 
-const myCodeMirror = (window as any).CodeMirror(document.getElementById('editor'), {
-  value: sampleCode,
-  mode:  'javascript',
-  theme: 'material',
-  lineNumbers: true
-});
-
-myCodeMirror.on('change', (e: any) => {
-  worker.postMessage(JSON.stringify({
-    file: myCodeMirror.getValue()
-  }));
-});
-
-const worker = new Worker('./dist/worker.min.js');
-worker.addEventListener('message', (res: any) => {
-  try {
-    const data = JSON.parse(res.data);
-    console.log(data);
-  } catch (e) {
-    console.error(e);
-  }
-});
+new Linter({
+  workerBundle: './dist/worker.bundle.js',
+  textEditor: (window as any).CodeMirror(document.getElementById('editor'), {
+    value: sampleCode,
+    mode:  'javascript',
+    theme: 'material',
+    lineNumbers: true
+  }) as Editor,
+  errorLabelContainer: document.getElementById('warnings-header'),
+  formatter: new HtmlFormatter(),
+  errorsContainer: document.getElementById('warnings')
+}).init();
 

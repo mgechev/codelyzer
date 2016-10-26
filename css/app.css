@@ -7,8 +7,88 @@ html, body {
   background-color: #1D1E1C;
 }
 
-.CodeMirror, #editor, .warnings {
+.CodeMirror, #editor {
   width: 100%;
+}
+
+.agreement {
+  color: #fff;
+  font-size: 12px;
+  flex-direction: row;
+  display: flex;
+}
+
+.lint-icon {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAANlBMVEX/uwDvrwD/uwD/uwD/uwD/uwD/uwD/uwD/uwD6twD/uwAAAADurwD2tQD7uAD+ugAAAAD/uwDhmeTRAAAADHRSTlMJ8mN1EYcbmiixgACm7WbuAAAAVklEQVR42n3PUQqAIBBFUU1LLc3u/jdbOJoW1P08DA9Gba8+YWJ6gNJoNYIBzAA2chBth5kLmG9YUoG0NHAUwFXwO9LuBQL1giCQb8gC9Oro2vp5rncCIY8L8uEx5ZkAAAAASUVORK5CYII=");
+  cursor: pointer;
+  background-repeat: no-repeat;
+  width: 16px;
+  height: 16px;
+}
+
+.lint-error-icon {
+  background-position: center center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+}
+
+.CodeMirror-linewidget {
+  position: absolute;
+  width: 16px !important;
+  height: 16px !important;
+  background-color: #263238;
+  left: -48px !important;
+  z-index: 7;
+  overflow: visible;
+}
+
+.error-tooltip {
+  opacity: 0;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  font-size: 13px;
+  transition: all 0.3s;
+  border-radius: 11px;
+  z-index: 8;
+  position: relative;
+  display: inline-block;
+  left: 0px;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  white-space: nowrap;
+}
+
+.error-tooltip.visible {
+  opacity: 1;
+  left: 10px;
+}
+
+.side-info a {
+  color: #fff;
+}
+
+.side-info ul {
+  width: calc(100% - 20px);
+  color: white;
+  font-size: 13px;
+  list-style-type: none;
+  white-space: normal;
+  margin-left: 0px;
+  padding-left: 11px;
+}
+
+.rule-name,
+.position {
+  color: #aaa;
+}
+
+.side-info ul li {
+  margin-bottom: 10px;
+  font-family: Consolas, Verdana;
 }
 
 header {
@@ -54,19 +134,25 @@ nav li a:hover {
   height: 100%;
 }
 
-.warnings {
-  padding: 2%;
-  max-width: 300px;
+.warnings-wrapper ul {
+  height: calc(100vh - 70vh - 100px);
+  overflow: auto;
 }
 
-.warnings h4 {
+.side-info {
+  padding: 2%;
+  width: 96%;
+  display: flex;
+}
+
+.side-info h4 {
   color: #666;
   margin: 0;
   margin-left: 10px;
 }
 
 @media screen and (orientation:landscape) {
-  #editor, .warnings {
+  .side-info {
     float: right;
   }
 
@@ -74,8 +160,14 @@ nav li a:hover {
     height: 100%;
   }
 
-  .warnings {
+  .side-info {
     width: 36%;
+    max-width: 300px;
+    flex-direction: column;
+  }
+
+  .warnings-wrapper ul {
+    height: calc(100vh - 185px);
   }
 
   .content {
