@@ -56,7 +56,7 @@ var ErrorReportingEditor = (function () {
     };
     ErrorReportingEditor.prototype.renderErrors = function (errors) {
         if (!errors || !errors.length) {
-            this.reporter.setHeader('Good job! No warnings in your code!');
+            this.reporter.setHeader('No warnings. Good job!');
             this.reporter.clearContent();
         }
         else {
