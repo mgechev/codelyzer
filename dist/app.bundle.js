@@ -1,9 +1,10 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 var ErrorReportingEditor = (function () {
-    function ErrorReportingEditor(marker, delegate) {
+    function ErrorReportingEditor(marker, delegate, reporter) {
         this.marker = marker;
         this.delegate = delegate;
+        this.reporter = reporter;
     }
     ErrorReportingEditor.prototype.getValue = function () {
         return this.delegate.getValue();
@@ -23,6 +24,7 @@ var ErrorReportingEditor = (function () {
     ErrorReportingEditor.prototype.showErrors = function (errors) {
         var _this = this;
         var editor = this.delegate;
+        this.renderErrors(errors);
         editor.operation(function () {
             editor.clearGutter(_this.marker);
             var _loop_1 = function(i) {
@@ -39,10 +41,12 @@ var ErrorReportingEditor = (function () {
                 error.innerHTML = err.failure;
                 msg.className = 'lint-icon';
                 msg.onmouseenter = function () {
-                    return error.classList.add('visible');
+                    error.classList.add('visible');
+                    _this.reporter.highlight(err.id);
                 };
                 msg.onmouseleave = function () {
-                    return error.classList.remove('visible');
+                    error.classList.remove('visible');
+                    _this.reporter.dropHighlight(err.id);
                 };
                 editor.setGutterMarker(err.startPosition.line, _this.marker, wrapper);
             };
@@ -50,6 +54,16 @@ var ErrorReportingEditor = (function () {
                 _loop_1(i);
             }
         });
+    };
+    ErrorReportingEditor.prototype.renderErrors = function (errors) {
+        if (!errors || !errors.length) {
+            this.reporter.setHeader('Good job! No warnings in your code!');
+            this.reporter.clearContent();
+        }
+        else {
+            this.reporter.setHeader('Warnings');
+            this.reporter.reportErrors(errors);
+        }
     };
     return ErrorReportingEditor;
 }());
@@ -61,7 +75,7 @@ var HtmlFormatter = (function () {
     function HtmlFormatter() {
     }
     HtmlFormatter.prototype.format = function (e) {
-        return "<li><span class=\"position\">[" + (e.startPosition.line + 1) + " - " + (e.endPosition.line + 1) + "]</span> " + this.linkify(e.failure) + " <span class=\"rule-name\">(" + e.ruleName + ")</span></li>";
+        return "<li id=\"" + e.id + "\"><i class=\"warning-icon\"></i><span class=\"position\">[" + (e.startPosition.line + 1) + " - " + (e.endPosition.line + 1) + "]</span> " + this.linkify(e.failure) + " <span class=\"rule-name\">(" + e.ruleName + ")</span></li>";
     };
     HtmlFormatter.prototype.formatErrors = function (errors) {
         var _this = this;
@@ -95,6 +109,7 @@ var Linter = (function () {
     function Linter(config) {
         this.config = config;
         this.widgets = [];
+        this.errorId = 0;
     }
     Linter.prototype.init = function () {
         var _this = this;
@@ -104,8 +119,11 @@ var Linter = (function () {
                 if (res.data.output) {
                     var output = JSON.parse(res.data.output);
                     console.log(res.data.output);
-                    _this.renderErrors(output);
+                    output.forEach(function (e) { return e.id = ++_this.errorId; });
                     _this.config.textEditor.showErrors(output);
+                    if (_this.errorId > 1e10) {
+                        _this.errorId = 0;
+                    }
                 }
                 else {
                     _this.config.onError(res.data.error);
@@ -122,16 +140,6 @@ var Linter = (function () {
     };
     Linter.prototype.lint = function (program) {
         this.worker.postMessage(JSON.stringify({ program: program }));
-    };
-    Linter.prototype.renderErrors = function (errors) {
-        if (!errors || !errors.length) {
-            this.config.reporter.setHeader('Good job! No warnings in your code!');
-            this.config.reporter.clearContent();
-        }
-        else {
-            this.config.reporter.setHeader('Warnings');
-            this.config.reporter.reportErrors(errors);
-        }
     };
     return Linter;
 }());
@@ -157,6 +165,12 @@ var PlainReporter = (function () {
     PlainReporter.prototype.clearContent = function () {
         this.content.innerHTML = '';
     };
+    PlainReporter.prototype.highlight = function (id) {
+        document.getElementById(id).classList.add('error-highlight');
+    };
+    PlainReporter.prototype.dropHighlight = function (id) {
+        document.getElementById(id).classList.remove('error-highlight');
+    };
     return PlainReporter;
 }());
 exports.PlainReporter = PlainReporter;
@@ -173,7 +187,7 @@ var editor = new index_1.ErrorReportingEditor('CodeMirror-lint-markers', window.
     mode: 'javascript',
     theme: 'material',
     lineNumbers: true
-}));
+}), new index_1.PlainReporter(new index_1.HtmlFormatter(), document.getElementById('warnings-header'), document.getElementById('warnings')));
 var unlocked = true;
 editor.on('change', function () {
     if (!unlocked) {
@@ -190,7 +204,6 @@ editor.on('change', function () {
 new index_1.Linter({
     workerBundle: './dist/worker.bundle.js',
     textEditor: editor,
-    reporter: new index_1.PlainReporter(new index_1.HtmlFormatter(), document.getElementById('warnings-header'), document.getElementById('warnings')),
     onError: function (e) {
         if (checkbox.checked) {
             window.Raven.captureMessage(e, editor.getValue());

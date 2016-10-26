@@ -3,4 +3,6 @@ export interface Reporter {
   reportErrors(errors: any[]): void;
   clearHeader(): void;
   clearContent(): void;
+  highlight(id: any): void;
+  dropHighlight(id: any): void;
 }

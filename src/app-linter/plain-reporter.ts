@@ -19,4 +19,13 @@ export class PlainReporter implements Reporter {
   clearContent() {
     this.content.innerHTML = '';
   }
+
+  highlight(id: any) {
+    document.getElementById(id).classList.add('error-highlight');
+  }
+
+  dropHighlight(id: any) {
+    document.getElementById(id).classList.remove('error-highlight');
+  }
 }
+

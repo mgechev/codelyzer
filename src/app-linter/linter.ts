@@ -3,7 +3,6 @@ import {RichEditor} from './rich-editor-interface';
 import {Reporter} from './reporter-interface';
 
 export interface LinterConfig {
-  reporter: Reporter;
   textEditor: RichEditor;
   workerBundle: string;
   onError: Function;
@@ -13,6 +12,7 @@ export class Linter {
 
   private worker: Worker;
   private widgets: any[] = [];
+  private errorId = 0;
 
   constructor(private config: LinterConfig) {}
 
@@ -23,8 +23,11 @@ export class Linter {
         if (res.data.output) {
           const output = JSON.parse(res.data.output);
           console.log(res.data.output);
-          this.renderErrors(output);
+          output.forEach((e: any) => e.id = ++this.errorId);
           this.config.textEditor.showErrors(output);
+          if (this.errorId > 1e10) {
+            this.errorId = 0;
+          }
         } else {
           this.config.onError(res.data.error);
         }
@@ -40,14 +43,5 @@ export class Linter {
   lint(program: string) {
     this.worker.postMessage(JSON.stringify({ program }));
   }
-
-  renderErrors(errors: any[]) {
-    if (!errors || !errors.length) {
-      this.config.reporter.setHeader('Good job! No warnings in your code!')
-      this.config.reporter.clearContent();
-    } else {
-      this.config.reporter.setHeader('Warnings')
-      this.config.reporter.reportErrors(errors);
-    }
-  }
 }
+

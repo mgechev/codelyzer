@@ -52,7 +52,11 @@ const editor = new ErrorReportingEditor('CodeMirror-lint-markers', (window as an
   mode:  'javascript',
   theme: 'material',
   lineNumbers: true
-}) as Editor);
+}) as Editor, new PlainReporter(
+  new HtmlFormatter(),
+  document.getElementById('warnings-header'),
+  document.getElementById('warnings'))
+);
 
 let unlocked = true;
 editor.on('change', () => {
@@ -71,10 +75,6 @@ editor.on('change', () => {
 new Linter({
   workerBundle: './dist/worker.bundle.js',
   textEditor: editor,
-  reporter: new PlainReporter(
-    new HtmlFormatter(),
-    document.getElementById('warnings-header'),
-    document.getElementById('warnings')),
   onError(e: any) {
     if (checkbox.checked) {
       (window as any).Raven.captureMessage(e, editor.getValue());

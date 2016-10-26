@@ -1,9 +1,10 @@
 import {Editor} from './editor-interface';
-import {RichEditor as IRichEditor} from './rich-editor-interface';
+import {RichEditor} from './rich-editor-interface';
+import {Reporter} from './reporter-interface';
 
-export class ErrorReportingEditor implements IRichEditor, Editor {
+export class ErrorReportingEditor implements RichEditor, Editor {
 
-  constructor(private marker: string, private delegate: Editor) {}
+  constructor(private marker: string, private delegate: Editor, private reporter: Reporter) {}
 
   getValue(): string {
     return this.delegate.getValue();
@@ -27,6 +28,7 @@ export class ErrorReportingEditor implements IRichEditor, Editor {
 
   showErrors(errors: any[]) {
     const editor = this.delegate;
+    this.renderErrors(errors);
     editor.operation(() => {
 
       editor.clearGutter(this.marker);
@@ -43,13 +45,27 @@ export class ErrorReportingEditor implements IRichEditor, Editor {
         error.className = 'error-tooltip';
         error.innerHTML = err.failure;
         msg.className = 'lint-icon';
-        msg.onmouseenter = () =>
+        msg.onmouseenter = () => {
           error.classList.add('visible');
-        msg.onmouseleave = () =>
+          this.reporter.highlight(err.id);
+        };
+        msg.onmouseleave = () => {
           error.classList.remove('visible');
+          this.reporter.dropHighlight(err.id);
+        };
         editor.setGutterMarker(err.startPosition.line, this.marker, wrapper);
       }
     });
   }
 
+  private renderErrors(errors: any[]) {
+    if (!errors || !errors.length) {
+      this.reporter.setHeader('Good job! No warnings in your code!')
+      this.reporter.clearContent();
+    } else {
+      this.reporter.setHeader('Warnings')
+      this.reporter.reportErrors(errors);
+    }
+  }
 }
+

@@ -3,6 +3,7 @@ var Linter = (function () {
     function Linter(config) {
         this.config = config;
         this.widgets = [];
+        this.errorId = 0;
     }
     Linter.prototype.init = function () {
         var _this = this;
@@ -12,8 +13,11 @@ var Linter = (function () {
                 if (res.data.output) {
                     var output = JSON.parse(res.data.output);
                     console.log(res.data.output);
-                    _this.renderErrors(output);
+                    output.forEach(function (e) { return e.id = ++_this.errorId; });
                     _this.config.textEditor.showErrors(output);
+                    if (_this.errorId > 1e10) {
+                        _this.errorId = 0;
+                    }
                 }
                 else {
                     _this.config.onError(res.data.error);
@@ -30,16 +34,6 @@ var Linter = (function () {
     };
     Linter.prototype.lint = function (program) {
         this.worker.postMessage(JSON.stringify({ program: program }));
-    };
-    Linter.prototype.renderErrors = function (errors) {
-        if (!errors || !errors.length) {
-            this.config.reporter.setHeader('Good job! No warnings in your code!');
-            this.config.reporter.clearContent();
-        }
-        else {
-            this.config.reporter.setHeader('Warnings');
-            this.config.reporter.reportErrors(errors);
-        }
     };
     return Linter;
 }());

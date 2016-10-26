@@ -17,6 +17,12 @@ var PlainReporter = (function () {
     PlainReporter.prototype.clearContent = function () {
         this.content.innerHTML = '';
     };
+    PlainReporter.prototype.highlight = function (id) {
+        document.getElementById(id).classList.add('error-highlight');
+    };
+    PlainReporter.prototype.dropHighlight = function (id) {
+        document.getElementById(id).classList.remove('error-highlight');
+    };
     return PlainReporter;
 }());
 exports.PlainReporter = PlainReporter;

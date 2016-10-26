@@ -1,8 +1,9 @@
 "use strict";
 var ErrorReportingEditor = (function () {
-    function ErrorReportingEditor(marker, delegate) {
+    function ErrorReportingEditor(marker, delegate, reporter) {
         this.marker = marker;
         this.delegate = delegate;
+        this.reporter = reporter;
     }
     ErrorReportingEditor.prototype.getValue = function () {
         return this.delegate.getValue();
@@ -22,6 +23,7 @@ var ErrorReportingEditor = (function () {
     ErrorReportingEditor.prototype.showErrors = function (errors) {
         var _this = this;
         var editor = this.delegate;
+        this.renderErrors(errors);
         editor.operation(function () {
             editor.clearGutter(_this.marker);
             var _loop_1 = function(i) {
@@ -38,10 +40,12 @@ var ErrorReportingEditor = (function () {
                 error.innerHTML = err.failure;
                 msg.className = 'lint-icon';
                 msg.onmouseenter = function () {
-                    return error.classList.add('visible');
+                    error.classList.add('visible');
+                    _this.reporter.highlight(err.id);
                 };
                 msg.onmouseleave = function () {
-                    return error.classList.remove('visible');
+                    error.classList.remove('visible');
+                    _this.reporter.dropHighlight(err.id);
                 };
                 editor.setGutterMarker(err.startPosition.line, _this.marker, wrapper);
             };
@@ -49,6 +53,16 @@ var ErrorReportingEditor = (function () {
                 _loop_1(i);
             }
         });
+    };
+    ErrorReportingEditor.prototype.renderErrors = function (errors) {
+        if (!errors || !errors.length) {
+            this.reporter.setHeader('Good job! No warnings in your code!');
+            this.reporter.clearContent();
+        }
+        else {
+            this.reporter.setHeader('Warnings');
+            this.reporter.reportErrors(errors);
+        }
     };
     return ErrorReportingEditor;
 }());
