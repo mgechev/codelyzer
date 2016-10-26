@@ -3,7 +3,7 @@ var HtmlFormatter = (function () {
     function HtmlFormatter() {
     }
     HtmlFormatter.prototype.format = function (e) {
-        return "<li><span class=\"position\">[" + e.startPosition.line + " - " + e.endPosition.line + "]</span> " + this.linkify(e.failure) + " <span class=\"rule-name\">(" + e.ruleName + ")</span></li>";
+        return "<li><span class=\"position\">[" + (e.startPosition.line + 1) + " - " + (e.endPosition.line + 1) + "]</span> " + this.linkify(e.failure) + " <span class=\"rule-name\">(" + e.ruleName + ")</span></li>";
     };
     HtmlFormatter.prototype.formatErrors = function (errors) {
         var _this = this;
