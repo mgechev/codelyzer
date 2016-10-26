@@ -11,6 +11,10 @@ html, body {
   width: 100%;
 }
 
+.CodeMirror {
+  font-size: 15px;
+}
+
 .agreement {
   color: #fff;
   font-size: 12px;
