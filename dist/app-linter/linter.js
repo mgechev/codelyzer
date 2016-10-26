@@ -9,13 +9,18 @@ var Linter = (function () {
         this.worker = new Worker(this.config.workerBundle);
         this.worker.addEventListener('message', function (res) {
             try {
-                console.log(res.data);
-                var errors = JSON.parse(res.data);
-                _this.renderErrors(errors);
-                _this.config.textEditor.showErrors(errors);
+                if (res.data.output) {
+                    var output = JSON.parse(res.data.output);
+                    console.log(res.data.output);
+                    _this.renderErrors(output);
+                    _this.config.textEditor.showErrors(output);
+                }
+                else {
+                    _this.config.onError(res.data.error);
+                }
             }
             catch (e) {
-                console.error(e);
+                _this.config.onError(e);
             }
         });
         this.config.textEditor.on('change', function () {

@@ -4,5 +4,5 @@ function __export(m) {
 }
 __export(require('./html-formatter'));
 __export(require('./linter'));
-__export(require('./rich-editor'));
+__export(require('./error-reporting-editor'));
 //# sourceMappingURL=index.js.map

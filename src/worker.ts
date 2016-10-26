@@ -39,9 +39,19 @@ const linter = new WebLinter();
 
 self.addEventListener('message', (e: any) => {
   const config = JSON.parse(e.data);
-  linter.lint('file.ts', config.program, getRules(rulesConfig));
-  const output = linter.getResult().output;
-  (self as any).postMessage(output);
+  let output: any = null;
+  let error: any = null;
+  try {
+    linter.lint('file.ts', config.program, getRules(rulesConfig));
+    output = linter.getResult().output;
+  } catch (e) {
+    error = e;
+  }
+  if (error) {
+    (self as any).postMessage({ error });
+  } else {
+    (self as any).postMessage({ output });
+  }
   linter.reset();
 });
 

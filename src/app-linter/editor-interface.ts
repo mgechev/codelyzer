@@ -2,6 +2,6 @@ export interface Editor {
   getValue(): string;
   on(event: string, cb: Function): void;
   operation(cb: Function): void;
-  removeLineWidget(widget: any): void;
-  addLineWidget(line: number, msg: HTMLElement, config: any): void;
+  clearGutter(id: any): void;
+  setGutterMarker(line: number, id: string, msg: HTMLElement): void;
 }

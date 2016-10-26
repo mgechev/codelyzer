@@ -7,6 +7,16 @@ html, body {
   background-color: #1D1E1C;
 }
 
+.CodeMirror-lint-markers {
+  width: 16px;
+}
+
+.CodeMirror-linenumber {
+  z-index: -1;
+  opacity: 0.99;
+  display: inline;
+}
+
 .CodeMirror, #editor {
   width: 100%;
 }
@@ -20,6 +30,7 @@ html, body {
   font-size: 12px;
   flex-direction: row;
   display: flex;
+  margin-left: 15px;
 }
 
 .lint-icon {
@@ -39,16 +50,6 @@ html, body {
   position: relative;
 }
 
-.CodeMirror-linewidget {
-  position: absolute;
-  width: 16px !important;
-  height: 16px !important;
-  background-color: #263238;
-  left: -48px !important;
-  z-index: 7;
-  overflow: visible;
-}
-
 .error-tooltip {
   -webkit-transition: all 0.2s ease-in-out 0s;
   -moz-transition: all 0.2s ease-in-out 0s;
@@ -62,10 +63,11 @@ html, body {
   font-size: 13px;
   transition: all 0.3s;
   border-radius: 11px;
-  z-index: 8;
-  position: relative;
+  z-index: 22;
+  position: absolute;
   display: table;
   left: 0px;
+  top: -5px;
   padding: 5px;
   padding-left: 10px;
   padding-right: 10px;
@@ -76,7 +78,7 @@ html, body {
 .error-tooltip.visible {
   opacity: 1;
   visibility: visible;
-  left: 10px;
+  left: 16px;
 }
 
 .side-info a {
@@ -153,6 +155,7 @@ nav li a:hover {
 
 .warnings-wrapper {
   width: 65%;
+  border-right: 1px solid #999;
 }
 
 .side-info {
@@ -188,6 +191,8 @@ nav li a:hover {
 
   .warnings-wrapper {
     width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #999;
   }
 
   .content {

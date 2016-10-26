@@ -46,16 +46,38 @@ class Hero {
 }
 `;
 
+const editor = new ErrorReportingEditor('CodeMirror-lint-markers', (window as any).CodeMirror(document.getElementById('editor'), {
+  value: sampleCode,
+  gutters: ['CodeMirror-lint-markers'],
+  mode:  'javascript',
+  theme: 'material',
+  lineNumbers: true
+}) as Editor);
+
+// Start the linter
 new Linter({
   workerBundle: './dist/worker.bundle.js',
-  textEditor: new ErrorReportingEditor((window as any).CodeMirror(document.getElementById('editor'), {
-    value: sampleCode,
-    mode:  'javascript',
-    theme: 'material',
-    lineNumbers: true
-  }) as Editor),
+  textEditor: editor,
   errorLabelContainer: document.getElementById('warnings-header'),
   formatter: new HtmlFormatter(),
-  errorsContainer: document.getElementById('warnings')
+  errorsContainer: document.getElementById('warnings'),
+  onError(e: any) {
+    if (checkbox.checked) {
+      (window as any).Raven.captureMessage(e, editor.getValue());
+    }
+  }
 }).init();
 
+// Sentry config
+const checkbox = document.getElementById('reporting') as HTMLInputElement;
+if (checkbox.checked) {
+  (window as any).Raven.config('https://7e471773c9324277a73eaef6eb874b0f@sentry.io/109396').install();
+}
+checkbox.onchange = (e: any) => {
+  if (!checkbox.checked) {
+    (window as any).Raven.uninstall();
+  } else {
+    (window as any).Raven.config('https://7e471773c9324277a73eaef6eb874b0f@sentry.io/109396').install();
+  }
+  console.log(checkbox.checked);
+};

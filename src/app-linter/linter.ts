@@ -7,6 +7,7 @@ export interface LinterConfig {
   errorsContainer: HTMLElement;
   errorLabelContainer: HTMLElement;
   workerBundle: string;
+  onError: Function;
 }
 
 export class Linter {
@@ -20,12 +21,16 @@ export class Linter {
     this.worker = new Worker(this.config.workerBundle);
     this.worker.addEventListener('message', (res: any) => {
       try {
-        console.log(res.data);
-        const errors = JSON.parse(res.data);
-        this.renderErrors(errors);
-        this.config.textEditor.showErrors(errors);
+        if (res.data.output) {
+          const output = JSON.parse(res.data.output);
+          console.log(res.data.output);
+          this.renderErrors(output);
+          this.config.textEditor.showErrors(output);
+        } else {
+          this.config.onError(res.data.error);
+        }
       } catch (e) {
-        console.error(e);
+        this.config.onError(e);
       }
     });
     this.config.textEditor.on('change', () =>
