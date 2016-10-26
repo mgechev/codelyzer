@@ -1,14 +1,28 @@
 import {Linter, Editor, HtmlFormatter} from './app-linter/index';
 
+console.log(`
+Welcome to        __     __
+  _________  ____/ /__  / /_  ______  ___  _____
+ / ___/ __ \\/ __  / _ \\/ / / / /_  / / _ \\/ ___/
+/ /__/ /_/ / /_/ /  __/ / /_/ / / /_/  __/ /
+\\___/\\____/\\__,_/\\___/_/\\__, / /___/\\___/_/
+                       /____/\n`);
+
+console.log(`Your code is being processed in a Web Worker.
+You can see the errors in the web user interface
+as well as in the console of your browser.\n\n`);
+
 const sampleCode = `// Welcome to Codelyzer!
 //
 // Codelyzer is a tool great for teams and individuals, which helps you
-// write consistent code, and helps you discover potential errors.
+// write consistent code, and discover potential errors.
 //
-// In case you're working on a huge legacy codebase, codelyzer can
-// automatically correct all the existing files for you!
+// It processes your TypeScript, templates, template expressions and
+// even inline styles! Most rules are inspired by the Angular style guide.
+// They have a URL associated with them that is going to link to the exact
+// section from angular.io/styleguide.
 //
-// Codelyzer is extensible with custom rules and compatible with tslint!
+// Give it a try!
 
 @Component({
   selector: 'hero-cmp',

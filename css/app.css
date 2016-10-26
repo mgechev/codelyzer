@@ -167,7 +167,7 @@ nav li a:hover {
   margin-left: 10px;
 }
 
-@media screen and (orientation:landscape) {
+@media screen and (min-width: 950px) and (orientation: landscape) {
   .side-info {
     float: right;
   }
