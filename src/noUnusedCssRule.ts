@@ -168,7 +168,7 @@ class UnusedCssVisitor extends BasicCssAstVisitor {
         parts.push(c.strValue);
       }
     }
-    if (!parts.length) {
+    if (!parts.length || !this.templateAst) {
       return true;
     }
     const strippedSelector = parts.map(s => s.replace(/\/|>$/, '').trim()).join(' ');

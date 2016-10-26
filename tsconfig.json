@@ -6,6 +6,7 @@
     "declaration": false,
     "noImplicitAny": false,
     "removeComments": true,
+    "lib": ["es6", "es2015", "dom"],
     "noLib": false,
     "outDir": "./dist",
     "typeRoots": [
@@ -16,8 +17,7 @@
       "mocha",
       "chai",
       "node",
-      "sprintf-js",
-      "es6-shim"
+      "sprintf-js"
     ]
   }
 }

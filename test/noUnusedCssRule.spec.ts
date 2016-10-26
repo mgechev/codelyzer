@@ -696,4 +696,29 @@ describe('no-unused-css', () => {
 
   });
 
+  describe('inconsistencies with template', () => {
+
+    it('should ignore misspelled template', () => {
+      let source = `
+      @Component({
+        selector: 'hero-cmp',
+        templae: \`
+          <h1>Hello <span>{{ hero.name }}</span></h1>
+        \`,
+        styles: [
+          \`
+          h1 spam {
+            color: red;
+          }
+          \`
+        ]
+      })
+      class HeroComponent {
+        private hero: Hero;
+      }`;
+      assertSuccess('no-unused-css', source);
+    });
+
+  });
+
 });
