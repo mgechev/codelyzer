@@ -62,7 +62,7 @@ editor.on('change', () => {
     setTimeout(() => {
       localStorage.setItem('code', editor.getValue());
       unlocked = true;
-    }, 100);
+    }, 1000);
     unlocked = false;
   }
 });

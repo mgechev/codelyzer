@@ -158,7 +158,7 @@ editor.on('change', function () {
         setTimeout(function () {
             localStorage.setItem('code', editor.getValue());
             unlocked = true;
-        }, 100);
+        }, 1000);
         unlocked = false;
     }
 });
