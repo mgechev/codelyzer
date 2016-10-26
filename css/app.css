@@ -46,7 +46,13 @@ html, body {
 }
 
 .error-tooltip {
+  -webkit-transition: all 0.2s ease-in-out 0s;
+  -moz-transition: all 0.2s ease-in-out 0s;
+  -ms-transition: all 0.2s ease-in-out 0s;
+  transition: all 0.2s ease-in-out 0s;
+
   opacity: 0;
+  visibility: hidden;
   background: rgba(0, 0, 0, 0.8);
   color: #fff;
   font-size: 13px;
@@ -54,16 +60,18 @@ html, body {
   border-radius: 11px;
   z-index: 8;
   position: relative;
-  display: inline-block;
+  display: table;
   left: 0px;
   padding: 5px;
   padding-left: 10px;
   padding-right: 10px;
   white-space: nowrap;
+  pointer-events: none;
 }
 
 .error-tooltip.visible {
   opacity: 1;
+  visibility: visible;
   left: 10px;
 }
 
