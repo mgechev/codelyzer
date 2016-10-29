@@ -77,7 +77,7 @@ new Linter({
   textEditor: editor,
   onError(e: any) {
     if (checkbox.checked) {
-      (window as any).Raven.captureMessage(e, editor.getValue());
+      (window as any).Raven.captureMessage(JSON.stringify({ error: e, code: editor.getValue() }));
     }
   }
 }).init();
