@@ -5,7 +5,7 @@
   "scripts": {
     "build": "npm run clean && tsc -p tsconfig.json && npm run bundle:worker && npm run bundle:app",
     "bundle:worker": "browserify dist/worker.js > dist/worker.bundle.js",
-    "minify:worker": "uglifyjs dist/worker.bundle.js --screw-ie8 --compress --mangle --output dist/worker.bundle.js",
+    "minify:worker": "uglifyjs dist/worker.bundle.js --screw-ie8 --compress --output dist/worker.bundle.js",
     "bundle:app": "browserify dist/app.js > dist/app.bundle.js",
     "minify:app": "uglifyjs dist/app.bundle.js --screw-ie8 --compress --mangle --output dist/app.bundle.js",
     "build:prod": "npm run build && npm run minify:worker && npm run minify:app",
