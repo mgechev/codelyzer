@@ -127,6 +127,21 @@ header {
   background-color: #1D1E1C;
 }
 
+nav svg {
+  width: 32px;
+  height: 32px;
+  margin-top: 15px;
+  margin-left: 15px;
+  transition: transform 0.2s cubic-bezier(0.000, 0.800, 0.800, 1.650);
+  transform: rotateZ(25deg);
+  cursor: pointer;
+  float: left;
+}
+
+nav svg:hover {
+  transform: rotateX(0deg);
+}
+
 nav ul {
   margin: 0;
   padding: 0;
