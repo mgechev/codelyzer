@@ -128,14 +128,17 @@ header {
 }
 
 nav svg {
-  width: 32px;
-  height: 32px;
-  margin-top: 15px;
-  margin-left: 15px;
+  width: 61px;
+  height: 63px;
+  margin-top: 1px;
+  /* margin-left: 15px; */
   transition: transform 0.2s cubic-bezier(0.000, 0.800, 0.800, 1.650);
   transform: rotateZ(25deg);
   cursor: pointer;
   float: left;
+  position: absolute;
+  te; */
+  z-index: 10000;
 }
 
 nav svg:hover {
@@ -146,6 +149,7 @@ nav ul {
   margin: 0;
   padding: 0;
   display: inline-block;
+  margin-left: 33px;
 }
 
 nav li {
