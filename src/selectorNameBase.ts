@@ -107,7 +107,7 @@ class SelectorNameValidatorWalker extends Lint.RuleWalker {
   }
 
   private parse(text:string):any{
-    return compiler.__compiler_private__.CssSelector.parse(text)[0];
+    return compiler.CssSelector.parse(text)[0];
   }
 
   private validateParsedSelector(p:any,name:string):boolean{
