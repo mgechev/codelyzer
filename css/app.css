@@ -130,8 +130,12 @@ header {
 nav svg {
   width: 52px;
   height: 52px;
-  transition: transform 0.2s cubic-bezier(0.000, 0.800, 0.800, 1.650);
+  -moz-transition: -moz-transform 0.3s cubic-bezier(0.000, 0.800, 0.800, 1.650);
+  -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.000, 0.800, 0.800, 1.650);
+  -ms-transition: -ms-transform 0.3s cubic-bezier(0.000, 0.800, 0.800, 1.650);
+  -o-transition: -o-transform 0.3s cubic-bezier(0.000, 0.800, 0.800, 1.650);
   transform: rotateZ(25deg);
+
   cursor: pointer;
   float: left;
   position: absolute;
