@@ -1,14 +1,14 @@
 {
   "name": "codelyzer",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "description": "Linting for Angular 2 applications, following https:/angular.io/styleguide.",
   "scripts": {
     "lint": "tslint -c tslint.json src/**/*.ts test/**/*.ts",
-    "release": "npm run build && npm run copy:common && npm run prepare:package && npm run build:links",
+    "release": "npm run build && rimraf dist && tsc -p tsconfig-release.json && npm run copy:common && npm run prepare:package && npm run build:links",
     "build": "rimraf dist && tsc && npm run lint && npm t",
-    "copy:common": "cp README.md dist/src",
-    "build:links": "ts-node build/links.ts --src ./dist/src",
-    "prepare:package": "cat package.json | ts-node build/package.ts > dist/src/package.json",
+    "copy:common": "cp README.md dist",
+    "build:links": "ts-node build/links.ts --src ./dist",
+    "prepare:package": "cat package.json | ts-node build/package.ts > dist/package.json",
     "test": "rimraf dist && tsc && mocha dist/test/*.js dist/test/**/*.js",
     "test:watch": "rimraf dist && tsc && mocha dist/test/*.js dist/test/**/*.js --watch",
     "tscv": "tsc --version",
@@ -44,10 +44,9 @@
   },
   "homepage": "https://github.com/mgechev/codelyzer#readme",
   "devDependencies": {
-     "@angular/compiler": "^2.1.1",
+    "@angular/compiler": "^2.1.1",
     "@angular/core": "^2.1.1",
     "@types/chai": "^3.4.33",
-    "@types/es6-shim": "^0.31.32",
     "@types/mocha": "^2.2.32",
     "@types/node": "^6.0.41",
     "@types/sprintf-js": "0.0.27",
@@ -56,7 +55,7 @@
     "minimalist": "1.0.0",
     "mocha": "3.0.2",
     "rimraf": "^2.5.2",
-    "rxjs": "^5.0.0-beta.12",
+    "rxjs": "5.0.0-beta.12",
     "ts-node": "1.2.2",
     "tslint": "3.14.0",
     "typescript": "^2.0.3",
@@ -64,10 +63,12 @@
   },
   "peerDependencies": {
     "tslint": "^3.9.0",
-    "@angular/compiler": "~2.1.0",
-    "@angular/core": "~2.1.0"
+    "@angular/compiler": "~2.1.1",
+    "@angular/core": "~2.1.1"
   },
   "dependencies": {
+    "css-selector-tokenizer": "^0.7.0",
+    "cssauron": "^1.4.0",
     "sprintf-js": "^1.0.3"
   }
 }

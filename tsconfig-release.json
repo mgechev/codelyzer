@@ -3,7 +3,7 @@
     "experimentalDecorators": true,
     "target": "es5",
     "module": "commonjs",
-    "declaration": false,
+    "declaration": true,
     "noImplicitAny": false,
     "removeComments": true,
     "lib": ["es6", "es2015", "dom"],
@@ -19,5 +19,8 @@
       "node",
       "sprintf-js"
     ]
-  }
+  },
+  "files": [
+    "src/index.ts"
+  ]
 }

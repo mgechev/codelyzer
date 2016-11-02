@@ -90,7 +90,7 @@ describe('component-selector-prefix', () => {
                     line: 2,
                     character: 31
                 }
-            }, ["element", "sg","ng", "kebab-case"]);
+            }, ["element", "sg", "kebab-case"]);
         });
 
         it('should fail when component used without prefix applying multiple prefixes', () => {

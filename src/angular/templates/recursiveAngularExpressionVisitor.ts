@@ -3,6 +3,8 @@ import * as ts from 'typescript';
 import * as e from '@angular/compiler/src/expression_parser/ast';
 
 export class RecursiveAngularExpressionVisitor extends Lint.RuleWalker implements e.AstVisitor {
+  public preDefinedVariables = [];
+
   constructor(sourceFile: ts.SourceFile, options: Lint.IOptions,
       protected context: ts.ClassDeclaration, protected basePosition: number) {
     super(sourceFile, options);

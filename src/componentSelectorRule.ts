@@ -15,24 +15,41 @@ export class Rule extends Lint.Rules.AbstractRule {
     public validatePrefix:Function;
     public validateName:Function;
     public FAILURE_PREFIX;
+    public isMultiPrefix:boolean;
+    public prefixArguments:string;
 
     constructor(ruleName: string, value: any, disabledIntervals: Lint.IDisabledInterval[]) {
         let type = value[1];
         let prefix = value[2];
         let name = value[3];
-        console.log(type);
-        console.log(prefix);
-        console.log(name);
-        let prefixExpression: string = typeof value[2]==='string'?value[2]:(value[2]||[]).join('|');
         super(ruleName, value, disabledIntervals);
-        this.validatePrefix = SelectorValidator.multiPrefix(prefixExpression);
-        this.FAILURE_PREFIX = value.length > 2 ? FAILURE_PREFIX_MANY : FAILURE_PREFIX_SINGLE;
-        if (value[3] === 'kebab-case') {
+        this.setMultiPrefix(prefix);
+        this.setPrefixArguments(prefix);
+        this.setPrefixValidator(prefix);
+        this.setPrefixFailure();
+        if (name === 'kebab-case') {
             this.validateName = SelectorValidator.kebabCase;
         }
-        if(value[1] === 'element') {
+        if(type === 'element') {
 
         }
+    }
+
+    private setMultiPrefix(prefix:string){
+        this.isMultiPrefix = typeof prefix==='string';
+    }
+
+    private setPrefixArguments(prefix:any){
+        this.prefixArguments = this.isMultiPrefix?prefix:prefix.join(',');
+    }
+
+    private setPrefixValidator(prefix:any){
+        let prefixExpression: string = this.isMultiPrefix?prefix:(prefix||[]).join('|');
+        this.validatePrefix = SelectorValidator.multiPrefix(prefixExpression);
+    }
+
+    private setPrefixFailure(){
+        this.FAILURE_PREFIX = this.isMultiPrefix?FAILURE_PREFIX_SINGLE:FAILURE_PREFIX_MANY;
     }
 
     public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
@@ -85,18 +102,15 @@ class SelectorNameValidatorWalker extends Lint.RuleWalker {
                 .forEach(prop => {
                     let p = <any>prop;
                     if (!this.validateParsedSelector(p)) {
-                        console.log("1");
-                        if(this.isSupportedKind(p.initializer.kind)){
+                        if(this.isSupportedKind(p.initializer.kind)) {
                             let error = sprintf(FAILURE_TYPE, className,this.rule.getOptions().ruleArguments[0]);
                             this.addFailure(this.createFailure(p.initializer.getStart(), p.initializer.getWidth(),error));
                         }
                     }else if(!this.rule.validateName(this.extractMainSelector(p))) {
-                        console.log("2");
                         let error = sprintf(FAILURE_NAME,className,this.rule.getOptions().ruleArguments[2]);
                         this.addFailure(this.createFailure(p.initializer.getStart(), p.initializer.getWidth(), error));
                     }else if(!this.rule.validatePrefix(this.extractMainSelector(p))) {
-                        console.log("1");
-                        let error = sprintf(this.rule.FAILURE_PREFIX,className,this.rule.getOptions().ruleArguments[1].join(','));
+                        let error = sprintf(this.rule.FAILURE_PREFIX,className,this.rule.prefixArguments);
                         this.addFailure(this.createFailure(p.initializer.getStart(), p.initializer.getWidth(), error));
                     }
                 });
@@ -108,16 +122,16 @@ class SelectorNameValidatorWalker extends Lint.RuleWalker {
         return [current.StringLiteral, current.NoSubstitutionTemplateLiteral].some(kindType => kindType === kind)
     }
 
-    private parse(text:string):any{
+    private parse(text:string):any {
         return compiler.CssSelector.parse(text)[0];
     }
 
-    private validateParsedSelector(p:any):boolean{
+    private validateParsedSelector(p:any):boolean {
         return p.initializer && this.isSupportedKind(p.initializer.kind) &&
             this.parse(p.initializer.text).element!=null;
     }
 
-    private extractMainSelector(p:any){
+    private extractMainSelector(p:any) {
         return  this.parse(p.initializer.text).element;
     }
 }

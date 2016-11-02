@@ -3,7 +3,7 @@ import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
 import { stringDistance } from './util/utils';
 import {Ng2Walker} from './angular/ng2Walker';
-import {RecursiveAngularExpressionVisitor} from './angular/recursiveAngularExpressionVisitor';
+import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAngularExpressionVisitor';
 import {getDeclaredMethodNames, getDeclaredPropertyNames} from './util/classDeclarationUtils';
 import * as e from '@angular/compiler/src/expression_parser/ast';
 
@@ -34,7 +34,8 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
       symbolType = 'property';
     }
     available = getDeclaredMethodNames(this.context)
-      .concat(getDeclaredPropertyNames(this.context));
+      .concat(getDeclaredPropertyNames(this.context))
+      .concat(this.preDefinedVariables);
     ast.receiver.visit(this);
     // Do not support nested properties yet
     if (ast.receiver && (<any>ast.receiver).name) {
@@ -99,8 +100,9 @@ export class Rule extends Lint.Rules.AbstractRule {
   public apply(sourceFile:ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
         new Ng2Walker(sourceFile,
-            this.getOptions(),
-            SymbolAccessValidator));
+            this.getOptions(), {
+              expressionVisitorCtrl: SymbolAccessValidator
+            }));
   }
 }
 
