@@ -5,15 +5,15 @@ import {sprintf} from 'sprintf-js';
 import * as compiler from "@angular/compiler";
 import SyntaxKind = require('./util/syntaxKind');
 
-const FAILURE_TYPE = 'The selector of the component "%s" should be used as %s ($$05-03$$)';
-const FAILURE_NAME = 'The selector of the component "%s" should be named %s ($$05-02$$)';
-const FAILURE_PREFIX_SINGLE = 'The selector of the component "%s" should have prefix "%s" ($$02-07$$)';
-const FAILURE_PREFIX_MANY = 'The selector of the component "%s" should have one of the prefixes: %s ($$02-07$$)';
+const FAILURE_TYPE = 'The selector of the directive "%s" should be used as %s ($$02-06$$)';
+const FAILURE_NAME = 'The selector of the directive "%s" should be named %s ($$02-06$$)';
+const FAILURE_PREFIX_SINGLE = 'The selector of the directive "%s" should have prefix "%s" ($$02-08$$)';
+const FAILURE_PREFIX_MANY = 'The selector of the directive "%s" should have one of the prefixes: %s ($$02-08$$)';
 
 export class Rule extends Lint.Rules.AbstractRule {
 
-    public validatePrefix:Function;
-    public validateName:Function;
+    public prefixValidator:Function;
+    public nameValidator:Function;
     public FAILURE_PREFIX;
     public isMultiPrefix:boolean;
     public prefixArguments:string;
@@ -26,8 +26,8 @@ export class Rule extends Lint.Rules.AbstractRule {
         this.setPrefixArguments(prefix);
         this.setPrefixValidator(prefix);
         this.setPrefixFailure();
-        if (name === 'kebab-case') {
-            this.validateName = SelectorValidator.kebabCase;
+        if (name === 'camelCase') {
+            this.nameValidator = SelectorValidator.camelCase;
         }
     }
 
@@ -41,11 +41,19 @@ export class Rule extends Lint.Rules.AbstractRule {
 
     private setPrefixValidator(prefix:any){
         let prefixExpression: string = this.isMultiPrefix?prefix:(prefix||[]).join('|');
-        this.validatePrefix = SelectorValidator.multiPrefix(prefixExpression);
+        this.prefixValidator = SelectorValidator.multiPrefix(prefixExpression);
     }
 
     private setPrefixFailure(){
         this.FAILURE_PREFIX = this.isMultiPrefix?FAILURE_PREFIX_SINGLE:FAILURE_PREFIX_MANY;
+    }
+
+    public validateName(attrs:string[]):boolean {
+        return attrs.some((a)=>this.nameValidator(a));
+    }
+
+    public validatePrefix(attrs:string[]):boolean {
+        return attrs.some((a)=>this.prefixValidator(a));
     }
 
     public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
@@ -87,7 +95,7 @@ class SelectorValidatorWalker extends Lint.RuleWalker {
         let name = expr.text;
         let args = baseExpr.arguments || [];
         let arg = args[0];
-        if (name === 'Component') {
+        if (name === 'Directive') {
             this.validateSelector(className, arg);
         }
     }
@@ -124,11 +132,11 @@ class SelectorValidatorWalker extends Lint.RuleWalker {
 
     private validateParsedSelector(p:any):boolean {
         return p.initializer && this.isSupportedKind(p.initializer.kind) &&
-            this.parse(p.initializer.text).element!=null;
+            this.parse(p.initializer.text).attrs.length!=0;
     }
 
     private extractMainSelector(p:any) {
-        return  this.parse(p.initializer.text).element;
+        return  this.parse(p.initializer.text).attrs;
     }
 }
 

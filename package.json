@@ -13,8 +13,7 @@
     "test:watch": "rimraf dist && tsc && mocha dist/test/*.js dist/test/**/*.js --watch",
     "tscv": "tsc --version",
     "tsc": "tsc",
-    "tsc:watch": "tsc --w",
-    "mocha":"mocha"
+    "tsc:watch": "tsc --w"
   },
   "contributors": [
     "Minko Gechev <mgechev@gmail.com>",
