@@ -12,8 +12,8 @@ const FAILURE_PREFIX_MANY = 'The selector of the component "%s" should have one 
 
 export class Rule extends Lint.Rules.AbstractRule {
 
-    public validatePrefix:Function;
-    public validateName:Function;
+    private prefixValidator:Function;
+    private nameValidator:Function;
     public FAILURE_PREFIX;
     public isMultiPrefix:boolean;
     public prefixArguments:string;
@@ -27,7 +27,7 @@ export class Rule extends Lint.Rules.AbstractRule {
         this.setPrefixValidator(prefix);
         this.setPrefixFailure();
         if (name === 'kebab-case') {
-            this.validateName = SelectorValidator.kebabCase;
+            this.nameValidator = SelectorValidator.kebabCase;
         }
     }
 
@@ -41,11 +41,19 @@ export class Rule extends Lint.Rules.AbstractRule {
 
     private setPrefixValidator(prefix:any){
         let prefixExpression: string = this.isMultiPrefix?prefix:(prefix||[]).join('|');
-        this.validatePrefix = SelectorValidator.multiPrefix(prefixExpression);
+        this.prefixValidator = SelectorValidator.multiPrefix(prefixExpression);
     }
 
     private setPrefixFailure(){
         this.FAILURE_PREFIX = this.isMultiPrefix?FAILURE_PREFIX_SINGLE:FAILURE_PREFIX_MANY;
+    }
+
+    public validateName(selector:string):boolean {
+        return this.nameValidator(selector);
+    }
+
+    public validatePrefix(selector:string):boolean {
+        return this.prefixValidator(selector);
     }
 
     public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {

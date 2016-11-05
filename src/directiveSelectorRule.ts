@@ -12,8 +12,8 @@ const FAILURE_PREFIX_MANY = 'The selector of the directive "%s" should have one 
 
 export class Rule extends Lint.Rules.AbstractRule {
 
-    public prefixValidator:Function;
-    public nameValidator:Function;
+    private prefixValidator:Function;
+    private nameValidator:Function;
     public FAILURE_PREFIX;
     public isMultiPrefix:boolean;
     public prefixArguments:string;
