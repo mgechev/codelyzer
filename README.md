@@ -131,6 +131,8 @@ Codelyzer should work out of the box with Atom but for VSCode you will have to o
 }
 ```
 
+> Note: In Visual Studio 2015, for codelyzer to work, you must *at least* have .NET Core >= **1.1.0-preview1** and Update 3 installed. You can find the [1.1.0 download here](https://github.com/dotnet/core/blob/master/release-notes/preview-download.md). 
+
 Now you should have the following result:
 
 ![VSCode Codelyzer](http://gifyu.com/images/cd.gif)
