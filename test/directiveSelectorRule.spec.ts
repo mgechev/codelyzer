@@ -31,6 +31,16 @@ describe('directive-selector-name', () => {
             assertSuccess('directive-selector', source, ['attribute','sg','camelCase']);
         });
     });
+    describe('valid directive selector, using multiple selectors, element type and kebap-case', () => {
+        it('should succeed when set valid selector in @Directive', () => {
+            let source = `
+      @Directive({
+        selector: 'sg-bar-foo[test].test:not(p)'
+      })
+      class Test {}`;
+            assertSuccess('directive-selector', source, ['element','sg','kebab-case']);
+        });
+    });
     describe('invalid directive selector, using multiple selectors', () => {
         it('should succeed when set valid selector in @Directive and multiple selectors', () => {
             let source = `

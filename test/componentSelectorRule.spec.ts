@@ -77,6 +77,14 @@ describe('component-selector-prefix', () => {
       class Test {}`;
             assertSuccess('component-selector', source, ["element", ["sg","ng","mg"], "kebab-case"]);
         });
+        it('should succeed when set valid selector in @Component using multiple prefixes and attribute type', () => {
+            let source = `
+      @Component({
+        selector: '[sg-bar-foo]'
+      })
+      class Test {}`;
+            assertSuccess('component-selector', source, ["attribute", ["sg","ng","mg"], "kebab-case"]);
+        });
     });
 });
 describe('component-selector-type', () => {
@@ -127,6 +135,89 @@ describe('component-selector-type', () => {
       })
       class Test {}`;
             assertSuccess('component-selector', source, ["element", ["sg","ng"], "kebab-case"]);
+        });
+        it('should succeed when set valid selector in @Component with multiple selectors and attribute type', () => {
+            let source = `
+      @Component({
+        selector: 'baz[sg-bar-foo][foe].bar'
+      })
+      class Test {}`;
+            assertSuccess('component-selector', source, ["attribute", ["sg","ng"], "kebab-case"]);
+        });
+    });
+});
+describe('component-selector-name', () => {
+    describe('invalid component selectors', () => {
+        it('should fail when component named camelCase', () => {
+            let source = `
+      @Component({
+        selector: 'sgFooBar'
+      })
+      class Test {}`;
+            assertFailure('component-selector', source, {
+                message: 'The selector of the component "Test" should be named kebab-case ($$05-02$$)',
+                startPosition: {
+                    line: 2,
+                    character: 18
+                },
+                endPosition: {
+                    line: 2,
+                    character: 28
+                }
+            }, ['element','sg','kebab-case']);
+        });
+
+        it('should fail when the selector of component does not contain hyphen character', () => {
+            let source = `
+      @Component({
+        selector: 'sgfoobar'
+      })
+      class Test {}`;
+            assertFailure('component-selector', source, {
+                message: 'The selector of the component "Test" should be named kebab-case ($$05-02$$)',
+                startPosition: {
+                    line: 2,
+                    character: 18
+                },
+                endPosition: {
+                    line: 2,
+                    character: 28
+                }
+            }, ['element','sg','kebab-case']);
+        });
+    });
+
+    describe('valid component selector', () => {
+        it('should succeed when set valid selector in @Component', () => {
+            let source = `
+      @Component({
+        selector: 'sg-bar-foo'
+      })
+      class Test {}`;
+            assertSuccess('component-selector', source, ['element','sg','kebab-case']);
+        });
+
+        it('should succeed with empty file', () => {
+            let source = ``;
+            assertSuccess('component-selector', source, ['element','sg','kebab-case']);
+        });
+        it('should ignore the selector when it\'s not literal', () => {
+            let source = `
+      const selectorName = 'sgFooBar';
+      @Component({
+        selector: selectorName
+      })
+      class Test {}`;
+            assertSuccess('component-selector', source, ['element','sg','kebab-case']);
+        });
+
+        it('should succeed when set valid selector in @Component with multi selectors, attribute type and camelCase', () => {
+            let source = `
+      @Component({
+        selector: 'baz[sgBarFoo][baz].baz'
+      })
+      class Test {}`;
+            assertSuccess('component-selector', source, ['attribute','sg','camelCase']);
         });
     });
 });

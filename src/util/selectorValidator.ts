@@ -1,10 +1,10 @@
 export const SelectorValidator = {
   attribute(selector: string): boolean {
-    return /^\[.+\]$/.test(selector);
+    return selector.length!=0;
   },
 
   element(selector: string): boolean {
-    return /^[^\[].+[^\]]$/.test(selector);
+    return selector!=null;
   },
 
   kebabCase(selector: string): boolean {

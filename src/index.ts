@@ -11,7 +11,7 @@ export { Rule as NoInputRenameRule } from './noInputRenameRule';
 export { Rule as NoOutputRenameRule } from './noOutputRenameRule';
 export { Rule as NoUnusedCssRule } from './noUnusedCssRule';
 export { Rule as PipeImpureRule } from './pipeImpureRule';
-export { Rule as PipeSelectorRule } from './pipeSelectorRule';
+export { Rule as PipeNamingRule } from './pipeNamingRule';
 export { Rule as TemplatesUsePublicRule } from './templatesUsePublicRule';
 export { Rule as UseHostPropertyDecoratorRule } from './useHostPropertyDecoratorRule';
 export { Rule as UseInputPropertyDecoratorRule } from './useInputPropertyDecoratorRule';

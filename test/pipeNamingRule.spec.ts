@@ -1,6 +1,6 @@
 import {assertFailure, assertSuccess} from './testHelper';
 
-describe('pipe-selector', () => {
+describe('pipe-naming', () => {
     describe('invalid pipe name', () => {
         it('should fail when Pipe is named camelCase without prefix ng', () => {
             let source = `
@@ -8,7 +8,7 @@ describe('pipe-selector', () => {
                         name: 'foo-bar'
                       })
                       class Test {}`;
-            assertFailure('pipe-selector', source, {
+            assertFailure('pipe-naming', source, {
                 message: 'The name of the Pipe decorator of class Test should be named camelCase with prefix ng, however its value is "foo-bar".',
                 startPosition: {
                     line: 2,
@@ -27,7 +27,7 @@ describe('pipe-selector', () => {
                         name: 'foo-bar'
                       })
                       class Test {}`;
-            assertFailure('pipe-selector', source, {
+            assertFailure('pipe-naming', source, {
                 message: 'The name of the Pipe decorator of class Test should be named camelCase with prefix ng,mg,sg, however its value is "foo-bar".',
                 startPosition: {
                     line: 2,
@@ -46,7 +46,7 @@ describe('pipe-selector', () => {
                         name: 'foo-bar'
                       })
                       class Test {}`;
-            assertFailure('pipe-selector', source, {
+            assertFailure('pipe-naming', source, {
                 message: 'The name of the Pipe decorator of class Test should be named camelCase, however its value is "foo-bar".',
                 startPosition: {
                     line: 2,
@@ -65,7 +65,7 @@ describe('pipe-selector', () => {
             let source = `
                     @Pipe
                     class Test {}`;
-            assertSuccess('pipe-selector', source, ['camelCase', 'ng']);
+            assertSuccess('pipe-naming', source, ['camelCase', 'ng']);
         });
     });
 
@@ -76,7 +76,7 @@ describe('pipe-selector', () => {
                       name: 'ngBarFoo'
                     })
                     class Test {}`;
-            assertSuccess('pipe-selector', source, ['camelCase', 'ng']);
+            assertSuccess('pipe-naming', source, ['camelCase', 'ng']);
         });
 
         it('should succeed when set valid name applying multiple prefixes in @Pipe', () => {
@@ -85,7 +85,7 @@ describe('pipe-selector', () => {
                       name: 'ngBarFoo'
                     })
                     class Test {}`;
-            assertSuccess('pipe-selector', source, ['camelCase', 'ng','sg','mg']);
+            assertSuccess('pipe-naming', source, ['camelCase', 'ng','sg','mg']);
         });
 
         it('should succeed when set valid name in @Pipe', () => {
@@ -94,13 +94,13 @@ describe('pipe-selector', () => {
                       name: 'barFoo'
                     })
                     class Test {}`;
-            assertSuccess('pipe-selector', source, ['camelCase']);
+            assertSuccess('pipe-naming', source, ['camelCase']);
         });
 
         it('should succeed when the class is not a Pipe', () => {
             let source = `
                     class Test {}`;
-            assertSuccess('pipe-selector', source, ['camelCase']);
+            assertSuccess('pipe-naming', source, ['camelCase']);
         });
         it('should do nothing if the name of the pipe is not a literal', () => {
             let source = `
@@ -109,7 +109,7 @@ describe('pipe-selector', () => {
                         name: pipeName
                       })
                       class Test {}`;
-            assertSuccess('pipe-selector', source, ['camelCase']);
+            assertSuccess('pipe-naming', source, ['camelCase']);
         });
     });
 });
