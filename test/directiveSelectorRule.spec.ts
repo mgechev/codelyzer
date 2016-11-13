@@ -83,6 +83,25 @@ describe('directive-selector-prefix', () => {
             }, ['attribute','sg','camelCase']);
         });
 
+        it('should fail when directive used without longer prefix', () => {
+            let source = `
+          @Directive({
+            selector: '[fooBar]'
+          })
+          class Test {}`;
+            assertFailure('directive-selector', source, {
+                message: 'The selector of the directive "Test" should have prefix "fo" ($$02-08$$)',
+                startPosition: {
+                    line: 2,
+                    character: 22
+                },
+                endPosition: {
+                    line: 2,
+                    character: 32
+                }
+            }, ['attribute','fo','camelCase']);
+        });
+
         it('should fail when directive used without prefix applying multiple prefixes', () => {
             let source = `
           @Directive({
@@ -205,6 +224,21 @@ describe('directive-selector-type', () => {
       })
       class Test {}`;
             assertSuccess('directive-selector', source, ['attribute','sg','camelCase']);
+        });
+
+        it('should succeed when set valid selector using multiple selectors in @Directive', () => {
+            let source = `
+            @Directive({
+              selector: '[past][formControlName],[past][formControl],[past][ngModel]',
+              providers: [{
+                provide: NG_VALIDATORS,
+                useExisting: forwardRef(() => DatePastValidator),
+                multi: true,
+              }],
+              host: {'[attr.date]': 'date? "" : null'},
+            })
+            class Test {}`;
+            assertSuccess('directive-selector', source, ['attribute', 'ng','camelCase']);
         });
     });
 });

@@ -24,7 +24,7 @@ export abstract class SelectorRule extends Lint.Rules.AbstractRule {
     super(ruleName, value, disabledIntervals);
     this.setMultiPrefix(prefix);
     this.setPrefixArguments(prefix);
-    this.setPrefixValidator(prefix);
+    this.setPrefixValidator(prefix, name);
     this.setPrefixFailure();
     this.setTypeValidator(type);
     this.setNameValidator(name);
@@ -86,9 +86,9 @@ export abstract class SelectorRule extends Lint.Rules.AbstractRule {
     this.prefixArguments = this.isMultiPrefix?prefix:prefix.join(',');
   }
 
-  private setPrefixValidator(prefix:any) {
+  private setPrefixValidator(prefix: any, name: string) {
     let prefixExpression: string = this.isMultiPrefix?prefix:(prefix||[]).join('|');
-    this.prefixValidator = SelectorValidator.multiPrefix(prefixExpression);
+    this.prefixValidator = SelectorValidator.prefix(prefixExpression, name);
   }
 
   private setPrefixFailure() {
@@ -136,14 +136,23 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
       (<ts.ObjectLiteralExpression>arg).properties.filter(prop => this.validateProperty(prop))
         .map(prop=>(<any>prop).initializer)
         .forEach(i => {
-          let selector:any = this.extractMainSelector(i);
-          if (!this.rule.validateType(selector)) {
+          const selectors: any = this.extractMainSelector(i);
+          const validateSelectors = (cb: any) => {
+            // If all selectors fail, this will return true which means that the selector is invalid
+            // according to the validation callback.
+            // Since the method is called validateSelector, it's suppose to return true if the
+            // selector is valid, so we're taking the result with "!".
+            return !selectors.every((selector: any) => {
+              return !cb(selector[this.rule.cssSelectorProperty]);
+            });
+          };
+          if (!validateSelectors(this.rule.validateType.bind(this.rule))) {
             let error = sprintf(this.rule.getTypeFailure(), className,this.rule.getOptions().ruleArguments[0]);
             this.addFailure(this.createFailure(i.getStart(), i.getWidth(),error));
-          } else if(!this.rule.validateName(selector)) {
+          } else if (!validateSelectors(this.rule.validateName.bind(this.rule))) {
             let error = sprintf(this.rule.getNameFailure(),className,this.rule.getOptions().ruleArguments[2]);
             this.addFailure(this.createFailure(i.getStart(), i.getWidth(), error));
-          }else if(!this.rule.validatePrefix(selector)) {
+          } else if (!validateSelectors(this.rule.validatePrefix.bind(this.rule))) {
             let error = sprintf(this.rule.getPrefixFailure(),className,this.rule.prefixArguments);
             this.addFailure(this.createFailure(i.getStart(), i.getWidth(), error));
           }
@@ -161,8 +170,7 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
   }
 
   private extractMainSelector(i:any) {
-    let parsed:any = compiler.CssSelector.parse(i.text)[0];
-    return parsed[this.rule.cssSelectorProperty];
+    return compiler.CssSelector.parse(i.text);
   }
 }
 

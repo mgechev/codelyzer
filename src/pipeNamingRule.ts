@@ -25,8 +25,8 @@ export class Rule extends Lint.Rules.AbstractRule {
     if (value.length>2) {
       this.hasPrefix = true;
       let prefixExpression:string = (value.slice(2)||[]).join('|');
-      this.prefix =(value.slice(2)||[]).join(',');
-      this.prefixChecker = SelectorValidator.multiPrefix(prefixExpression);
+      this.prefix = (value.slice(2)||[]).join(',');
+      this.prefixChecker = SelectorValidator.prefix(prefixExpression, 'camelCase');
     }
   }
 
@@ -59,7 +59,7 @@ export class ClassMetadataWalker extends Ng2Walker {
     let argument = this.extractArgument(pipe);
     if (argument.kind === SyntaxKind.current().ObjectLiteralExpression) {
       argument.properties.filter(n=>n.name.text === 'name')
-        .forEach(this.validateProperty.bind(this, className))
+        .forEach(this.validateProperty.bind(this, className));
     }
   }
 

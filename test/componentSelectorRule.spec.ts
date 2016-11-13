@@ -57,6 +57,26 @@ describe('component-selector-prefix', () => {
                 }
             }, ["element", ["sg","mg","ng"], "kebab-case"]);
         });
+
+
+        it('should fail when component used longer prefix', () => {
+            let source = `
+          @Component({
+            selector: 'foo-bar'
+          })
+      class Test {}`;
+            assertFailure('component-selector', source, {
+                message: 'The selector of the component "Test" should have one of the prefixes: fo,mg,ng ($$02-07$$)',
+                startPosition: {
+                    line: 2,
+                    character: 22
+                },
+                endPosition: {
+                    line: 2,
+                    character: 31
+                }
+            }, ["element", ["fo","mg","ng"], "kebab-case"]);
+        });
     });
 
     describe('valid component selector', () => {
