@@ -40,7 +40,7 @@ export abstract class SelectorRule extends Lint.Rules.AbstractRule {
 
   public validateName(selector:any):boolean {
     if(this.isMultiSelectors) {
-      return selector.some((a)=>this.nameValidator(a));
+      return selector.some((a) => this.nameValidator(a));
     } else {
       return this.nameValidator(selector);
     }
@@ -48,7 +48,7 @@ export abstract class SelectorRule extends Lint.Rules.AbstractRule {
 
   public validatePrefix(selector:any):boolean {
     if(this.isMultiSelectors) {
-      return selector.some((a)=>this.prefixValidator(a));
+      return selector.some((a) => this.prefixValidator(a));
     } else {
       return this.prefixValidator(selector);
     }
