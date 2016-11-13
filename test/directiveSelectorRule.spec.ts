@@ -83,6 +83,25 @@ describe('directive-selector-prefix', () => {
             }, ['attribute','sg','camelCase']);
         });
 
+        it('should fail when directive used without longer prefix', () => {
+            let source = `
+          @Directive({
+            selector: '[fooBar]'
+          })
+          class Test {}`;
+            assertFailure('directive-selector', source, {
+                message: 'The selector of the directive "Test" should have prefix "fo" ($$02-08$$)',
+                startPosition: {
+                    line: 2,
+                    character: 22
+                },
+                endPosition: {
+                    line: 2,
+                    character: 32
+                }
+            }, ['attribute','fo','camelCase']);
+        });
+
         it('should fail when directive used without prefix applying multiple prefixes', () => {
             let source = `
           @Directive({

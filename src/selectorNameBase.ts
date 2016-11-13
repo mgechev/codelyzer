@@ -24,7 +24,7 @@ export abstract class SelectorRule extends Lint.Rules.AbstractRule {
     super(ruleName, value, disabledIntervals);
     this.setMultiPrefix(prefix);
     this.setPrefixArguments(prefix);
-    this.setPrefixValidator(prefix);
+    this.setPrefixValidator(prefix, name);
     this.setPrefixFailure();
     this.setTypeValidator(type);
     this.setNameValidator(name);
@@ -86,9 +86,9 @@ export abstract class SelectorRule extends Lint.Rules.AbstractRule {
     this.prefixArguments = this.isMultiPrefix?prefix:prefix.join(',');
   }
 
-  private setPrefixValidator(prefix:any) {
+  private setPrefixValidator(prefix: any, name: string) {
     let prefixExpression: string = this.isMultiPrefix?prefix:(prefix||[]).join('|');
-    this.prefixValidator = SelectorValidator.multiPrefix(prefixExpression);
+    this.prefixValidator = SelectorValidator.prefix(prefixExpression, name);
   }
 
   private setPrefixFailure() {

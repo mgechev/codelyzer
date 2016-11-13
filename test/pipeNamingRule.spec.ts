@@ -40,6 +40,25 @@ describe('pipe-naming', () => {
             }, ['camelCase', 'ng','mg','sg']);
         });
 
+        it('should fail when Pipe is named camelCase and has longer prefix', () => {
+            let source = `
+                      @Pipe({
+                        name: 'fooBar'
+                      })
+                      class Test {}`;
+            assertFailure('pipe-naming', source, {
+                message: 'The name of the Pipe decorator of class Test should be named camelCase with prefix fo,mg,sg, however its value is "fooBar".',
+                startPosition: {
+                    line: 2,
+                    character: 24
+                },
+                endPosition: {
+                    line: 2,
+                    character: 38
+                }
+            }, ['camelCase', 'fo','mg','sg']);
+        });
+
         it('should fail when Pipe is not named camelCase without prefix', () => {
             let source = `
                       @Pipe({
