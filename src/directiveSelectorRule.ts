@@ -7,5 +7,3 @@ export class Rule extends SelectorRule {
     getManyPrefixFailure():any { return 'The selector of the directive "%s" should have one of the prefixes: %s ($$02-08$$)'; }
 }
 
-
-
