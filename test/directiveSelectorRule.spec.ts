@@ -225,5 +225,20 @@ describe('directive-selector-type', () => {
       class Test {}`;
             assertSuccess('directive-selector', source, ['attribute','sg','camelCase']);
         });
+
+        it('should succeed when set valid selector using multiple selectors in @Directive', () => {
+            let source = `
+            @Directive({
+              selector: '[past][formControlName],[past][formControl],[past][ngModel]',
+              providers: [{
+                provide: NG_VALIDATORS,
+                useExisting: forwardRef(() => DatePastValidator),
+                multi: true,
+              }],
+              host: {'[attr.date]': 'date? "" : null'},
+            })
+            class Test {}`;
+            assertSuccess('directive-selector', source, ['attribute', 'ng','camelCase']);
+        });
     });
 });

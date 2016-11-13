@@ -24,9 +24,9 @@ export const SelectorValidator = {
       } else {
         const suffix = selector.replace(regex, '');
         if (selectorType === 'camelCase') {
-          return suffix[0] === suffix[0].toUpperCase();
+          return !suffix || suffix[0] === suffix[0].toUpperCase();
         } else if (selectorType === 'kebab-case') {
-          return suffix[0] === '-';
+          return !suffix || suffix[0] === '-';
         } else {
           throw new Error('Invalid selector type');
         }
