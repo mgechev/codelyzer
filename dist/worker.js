@@ -2,10 +2,8 @@
 var web_linter_1 = require('./worker/web-linter');
 var rules = require('codelyzer');
 var rulesConfig = {
-    'directive-selector-name': [true, 'camelCase'],
-    'component-selector-name': [true, 'kebab-case'],
-    'directive-selector-type': [true, 'attribute'],
-    'component-selector-type': [true, 'element'],
+    'directive-selector': [true, 'attribute', 'sg', 'camelCase'],
+    'component-selector': [true, 'element', 'sg', 'kebab-case'],
     'use-input-property-decorator': true,
     'use-output-property-decorator': true,
     'use-host-property-decorator': true,
