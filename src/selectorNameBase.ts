@@ -11,6 +11,8 @@ export abstract class SelectorRule extends Lint.Rules.AbstractRule {
   public prefixArguments:string;
   public cssSelectorProperty:string;
 
+  public handleType: string;
+
   private typeValidator:Function;
   private prefixValidator:Function;
   private nameValidator:Function;
@@ -126,7 +128,8 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
     let name = expr.text;
     let args = baseExpr.arguments || [];
     let arg = args[0];
-    if (name === 'Component' || name === 'Directive') {
+    // Do not run component rules for directives
+    if (this.rule.handleType === name) {
       this.validateSelector(className, arg);
     }
   }

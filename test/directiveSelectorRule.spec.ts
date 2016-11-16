@@ -217,6 +217,14 @@ describe('directive-selector-type', () => {
       class Test {}`;
             assertSuccess('directive-selector', source, ['attribute','sg','camelCase']);
         });
+        it('should not validate @Component', () => {
+            let source = `
+      @Component({
+        selector: 'sg-bar-foo'
+      })
+      class Test {}`;
+            assertSuccess('directive-selector', source, ['attribute','sg','camelCase']);
+        });
         it('should succeed when set valid selector using multiple selectors in @Directive', () => {
             let source = `
       @Directive({
