@@ -82,16 +82,27 @@ new Linter({
   }
 }).init();
 
+const dataCallback = () => {
+  if (checkbox.checked) {
+    return JSON.stringify({ code: editor.getValue() });
+  }
+  return undefined;
+};
+
 // Sentry config
 const checkbox = document.getElementById('reporting') as HTMLInputElement;
 if (checkbox.checked) {
-  (window as any).Raven.config('https://7e471773c9324277a73eaef6eb874b0f@sentry.io/109396').install();
+  (window as any).Raven.config('https://7e471773c9324277a73eaef6eb874b0f@sentry.io/109396', {
+    dataCallback
+  }).install();
 }
 checkbox.onchange = (e: any) => {
   if (!checkbox.checked) {
     (window as any).Raven.uninstall();
   } else {
-    (window as any).Raven.config('https://7e471773c9324277a73eaef6eb874b0f@sentry.io/109396').install();
+    (window as any).Raven.config('https://7e471773c9324277a73eaef6eb874b0f@sentry.io/109396', {
+      dataCallback
+    }).install();
   }
   console.log(checkbox.checked);
 };

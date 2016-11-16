@@ -32,16 +32,26 @@ new index_1.Linter({
         }
     }
 }).init();
+var dataCallback = function () {
+    if (checkbox.checked) {
+        return JSON.stringify({ code: editor.getValue() });
+    }
+    return undefined;
+};
 var checkbox = document.getElementById('reporting');
 if (checkbox.checked) {
-    window.Raven.config('https://7e471773c9324277a73eaef6eb874b0f@sentry.io/109396').install();
+    window.Raven.config('https://7e471773c9324277a73eaef6eb874b0f@sentry.io/109396', {
+        dataCallback: dataCallback
+    }).install();
 }
 checkbox.onchange = function (e) {
     if (!checkbox.checked) {
         window.Raven.uninstall();
     }
     else {
-        window.Raven.config('https://7e471773c9324277a73eaef6eb874b0f@sentry.io/109396').install();
+        window.Raven.config('https://7e471773c9324277a73eaef6eb874b0f@sentry.io/109396', {
+            dataCallback: dataCallback
+        }).install();
     }
     console.log(checkbox.checked);
 };
