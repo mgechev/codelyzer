@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Demo page for codelyzer",
   "scripts": {
-    "build": "npm run clean && tsc -p tsconfig.json && npm run bundle:worker && npm run bundle:app",
+    "build": "npm run clean && tsc -p tsconfig.json && npm run bundle:worker && npm run bundle:app && npm run vendor",
+    "vendor": "rm -rf vendor && mkdir vendor && cp -r node_modules/codemirror/lib/codemirror.css node_modules/codemirror/theme/material.css node_modules/codemirror/lib/codemirror.js node_modules/codemirror/mode/javascript/javascript.js vendor",
     "bundle:worker": "browserify dist/worker.js > dist/worker.bundle.js",
     "minify:worker": "uglifyjs dist/worker.bundle.js --screw-ie8 --compress --output dist/worker.bundle.js",
     "bundle:app": "browserify dist/app.js > dist/app.bundle.js",
