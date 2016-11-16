@@ -1,5 +1,11 @@
 # 1.0.0-beta.3
 
+### Bug Fixes
+
+- Migrate to the compiler API changes introduced by Angular 2.2.
+
+# 1.0.0-beta.3
+
 ### Features
 
 - Introduce support for unused CSS styles in components.
