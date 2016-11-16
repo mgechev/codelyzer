@@ -28,7 +28,7 @@ export const parseTemplate = (template: string) => {
         animations: this.animations.map(anim => anim.name),
         ngContentSelectors: this.ngContentSelectors,
         encapsulation: this.encapsulation
-      }
+      };
     }
   };
   const type = new compiler.CompileTypeMetadata({ diDeps: [] });
