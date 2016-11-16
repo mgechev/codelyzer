@@ -1,0 +1,1 @@
+{"__symbolic":"module","version":1,"metadata":{"analyzeNgModules":{"__symbolic":"function","parameters":["programStaticSymbols","options","metadataResolver"],"value":{"__symbolic":"error","message":"Reference to a non-exported function","line":39,"character":9,"context":{"name":"_analyzeNgModules"}}}}}
