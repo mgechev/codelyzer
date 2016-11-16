@@ -12,7 +12,7 @@ export const parseTemplate = (template: string) => {
   const tmplParser =
     new TemplateParser(expressionParser, elementSchemaRegistry, htmlParser, ngConsole, []);
   const interpolation = INTERPOLATION;
-  const templateMetadata = {
+  const templateMetadata: compiler.CompileTemplateMetadata = {
     encapsulation: 0,
     template: template,
     templateUrl: '',
@@ -21,7 +21,15 @@ export const parseTemplate = (template: string) => {
     ngContentSelectors: [],
     animations: [],
     externalStylesheets: [],
-    interpolation
+    interpolation,
+    toSummary() {
+      return {
+        isSummary: true,
+        animations: this.animations.map(anim => anim.name),
+        ngContentSelectors: this.ngContentSelectors,
+        encapsulation: this.encapsulation
+      };
+    }
   };
   const type = new compiler.CompileTypeMetadata({ diDeps: [] });
   return tmplParser.tryParse(
