@@ -1,10 +1,11 @@
 export const SelectorValidator = {
+
   attribute(selector: string): boolean {
-    return /^\[.+\]$/.test(selector);
+    return selector.length !== 0;
   },
 
   element(selector: string): boolean {
-    return /^[^\[].+[^\]]$/.test(selector);
+    return selector !== null;
   },
 
   kebabCase(selector: string): boolean {
@@ -15,15 +16,22 @@ export const SelectorValidator = {
     return /^[a-zA-Z0-9\[\]]+$/.test(selector);
   },
 
-  prefix(prefix: string): Function {
+  prefix(prefix: string, selectorType: string): Function {
+    const regex = new RegExp(`^\\[?(${prefix})`);
     return (selector: string) => {
-      return new RegExp(`^\\[?${prefix}`).test(selector);
-    };
-  },
-
-  multiPrefix(prefixes: string): Function {
-    return (selector: string) => {
-        return new RegExp(`^\\[?(${prefixes})`).test(selector);
+      if (!regex.test(selector)) {
+        return false;
+      } else {
+        const suffix = selector.replace(regex, '');
+        if (selectorType === 'camelCase') {
+          return !suffix || suffix[0] === suffix[0].toUpperCase();
+        } else if (selectorType === 'kebab-case') {
+          return !suffix || suffix[0] === '-';
+        } else {
+          throw new Error('Invalid selector type');
+        }
+      }
     };
   }
 };
+

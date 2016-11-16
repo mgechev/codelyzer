@@ -57,12 +57,8 @@ Now create the following `tslint.json` file where your `node_modules` directory 
     "node_modules/codelyzer"
   ],
   "rules":{
-    "directive-selector-name": [true, "camelCase"],
-    "component-selector-name": [true, "kebab-case"],
-    "directive-selector-type": [true, "attribute"],
-    "component-selector-type": [true, "element"],
-    "directive-selector-prefix": [true, "sg"],
-    "component-selector-prefix": [true, "sg"],
+    "directive-selector": [true, "attribute", "sg", "camelCase"],
+    "component-selector": [true, "element", "sg", "kebab-case"],
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
     "use-host-property-decorator": true,
@@ -143,12 +139,8 @@ Below you can find a recommended configuration which is based on the [Angular 2 
 
 ```json
 {
-  "directive-selector-name": [true, "camelCase"],
-  "component-selector-name": [true, "kebab-case"],
-  "directive-selector-type": [true, "attribute"],
-  "component-selector-type": [true, "element"],
-  "directive-selector-prefix": [true, "sg"],
-  "component-selector-prefix": [true, "sg"],
+  "directive-selector": [true, "attribute", "sg", "camelCase"],
+  "component-selector": [true, "element", "sg", "kebab-case"],
   "use-input-property-decorator": true,
   "use-output-property-decorator": true,
   "use-host-property-decorator": true,
