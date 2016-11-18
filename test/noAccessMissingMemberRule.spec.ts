@@ -287,14 +287,63 @@ describe('no-access-missing-member', () => {
           }
        });
     });
+
+
+    it('should throw when template ref used outside component scope', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<form #todoForm="ngForm"></form><button [disabled]="!todoForm.form.valid"></button>'
+        })
+        class Test {
+          foo: number;
+        }`;
+        assertFailure('no-access-missing-member', source, {
+          message: 'The property "todoForm" that you\'re trying to access does not exist in the class declaration.',
+          startPosition: {
+            line: 3,
+            character: 74
+          },
+          endPosition: {
+            line: 3,
+            character: 82
+          }
+       });
+    });
   });
 
   describe('valid expressions', () => {
+    it('should succeed with "ngForm" ref', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<form #todoForm="ngForm"><button [disabled]="!todoForm.form.valid"></button></form>'
+        })
+        class Test {
+          foo: number;
+        }`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
+    it('should support custom template refs', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<form #todoForm="bar"><button [disabled]="!todoForm.form.valid"></button></form>'
+        })
+        class Test {
+          foo: number;
+        }`;
+        assertSuccess('no-access-missing-member', source, [{
+          directives: [{ selector: 'baz', exportAs: 'bar' }]
+        }]);
+    });
+
     it('should succeed with declared property', () => {
       let source = `
         @Component({
           selector: 'foobar',
-          template: '<div>{{ foo }}</div>
+          template: '<div>{{ foo }}</div>'
         })
         class Test {
           foo: number;

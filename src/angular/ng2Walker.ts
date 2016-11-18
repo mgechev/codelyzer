@@ -94,13 +94,11 @@ export class Ng2Walker extends Lint.RuleWalker {
       if (inlineTemplate) {
         try {
           if (isSimpleTemplateString(inlineTemplate)) {
-
-            const templateAst = parseTemplate(inlineTemplate.text);
+            const templateAst = parseTemplate(inlineTemplate.text, ((this.getOptions() || []).pop() || ({} as any)).directives);
             this.visitNg2TemplateHelper(templateAst,
                 <ts.ClassDeclaration>decorator.parent, inlineTemplate.pos + 2); // skip the quote
           }
         } catch (e) {
-          // stderr breaks the VSCode extension
           // console.error('Cannot parse the template of', ((<any>decorator.parent || {}).name || {}).text);
         }
       }
