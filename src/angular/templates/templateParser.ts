@@ -2,7 +2,7 @@ import { __core_private__ as r, NO_ERRORS_SCHEMA } from '@angular/core';
 import { INTERPOLATION } from '../config';
 import * as compiler from '@angular/compiler';
 
-const dummyMetadataFactory = (exportAs: string, selector: string) => {
+const dummyMetadataFactory = (selector: string, exportAs: string) => {
   return {
     inputs: {},
     outputs: {},
@@ -33,10 +33,13 @@ const dummyMetadataFactory = (exportAs: string, selector: string) => {
 };
 
 const defaultDirectives = [
-  dummyMetadataFactory('ngForm', 'form')
+  dummyMetadataFactory('form', 'ngForm')
 ];
 
-export const parseTemplate = (template: string) => {
+export const parseTemplate = (template: string, directives: { selector: string, exportAs: string }[] = []) => {
+  directives.forEach(d =>
+    this.defaultDirectives.push(dummyMetadataFactory(d.selector, d.exportAs)));
+
   const TemplateParser = <any>compiler.TemplateParser;
   const expressionParser = new compiler.Parser(new compiler.Lexer());
   const elementSchemaRegistry = new compiler.DomElementSchemaRegistry();
