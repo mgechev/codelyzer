@@ -101,7 +101,7 @@ export class Ng2Walker extends Lint.RuleWalker {
           }
         } catch (e) {
           // stderr breaks the VSCode extension
-          // console.error('Cannot parse the template of', ((<any>decorator.parent || {}).name || {}).text);
+          console.error(e);
         }
       }
       const inlineStyles = getDecoratorPropertyInitializer(decorator, 'styles');

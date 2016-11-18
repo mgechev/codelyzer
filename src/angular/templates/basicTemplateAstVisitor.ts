@@ -106,16 +106,20 @@ export class BasicTemplateAstVisitor extends Lint.RuleWalker implements ast.Temp
   }
 
   visitElement(element: ast.ElementAst, context: any): any {
+    const references = element.references.map(r => r.name);
+    const oldVariables = this._variables;
+    this._variables = this._variables.concat(references);
+    element.references.forEach(r => this.visit(r, context));
     element.inputs.forEach(i => this.visit(i, context));
     element.outputs.forEach(o => this.visit(o, context));
     element.attrs.forEach(a => this.visit(a, context));
     element.children.forEach(e => this.visit(e, context));
-    element.references.forEach(r => this.visit(r, context));
     element.directives.forEach(d => this.visit(d, context));
+    // Outside the scope of the element
+    this._variables = oldVariables;
   }
 
   visitReference(ast: ast.ReferenceAst, context: any): any {
-    // console.log(ast);
   }
 
   visitVariable(ast: ast.VariableAst, context: any): any {

@@ -10,7 +10,7 @@
     "build:links": "ts-node build/links.ts --src ./dist",
     "prepare:package": "cat package.json | ts-node build/package.ts > dist/package.json",
     "test": "rimraf dist && tsc && mocha dist/test/*.js dist/test/**/*.js",
-    "test:watch": "rimraf dist && tsc && mocha dist/test/*.js dist/test/**/*.js --watch",
+    "test:watch": "rimraf dist && tsc && mocha dist/test/** dist/test/** --watch",
     "tscv": "tsc --version",
     "tsc": "tsc",
     "tsc:watch": "tsc --w"

@@ -290,11 +290,23 @@ describe('no-access-missing-member', () => {
   });
 
   describe('valid expressions', () => {
+    it('should succeed with "ngForm" ref', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<form #todoForm="ngForm"><button [disabled]="!todoForm.form.valid"></button></form>'
+        })
+        class Test {
+          foo: number;
+        }`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
     it('should succeed with declared property', () => {
       let source = `
         @Component({
           selector: 'foobar',
-          template: '<div>{{ foo }}</div>
+          template: '<div>{{ foo }}</div>'
         })
         class Test {
           foo: number;
