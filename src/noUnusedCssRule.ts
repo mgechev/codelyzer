@@ -1,4 +1,4 @@
-import * as Lint from 'tslint/lib/lint';
+import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import {Ng2Walker} from './angular/ng2Walker';
 import {getComponentDecorator, isSimpleTemplateString, getDecoratorPropertyInitializer} from './util/utils';
