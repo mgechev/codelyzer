@@ -1,12 +1,14 @@
-import * as Lint from 'tslint/lib/lint';
+import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
 import {Ng2Walker} from './angular/ng2Walker';
 
+import {DirectiveMetadata} from './angular/metadata';
+
 export class Rule extends Lint.Rules.AbstractRule {
   static FAILURE:string = 'The name of the class %s should end with the suffix Directive ($$02-03$$)';
 
-  static validate(className:string):boolean {
+  static validate(className: string):boolean {
     return /.*Directive/.test(className);
   }
 
@@ -18,8 +20,8 @@ export class Rule extends Lint.Rules.AbstractRule {
 }
 
 export class ClassMetadataWalker extends Ng2Walker {
-  visitNg2Directive(controller:ts.ClassDeclaration, decorator:ts.Decorator) {
-    let name = controller.name;
+  visitNg2Directive(meta: DirectiveMetadata) {
+    let name = meta.controller.name;
     let className:string = name.text;
     if (!Rule.validate(className)) {
       this.addFailure(

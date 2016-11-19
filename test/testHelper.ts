@@ -1,5 +1,4 @@
-import * as Lint from 'tslint';
-import * as tslint from 'tslint/lib/lint';
+import * as tslint from 'tslint';
 import chai = require('chai');
 
 interface ISourcePosition {
@@ -24,12 +23,14 @@ function lint(ruleName: string, source: string, options): tslint.LintResult {
   }
   var linterOptions: tslint.ILinterOptions = {
     formatter: 'json',
-    configuration: configuration,
     rulesDirectory: './dist/src',
-    formattersDirectory: null
+    formattersDirectory: null,
+    fix: false
   };
-  let linter = new Lint('file.ts', source, linterOptions);
-  return linter.lint();
+  
+  let linter = new tslint.Linter(linterOptions, undefined);
+  linter.lint('file.ts', source, configuration);
+  return linter.getResult();
 }
 
 export function assertFailure(ruleName: string, source: string, fail: IExpectedFailure, options = null) {

@@ -1,4 +1,4 @@
-import * as Lint from 'tslint/lib/lint';
+import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
 import {stringDistance} from './util/utils';
@@ -6,6 +6,8 @@ import {Ng2Walker} from './angular/ng2Walker';
 import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAngularExpressionVisitor';
 import {getDeclaredMethodNames, getDeclaredPropertyNames} from './util/classDeclarationUtils';
 import * as e from '@angular/compiler/src/expression_parser/ast';
+
+import {Config} from './angular/config';
 
 enum DeclarationType {
   Property,
@@ -36,6 +38,7 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
     available = getDeclaredMethodNames(this.context)
       .concat(getDeclaredPropertyNames(this.context))
       .concat(this.preDefinedVariables);
+
     ast.receiver.visit(this);
     // Do not support nested properties yet
     if (ast.receiver && (<any>ast.receiver).name) {

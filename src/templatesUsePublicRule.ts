@@ -1,4 +1,4 @@
-import * as Lint from 'tslint/lib/lint';
+import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import {stringDistance} from './util/utils';
 import {getDeclaredProperties, getDeclaredMethods} from './util/classDeclarationUtils';

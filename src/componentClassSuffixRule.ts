@@ -1,7 +1,8 @@
-import * as Lint from 'tslint/lib/lint';
+import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
 import {Ng2Walker} from './angular/ng2Walker';
+import {ComponentMetadata} from './angular/metadata';
 
 export class Rule extends Lint.Rules.AbstractRule {
   static FAILURE: string = 'The name of the class %s should end with the suffix Component ($$02-03$$)';
@@ -18,8 +19,8 @@ export class Rule extends Lint.Rules.AbstractRule {
 }
 
 export class ClassMetadataWalker extends Ng2Walker {
-  visitNg2Component(controller:ts.ClassDeclaration, decorator:ts.Decorator) {
-    let name = controller.name;
+  visitNg2Component(meta: ComponentMetadata) {
+    let name = meta.controller.name;
     let className: string = name.text;
     if (!Rule.validate(className)) {
       this.addFailure(
@@ -28,5 +29,6 @@ export class ClassMetadataWalker extends Ng2Walker {
           name.getWidth(),
           sprintf.apply(this, [Rule.FAILURE, className])));
     }
+    super.visitNg2Component(meta);
   }
 }
