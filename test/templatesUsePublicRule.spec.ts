@@ -1,7 +1,29 @@
 import {assertFailure, assertSuccess} from './testHelper';
 
-describe('access-missing-declaration', () => {
+describe('templates-use-public', () => {
   describe('invalid expressions', () => {
+    it('should fail inline property private declaration', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '{{ foo }}'
+        })
+        class Test {
+          constructor(private foo: number) {}
+        }`;
+        assertFailure('templates-use-public', source, {
+          message: 'You can bind only to public class members.',
+          startPosition: {
+            line: 3,
+            character: 24
+          },
+          endPosition: {
+            line: 3,
+            character: 27
+          }
+       });
+    });
+
     it('should fail when interpolating private property', () => {
       let source = `
         @Component({
@@ -115,6 +137,19 @@ describe('access-missing-declaration', () => {
   });
 
   describe('valid expressions', () => {
+
+    it('should succeed inline property public declaration', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '{{ foo }}'
+        })
+        class Test {
+          constructor(public foo: number) {}
+        }`;
+        assertSuccess('templates-use-public', source);
+    });
+
     it('should succeed with public property', () => {
       let source = `
         @Component({

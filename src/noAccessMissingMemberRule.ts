@@ -1,7 +1,7 @@
 import * as Lint from 'tslint/lib/lint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
-import { stringDistance } from './util/utils';
+import {stringDistance} from './util/utils';
 import {Ng2Walker} from './angular/ng2Walker';
 import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAngularExpressionVisitor';
 import {getDeclaredMethodNames, getDeclaredPropertyNames} from './util/classDeclarationUtils';
