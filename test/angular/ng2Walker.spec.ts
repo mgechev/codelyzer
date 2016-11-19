@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import * as tslint from 'tslint/lib/lint';
+import * as tslint from 'tslint';
 
 import {Ng2Walker} from '../../src/angular/ng2Walker';
 import {RecursiveAngularExpressionVisitor} from '../../src/angular/templates/recursiveAngularExpressionVisitor';

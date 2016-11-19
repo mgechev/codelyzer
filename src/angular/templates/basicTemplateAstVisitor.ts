@@ -1,6 +1,6 @@
 import * as ast from '@angular/compiler';
 import * as ts from 'typescript';
-import * as Lint from 'tslint/lib/lint';
+import * as Lint from 'tslint';
 import * as e from '@angular/compiler/src/expression_parser/ast';
 
 import { ExpTypes } from '../expressionTypes';
