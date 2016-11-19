@@ -1,6 +1,7 @@
 import * as Lint from 'tslint/lib/lint';
 import * as ts from 'typescript';
 import {stringDistance} from './util/utils';
+import {getDeclaredProperties, getDeclaredMethods} from './util/classDeclarationUtils';
 import {Ng2Walker} from './angular/ng2Walker';
 import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAngularExpressionVisitor';
 import * as e from '@angular/compiler/src/expression_parser/ast';
@@ -33,7 +34,8 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
       }
       ast = <e.PropertyRead>receiver;
     }
-    const member = this.context.members.filter((m: any) => m.name && m.name.text === ast.name).pop();
+    const allMembers = getDeclaredMethods(this.context).concat(getDeclaredProperties(this.context));
+    const member = allMembers.filter((m: any) => m.name && m.name.text === ast.name).pop();
     if (member) {
       let isPublic = !member.modifiers;
       if (member.modifiers) {

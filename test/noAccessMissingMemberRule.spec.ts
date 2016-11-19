@@ -339,6 +339,18 @@ describe('no-access-missing-member', () => {
         }]);
     });
 
+    it('should succeed with inline property declaration', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '{{ foo }}'
+        })
+        class Test {
+          constructor(public foo: number) {}
+        }`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
     it('should succeed with declared property', () => {
       let source = `
         @Component({
