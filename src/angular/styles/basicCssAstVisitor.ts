@@ -1,6 +1,6 @@
 import * as ast from './cssAst';
 import * as ts from 'typescript';
-import * as Lint from 'tslint/lib/lint';
+import * as Lint from 'tslint';
 
 export interface CssAstVisitorCtrl {
   new(sourceFile: ts.SourceFile, options: Lint.IOptions, context: ts.ClassDeclaration, templateStart: number);

@@ -1,4 +1,4 @@
-import * as Lint from 'tslint/lib/lint';
+import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import * as compiler from '@angular/compiler';
 import {

@@ -1,4 +1,4 @@
-import * as Lint from 'tslint/lib/lint';
+import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
 import {Ng2Walker} from './angular/ng2Walker';
