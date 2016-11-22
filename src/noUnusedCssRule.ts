@@ -12,6 +12,9 @@ import {
 import {parseTemplate} from './angular/templates/templateParser';
 import {CssAst, CssSelectorRuleAst, CssSelectorAst} from './angular/styles/cssAst';
 
+import {ComponentMetadata} from './angular/metadata';
+import {ng2WalkerFactoryUtils} from './angular/ng2WalkerFactoryUtils';
+
 const CssSelectorTokenizer = require('css-selector-tokenizer');
 
 const getSymbolName = (t: any) => {
@@ -202,7 +205,8 @@ export class UnusedCssNg2Visitor extends Ng2Walker {
   visitClassDeclaration(declaration: ts.ClassDeclaration) {
     const d = getComponentDecorator(declaration);
     if (d) {
-      this.visitNg2Component(<ts.ClassDeclaration>d.parent, d);
+      const meta = this._metadataReader.read(declaration);
+      this.visitNg2Component(<ComponentMetadata>meta);
       const inlineTemplate = getDecoratorPropertyInitializer(d, 'template');
       if (inlineTemplate) {
         try {

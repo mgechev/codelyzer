@@ -1,8 +1,13 @@
 import { __core_private__ as r, NO_ERRORS_SCHEMA } from '@angular/core';
-import { INTERPOLATION } from '../config';
+import { Config } from '../config';
 import * as compiler from '@angular/compiler';
 
+let refId = 0;
+
 const dummyMetadataFactory = (selector: string, exportAs: string) => {
+  if (refId > 1e10) {
+    refId = 0;
+  }
   return {
     inputs: {},
     outputs: {},
@@ -13,7 +18,8 @@ const dummyMetadataFactory = (selector: string, exportAs: string) => {
     type: {
       diDeps: [],
       lifecycleHooks: [],
-      isHost: false
+      isHost: false,
+      reference: ++refId + '-ref'
     },
     isComponent: false,
     selector,
@@ -32,13 +38,10 @@ const dummyMetadataFactory = (selector: string, exportAs: string) => {
   };
 };
 
-const defaultDirectives = [
-  dummyMetadataFactory('form', 'ngForm')
-];
+let defaultDirectives = [];
 
 export const parseTemplate = (template: string, directives: { selector: string, exportAs: string }[] = []) => {
-  directives.forEach(d =>
-    this.defaultDirectives.push(dummyMetadataFactory(d.selector, d.exportAs)));
+  defaultDirectives = directives.map(d => dummyMetadataFactory(d.selector, d.exportAs));
 
   const TemplateParser = <any>compiler.TemplateParser;
   const expressionParser = new compiler.Parser(new compiler.Lexer());
@@ -48,7 +51,7 @@ export const parseTemplate = (template: string, directives: { selector: string, 
       new compiler.I18NHtmlParser(new compiler.HtmlParser());
   const tmplParser =
     new TemplateParser(expressionParser, elementSchemaRegistry, htmlParser, ngConsole, []);
-  const interpolation = INTERPOLATION;
+  const interpolation = Config.interpolation;
   const templateMetadata: compiler.CompileTemplateMetadata = {
     encapsulation: 0,
     template: template,
