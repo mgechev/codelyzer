@@ -3,7 +3,7 @@ import * as Lint from 'tslint';
 import {Ng2Walker, Ng2WalkerConfig} from './ng2Walker';
 import {MetadataReader} from './metadataReader';
 import {UrlResolver} from './urlResolvers/urlResolver';
-import {FsFileResolver} from './fileResolver/FsFileResolver';
+import {FsFileResolver} from './fileResolver/fsFileResolver';
 import {BasicCssAstVisitor, CssAstVisitorCtrl} from './styles/basicCssAstVisitor';
 
 import { RecursiveAngularExpressionVisitor } from './templates/recursiveAngularExpressionVisitor';

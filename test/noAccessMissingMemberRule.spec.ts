@@ -311,6 +311,29 @@ describe('no-access-missing-member', () => {
           }
        });
     });
+
+    it('should fail with missing ref', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<bar #todoForm="baz"><button [disabled]="!todoForm.form.valid"></button></bar>'
+        })
+        class Test {
+          foo: number;
+        }`;
+        assertFailure('no-access-missing-member', source, {
+          message: 'The property "todoForm" that you\'re trying to access does not exist in the class declaration.',
+          startPosition: {
+            line: 3,
+            character: 63
+          },
+          endPosition: {
+            line: 3,
+            character: 71
+          }
+       });
+    });
+
   });
 
   describe('valid expressions', () => {

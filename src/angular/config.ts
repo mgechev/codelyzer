@@ -31,7 +31,7 @@ export let Config: Config = {
 };
 
 try {
-  let newConfig = require(join(root, '.codelyzer'));
+  let newConfig = require(join(root.path, '.codelyzer'));
   Object.assign(Config, newConfig);
 } catch (e) {
 

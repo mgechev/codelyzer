@@ -82,16 +82,14 @@ export class MetadataReader {
     const inlineStyles = getDecoratorPropertyInitializer(dec, 'styles');
     if (inlineStyles && inlineStyles.kind === kinds.ArrayLiteralExpression) {
       inlineStyles.elements.forEach((inlineStyle: any) => {
-        inlineStyles.elements.forEach((inlineStyle: any) => {
-          if (isSimpleTemplateString(inlineStyle)) {
-            result.styles = result.styles || [];
-            result.styles.push({
-              style: inlineStyle.text,
-              source: null,
-              node: inlineStyle
-            });
-          }
-        });
+        if (isSimpleTemplateString(inlineStyle)) {
+          result.styles = result.styles || [];
+          result.styles.push({
+            style: inlineStyle.text,
+            source: null,
+            node: inlineStyle
+          });
+        }
       });
     }
     if (!result.template && external.templateUrl) {

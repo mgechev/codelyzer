@@ -122,7 +122,7 @@ export class Ng2Walker extends Lint.RuleWalker {
     if (template && template.template) {
       try {
         const templateAst = parseTemplate(template.template, Config.predefinedDirectives);
-        this.visitNg2TemplateHelper(templateAst, metadata.controller, template.node ? template.node.pos + 2 : 0);
+        this.visitNg2TemplateHelper(templateAst, metadata, template.node ? template.node.pos + 2 : 0);
       } catch (e) {
         console.log(e);
         console.log('Cannot parse the template of', ((<any>metadata.controller || {}).name || {}).text);
@@ -133,7 +133,7 @@ export class Ng2Walker extends Lint.RuleWalker {
       for (let i = 0; i < styles.length; i += 1) {
         const style = styles[i];
         try {
-          this.visitNg2StyleHelper(parseCss(style.style), metadata.controller, style.node ? style.node.pos + 2 : 0);
+          this.visitNg2StyleHelper(parseCss(style.style), metadata, style.source, style.node ? style.node.pos + 2 : 0);
         } catch (e) {
           console.log('Cannot parse the styles of', ((<any>metadata.controller || {}).name || {}).text);
         }
@@ -153,24 +153,36 @@ export class Ng2Walker extends Lint.RuleWalker {
 
   protected visitNg2HostListener(method: ts.MethodDeclaration, decorator: ts.Decorator, args: string[]) {}
 
-  protected visitNg2TemplateHelper(roots: compiler.TemplateAst[], context: ts.ClassDeclaration, baseStart: number) {
+  protected visitNg2TemplateHelper(roots: compiler.TemplateAst[], context: ComponentMetadata, baseStart: number) {
     if (!roots || !roots.length) {
       return;
     } else {
+      const sourceFile = this.getSourceFile();
+      let filename = sourceFile.fileName;
+      if (context.template.source) {
+        sourceFile.fileName = context.template.source;
+      }
       const visitor =
         new this._config.templateVisitorCtrl(
-          this.getSourceFile(), this._originalOptions, context, baseStart, this._config.expressionVisitorCtrl);
-      compiler.templateVisitAll(visitor, roots, context);
+          sourceFile, this._originalOptions, context.controller, baseStart, this._config.expressionVisitorCtrl);
+      compiler.templateVisitAll(visitor, roots, context.controller);
+      sourceFile.fileName = filename;
       visitor.getFailures().forEach(f => this.addFailure(f));
     }
   }
 
-  protected visitNg2StyleHelper(style: CssAst, context: ts.ClassDeclaration, baseStart: number) {
+  protected visitNg2StyleHelper(style: CssAst, context: ComponentMetadata, file: string, baseStart: number) {
     if (!style) {
       return;
     } else {
-      const visitor = new this._config.cssVisitorCtrl(this.getSourceFile(), this._originalOptions, context, baseStart);
+      const sourceFile = this.getSourceFile();
+      let filename = sourceFile.fileName;
+      if (file) {
+        sourceFile.fileName = context.template.source;
+      }
+      const visitor = new this._config.cssVisitorCtrl(this.getSourceFile(), this._originalOptions, context.controller, baseStart);
       style.visit(visitor);
+      sourceFile.fileName = filename;
       visitor.getFailures().forEach(f => this.addFailure(f));
     }
   }
