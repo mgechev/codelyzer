@@ -47,7 +47,7 @@ export class Ng2Walker extends Lint.RuleWalker {
       expressionVisitorCtrl: RecursiveAngularExpressionVisitor,
       cssVisitorCtrl: BasicCssAstVisitor
     }, this._config || {});
-    
+
     this._config = Object.assign({
       templateVisitorCtrl: BasicTemplateAstVisitor,
       expressionVisitorCtrl: RecursiveAngularExpressionVisitor,
@@ -175,3 +175,4 @@ export class Ng2Walker extends Lint.RuleWalker {
     }
   }
 }
+

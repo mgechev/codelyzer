@@ -14,8 +14,8 @@ export interface StyleMetadata {
 
 export interface StylesMetadata {
   [index: number]: StyleMetadata;
-  push(e: StyleMetadata): number;
   length: number;
+  push(e: StyleMetadata): number;
 }
 
 export class DirectiveMetadata {
