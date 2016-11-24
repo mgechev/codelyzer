@@ -49,7 +49,7 @@ export class MetadataReader {
     if (!expr) {
       return metadata;
     }
-    expr.properties.forEach((p: ts.ObjectLiteralElementLike) => {
+    expr.properties.forEach((p: any) => {
       if (p.kind !== kinds.PropertyAssignment) {
         return;
       }
