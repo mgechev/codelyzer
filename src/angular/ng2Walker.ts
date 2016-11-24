@@ -121,7 +121,7 @@ export class Ng2Walker extends Lint.RuleWalker {
     const template = metadata.template;
     if (template && template.template) {
       try {
-        const templateAst = parseTemplate(template.template, Config.predefinedDirectives);
+        const templateAst = parseTemplate(template.template.code, Config.predefinedDirectives);
         this.visitNg2TemplateHelper(templateAst, metadata, template.node ? template.node.pos + 2 : 0);
       } catch (e) {
         console.log(e);
@@ -133,7 +133,7 @@ export class Ng2Walker extends Lint.RuleWalker {
       for (let i = 0; i < styles.length; i += 1) {
         const style = styles[i];
         try {
-          this.visitNg2StyleHelper(parseCss(style.style), metadata, style.source, style.node ? style.node.pos + 2 : 0);
+          this.visitNg2StyleHelper(parseCss(style.style.code), metadata, style.source, style.node ? style.node.pos + 2 : 0);
         } catch (e) {
           console.log('Cannot parse the styles of', ((<any>metadata.controller || {}).name || {}).text);
         }
@@ -164,7 +164,7 @@ export class Ng2Walker extends Lint.RuleWalker {
       }
       const visitor =
         new this._config.templateVisitorCtrl(
-          sourceFile, this._originalOptions, context.controller, baseStart, this._config.expressionVisitorCtrl);
+          sourceFile, this._originalOptions, context, baseStart, this._config.expressionVisitorCtrl);
       compiler.templateVisitAll(visitor, roots, context.controller);
       sourceFile.fileName = filename;
       visitor.getFailures().forEach(f => this.addFailure(f));
@@ -180,7 +180,7 @@ export class Ng2Walker extends Lint.RuleWalker {
       if (file) {
         sourceFile.fileName = context.template.source;
       }
-      const visitor = new this._config.cssVisitorCtrl(this.getSourceFile(), this._originalOptions, context.controller, baseStart);
+      const visitor = new this._config.cssVisitorCtrl(this.getSourceFile(), this._originalOptions, context, baseStart);
       style.visit(visitor);
       sourceFile.fileName = filename;
       visitor.getFailures().forEach(f => this.addFailure(f));

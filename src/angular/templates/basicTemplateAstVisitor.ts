@@ -4,6 +4,7 @@ import * as Lint from 'tslint';
 import * as e from '@angular/compiler/src/expression_parser/ast';
 
 import { ExpTypes } from '../expressionTypes';
+import { ComponentMetadata } from '../metadata';
 import { RecursiveAngularExpressionVisitor } from './recursiveAngularExpressionVisitor';
 
 
@@ -62,12 +63,12 @@ const getExpressionDisplacement = (binding: any) => {
 
 
 export interface RecursiveAngularExpressionVisitorCtr {
-  new(sourceFile: ts.SourceFile, options: Lint.IOptions, context: ts.ClassDeclaration, basePosition: number);
+  new(sourceFile: ts.SourceFile, options: Lint.IOptions, context: ComponentMetadata, basePosition: number);
 }
 
 
 export interface TemplateAstVisitorCtr {
-  new(sourceFile: ts.SourceFile, options: Lint.IOptions, context: ts.ClassDeclaration,
+  new(sourceFile: ts.SourceFile, options: Lint.IOptions, context: ComponentMetadata,
     templateStart: number, expressionVisitorCtrl: RecursiveAngularExpressionVisitorCtr);
 }
 
@@ -76,7 +77,7 @@ export class BasicTemplateAstVisitor extends Lint.RuleWalker implements ast.Temp
 
   constructor(sourceFile: ts.SourceFile,
     private _originalOptions: Lint.IOptions,
-    private context: ts.ClassDeclaration,
+    private context: ComponentMetadata,
     protected templateStart: number,
     private expressionVisitorCtrl: RecursiveAngularExpressionVisitorCtr = RecursiveAngularExpressionVisitor) {
       super(sourceFile, _originalOptions);

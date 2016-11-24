@@ -4,6 +4,7 @@ import {isSimpleTemplateString, getDecoratorPropertyInitializer} from '../util/u
 
 const kinds = current();
 
+import {Config} from './config';
 import {FileResolver} from './fileResolver/fileResolver';
 import {AbstractResolver} from './urlResolvers/abstractResolver';
 import {UrlResolver} from './urlResolvers/urlResolver';
@@ -73,8 +74,9 @@ export class MetadataReader {
     const inlineTemplate = getDecoratorPropertyInitializer(dec, 'template');
     const external = this._urlResolver.resolve(dec);
     if (inlineTemplate && isSimpleTemplateString(inlineTemplate)) {
+      const transformed = Config.transformTemplate(inlineTemplate.text, null, dec);
       result.template = {
-        template: inlineTemplate.text,
+        template: transformed,
         source: null,
         node: inlineTemplate
       };
@@ -85,17 +87,19 @@ export class MetadataReader {
         if (isSimpleTemplateString(inlineStyle)) {
           result.styles = result.styles || [];
           result.styles.push({
-            style: inlineStyle.text,
+            style: Config.transformStyle(inlineStyle.text, null, dec),
             source: null,
-            node: inlineStyle
+            node: inlineStyle,
           });
         }
       });
     }
     if (!result.template && external.templateUrl) {
       try {
+        const template = this._fileResolver.resolve(external.templateUrl);
+        const transformed = Config.transformTemplate(template, external.templateUrl, dec);
         result.template = {
-          template: this._fileResolver.resolve(external.templateUrl),
+          template: transformed,
           source: external.templateUrl,
           node: null
         };
@@ -107,8 +111,10 @@ export class MetadataReader {
     if (!result.styles || !result.styles.length) {
       try {
         result.styles = <any>external.styleUrls.map((url: string) => {
+          const style = this._fileResolver.resolve(url);
+          const transformed = Config.transformStyle(style, url, dec);
           return {
-            style: this._fileResolver.resolve(url),
+            style: transformed,
             source: url,
             node: null
           };

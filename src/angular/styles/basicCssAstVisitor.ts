@@ -1,15 +1,16 @@
 import * as ast from './cssAst';
 import * as ts from 'typescript';
 import * as Lint from 'tslint';
+import {ComponentMetadata} from '../metadata';
 
 export interface CssAstVisitorCtrl {
-  new(sourceFile: ts.SourceFile, options: Lint.IOptions, context: ts.ClassDeclaration, templateStart: number);
+  new(sourceFile: ts.SourceFile, options: Lint.IOptions, context: ComponentMetadata, templateStart: number);
 }
 
 export class BasicCssAstVisitor extends Lint.RuleWalker implements ast.CssAstVisitor {
   constructor(sourceFile: ts.SourceFile,
     protected _originalOptions: Lint.IOptions,
-    protected context: ts.ClassDeclaration,
+    protected context: ComponentMetadata,
     protected templateStart: number) {
       super(sourceFile, _originalOptions);
     }

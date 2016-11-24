@@ -48,6 +48,7 @@
     "@types/chai": "^3.4.33",
     "@types/mocha": "^2.2.32",
     "@types/node": "^6.0.41",
+    "@types/source-map": "^0.5.0",
     "@types/sprintf-js": "0.0.27",
     "chai": "^3.5.0",
     "chai-spies": "^0.7.1",
@@ -69,6 +70,7 @@
     "app-root-path": "^2.0.1",
     "css-selector-tokenizer": "^0.7.0",
     "cssauron": "^1.4.0",
+    "source-map": "^0.5.6",
     "sprintf-js": "^1.0.3"
   }
 }
