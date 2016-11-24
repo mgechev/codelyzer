@@ -65,4 +65,3 @@ export abstract class AbstractResolver {
     return null;
   }
 }
-

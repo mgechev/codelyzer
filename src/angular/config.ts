@@ -38,21 +38,17 @@ export let Config: Config = {
   },
 
   transformTemplate(template: string, url: string, d: ts.Decorator) {
-    if (!url || url.endsWith('.html')) {
-      return {
-        code: template,
-        map: null
-      };
-    }
+    return {
+      code: template,
+      map: null
+    };
   },
 
   transformStyle(style: string, url: string, d: ts.Decorator) {
-    if (!url || url.endsWith('.css')) {
-      return {
-        code: style,
-        map: null
-      };
-    }
+    return {
+      code: style,
+      map: null
+    };
   },
 
   predefinedDirectives: [

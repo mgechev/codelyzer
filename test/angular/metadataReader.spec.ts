@@ -72,9 +72,9 @@ describe('metadataReader', () => {
       chai.expect(metadata instanceof ComponentMetadata).eq(true);
       chai.expect(metadata.selector).eq('foo');
       const m = <ComponentMetadata>metadata;
-      chai.expect(m.template.template).eq('bar');
+      chai.expect(m.template.template.code).eq('bar');
       chai.expect(m.template.source).eq(null);
-      chai.expect(m.styles[0].style).eq('baz');
+      chai.expect(m.styles[0].style.code).eq('baz');
       chai.expect(m.styles[0].source).eq(null);
     });
 
@@ -94,9 +94,9 @@ describe('metadataReader', () => {
       chai.expect(metadata instanceof ComponentMetadata).eq(true);
       chai.expect(metadata.selector).eq('foo');
       const m = <ComponentMetadata>metadata;
-      chai.expect(m.template.template).eq('');
+      chai.expect(m.template.template.code).eq('');
       chai.expect(m.template.source).eq('bar');
-      chai.expect(m.styles[0].style).eq('baz');
+      chai.expect(m.styles[0].style.code).eq('baz');
       chai.expect(m.styles[0].source).eq(null);
     });
 
@@ -117,9 +117,9 @@ describe('metadataReader', () => {
       chai.expect(metadata instanceof ComponentMetadata).eq(true);
       chai.expect(metadata.selector).eq('foo');
       const m = <ComponentMetadata>metadata;
-      chai.expect(m.template.template).eq('qux');
+      chai.expect(m.template.template.code).eq('qux');
       chai.expect(m.template.source).eq(null);
-      chai.expect(m.styles[0].style).eq('baz');
+      chai.expect(m.styles[0].style.code).eq('baz');
       chai.expect(m.styles[0].source).eq(null);
     });
 
@@ -141,9 +141,9 @@ describe('metadataReader', () => {
       chai.expect(metadata instanceof ComponentMetadata).eq(true);
       chai.expect(metadata.selector).eq('foo');
       const m = <ComponentMetadata>metadata;
-      chai.expect(m.template.template).eq('<div></div>\n');
+      chai.expect(m.template.template.code).eq('<div></div>\n');
       chai.expect(m.template.source.endsWith('foo.html')).eq(true);
-      chai.expect(m.styles[0].style).eq('baz');
+      chai.expect(m.styles[0].style.code).eq('baz');
       chai.expect(m.styles[0].source).eq(null);
     });
 
@@ -164,12 +164,11 @@ describe('metadataReader', () => {
       chai.expect(metadata instanceof ComponentMetadata).eq(true);
       chai.expect(metadata.selector).eq('foo');
       const m = <ComponentMetadata>metadata;
-      chai.expect(m.template.template).eq('<div></div>\n');
+      chai.expect(m.template.template.code).eq('<div></div>\n');
       chai.expect(m.template.source.endsWith('foo.html')).eq(true);
-      chai.expect(m.styles[0].style).eq('baz');
+      chai.expect(m.styles[0].style.code).eq('baz');
       chai.expect(m.styles[0].source).eq(null);
     });
-
 
     it('should work invoke Config.resolveUrl after all resolves', () => {
       let invoked = false;
@@ -195,9 +194,9 @@ describe('metadataReader', () => {
       chai.expect(metadata instanceof ComponentMetadata).eq(true);
       chai.expect(metadata.selector).eq('foo');
       const m = <ComponentMetadata>metadata;
-      chai.expect(m.template.template).eq('<div></div>\n');
+      chai.expect(m.template.template.code).eq('<div></div>\n');
       chai.expect(m.template.source.endsWith('foo.html')).eq(true);
-      chai.expect(m.styles[0].style).eq('baz');
+      chai.expect(m.styles[0].style.code).eq('baz');
       chai.expect(m.styles[0].source).eq(null);
       chai.expect(invoked).eq(true);
       Config.resolveUrl = (url: string) => url;
