@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import {CodeWithSourceMap} from 'source-map';
+import {CodeWithSourceMap} from './metadata';
 
 const root = require('app-root-path');
 const join = require('path').join;
@@ -37,18 +37,12 @@ export let Config: Config = {
     return url;
   },
 
-  transformTemplate(template: string, url: string, d: ts.Decorator) {
-    return {
-      code: template,
-      map: null
-    };
+  transformTemplate(code: string, url: string, d: ts.Decorator) {
+    return { code };
   },
 
-  transformStyle(style: string, url: string, d: ts.Decorator) {
-    return {
-      code: style,
-      map: null
-    };
+  transformStyle(code: string, url: string, d: ts.Decorator) {
+    return { code };
   },
 
   predefinedDirectives: [

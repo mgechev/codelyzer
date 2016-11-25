@@ -6,6 +6,7 @@ import * as e from '@angular/compiler/src/expression_parser/ast';
 import { ExpTypes } from '../expressionTypes';
 import { ComponentMetadata } from '../metadata';
 import { RecursiveAngularExpressionVisitor } from './recursiveAngularExpressionVisitor';
+import {SourceMappingVisitor} from '../sourceMappingVisitor';
 
 
 const getExpressionDisplacement = (binding: any) => {
@@ -72,15 +73,15 @@ export interface TemplateAstVisitorCtr {
     templateStart: number, expressionVisitorCtrl: RecursiveAngularExpressionVisitorCtr);
 }
 
-export class BasicTemplateAstVisitor extends Lint.RuleWalker implements ast.TemplateAstVisitor {
+export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast.TemplateAstVisitor {
   private _variables = [];
 
   constructor(sourceFile: ts.SourceFile,
     private _originalOptions: Lint.IOptions,
-    private context: ComponentMetadata,
+    protected context: ComponentMetadata,
     protected templateStart: number,
     private expressionVisitorCtrl: RecursiveAngularExpressionVisitorCtr = RecursiveAngularExpressionVisitor) {
-      super(sourceFile, _originalOptions);
+      super(sourceFile, _originalOptions, context.template.template, templateStart);
     }
 
   protected visitNg2TemplateAST(ast: e.AST, templateStart: number) {

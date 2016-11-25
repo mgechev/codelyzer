@@ -1,16 +1,22 @@
 import * as ts from 'typescript';
-import {CodeWithSourceMap} from 'source-map';
+import {RawSourceMap} from 'source-map';
+
+export interface CodeWithSourceMap {
+  code: string;
+  source?: string;
+  map?: RawSourceMap;
+}
 
 export interface TemplateMetadata {
   template: CodeWithSourceMap;
   node: ts.Node;
-  source: string;
+  url: string;
 }
 
 export interface StyleMetadata {
   style: CodeWithSourceMap;
   node: ts.Node;
-  source: string;
+  url: string;
 }
 
 export interface StylesMetadata {

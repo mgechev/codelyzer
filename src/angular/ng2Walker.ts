@@ -17,7 +17,7 @@ import {getDecoratorName, isSimpleTemplateString, getDecoratorPropertyInitialize
 import {MetadataReader} from './metadataReader';
 import {ng2WalkerFactoryUtils} from './ng2WalkerFactoryUtils';
 
-import {ComponentMetadata, DirectiveMetadata} from './metadata';
+import {ComponentMetadata, DirectiveMetadata, StyleMetadata} from './metadata';
 import {Config} from './config';
 
 import SyntaxKind = require('../util/syntaxKind');
@@ -128,12 +128,12 @@ export class Ng2Walker extends Lint.RuleWalker {
         console.log('Cannot parse the template of', ((<any>metadata.controller || {}).name || {}).text);
       }
     }
-    const styles = metadata.styles;
+    const styles = metadata.styles;              
     if (styles && styles.length) {
       for (let i = 0; i < styles.length; i += 1) {
         const style = styles[i];
         try {
-          this.visitNg2StyleHelper(parseCss(style.style.code), metadata, style.source, style.node ? style.node.pos + 2 : 0);
+          this.visitNg2StyleHelper(parseCss(style.style.code), metadata, style, style.node ? style.node.pos + 2 : 0);
         } catch (e) {
           console.log('Cannot parse the styles of', ((<any>metadata.controller || {}).name || {}).text);
         }
@@ -159,8 +159,8 @@ export class Ng2Walker extends Lint.RuleWalker {
     } else {
       const sourceFile = this.getSourceFile();
       let filename = sourceFile.fileName;
-      if (context.template.source) {
-        sourceFile.fileName = context.template.source;
+      if (context.template.url) {
+        sourceFile.fileName = context.template.url;
       }
       const visitor =
         new this._config.templateVisitorCtrl(
@@ -171,16 +171,16 @@ export class Ng2Walker extends Lint.RuleWalker {
     }
   }
 
-  protected visitNg2StyleHelper(style: CssAst, context: ComponentMetadata, file: string, baseStart: number) {
+  protected visitNg2StyleHelper(style: CssAst, context: ComponentMetadata, styleMetadata: StyleMetadata, baseStart: number) {
     if (!style) {
       return;
     } else {
       const sourceFile = this.getSourceFile();
       let filename = sourceFile.fileName;
-      if (file) {
-        sourceFile.fileName = context.template.source;
+      if (styleMetadata) {
+        sourceFile.fileName = styleMetadata.url;
       }
-      const visitor = new this._config.cssVisitorCtrl(this.getSourceFile(), this._originalOptions, context, baseStart);
+      const visitor = new this._config.cssVisitorCtrl(this.getSourceFile(), this._originalOptions, context, styleMetadata, baseStart);
       style.visit(visitor);
       sourceFile.fileName = filename;
       visitor.getFailures().forEach(f => this.addFailure(f));

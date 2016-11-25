@@ -73,9 +73,9 @@ describe('metadataReader', () => {
       chai.expect(metadata.selector).eq('foo');
       const m = <ComponentMetadata>metadata;
       chai.expect(m.template.template.code).eq('bar');
-      chai.expect(m.template.source).eq(null);
+      chai.expect(m.template.url).eq(null);
       chai.expect(m.styles[0].style.code).eq('baz');
-      chai.expect(m.styles[0].source).eq(null);
+      chai.expect(m.styles[0].url).eq(null);
     });
 
     it('should work with external template', () => {
@@ -95,9 +95,9 @@ describe('metadataReader', () => {
       chai.expect(metadata.selector).eq('foo');
       const m = <ComponentMetadata>metadata;
       chai.expect(m.template.template.code).eq('');
-      chai.expect(m.template.source).eq('bar');
+      chai.expect(m.template.url).eq('bar');
       chai.expect(m.styles[0].style.code).eq('baz');
-      chai.expect(m.styles[0].source).eq(null);
+      chai.expect(m.styles[0].url).eq(null);
     });
 
     it('should work with ignore templateUrl when has template', () => {
@@ -118,9 +118,9 @@ describe('metadataReader', () => {
       chai.expect(metadata.selector).eq('foo');
       const m = <ComponentMetadata>metadata;
       chai.expect(m.template.template.code).eq('qux');
-      chai.expect(m.template.source).eq(null);
+      chai.expect(m.template.url).eq(null);
       chai.expect(m.styles[0].style.code).eq('baz');
-      chai.expect(m.styles[0].source).eq(null);
+      chai.expect(m.styles[0].url).eq(null);
     });
 
 
@@ -142,9 +142,9 @@ describe('metadataReader', () => {
       chai.expect(metadata.selector).eq('foo');
       const m = <ComponentMetadata>metadata;
       chai.expect(m.template.template.code).eq('<div></div>\n');
-      chai.expect(m.template.source.endsWith('foo.html')).eq(true);
+      chai.expect(m.template.url.endsWith('foo.html')).eq(true);
       chai.expect(m.styles[0].style.code).eq('baz');
-      chai.expect(m.styles[0].source).eq(null);
+      chai.expect(m.styles[0].url).eq(null);
     });
 
     it('should work with absolute paths when module.id is not set', () => {
@@ -165,9 +165,9 @@ describe('metadataReader', () => {
       chai.expect(metadata.selector).eq('foo');
       const m = <ComponentMetadata>metadata;
       chai.expect(m.template.template.code).eq('<div></div>\n');
-      chai.expect(m.template.source.endsWith('foo.html')).eq(true);
+      chai.expect(m.template.url.endsWith('foo.html')).eq(true);
       chai.expect(m.styles[0].style.code).eq('baz');
-      chai.expect(m.styles[0].source).eq(null);
+      chai.expect(m.styles[0].url).eq(null);
     });
 
     it('should work invoke Config.resolveUrl after all resolves', () => {
@@ -195,9 +195,9 @@ describe('metadataReader', () => {
       chai.expect(metadata.selector).eq('foo');
       const m = <ComponentMetadata>metadata;
       chai.expect(m.template.template.code).eq('<div></div>\n');
-      chai.expect(m.template.source.endsWith('foo.html')).eq(true);
+      chai.expect(m.template.url.endsWith('foo.html')).eq(true);
       chai.expect(m.styles[0].style.code).eq('baz');
-      chai.expect(m.styles[0].source).eq(null);
+      chai.expect(m.styles[0].url).eq(null);
       chai.expect(invoked).eq(true);
       Config.resolveUrl = (url: string) => url;
     });

@@ -9,8 +9,18 @@ import {FileResolver} from './fileResolver/fileResolver';
 import {AbstractResolver} from './urlResolvers/abstractResolver';
 import {UrlResolver} from './urlResolvers/urlResolver';
 
-import {DirectiveMetadata, ComponentMetadata, StylesMetadata} from './metadata';
+import {DirectiveMetadata, ComponentMetadata, StylesMetadata, CodeWithSourceMap} from './metadata';
 
+const normalizeTransformed = (t: CodeWithSourceMap) => {
+  if (!t.map) {
+    t.source = t.code;
+  }
+  return t;
+};
+
+/**
+ * For async implementation https://gist.github.com/mgechev/6f2245c0dfb38539cc606ea9211ecb37
+ */
 export class MetadataReader {
   constructor(private _fileResolver: FileResolver, private _urlResolver?: AbstractResolver) {
     this._urlResolver  = this._urlResolver || new UrlResolver();
@@ -74,10 +84,10 @@ export class MetadataReader {
     const inlineTemplate = getDecoratorPropertyInitializer(dec, 'template');
     const external = this._urlResolver.resolve(dec);
     if (inlineTemplate && isSimpleTemplateString(inlineTemplate)) {
-      const transformed = Config.transformTemplate(inlineTemplate.text, null, dec);
+      const transformed = normalizeTransformed(Config.transformTemplate(inlineTemplate.text, null, dec));
       result.template = {
         template: transformed,
-        source: null,
+        url: null,
         node: inlineTemplate
       };
     }
@@ -87,8 +97,8 @@ export class MetadataReader {
         if (isSimpleTemplateString(inlineStyle)) {
           result.styles = result.styles || [];
           result.styles.push({
-            style: Config.transformStyle(inlineStyle.text, null, dec),
-            source: null,
+            style: normalizeTransformed(Config.transformStyle(inlineStyle.text, null, dec)),
+            url: null,
             node: inlineStyle,
           });
         }
@@ -97,10 +107,10 @@ export class MetadataReader {
     if (!result.template && external.templateUrl) {
       try {
         const template = this._fileResolver.resolve(external.templateUrl);
-        const transformed = Config.transformTemplate(template, external.templateUrl, dec);
+        const transformed = normalizeTransformed(Config.transformTemplate(template, external.templateUrl, dec));
         result.template = {
           template: transformed,
-          source: external.templateUrl,
+          url: external.templateUrl,
           node: null
         };
       } catch (e) {
@@ -112,10 +122,9 @@ export class MetadataReader {
       try {
         result.styles = <any>external.styleUrls.map((url: string) => {
           const style = this._fileResolver.resolve(url);
-          const transformed = Config.transformStyle(style, url, dec);
+          const transformed = normalizeTransformed(Config.transformStyle(style, url, dec));
           return {
-            style: transformed,
-            source: url,
+            style: transformed, url,
             node: null
           };
         });
