@@ -41,14 +41,16 @@ export class SourceMappingVisitor extends RuleWalker {
       const consumer = new SourceMapConsumer(this.codeWithMap.map);
       start = this.getMappedPosition(start, consumer);
       end = this.getMappedPosition(end, consumer);
+    } else {
+      start += this.basePosition;
+      end = start + length;
     }
     return super.createFailure(start, end - start, message);
   }
 
   private getMappedPosition(pos: number, consumer: SourceMapConsumer) {
-    const absPos = findLineAndColumnNumber(pos - this.basePosition, this.codeWithMap.code);
+    const absPos = findLineAndColumnNumber(pos, this.codeWithMap.code);
     const mappedPos = consumer.originalPositionFor(absPos);
-    console.log(absPos, mappedPos);
     const char = findCharNumberFromLineAndColumn(mappedPos, this.codeWithMap.source);
     return char + this.basePosition;
   }

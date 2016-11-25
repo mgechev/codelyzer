@@ -1,5 +1,6 @@
 import * as ts from 'typescript';
 import {CodeWithSourceMap} from './metadata';
+import {renderSync} from 'node-sass';
 
 const root = require('app-root-path');
 const join = require('path').join;
@@ -22,7 +23,6 @@ export interface Config {
   transformTemplate: TemplateTransformer;
   transformStyle: StyleTransformer;
   predefinedDirectives: DirectiveDeclaration[];
-  basePath: string;
 }
 
 export interface DirectiveDeclaration {
@@ -42,13 +42,20 @@ export let Config: Config = {
   },
 
   transformStyle(code: string, url: string, d: ts.Decorator) {
+    let result: CodeWithSourceMap = { source: code, code };
+    if (url && (url.endsWith('.sass') || url.endsWith('.scss'))) {
+      // Note: it's not written on disk
+      // https://github.com/sass/node-sass#outfile
+      let res = renderSync({ file: url, data: code, sourceMap: true, outFile: url });
+      result.map = JSON.parse(res.map.toString());
+      result.code = res.css.toString();
+    }
     return { code };
   },
 
   predefinedDirectives: [
     { selector: 'form', exportAs: 'ngForm' }
-  ],
-  basePath: ''
+  ]
 };
 
 try {

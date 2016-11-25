@@ -8,6 +8,7 @@ import {Config} from './config';
 import {FileResolver} from './fileResolver/fileResolver';
 import {AbstractResolver} from './urlResolvers/abstractResolver';
 import {UrlResolver} from './urlResolvers/urlResolver';
+import {PathResolver} from './urlResolvers/pathResolver';
 
 import {DirectiveMetadata, ComponentMetadata, StylesMetadata, CodeWithSourceMap} from './metadata';
 
@@ -22,8 +23,9 @@ const normalizeTransformed = (t: CodeWithSourceMap) => {
  * For async implementation https://gist.github.com/mgechev/6f2245c0dfb38539cc606ea9211ecb37
  */
 export class MetadataReader {
+
   constructor(private _fileResolver: FileResolver, private _urlResolver?: AbstractResolver) {
-    this._urlResolver  = this._urlResolver || new UrlResolver();
+    this._urlResolver  = this._urlResolver || new UrlResolver(new PathResolver());
   }
 
   read(d: ts.ClassDeclaration): DirectiveMetadata {
@@ -146,4 +148,3 @@ export class MetadataReader {
     return null;
   }
 }
-

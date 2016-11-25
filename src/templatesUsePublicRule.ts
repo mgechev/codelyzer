@@ -44,7 +44,7 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
       const width = ast.name.length;
       if (!isPublic) {
         const failureString = 'You can bind only to public class members.';
-        this.addFailure(this.createFailure(this.basePosition + ast.span.start, width, failureString));
+        this.addFailure(this.createFailure(ast.span.start, width, failureString));
       }
     }
   }

@@ -6,7 +6,7 @@ import {assertFailure, assertSuccess} from './testHelper';
 import {Config} from '../src/angular/config';
 
 describe('no-unused-css', () => {
-  xdescribe('valid cases', () => {
+  describe('valid cases', () => {
 
     it('should succeed when having valid simple selector', () => {
       let source = `
@@ -204,7 +204,7 @@ describe('no-unused-css', () => {
 
   });
 
-  xdescribe('failures', () => {
+  describe('failures', () => {
     it('should fail when having a complex selector that doesn\'t match anything', () => {
       let source = `
         @Component({
@@ -346,7 +346,7 @@ describe('no-unused-css', () => {
     });
   });
 
-  xdescribe('host', () => {
+  describe('host', () => {
 
     it('should never fail for :host', () => {
       let source = `
@@ -405,7 +405,7 @@ describe('no-unused-css', () => {
     });
   });
 
-  xdescribe('deep and >>>', () => {
+  describe('deep and >>>', () => {
     it('should ignore deep and match only before it', () => {
       let source = `
         @Component({
@@ -519,7 +519,7 @@ describe('no-unused-css', () => {
     });
   });
 
-  xdescribe('pseudo', () => {
+  describe('pseudo', () => {
 
     it('should ignore before and after', () => {
       let source = `
@@ -578,7 +578,7 @@ describe('no-unused-css', () => {
     });
   });
 
-  xdescribe('ViewEncapsulation', () => {
+  describe('ViewEncapsulation', () => {
     it('should ignore before and after', () => {
       let source = `
         @Component({
@@ -748,7 +748,7 @@ describe('no-unused-css', () => {
     Config.transformStyle = (code: string) => ({ code, map: null });
   });
 
-  xdescribe('inconsistencies with template', () => {
+  describe('inconsistencies with template', () => {
 
     it('should ignore misspelled template', () => {
       let source = `

@@ -66,7 +66,7 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
         failureString += ` Probably you mean: ${getSuggestion(top.map(s => s.element))}.`;
       }
       const width = ast.name.length;
-      this.addFailure(this.createFailure(this.basePosition + ast.span.start, width, failureString));
+      this.addFailure(this.createFailure(ast.span.start, width, failureString));
     }
     return null;
   }
