@@ -119,10 +119,20 @@ export class Ng2Walker extends Lint.RuleWalker {
 
   protected visitNg2Component(metadata: ComponentMetadata) {
     const template = metadata.template;
+    const getPosition = (node: any) => {
+      let pos = 0;
+      if (node) {
+        pos = node.pos + 1;
+        try {
+          pos = node.getStart() + 1;
+        } catch (e) {}
+      }
+      return pos;
+    };
     if (template && template.template) {
       try {
         const templateAst = parseTemplate(template.template.code, Config.predefinedDirectives);
-        this.visitNg2TemplateHelper(templateAst, metadata, template.node ? template.node.pos + 2 : 0);
+        this.visitNg2TemplateHelper(templateAst, metadata, getPosition(template.node));
       } catch (e) {
         console.log(e);
         console.log('Cannot parse the template of', ((<any>metadata.controller || {}).name || {}).text);
@@ -133,7 +143,7 @@ export class Ng2Walker extends Lint.RuleWalker {
       for (let i = 0; i < styles.length; i += 1) {
         const style = styles[i];
         try {
-          this.visitNg2StyleHelper(parseCss(style.style.code), metadata, style, style.node ? style.node.pos + 2 : 0);
+          this.visitNg2StyleHelper(parseCss(style.style.code), metadata, style, getPosition(style.node));
         } catch (e) {
           console.log('Cannot parse the styles of', ((<any>metadata.controller || {}).name || {}).text);
         }

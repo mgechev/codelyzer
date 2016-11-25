@@ -229,11 +229,11 @@ describe('no-unused-css', () => {
           message: 'Unused styles',
           startPosition: {
             line: 10,
-            character: 0
+            character: 12
           },
           endPosition: {
             line: 12,
-            character: 0
+            character: 12
           }
       });
     });
@@ -267,11 +267,11 @@ describe('no-unused-css', () => {
           message: 'Unused styles',
           startPosition: {
             line: 15,
-            character: 0
+            character: 12
           },
           endPosition: {
             line: 17,
-            character: 0
+            character: 12
           }
       });
     });
@@ -300,11 +300,11 @@ describe('no-unused-css', () => {
           message: 'Unused styles',
           startPosition: {
             line: 10,
-            character: 0
+            character: 12
           },
           endPosition: {
             line: 12,
-            character: 0
+            character: 12
           }
       });
     });
@@ -335,11 +335,11 @@ describe('no-unused-css', () => {
             message: 'Unused styles',
             startPosition: {
               line: 10,
-              character: 0
+              character: 14
             },
             endPosition: {
               line: 12,
-              character: 0
+              character: 14
             }
         });
       });
@@ -395,11 +395,11 @@ describe('no-unused-css', () => {
           message: 'Unused styles',
           startPosition: {
             line: 10,
-            character: 0
+            character: 12
           },
           endPosition: {
             line: 12,
-            character: 0
+            character: 12
           }
       });
     });
@@ -453,11 +453,11 @@ describe('no-unused-css', () => {
           message: 'Unused styles',
           startPosition: {
             line: 10,
-            character: 0
+            character: 12
           },
           endPosition: {
             line: 12,
-            character: 0
+            character: 12
           }
       });
     });
@@ -509,11 +509,11 @@ describe('no-unused-css', () => {
           message: 'Unused styles',
           startPosition: {
             line: 10,
-            character: 0
+            character: 12
           },
           endPosition: {
             line: 12,
-            character: 0
+            character: 12
           }
       });
     });
@@ -568,11 +568,11 @@ describe('no-unused-css', () => {
           message: 'Unused styles',
           startPosition: {
             line: 10,
-            character: 0
+            character: 12
           },
           endPosition: {
             line: 12,
-            character: 0
+            character: 12
           }
       });
     });
@@ -634,11 +634,11 @@ describe('no-unused-css', () => {
           message: 'Unused styles',
           startPosition: {
             line: 7,
-            character: 0
+            character: 12
           },
           endPosition: {
             line: 9,
-            character: 0
+            character: 12
           }
       });
     });
@@ -662,11 +662,11 @@ describe('no-unused-css', () => {
           message: 'Unused styles',
           startPosition: {
             line: 7,
-            character: 0
+            character: 12
           },
           endPosition: {
             line: 9,
-            character: 0
+            character: 12
           }
       });
     });
@@ -690,11 +690,11 @@ describe('no-unused-css', () => {
           message: 'Unused styles',
           startPosition: {
             line: 7,
-            character: 0
+            character: 12
           },
           endPosition: {
             line: 9,
-            character: 0
+            character: 12
           }
       });
     });
@@ -738,11 +738,11 @@ describe('no-unused-css', () => {
       message: 'Unused styles',
       startPosition: {
         line: 9,
-        character: 0
+        character: 8
       },
       endPosition: {
         line: 13,
-        character: 3
+        character: 11
       }
     });
     Config.transformStyle = (code: string) => ({ code, map: null });
