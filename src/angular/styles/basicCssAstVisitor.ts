@@ -1,6 +1,7 @@
-import * as ast from './cssAst';
 import * as ts from 'typescript';
 import * as Lint from 'tslint';
+
+import * as ast from './cssAst';
 import {SourceMappingVisitor} from '../sourceMappingVisitor';
 import {ComponentMetadata, StyleMetadata} from '../metadata';
 

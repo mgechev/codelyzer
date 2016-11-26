@@ -11,13 +11,13 @@ class Logger {
 
   info(...msg: string[]) {
     if (this.level && LogLevel.Info) {
-      console.error.apply(console, msg);
+      console.info.apply(console, msg);
     }
   }
 
   debug(...msg: string[]) {
     if (this.level && LogLevel.Debug) {
-      console.error.apply(console, msg);
+      console.log.apply(console, msg);
     }
   }
 }

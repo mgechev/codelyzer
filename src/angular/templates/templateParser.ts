@@ -1,6 +1,7 @@
 import { __core_private__ as r, NO_ERRORS_SCHEMA } from '@angular/core';
-import { Config } from '../config';
 import * as compiler from '@angular/compiler';
+
+import { Config } from '../config';
 
 let refId = 0;
 

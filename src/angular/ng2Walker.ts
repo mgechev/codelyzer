@@ -1,9 +1,6 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import * as compiler from '@angular/compiler';
-import {
-  TemplateAst
-} from '@angular/compiler';
 import { parseTemplate } from './templates/templateParser';
 
 import {parseCss} from './styles/parseCss';
@@ -11,18 +8,18 @@ import {CssAst} from './styles/cssAst';
 import {BasicCssAstVisitor, CssAstVisitorCtrl} from './styles/basicCssAstVisitor';
 
 import {RecursiveAngularExpressionVisitorCtr, BasicTemplateAstVisitor, TemplateAstVisitorCtr} from './templates/basicTemplateAstVisitor';
-import { RecursiveAngularExpressionVisitor } from './templates/recursiveAngularExpressionVisitor';
+import {RecursiveAngularExpressionVisitor} from './templates/recursiveAngularExpressionVisitor';
 
-import {getDecoratorName, isSimpleTemplateString, getDecoratorPropertyInitializer} from '../util/utils';
 import {MetadataReader} from './metadataReader';
+import {ComponentMetadata, DirectiveMetadata, StyleMetadata} from './metadata';
 import {ng2WalkerFactoryUtils} from './ng2WalkerFactoryUtils';
 
-import {ComponentMetadata, DirectiveMetadata, StyleMetadata} from './metadata';
 import {Config} from './config';
 
 import {logger} from '../util/logger';
-import SyntaxKind = require('../util/syntaxKind');
+import {getDecoratorName, isSimpleTemplateString, getDecoratorPropertyInitializer} from '../util/utils';
 
+import SyntaxKind = require('../util/syntaxKind');
 
 const getDecoratorStringArgs = (decorator: ts.Decorator) => {
   let baseExpr = <any>decorator.expression || {};

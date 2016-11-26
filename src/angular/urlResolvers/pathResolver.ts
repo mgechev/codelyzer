@@ -6,5 +6,5 @@ export class PathResolver {
       return null;
     }
     return join(relative, path);
-  }  
+  }
 }

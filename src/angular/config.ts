@@ -1,9 +1,5 @@
 import * as ts from 'typescript';
 import {CodeWithSourceMap} from './metadata';
-import {renderSync} from 'node-sass';
-
-const root = require('app-root-path');
-const join = require('path').join;
 
 export interface UrlResolver {
   (url: string, d: ts.Decorator): string;
@@ -18,10 +14,10 @@ export interface StyleTransformer {
 }
 
 export const LogLevel = {
+  None: 0,
   Error: 0b001,
   Info: 0b011,
-  Debug: 0b111,
-  None: 0
+  Debug: 0b111
 };
 
 export interface Config {
@@ -38,7 +34,7 @@ export interface DirectiveDeclaration {
   exportAs: string;
 }
 
-export let Config: Config = {
+export const Config: Config = {
   interpolation: ['{{', '}}'],
 
   resolveUrl(url: string, d: ts.Decorator) {
@@ -60,10 +56,11 @@ export let Config: Config = {
   logLevel: LogLevel.None
 };
 
+const root = require('app-root-path');
+
 try {
-  let newConfig = require(join(root.path, '.codelyzer'));
+  let newConfig = require(root.path + '/.codelyzer');
   Object.assign(Config, newConfig);
 } catch (e) {
-
+  console.info('Cannot find ".codelyzer.js" in the root of the project');
 }
-
