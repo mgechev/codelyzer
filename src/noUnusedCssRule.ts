@@ -12,6 +12,9 @@ import {
 import {parseTemplate} from './angular/templates/templateParser';
 import {CssAst, CssSelectorRuleAst, CssSelectorAst} from './angular/styles/cssAst';
 
+import {ComponentMetadata} from './angular/metadata';
+import {ng2WalkerFactoryUtils} from './angular/ng2WalkerFactoryUtils';
+
 const CssSelectorTokenizer = require('css-selector-tokenizer');
 
 const getSymbolName = (t: any) => {
@@ -202,7 +205,8 @@ export class UnusedCssNg2Visitor extends Ng2Walker {
   visitClassDeclaration(declaration: ts.ClassDeclaration) {
     const d = getComponentDecorator(declaration);
     if (d) {
-      this.visitNg2Component(<ts.ClassDeclaration>d.parent, d);
+      const meta = this._metadataReader.read(declaration);
+      this.visitNg2Component(<ComponentMetadata>meta);
       const inlineTemplate = getDecoratorPropertyInitializer(d, 'template');
       if (inlineTemplate) {
         try {
@@ -218,13 +222,13 @@ export class UnusedCssNg2Visitor extends Ng2Walker {
     super.visitClassDeclaration(declaration);
   }
 
-  protected visitNg2StyleHelper(style: CssAst, context: ts.ClassDeclaration, baseStart: number) {
+  protected visitNg2StyleHelper(style: CssAst, context: ComponentMetadata, path: string, baseStart: number) {
     if (!style) {
       return;
     } else {
-      const visitor = new UnusedCssVisitor(this.getSourceFile(), this._originalOptions, context, baseStart);
+      const visitor = new UnusedCssVisitor(this.getSourceFile(), this._originalOptions, context.controller, baseStart);
       visitor.templateAst = this.templateAst;
-      const d = getComponentDecorator(context);
+      const d = getComponentDecorator(context.controller);
       const encapsulation = getDecoratorPropertyInitializer(d, 'encapsulation');
       if (isEncapsulationEnabled(encapsulation)) {
         style.visit(visitor);
