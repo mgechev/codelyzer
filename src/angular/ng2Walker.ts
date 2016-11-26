@@ -20,6 +20,7 @@ import {ng2WalkerFactoryUtils} from './ng2WalkerFactoryUtils';
 import {ComponentMetadata, DirectiveMetadata, StyleMetadata} from './metadata';
 import {Config} from './config';
 
+import {logger} from '../util/logger';
 import SyntaxKind = require('../util/syntaxKind');
 
 
@@ -134,8 +135,7 @@ export class Ng2Walker extends Lint.RuleWalker {
         const templateAst = parseTemplate(template.template.code, Config.predefinedDirectives);
         this.visitNg2TemplateHelper(templateAst, metadata, getPosition(template.node));
       } catch (e) {
-        console.log(e);
-        console.log('Cannot parse the template of', ((<any>metadata.controller || {}).name || {}).text);
+        logger.error('Cannot parse the template of', ((<any>metadata.controller || {}).name || {}).text);
       }
     }
     const styles = metadata.styles;
@@ -145,7 +145,7 @@ export class Ng2Walker extends Lint.RuleWalker {
         try {
           this.visitNg2StyleHelper(parseCss(style.style.code), metadata, style, getPosition(style.node));
         } catch (e) {
-          console.log('Cannot parse the styles of', ((<any>metadata.controller || {}).name || {}).text);
+          logger.error('Cannot parse the styles of', ((<any>metadata.controller || {}).name || {}).text);
         }
       }
     }

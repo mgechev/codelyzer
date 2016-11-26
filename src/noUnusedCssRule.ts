@@ -14,6 +14,7 @@ import {CssAst, CssSelectorRuleAst, CssSelectorAst} from './angular/styles/cssAs
 
 import {ComponentMetadata, StyleMetadata} from './angular/metadata';
 import {ng2WalkerFactoryUtils} from './angular/ng2WalkerFactoryUtils';
+import {logger} from './util/logger';
 
 const CssSelectorTokenizer = require('css-selector-tokenizer');
 
@@ -152,7 +153,7 @@ class UnusedCssVisitor extends BasicCssAstVisitor {
           ast.end.offset - ast.start.offset, 'Unused styles'));
       }
     } catch (e) {
-      console.error(e);
+      logger.error(e);
     }
     return true;
   }
@@ -212,7 +213,7 @@ export class UnusedCssNg2Visitor extends Ng2Walker {
           this.templateAst =
             new ElementAst('*', [], [], [], [], [], [], false, parseTemplate(meta.template.template.code), 0, null, null);
         } catch (e) {
-          console.error('Cannot parse the template', e);
+          logger.error('Cannot parse the template', e);
         }
       }
     }

@@ -17,12 +17,20 @@ export interface StyleTransformer {
   (style: string, url: string, d: ts.Decorator): CodeWithSourceMap;
 }
 
+export const LogLevel = {
+  Error: 0b001,
+  Info: 0b011,
+  Debug: 0b111,
+  None: 0
+};
+
 export interface Config {
   interpolation: [string, string];
   resolveUrl: UrlResolver;
   transformTemplate: TemplateTransformer;
   transformStyle: StyleTransformer;
   predefinedDirectives: DirectiveDeclaration[];
+  logLevel: number;
 }
 
 export interface DirectiveDeclaration {
@@ -38,24 +46,18 @@ export let Config: Config = {
   },
 
   transformTemplate(code: string, url: string, d: ts.Decorator) {
-    return { code };
+    return { code, url };
   },
 
   transformStyle(code: string, url: string, d: ts.Decorator) {
-    let result: CodeWithSourceMap = { source: code, code };
-    if (url && (url.endsWith('.sass') || url.endsWith('.scss'))) {
-      // Note: it's not written on disk
-      // https://github.com/sass/node-sass#outfile
-      let res = renderSync({ file: url, data: code, sourceMap: true, outFile: url });
-      result.map = JSON.parse(res.map.toString());
-      result.code = res.css.toString();
-    }
-    return { code };
+    return { code, url };
   },
 
   predefinedDirectives: [
     { selector: 'form', exportAs: 'ngForm' }
-  ]
+  ],
+
+  logLevel: LogLevel.None
 };
 
 try {

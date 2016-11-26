@@ -6,9 +6,10 @@ const kinds = current();
 
 import {Config} from './config';
 import {FileResolver} from './fileResolver/fileResolver';
-import {AbstractResolver} from './urlResolvers/abstractResolver';
+import {AbstractResolver, MetadataUrls} from './urlResolvers/abstractResolver';
 import {UrlResolver} from './urlResolvers/urlResolver';
 import {PathResolver} from './urlResolvers/pathResolver';
+import {logger} from '../util/logger';
 
 import {DirectiveMetadata, ComponentMetadata, StylesMetadata, CodeWithSourceMap} from './metadata';
 
@@ -74,55 +75,49 @@ export class MetadataReader {
     return metadata;
   }
 
-  readComponentMetadata(d: ts.ClassDeclaration, dec: ts.Decorator) {
-    const expr = this.getDecoratorArgument(dec);
-    const metadata = this.readDirectiveMetadata(d, dec);
-    const result = new ComponentMetadata();
-    if (!expr) {
-      return result;
-    }
-    result.selector = metadata.selector;
-    result.controller = metadata.controller;
+  readComponentTemplateMetadata(dec: ts.Decorator, external: MetadataUrls) {
     const inlineTemplate = getDecoratorPropertyInitializer(dec, 'template');
-    const external = this._urlResolver.resolve(dec);
     if (inlineTemplate && isSimpleTemplateString(inlineTemplate)) {
       const transformed = normalizeTransformed(Config.transformTemplate(inlineTemplate.text, null, dec));
-      result.template = {
+      return {
         template: transformed,
         url: null,
         node: inlineTemplate
       };
+    } else {
+      if (external.templateUrl) {
+        try {
+          const template = this._fileResolver.resolve(external.templateUrl);
+          const transformed = normalizeTransformed(Config.transformTemplate(template, external.templateUrl, dec));
+          return {
+            template: transformed,
+            url: external.templateUrl,
+            node: null
+          };
+        } catch (e) {
+          logger.info('Cannot read the external template ' + external.templateUrl);
+        }
+      }
     }
+  }
+
+  readComponentStylesMetadata(dec: ts.Decorator, external: MetadataUrls) {
     const inlineStyles = getDecoratorPropertyInitializer(dec, 'styles');
+    let styles: any[];
     if (inlineStyles && inlineStyles.kind === kinds.ArrayLiteralExpression) {
       inlineStyles.elements.forEach((inlineStyle: any) => {
         if (isSimpleTemplateString(inlineStyle)) {
-          result.styles = result.styles || [];
-          result.styles.push({
+          styles = styles || [];
+          styles.push({
             style: normalizeTransformed(Config.transformStyle(inlineStyle.text, null, dec)),
             url: null,
             node: inlineStyle,
           });
         }
       });
-    }
-    if (!result.template && external.templateUrl) {
+    } else if (external.styleUrls) {
       try {
-        const template = this._fileResolver.resolve(external.templateUrl);
-        const transformed = normalizeTransformed(Config.transformTemplate(template, external.templateUrl, dec));
-        result.template = {
-          template: transformed,
-          url: external.templateUrl,
-          node: null
-        };
-      } catch (e) {
-        console.log(e);
-        console.log('Cannot read the external template ' + external.templateUrl);
-      }
-    }
-    if (!result.styles || !result.styles.length) {
-      try {
-        result.styles = <any>external.styleUrls.map((url: string) => {
+        styles = <any>external.styleUrls.map((url: string) => {
           const style = this._fileResolver.resolve(url);
           const transformed = normalizeTransformed(Config.transformStyle(style, url, dec));
           return {
@@ -131,9 +126,24 @@ export class MetadataReader {
           };
         });
       } catch (e) {
-        console.log('Unable to read external style. ' + e.toString());
+        logger.info('Unable to read external style. ' + e.toString());
       }
     }
+    return styles;
+  }
+
+  readComponentMetadata(d: ts.ClassDeclaration, dec: ts.Decorator) {
+    const expr = this.getDecoratorArgument(dec);
+    const metadata = this.readDirectiveMetadata(d, dec);
+    const result = new ComponentMetadata();
+    result.selector = metadata.selector;
+    result.controller = metadata.controller;
+    if (!expr) {
+      return result;
+    }
+    const external = this._urlResolver.resolve(dec);
+    result.template = this.readComponentTemplateMetadata(dec, external);
+    result.styles = this.readComponentStylesMetadata(dec, external);
     return result;
   }
 

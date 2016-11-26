@@ -49,7 +49,6 @@
     "@types/less": "0.0.31",
     "@types/mocha": "^2.2.32",
     "@types/node": "^6.0.41",
-    "@types/node-sass": "^3.10.31",
     "@types/source-map": "^0.5.0",
     "@types/sprintf-js": "0.0.27",
     "chai": "^3.5.0",
@@ -72,8 +71,6 @@
     "app-root-path": "^2.0.1",
     "css-selector-tokenizer": "^0.7.0",
     "cssauron": "^1.4.0",
-    "less": "^2.7.1",
-    "node-sass": "^3.13.0",
     "source-map": "^0.5.6",
     "sprintf-js": "^1.0.3"
   }
