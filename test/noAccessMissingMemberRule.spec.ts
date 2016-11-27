@@ -334,6 +334,18 @@ describe('no-access-missing-member', () => {
        });
     });
 
+    it('should succeed with elementref', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<bar #baz>{{ baz.value }}</bar>'
+        })
+        class Test {
+          foo: number;
+        }`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
   });
 
   describe('valid expressions', () => {

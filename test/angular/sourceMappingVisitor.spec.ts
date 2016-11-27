@@ -42,6 +42,5 @@ describe('metadataReader', () => {
     const failure = visitor.createFailure(0, 4, 'bar');
     chai.expect(failure.getStartPosition().getPosition()).eq(46);
     chai.expect(failure.getEndPosition().getPosition()).eq(50);
-    console.log(styles.elements[0].text, result.css.toString());
   });
 });
