@@ -140,7 +140,7 @@ describe('metadataReader', () => {
       chai.expect(metadata instanceof ComponentMetadata).eq(true);
       chai.expect(metadata.selector).eq('foo');
       const m = <ComponentMetadata>metadata;
-      chai.expect(m.template.template.code).eq('<div></div>\n');
+      chai.expect(m.template.template.code.trim()).eq('<div></div>');
       chai.expect(m.template.url.endsWith('foo.html')).eq(true);
       chai.expect(m.styles[0].style.code).eq('baz');
       chai.expect(m.styles[0].url).eq(null);
@@ -162,7 +162,7 @@ describe('metadataReader', () => {
       chai.expect(metadata instanceof ComponentMetadata).eq(true);
       chai.expect(metadata.selector).eq('foo');
       const m = <ComponentMetadata>metadata;
-      chai.expect(m.template.template.code).eq('<div></div>\n');
+      chai.expect(m.template.template.code.trim()).eq('<div></div>');
       chai.expect(m.template.url.endsWith('foo.html')).eq(true);
       chai.expect(m.styles[0].style.code).eq('baz');
       chai.expect(m.styles[0].url).eq(null);
@@ -193,7 +193,7 @@ describe('metadataReader', () => {
       chai.expect(metadata instanceof ComponentMetadata).eq(true);
       chai.expect(metadata.selector).eq('foo');
       const m = <ComponentMetadata>metadata;
-      chai.expect(m.template.template.code).eq('<div></div>\n');
+      chai.expect(m.template.template.code.trim()).eq('<div></div>');
       chai.expect(m.template.url.endsWith('foo.html')).eq(true);
       chai.expect(m.styles[0].style.code).eq('baz');
       chai.expect(m.styles[0].url).eq(null);
@@ -206,7 +206,7 @@ describe('metadataReader', () => {
       const bak = Config.transformTemplate;
       Config.transformTemplate = (code: string) => {
         invoked = true;
-        chai.expect(code).eq('<div></div>\n');
+        chai.expect(code.trim()).eq('<div></div>');
         return { code };
       };
       const code = `
@@ -226,7 +226,7 @@ describe('metadataReader', () => {
       chai.expect(metadata instanceof ComponentMetadata).eq(true);
       chai.expect(metadata.selector).eq('foo');
       const m = <ComponentMetadata>metadata;
-      chai.expect(m.template.template.code).eq('<div></div>\n');
+      chai.expect(m.template.template.code.trim()).eq('<div></div>');
       chai.expect(m.template.url.endsWith('foo.html')).eq(true);
       chai.expect(m.styles[0].style.code).eq('baz');
       chai.expect(m.styles[0].url).eq(null);
@@ -259,33 +259,13 @@ describe('metadataReader', () => {
       chai.expect(metadata instanceof ComponentMetadata).eq(true);
       chai.expect(metadata.selector).eq('foo');
       const m = <ComponentMetadata>metadata;
-      chai.expect(m.template.template.code).eq('<div></div>\n');
+      chai.expect(m.template.template.code.trim()).eq('<div></div>');
       chai.expect(m.template.url.endsWith('foo.html')).eq(true);
       chai.expect(m.styles[0].style.code).eq('baz');
       chai.expect(m.styles[0].url).eq(null);
       chai.expect(invoked).eq(true);
       Config.transformStyle = bak;
     });
-
-    it('should compile sass by default', () => {
-      const code = `
-      @Component({
-        selector: 'foo',
-        styleUrls: ['bar.scss']
-      })
-      class Bar {}
-      `;
-      const reader = new MetadataReader(new FsFileResolver());
-      const ast = getAst(code, __dirname + '/../../test/fixtures/metadataReader/sass/bar.ts');
-      const classDeclaration = <ts.ClassDeclaration>ast.statements.pop();
-      const metadata = reader.read(classDeclaration);
-      chai.expect(metadata instanceof ComponentMetadata).eq(true);
-      chai.expect(metadata.selector).eq('foo');
-      const m = <ComponentMetadata>metadata;
-      chai.expect(m.styles[0].url.endsWith('/metadataReader/sass/bar.scss')).eq(true);
-      chai.expect(m.styles[0].style.map === null).eq(false);
-    });
   });
-
 });
 
