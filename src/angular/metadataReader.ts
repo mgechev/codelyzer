@@ -11,7 +11,7 @@ import {isSimpleTemplateString, getDecoratorPropertyInitializer} from '../util/u
 
 import {Config} from './config';
 
-import {DirectiveMetadata, ComponentMetadata, StylesMetadata, CodeWithSourceMap} from './metadata';
+import {DirectiveMetadata, ComponentMetadata, StylesMetadata, CodeWithSourceMap, TemplateMetadata} from './metadata';
 
 const kinds = current();
 
@@ -77,7 +77,7 @@ export class MetadataReader {
     return metadata;
   }
 
-  readComponentTemplateMetadata(dec: ts.Decorator, external: MetadataUrls) {
+  readComponentTemplateMetadata(dec: ts.Decorator, external: MetadataUrls): TemplateMetadata {
     const inlineTemplate = getDecoratorPropertyInitializer(dec, 'template');
     if (inlineTemplate && isSimpleTemplateString(inlineTemplate)) {
       const transformed = normalizeTransformed(Config.transformTemplate(inlineTemplate.text, null, dec));
