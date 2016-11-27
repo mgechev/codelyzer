@@ -1,4 +1,9 @@
+import {Decorator} from 'typescript';
+
+import * as sass from 'node-sass';
+
 import {assertFailure, assertSuccess} from './testHelper';
+import {Config} from '../src/angular/config';
 
 describe('no-unused-css', () => {
   describe('valid cases', () => {
@@ -224,11 +229,11 @@ describe('no-unused-css', () => {
           message: 'Unused styles',
           startPosition: {
             line: 10,
-            character: 0
+            character: 12
           },
           endPosition: {
             line: 12,
-            character: 0
+            character: 12
           }
       });
     });
@@ -262,11 +267,11 @@ describe('no-unused-css', () => {
           message: 'Unused styles',
           startPosition: {
             line: 15,
-            character: 0
+            character: 12
           },
           endPosition: {
             line: 17,
-            character: 0
+            character: 12
           }
       });
     });
@@ -295,11 +300,11 @@ describe('no-unused-css', () => {
           message: 'Unused styles',
           startPosition: {
             line: 10,
-            character: 0
+            character: 12
           },
           endPosition: {
             line: 12,
-            character: 0
+            character: 12
           }
       });
     });
@@ -330,11 +335,11 @@ describe('no-unused-css', () => {
             message: 'Unused styles',
             startPosition: {
               line: 10,
-              character: 0
+              character: 14
             },
             endPosition: {
               line: 12,
-              character: 0
+              character: 14
             }
         });
       });
@@ -390,11 +395,11 @@ describe('no-unused-css', () => {
           message: 'Unused styles',
           startPosition: {
             line: 10,
-            character: 0
+            character: 12
           },
           endPosition: {
             line: 12,
-            character: 0
+            character: 12
           }
       });
     });
@@ -448,11 +453,11 @@ describe('no-unused-css', () => {
           message: 'Unused styles',
           startPosition: {
             line: 10,
-            character: 0
+            character: 12
           },
           endPosition: {
             line: 12,
-            character: 0
+            character: 12
           }
       });
     });
@@ -504,11 +509,11 @@ describe('no-unused-css', () => {
           message: 'Unused styles',
           startPosition: {
             line: 10,
-            character: 0
+            character: 12
           },
           endPosition: {
             line: 12,
-            character: 0
+            character: 12
           }
       });
     });
@@ -563,11 +568,11 @@ describe('no-unused-css', () => {
           message: 'Unused styles',
           startPosition: {
             line: 10,
-            character: 0
+            character: 12
           },
           endPosition: {
             line: 12,
-            character: 0
+            character: 12
           }
       });
     });
@@ -629,11 +634,11 @@ describe('no-unused-css', () => {
           message: 'Unused styles',
           startPosition: {
             line: 7,
-            character: 0
+            character: 12
           },
           endPosition: {
             line: 9,
-            character: 0
+            character: 12
           }
       });
     });
@@ -657,11 +662,11 @@ describe('no-unused-css', () => {
           message: 'Unused styles',
           startPosition: {
             line: 7,
-            character: 0
+            character: 12
           },
           endPosition: {
             line: 9,
-            character: 0
+            character: 12
           }
       });
     });
@@ -685,15 +690,62 @@ describe('no-unused-css', () => {
           message: 'Unused styles',
           startPosition: {
             line: 7,
-            character: 0
+            character: 12
           },
           endPosition: {
             line: 9,
-            character: 0
+            character: 12
           }
       });
     });
 
+  });
+
+
+  it('should work with sass', () => {
+    Config.transformStyle = (source: string, url: string, d: Decorator) => {
+      const res = sass.renderSync({
+        sourceMap: true, data: source, sourceMapEmbed: true
+      });
+      const code = res.css.toString();
+      const base64Map = code.match(/\/\*(.*?)\*\//)[1].replace('# sourceMappingURL=data:application/json;base64,', '');
+      const map = JSON.parse(new Buffer(base64Map, 'base64').toString('ascii'));
+      return { code, source, map };
+    };
+
+    let source = `
+    @Component({
+      selector: 'hero-cmp',
+      template: \`
+        <h1>Hello <span>{{ hero.name }}</span></h1>
+      \`,
+      styles: [
+        \`
+        h1 {
+          spam {
+            baz {
+              color: red;
+            }
+          }
+        }
+        \`
+      ]
+    })
+    class HeroComponent {
+      private hero: Hero;
+    }`;
+    assertFailure('no-unused-css', source, {
+      message: 'Unused styles',
+      startPosition: {
+        line: 9,
+        character: 8
+      },
+      endPosition: {
+        line: 13,
+        character: 11
+      }
+    });
+    Config.transformStyle = (code: string) => ({ code, map: null });
   });
 
   describe('inconsistencies with template', () => {

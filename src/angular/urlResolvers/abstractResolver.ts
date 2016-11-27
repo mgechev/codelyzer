@@ -12,7 +12,7 @@ export interface MetadataUrls {
 export abstract class AbstractResolver {
   abstract resolve(decorator: ts.Decorator): MetadataUrls;
 
-  protected getTemplateUrl(decorator: ts.Decorator) {
+  protected getTemplateUrl(decorator: ts.Decorator): string {
     const arg = this.getDecoratorArgument(decorator);
     if (!arg) {
       return null;
@@ -32,7 +32,7 @@ export abstract class AbstractResolver {
     }
   }
 
-  protected getStyleUrls(decorator: ts.Decorator) {
+  protected getStyleUrls(decorator: ts.Decorator): string[] {
     const arg = this.getDecoratorArgument(decorator);
     if (!arg) {
       return [];
@@ -65,4 +65,3 @@ export abstract class AbstractResolver {
     return null;
   }
 }
-

@@ -34,7 +34,7 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
       }
       ast = <e.PropertyRead>receiver;
     }
-    const allMembers = getDeclaredMethods(this.context).concat(getDeclaredProperties(this.context));
+    const allMembers = getDeclaredMethods(this.context.controller).concat(getDeclaredProperties(this.context.controller));
     const member = allMembers.filter((m: any) => m.name && m.name.text === ast.name).pop();
     if (member) {
       let isPublic = !member.modifiers;
@@ -44,7 +44,7 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
       const width = ast.name.length;
       if (!isPublic) {
         const failureString = 'You can bind only to public class members.';
-        this.addFailure(this.createFailure(this.basePosition + ast.span.start, width, failureString));
+        this.addFailure(this.createFailure(ast.span.start, width, failureString));
       }
     }
   }

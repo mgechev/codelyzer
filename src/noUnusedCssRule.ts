@@ -12,8 +12,9 @@ import {
 import {parseTemplate} from './angular/templates/templateParser';
 import {CssAst, CssSelectorRuleAst, CssSelectorAst} from './angular/styles/cssAst';
 
-import {ComponentMetadata} from './angular/metadata';
+import {ComponentMetadata, StyleMetadata} from './angular/metadata';
 import {ng2WalkerFactoryUtils} from './angular/ng2WalkerFactoryUtils';
+import {logger} from './util/logger';
 
 const CssSelectorTokenizer = require('css-selector-tokenizer');
 
@@ -148,11 +149,11 @@ class UnusedCssVisitor extends BasicCssAstVisitor {
     try {
       const match = ast.selectors.some(s => this.visitCssSelector(s));
       if (!match) {
-        this.addFailure(this.createFailure(this.templateStart + ast.start.offset,
+        this.addFailure(this.createFailure(ast.start.offset,
           ast.end.offset - ast.start.offset, 'Unused styles'));
       }
     } catch (e) {
-      console.error(e);
+      logger.error(e);
     }
     return true;
   }
@@ -205,28 +206,25 @@ export class UnusedCssNg2Visitor extends Ng2Walker {
   visitClassDeclaration(declaration: ts.ClassDeclaration) {
     const d = getComponentDecorator(declaration);
     if (d) {
-      const meta = this._metadataReader.read(declaration);
-      this.visitNg2Component(<ComponentMetadata>meta);
-      const inlineTemplate = getDecoratorPropertyInitializer(d, 'template');
-      if (inlineTemplate) {
+      const meta: ComponentMetadata = <ComponentMetadata>this._metadataReader.read(declaration);
+      this.visitNg2Component(meta);
+      if (meta.template && meta.template.template) {
         try {
-          if (isSimpleTemplateString(inlineTemplate)) {
-            this.templateAst =
-              new ElementAst('*', [], [], [], [], [], [], false, parseTemplate(inlineTemplate.text), 0, null, null);
-          }
+          this.templateAst =
+            new ElementAst('*', [], [], [], [], [], [], false, parseTemplate(meta.template.template.code), 0, null, null);
         } catch (e) {
-          console.error('Cannot parse the template', e);
+          logger.error('Cannot parse the template', e);
         }
       }
     }
     super.visitClassDeclaration(declaration);
   }
 
-  protected visitNg2StyleHelper(style: CssAst, context: ComponentMetadata, path: string, baseStart: number) {
+  protected visitNg2StyleHelper(style: CssAst, context: ComponentMetadata, styleMetadata: StyleMetadata, baseStart: number) {
     if (!style) {
       return;
     } else {
-      const visitor = new UnusedCssVisitor(this.getSourceFile(), this._originalOptions, context.controller, baseStart);
+      const visitor = new UnusedCssVisitor(this.getSourceFile(), this._originalOptions, context, styleMetadata, baseStart);
       visitor.templateAst = this.templateAst;
       const d = getComponentDecorator(context.controller);
       const encapsulation = getDecoratorPropertyInitializer(d, 'encapsulation');

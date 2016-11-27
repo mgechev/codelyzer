@@ -18,3 +18,4 @@ export { Rule as UseInputPropertyDecoratorRule } from './useInputPropertyDecorat
 export { Rule as UseLifeCycleInterfaceRule } from './useLifeCycleInterfaceRule';
 export { Rule as UseOutputPropertyDecoratorRule } from './useOutputPropertyDecoratorRule';
 export { Rule as UsePipeTransformInterfaceRule } from './usePipeTransformInterfaceRule';
+export * from './angular/config';

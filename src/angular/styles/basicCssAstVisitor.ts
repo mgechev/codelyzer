@@ -1,17 +1,21 @@
-import * as ast from './cssAst';
 import * as ts from 'typescript';
 import * as Lint from 'tslint';
 
+import * as ast from './cssAst';
+import {SourceMappingVisitor} from '../sourceMappingVisitor';
+import {ComponentMetadata, StyleMetadata} from '../metadata';
+
 export interface CssAstVisitorCtrl {
-  new(sourceFile: ts.SourceFile, options: Lint.IOptions, context: ts.ClassDeclaration, templateStart: number);
+  new(sourceFile: ts.SourceFile, options: Lint.IOptions, context: ComponentMetadata, style: StyleMetadata, templateStart: number);
 }
 
-export class BasicCssAstVisitor extends Lint.RuleWalker implements ast.CssAstVisitor {
+export class BasicCssAstVisitor extends SourceMappingVisitor implements ast.CssAstVisitor {
   constructor(sourceFile: ts.SourceFile,
     protected _originalOptions: Lint.IOptions,
-    protected context: ts.ClassDeclaration,
+    protected context: ComponentMetadata,
+    style: StyleMetadata,
     protected templateStart: number) {
-      super(sourceFile, _originalOptions);
+      super(sourceFile, _originalOptions, style.style, templateStart);
     }
 
   visitCssValue(ast: ast.CssStyleValueAst, context?: any): any {}
