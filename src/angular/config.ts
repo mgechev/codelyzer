@@ -34,6 +34,8 @@ export interface DirectiveDeclaration {
   exportAs: string;
 }
 
+let BUILD_TYPE = '<%= BUILD_TYPE %>';
+
 export const Config: Config = {
   interpolation: ['{{', '}}'],
 
@@ -53,7 +55,7 @@ export const Config: Config = {
     { selector: 'form', exportAs: 'ngForm' }
   ],
 
-  logLevel: LogLevel.None
+  logLevel: BUILD_TYPE === 'dev' ? LogLevel.Debug : LogLevel.None
 };
 
 const root = require('app-root-path');

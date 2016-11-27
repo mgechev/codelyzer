@@ -1,6 +1,6 @@
 import {Config, LogLevel} from '../angular/config';
 
-class Logger {
+export class Logger {
   constructor(private level: number) {}
 
   error(...msg: string[]) {

@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import {RuleWalker, IOptions} from 'tslint';
+import {RuleWalker, RuleFailure, IOptions} from 'tslint';
 import {ComponentMetadata, CodeWithSourceMap} from './metadata';
 import {SourceMapConsumer} from 'source-map';
 
@@ -35,7 +35,7 @@ export class SourceMappingVisitor extends RuleWalker {
     super(sourceFile, options);
   }
 
-  createFailure(start: number, length: number, message: string) {
+  createFailure(start: number, length: number, message: string): RuleFailure {
     let end = start + length;
     if (this.codeWithMap.map) {
       const consumer = new SourceMapConsumer(this.codeWithMap.map);
