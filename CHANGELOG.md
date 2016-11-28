@@ -16,6 +16,7 @@
 - Source map support. You can have pug templates and get error reporting in the correct position if inside of the hook you return not only the transpiled version of the template but also the source map [1ca7068](https://github.com/mgechev/codelyzer/commit/1ca7068e5e29c5608c081958fe259cbc8a09c412)
 - Optional configuration file `.codelyzer.js` which should be located in the root of your project (the directory where `node_modules` is) [1ca7068](https://github.com/mgechev/codelyzer/commit/1ca7068e5e29c5608c081958fe259cbc8a09c412)
 - Support for tslint ^4.0.0 [#157](https://github.com/mgechev/codelyzer/issues/157) [8c5dbf6](https://github.com/mgechev/codelyzer/commit/8c5dbf67093e8ed38cfc2c78036c1f7e04316059)
+- Improve `no-unused-css` [0a9d9014](https://github.com/mgechev/codelyzer/pull/121/commits/0a9d90143645dafc34192b7a89bc2f592ce7728f)
 
 ### Bug Fixes
 
@@ -27,10 +28,6 @@
 - Report missing styles in the correct position [#166](https://github.com/mgechev/codelyzer/issues/166) [ e9575fb](https://github.com/mgechev/codelyzer/commit/e9575fbe30f932c29fce6a870ba2d8e194700a87)
 - Proper selector prefix matching [#103](https://github.com/mgechev/codelyzer/issues/103) [7285121](https://github.com/mgechev/codelyzer/commit/72851217d27a355b117ae1909b47e9a78f0de086)
 - Selectors compatible with the spec [#15](https://github.com/mgechev/codelyzer/issues/15) [3373dffe](https://github.com/mgechev/codelyzer/commit/3373dffe7962f5e919161d60bc152f0d82dcb5d2)
-
-### Features
-
-- Improve `no-unused-css` [0a9d9014](https://github.com/mgechev/codelyzer/pull/121/commits/0a9d90143645dafc34192b7a89bc2f592ce7728f)
 
 
 # 1.0.0-beta.4
