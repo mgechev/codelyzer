@@ -41,7 +41,7 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
 
     ast.receiver.visit(this);
     // Do not support nested properties yet
-    if (ast.receiver && (<any>ast.receiver).name) {
+    if (ast.receiver && ((<any>ast.receiver).name || (<any>ast.receiver).key)) {
       let receiver: any = ast.receiver;
       while (receiver.receiver.name) {
         receiver = receiver.receiver;

@@ -196,5 +196,18 @@ describe('templates-use-public', () => {
         }`;
         assertSuccess('templates-use-public', source);
     });
+
+
+    it('should succeed on public nested props', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<div>{{ foo[1].baz.bar }}</div>
+        })
+        class Test {
+          foo: any;
+        }`;
+        assertSuccess('templates-use-public', source);
+    });
   });
 });

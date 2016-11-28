@@ -575,6 +575,18 @@ describe('no-access-missing-member', () => {
         assertSuccess('no-access-missing-member', source);
     });
 
+    it('should work with array element access', () => {
+      let source = `
+        @Component({
+          template: '{{ names[0].firstName }}'
+        })
+        class Test {
+          get names() {
+            return [{ firstName: 'foo' }];
+          }
+        }`;
+        assertSuccess('no-access-missing-member', source);
+    });
 //    TODO
 //    it('should work with getters', () => {
 //      let source = `
