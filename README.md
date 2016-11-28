@@ -141,10 +141,14 @@ You can find it [here](https://github.com/mgechev/codelyzer/blob/master/CHANGELO
 
 Below you can find a recommended configuration which is based on the [Angular 2 Style Guide](https://angular.io/styleguide).
 
-```json
+```js
 {
+  ```js
+  // The rule have the following arguments:
+  // [ENABLED, "attribute" | "element", "selectorPrefix" | ["listOfPrefixes"], "camelCase" | "kebab-case"]
   "directive-selector": [true, "attribute", ["dir-prefix1", "dir-prefix2"], "camelCase"],
   "component-selector": [true, "element", ["cmp-prefix1", "cmp-prefix2"], "kebab-case"],
+
   "use-input-property-decorator": true,
   "use-output-property-decorator": true,
   "use-host-property-decorator": true,
@@ -154,7 +158,6 @@ Below you can find a recommended configuration which is based on the [Angular 2 
   "no-forward-ref": true,
   "use-life-cycle-interface": true,
   "use-pipe-transform-interface": true,
-  "pipe-naming": [true, "camelCase", "sg"],
   "component-class-suffix": true,
   "directive-class-suffix": true,
   "import-destructuring-spacing": true,

@@ -2,11 +2,13 @@
 
 ### Breaking Changes
 
-- The rules `directive-selector-name`, `component-selector-name`, `directive-selector-type`, `component-selector-type` no longer exist. Instead use:
+- The rules `directive-selector-name`, `component-selector-name`, `directive-selector-type`, `component-selector-type`, `component-selector-prefix`, `directive-selector-prefix` no longer exist. Instead use:
 
-    ```
-     "directive-selector": [true, "attribute", "sg", "camelCase"],
-     "component-selector": [true, "element", "sg", "kebab-case"],
+    ```js
+    // The rule have the following arguments:
+    // [ENABLED, "attribute" | "element", "selectorPrefix" | ["listOfPrefixes"], "camelCase" | "kebab-case"]
+    "directive-selector": [true, "attribute", "sg", "camelCase"],
+    "component-selector": [true, "element", "sg", "kebab-case"],
     ```
 
 ### Features
