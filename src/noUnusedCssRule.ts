@@ -224,7 +224,8 @@ export class UnusedCssNg2Visitor extends Ng2Walker {
     if (!style) {
       return;
     } else {
-      const visitor = new UnusedCssVisitor(this.getSourceFile(), this._originalOptions, context, styleMetadata, baseStart);
+      const file = this.getContextSourceFile(styleMetadata.url, styleMetadata.style.source);
+      const visitor = new UnusedCssVisitor(file, this._originalOptions, context, styleMetadata, baseStart);
       visitor.templateAst = this.templateAst;
       const d = getComponentDecorator(context.controller);
       const encapsulation = getDecoratorPropertyInitializer(d, 'encapsulation');

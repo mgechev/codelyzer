@@ -184,7 +184,7 @@ export class Ng2Walker extends Lint.RuleWalker {
     }
   }
 
-  private getContextSourceFile(path: string, content: string) {
+  protected getContextSourceFile(path: string, content: string) {
     const current = this.getSourceFile();
     if (!path) {
       return current;
