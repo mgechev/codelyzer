@@ -133,6 +133,10 @@ Now you should have the following result:
 
 Enjoy!
 
+## Changelog
+
+You can find it [here](https://github.com/mgechev/codelyzer/blob/master/CHANGELOG.md).
+
 ## Recommended configuration
 
 Below you can find a recommended configuration which is based on the [Angular 2 Style Guide](https://angular.io/styleguide).

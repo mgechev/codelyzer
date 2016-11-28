@@ -1,3 +1,38 @@
+# 2.0.0-beta.0
+
+### Breaking Changes
+
+- The rules `directive-selector-name`, `component-selector-name`, `directive-selector-type`, `component-selector-type` no longer exist. Instead use:
+
+    ```
+     "directive-selector": [true, "attribute", "sg", "camelCase"],
+     "component-selector": [true, "element", "sg", "kebab-case"],
+    ```
+
+### Features
+
+- External template support via command line interface. Note that the VSCode tslint plugin cannot report warnings in CSS and HTML files yet [#94](https://github.com/mgechev/codelyzer/issues/94) [67d5a07](https://github.com/mgechev/codelyzer/commit/67d5a07a56163f05e1e3d49e446fa6b0fde15ea2)
+- Support for custom hooks for transpilation of languages which transpile to HTML, CSS [#164](https://github.com/mgechev/codelyzer/issues/164) [1ca7068](https://github.com/mgechev/codelyzer/commit/1ca7068e5e29c5608c081958fe259cbc8a09c412)
+- Source map support. You can have pug templates and get error reporting in the correct position if inside of the hook you return not only the transpiled version of the template but also the source map [1ca7068](https://github.com/mgechev/codelyzer/commit/1ca7068e5e29c5608c081958fe259cbc8a09c412)
+- Optional configuration file `.codelyzer.js` which should be located in the root of your project (the directory where `node_modules` is) [1ca7068](https://github.com/mgechev/codelyzer/commit/1ca7068e5e29c5608c081958fe259cbc8a09c412)
+- Support for tslint ^4.0.0 [#157](https://github.com/mgechev/codelyzer/issues/157) [8c5dbf6](https://github.com/mgechev/codelyzer/commit/8c5dbf67093e8ed38cfc2c78036c1f7e04316059)
+
+### Bug Fixes
+
+- Do not throw error when validating `@Pipe`s without metadata [#111](https://github.com/mgechev/codelyzer/issues/111) [eb6ccc0d](https://github.com/mgechev/codelyzer/commit/eb6ccc0dcc85762c6af2a02172b65c34bdb85c9a)
+- Use proper syntax types for TypeScript 2.1.x [#145](https://github.com/mgechev/codelyzer/issues/145) [d49cc26](https://github.com/mgechev/codelyzer/commit/d49cc26bb7d554da55ae71cda8a9fba0ff522d10<Paste>)
+- More consistent naming for selector-related rules [#79](https://github.com/mgechev/codelyzer/issues/79) [3373dff](https://github.com/mgechev/codelyzer/commit/3373dffe7962f5e919161d60bc152f0d82dcb5d2)
+- Support for templateRefs [#151](https://github.com/mgechev/codelyzer/issues/151) [52ba382](https://github.com/mgechev/codelyzer/commit/52ba38293a565ed8a901474cd26f7fc65adfaa0f)
+- Support for properties declared inline into the constructor [#153](https://github.com/mgechev/codelyzer/issues/153) [23fe633](https://github.com/mgechev/codelyzer/commit/23fe633ec80dc1da4c6c8b5de318036654deb3de)
+- Report missing styles in the correct position [#166](https://github.com/mgechev/codelyzer/issues/166) [ e9575fb](https://github.com/mgechev/codelyzer/commit/e9575fbe30f932c29fce6a870ba2d8e194700a87)
+- Proper selector prefix matching [#103](https://github.com/mgechev/codelyzer/issues/103) [7285121](https://github.com/mgechev/codelyzer/commit/72851217d27a355b117ae1909b47e9a78f0de086)
+- Selectors compatible with the spec [#15](https://github.com/mgechev/codelyzer/issues/15) [3373dffe](https://github.com/mgechev/codelyzer/commit/3373dffe7962f5e919161d60bc152f0d82dcb5d2)
+
+### Features
+
+- Improve `no-unused-css` [0a9d9014](https://github.com/mgechev/codelyzer/pull/121/commits/0a9d90143645dafc34192b7a89bc2f592ce7728f)
+
+
 # 1.0.0-beta.4
 
 ### Bug Fixes
