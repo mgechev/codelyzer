@@ -63,6 +63,5 @@ const root = require('app-root-path');
 try {
   let newConfig = require(root.path + '/.codelyzer');
   Object.assign(Config, newConfig);
-} catch (e) {
-  console.info('Cannot find ".codelyzer.js" in the root of the project');
-}
+} catch (e) {}
+
