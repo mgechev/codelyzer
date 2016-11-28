@@ -164,6 +164,55 @@ Below you can find a recommended configuration which is based on the [Angular 2 
 }
 ```
 
+## Advanced configuration
+
+Codelyzer supports any template and style language by custom hooks. If you're using Sass for instance, you can allow codelyzer to analyze your styles by creating a file `.codelyzer.js` in the root of your project (where the `node_modules` directory is). In the configuration file can implement custom pre-processing and template resolution logic:
+
+```js
+// Demo of transforming Sass styles
+var sass = require('node-sass');
+
+module.exports {
+
+  // Definition of custom interpolation strings
+  interpolation: ['{{', '}}'],
+
+  // You can transform the urls of your external styles and templates
+  resolveUrl(url, decorator) {
+    return url;
+  },
+
+  // Transformation of the templates. This hooks is quite useful
+  // if you're using any other templating language, for instance
+  // jade, markdown, haml, etc.
+  transformTemplate(code, url, decorator) {
+    return { code: code, url: url };
+  },
+
+  // Transformation of styles. This hook is useful is you're using
+  // any other style language, for instance Sass, Less, etc.
+  transformTemplate(code, url, decorator) {
+    var result = { code: code, url: url };
+    if (url && /\.scss$/.test(url)) {
+      var transformed = sass.renderSync({ data: code, sourceMap: true, outFile: '/dev/null' });
+      result.source = code;
+      result.code = transformed.css.toString();
+      result.map = transformed.map.toString();
+    }
+    return result;
+  },
+
+  // Custom predefined directives in case you get error for
+  // missing property and you are using a template reference
+  predefinedDirectives: [
+    { selector: 'form', exportAs: 'ngForm' }
+  ],
+
+  // None = 0b000, Error = 0b001, Info = 0b011, Debug = 0b111
+  logLevel: 0b111
+};
+```
+
 ## License
 
 MIT
