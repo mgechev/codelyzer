@@ -266,6 +266,30 @@ describe('metadataReader', () => {
       chai.expect(invoked).eq(true);
       Config.transformStyle = bak;
     });
+
+
+    it('should work work with templates with "`"', () => {
+      const code = `
+      @Component({
+        selector: 'foo',
+        moduleId: module.id,
+        templateUrl: 'foo.html',
+        styles: [\`baz\`]
+      })
+      class Bar {}
+      `;
+      const reader = new MetadataReader(new FsFileResolver());
+      const ast = getAst(code, __dirname + '/../../test/fixtures/metadataReader/specialsymbols/foo.ts');
+      const classDeclaration = <ts.ClassDeclaration>ast.statements.pop();
+      const metadata = reader.read(classDeclaration);
+      chai.expect(metadata instanceof ComponentMetadata).eq(true);
+      chai.expect(metadata.selector).eq('foo');
+      const m = <ComponentMetadata>metadata;
+      chai.expect(m.template.template.code.trim()).eq('<div>`</div>');
+      chai.expect(m.template.url.endsWith('foo.html')).eq(true);
+      chai.expect(m.styles[0].style.code).eq('baz');
+      chai.expect(m.styles[0].url).eq(null);
+    });
   });
 });
 

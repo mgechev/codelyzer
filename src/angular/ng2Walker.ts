@@ -164,16 +164,11 @@ export class Ng2Walker extends Lint.RuleWalker {
     if (!roots || !roots.length) {
       return;
     } else {
-      const sourceFile = this.getSourceFile();
-      let filename = sourceFile.fileName;
-      if (context.template.url) {
-        sourceFile.fileName = context.template.url;
-      }
+      const sourceFile = this.getContextSourceFile(context.template.url, context.template.template.source);
       const visitor =
         new this._config.templateVisitorCtrl(
           sourceFile, this._originalOptions, context, baseStart, this._config.expressionVisitorCtrl);
       compiler.templateVisitAll(visitor, roots, context.controller);
-      sourceFile.fileName = filename;
       visitor.getFailures().forEach(f => this.addFailure(f));
     }
   }
@@ -182,16 +177,19 @@ export class Ng2Walker extends Lint.RuleWalker {
     if (!style) {
       return;
     } else {
-      const sourceFile = this.getSourceFile();
-      let filename = sourceFile.fileName;
-      if (styleMetadata) {
-        sourceFile.fileName = styleMetadata.url;
-      }
-      const visitor = new this._config.cssVisitorCtrl(this.getSourceFile(), this._originalOptions, context, styleMetadata, baseStart);
+      const sourceFile = this.getContextSourceFile(styleMetadata.url, styleMetadata.style.source);
+      const visitor = new this._config.cssVisitorCtrl(sourceFile, this._originalOptions, context, styleMetadata, baseStart);
       style.visit(visitor);
-      sourceFile.fileName = filename;
       visitor.getFailures().forEach(f => this.addFailure(f));
     }
+  }
+
+  private getContextSourceFile(path: string, content: string) {
+    const current = this.getSourceFile();
+    if (!path) {
+      return current;
+    }
+    return ts.createSourceFile(path, `\`${content}\``, ts.ScriptTarget.ES5);
   }
 }
 
