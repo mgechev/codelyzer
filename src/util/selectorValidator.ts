@@ -19,6 +19,9 @@ export const SelectorValidator = {
   prefix(prefix: string, selectorType: string): Function {
     const regex = new RegExp(`^\\[?(${prefix})`);
     return (selector: string) => {
+      if (!prefix) {
+        return true;
+      }
       if (!regex.test(selector)) {
         return false;
       } else {

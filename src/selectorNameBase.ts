@@ -21,7 +21,7 @@ export abstract class SelectorRule extends Lint.Rules.AbstractRule {
 
   constructor(ruleName: string, value: any, disabledIntervals: Lint.IDisabledInterval[]) {
     let type = value[1];
-    let prefix = value[2];
+    let prefix = value[2] || [];
     let name = value[3];
     super(ruleName, value, disabledIntervals);
     this.setMultiPrefix(prefix);

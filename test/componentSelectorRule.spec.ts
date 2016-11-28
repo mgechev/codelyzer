@@ -97,6 +97,25 @@ describe('component-selector-prefix', () => {
       class Test {}`;
             assertSuccess('component-selector', source, ["element", ["sg","ng","mg"], "kebab-case"]);
         });
+
+        it('should succeed without prefix', () => {
+            let source = `
+      @Component({
+        selector: 'sg-bar-foo'
+      })
+      class Test {}`;
+            assertSuccess('component-selector', source, ["element", [], "kebab-case"]);
+        });
+
+        it('should succeed with null prefix', () => {
+            let source = `
+      @Component({
+        selector: 'sg-bar-foo'
+      })
+      class Test {}`;
+            assertSuccess('component-selector', source, ["element", null, "kebab-case"]);
+        });
+
         it('should succeed when set valid selector in @Component using multiple prefixes and attribute type', () => {
             let source = `
       @Component({
