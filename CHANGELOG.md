@@ -34,7 +34,7 @@
 
 ### Bug Fixes
 
-- Migrate to the compiler API changes introduced by Angular 2.2.
+- Migrate to the compiler API changes introduced by Angular 2.2 [#152](https://github.com/mgechev/codelyzer/issues/152) [fe3083b](https://github.com/mgechev/codelyzer/commit/fe3083bd9e106cf8338a743d8bf2c52774e20152)
 
 # 1.0.0-beta.3
 
