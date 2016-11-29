@@ -144,7 +144,6 @@ Below you can find a recommended configuration which is based on the [Angular 2 
 
 ```js
 {
-  ```js
   // The rule have the following arguments:
   // [ENABLED, "attribute" | "element", "selectorPrefix" | ["listOfPrefixes"], "camelCase" | "kebab-case"]
   "directive-selector": [true, "attribute", ["dir-prefix1", "dir-prefix2"], "camelCase"],
