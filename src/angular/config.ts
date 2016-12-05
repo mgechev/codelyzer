@@ -58,9 +58,9 @@ export const Config: Config = {
   logLevel: BUILD_TYPE === 'dev' ? LogLevel.Debug : LogLevel.None
 };
 
-const root = require('app-root-path');
 
 try {
+  const root = require('app-root-path');
   let newConfig = require(root.path + '/.codelyzer');
   Object.assign(Config, newConfig);
 } catch (e) {}
