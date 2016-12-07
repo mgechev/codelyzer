@@ -9,6 +9,7 @@ import {BasicCssAstVisitor, CssAstVisitorCtrl} from './styles/basicCssAstVisitor
 
 import {RecursiveAngularExpressionVisitorCtr, BasicTemplateAstVisitor, TemplateAstVisitorCtr} from './templates/basicTemplateAstVisitor';
 import {RecursiveAngularExpressionVisitor} from './templates/recursiveAngularExpressionVisitor';
+import {ReferenceVisitor} from './templates/referenceVisitor';
 
 import {MetadataReader} from './metadataReader';
 import {ComponentMetadata, DirectiveMetadata, StyleMetadata} from './metadata';
@@ -165,9 +166,12 @@ export class Ng2Walker extends Lint.RuleWalker {
       return;
     } else {
       const sourceFile = this.getContextSourceFile(context.template.url, context.template.template.source);
+      const referenceVisitor = new ReferenceVisitor();
       const visitor =
         new this._config.templateVisitorCtrl(
           sourceFile, this._originalOptions, context, baseStart, this._config.expressionVisitorCtrl);
+      compiler.templateVisitAll(referenceVisitor, roots, null);
+      visitor._variables = referenceVisitor.variables;
       compiler.templateVisitAll(visitor, roots, context.controller);
       visitor.getFailures().forEach(f => this.addFailure(f));
     }

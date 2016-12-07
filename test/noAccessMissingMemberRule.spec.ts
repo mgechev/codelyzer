@@ -290,7 +290,7 @@ describe('no-access-missing-member', () => {
     });
 
 
-    it('should throw when template ref used outside component scope', () => {
+    it('should not throw when template ref used outside component scope', () => {
       let source = `
         @Component({
           selector: 'foobar',
@@ -299,17 +299,7 @@ describe('no-access-missing-member', () => {
         class Test {
           foo: number;
         }`;
-        assertFailure('no-access-missing-member', source, {
-          message: 'The property "todoForm" that you\'re trying to access does not exist in the class declaration.',
-          startPosition: {
-            line: 3,
-            character: 74
-          },
-          endPosition: {
-            line: 3,
-            character: 82
-          }
-       });
+        assertSuccess('no-access-missing-member', source);
     });
 
     it('should fail with missing ref', () => {
