@@ -1,3 +1,9 @@
+# 2.0.0-beta.3
+
+### Bug Fixes
+
+- Restrict `peerDependencies` to Angular `<=2.3 >=2.2.0` [#188](https://github.com/mgechev/codelyzer/issues/188) [08a0029](https://github.com/mgechev/codelyzer/commit/08a0029b716252f23a2797ec703b683eb226d753)
+
 # 2.0.0-beta.2
 
 ### Features
