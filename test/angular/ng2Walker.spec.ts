@@ -279,6 +279,47 @@ describe('ng2Walker', () => {
       }).not.to.throw();
     });
 
+    it('should not break', () => {
+      let source = `
+        export class Main {
+
+          constructor() {
+
+          }
+
+          regExp() {
+            // complaining about missing whitespace after coma in regex
+            const test = /\${0,1}/.test('not important$');
+            console.log(test);
+          }
+
+          stringLiteral() {
+            const offset = "3";
+            // complaining about missing whitespace inside of string literal
+            const test = \`<path d="M\${offset},\${offset}">\`;
+            console.log(test);
+          }
+        }
+
+        // compains about missing semicolon at end
+        export class WantsSemiColonAtEndOfClass {
+          constructor() {
+
+          }
+        }
+      `;
+      let ruleArgs: tslint.IOptions = {
+        ruleName: 'foo',
+        ruleArguments: ['foo'],
+        disabledIntervals: null
+      };
+      let sf = ts.createSourceFile('foo', source, null);
+      let walker = new Ng2Walker(sf, ruleArgs);
+      (<any>chai).expect(() => {
+        walker.walk(sf);
+      }).not.to.throw();
+    });
+
   });
 
 });
