@@ -4,6 +4,7 @@ import {sprintf} from 'sprintf-js';
 import {stringDistance} from './util/utils';
 import {Ng2Walker} from './angular/ng2Walker';
 import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAngularExpressionVisitor';
+import {ExpTypes} from './angular/expressionTypes';
 import {getDeclaredMethodNames, getDeclaredPropertyNames} from './util/classDeclarationUtils';
 import * as e from '@angular/compiler/src/expression_parser/ast';
 
@@ -13,6 +14,13 @@ enum DeclarationType {
   Property,
   Method
 };
+
+export interface ASTField {
+  obj?: ASTField;
+  receiver?: ASTField;
+  name?: string;
+  span: e.ParseSpan;
+}
 
 class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
   visitPropertyRead(ast: e.PropertyRead, context: any): any {
@@ -27,7 +35,7 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
     this.doCheck(ast, DeclarationType.Property, context);
   }
 
-  private doCheck(ast: e.MethodCall | e.PropertyRead | e.PropertyWrite, type: DeclarationType, context: any): any {
+  private doCheck(ast: ASTField, type: DeclarationType, context: any): any {
     let symbolType: string;
     let available: string[];
     if (type === DeclarationType.Method) {
@@ -35,35 +43,52 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
     } else {
       symbolType = 'property';
     }
+
     available = getDeclaredMethodNames(this.context.controller)
       .concat(getDeclaredPropertyNames(this.context.controller))
       .concat(this.preDefinedVariables);
 
-    ast.receiver.visit(this);
     // Do not support nested properties yet
-    if (ast.receiver && ((<any>ast.receiver).name || (<any>ast.receiver).key)) {
-      let receiver: any = ast.receiver;
-      while (receiver.receiver.name) {
-        receiver = receiver.receiver;
+    let tmp = ast;
+    while (tmp && !ExpTypes.ImplicitReceiver(tmp)) {
+      ast = tmp;
+      if (ExpTypes.KeyedRead(tmp)) {
+        tmp = tmp.obj;
+      } else if (ExpTypes.KeyedWrite(tmp)) {
+        tmp = tmp.obj;
+      } else if (ExpTypes.PropertyRead(tmp)) {
+        tmp = tmp.receiver;
+      } else if (ExpTypes.PropertyWrite(tmp)) {
+        tmp = tmp.receiver;
+      } else if (ExpTypes.SafeMethodCall(tmp)) {
+        tmp = tmp.receiver;
+      } else if (ExpTypes.SafePropertyRead(tmp)) {
+        tmp = tmp.receiver;
+      } else if (ExpTypes.MethodCall(tmp)) {
+        tmp = tmp.receiver;
+      } else {
+        break;
       }
-      ast = <e.PropertyRead>receiver;
     }
+
     if (available.indexOf(ast.name) < 0) {
-      const top = this.getTopSuggestion(available, ast.name);
       let failureString = sprintf.apply(this, [Rule.FAILURE, symbolType, ast.name]);
-      const getSuggestion = (list: string[]) => {
-        if (list.length === 1) {
-          return `"${list[0]}"`;
+      if (ast.name) {
+        const top = this.getTopSuggestion(available, ast.name);
+        const getSuggestion = (list: string[]) => {
+          if (list.length === 1) {
+            return `"${list[0]}"`;
+          }
+          let result = `"${list.shift()}"`;
+          while (list.length > 1) {
+            result += `, "${list.shift()}"`;
+          }
+          result += ` or "${list.shift()}"`;
+          return result;
+        };
+        if (top.length && top[0].distance <= 2) {
+          failureString += ` Probably you mean: ${getSuggestion(top.map(s => s.element))}.`;
         }
-        let result = `"${list.shift()}"`;
-        while (list.length > 1) {
-          result += `, "${list.shift()}"`;
-        }
-        result += ` or "${list.shift()}"`;
-        return result;
-      };
-      if (top.length && top[0].distance <= 2) {
-        failureString += ` Probably you mean: ${getSuggestion(top.map(s => s.element))}.`;
       }
       const width = ast.name.length;
       this.addFailure(this.createFailure(ast.span.start, width, failureString));

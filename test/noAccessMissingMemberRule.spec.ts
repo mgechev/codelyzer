@@ -577,6 +577,65 @@ describe('no-access-missing-member', () => {
         }`;
         assertSuccess('no-access-missing-member', source);
     });
+
+    it('should fail with array element access', () => {
+      let source = `
+        @Component({
+          template: '{{t.errorData.errorMessages[0].message}}'
+        })
+        class Test {
+          get names() {
+            return [{ firstName: 'foo' }];
+          }
+        }`;
+        assertFailure('no-access-missing-member', source, {
+          message: 'The property "t" that you\'re trying to access does not exist in the class declaration.',
+          startPosition: {
+            line: 2,
+            character: 23
+          },
+          endPosition: {
+            line: 2,
+            character: 24
+          }
+        });
+    });
+
+    it('should fail with array element access', () => {
+      let source = `
+        @Component({
+          template: '{{t.errorData[0].errorMessages.message}}'
+        })
+        class Test {
+          get names() {
+            return [{ firstName: 'foo' }];
+          }
+        }`;
+        assertFailure('no-access-missing-member', source, {
+          message: 'The property "t" that you\'re trying to access does not exist in the class declaration.',
+          startPosition: {
+            line: 2,
+            character: 23
+          },
+          endPosition: {
+            line: 2,
+            character: 24
+          }
+        });
+    });
+
+    it('should succeed with array element access', () => {
+      let source = `
+        @Component({
+          template: '{{t.errorData[0].errorMessages.message}}'
+        })
+        class Test {
+          get t() {
+            return [{ firstName: 'foo' }];
+          }
+        }`;
+        assertSuccess('no-access-missing-member', source);
+    });
 //    TODO
 //    it('should work with getters', () => {
 //      let source = `

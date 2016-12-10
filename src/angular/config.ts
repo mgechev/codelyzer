@@ -55,7 +55,7 @@ export const Config: Config = {
     { selector: 'form', exportAs: 'ngForm' }
   ],
 
-  logLevel: BUILD_TYPE === 'dev' ? LogLevel.Debug : LogLevel.None
+  logLevel: LogLevel.Debug, // BUILD_TYPE === 'dev' ? LogLevel.Debug : LogLevel.None
 };
 
 

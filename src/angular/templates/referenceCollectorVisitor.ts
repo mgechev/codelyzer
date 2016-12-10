@@ -1,6 +1,6 @@
 import * as ast from '@angular/compiler';
 
-export class ReferenceVisitor implements ast.TemplateAstVisitor {
+export class ReferenceCollectorVisitor implements ast.TemplateAstVisitor {
   private _variables = [];
 
   visit?(node: ast.TemplateAst, context: any): string[] {

@@ -9,7 +9,7 @@ import {BasicCssAstVisitor, CssAstVisitorCtrl} from './styles/basicCssAstVisitor
 
 import {RecursiveAngularExpressionVisitorCtr, BasicTemplateAstVisitor, TemplateAstVisitorCtr} from './templates/basicTemplateAstVisitor';
 import {RecursiveAngularExpressionVisitor} from './templates/recursiveAngularExpressionVisitor';
-import {ReferenceVisitor} from './templates/referenceVisitor';
+import {ReferenceCollectorVisitor} from './templates/referenceCollectorVisitor';
 
 import {MetadataReader} from './metadataReader';
 import {ComponentMetadata, DirectiveMetadata, StyleMetadata} from './metadata';
@@ -134,6 +134,7 @@ export class Ng2Walker extends Lint.RuleWalker {
         this.visitNg2TemplateHelper(templateAst, metadata, getPosition(template.node));
       } catch (e) {
         logger.error('Cannot parse the template of', ((<any>metadata.controller || {}).name || {}).text);
+        console.log(e);
       }
     }
     const styles = metadata.styles;
@@ -166,7 +167,7 @@ export class Ng2Walker extends Lint.RuleWalker {
       return;
     } else {
       const sourceFile = this.getContextSourceFile(context.template.url, context.template.template.source);
-      const referenceVisitor = new ReferenceVisitor();
+      const referenceVisitor = new ReferenceCollectorVisitor();
       const visitor =
         new this._config.templateVisitorCtrl(
           sourceFile, this._originalOptions, context, baseStart, this._config.expressionVisitorCtrl);

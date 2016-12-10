@@ -27,7 +27,7 @@ function lint(ruleName: string, source: string, options): tslint.LintResult {
     formattersDirectory: null,
     fix: false
   };
-  
+
   let linter = new tslint.Linter(linterOptions, undefined);
   linter.lint('file.ts', source, configuration);
   return linter.getResult();
