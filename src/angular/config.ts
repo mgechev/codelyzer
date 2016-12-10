@@ -61,13 +61,13 @@ export const Config: Config = {
     { selector: 'form', exportAs: 'ngForm' }
   ],
 
-  logLevel: LogLevel.Debug, // BUILD_TYPE === 'dev' ? LogLevel.Debug : LogLevel.None
+  logLevel: BUILD_TYPE === 'dev' ? LogLevel.Debug : LogLevel.None
 };
 
 
 try {
   const root = require('app-root-path');
-  let newConfig = require(root.path + '/.codelyzer');
+  const newConfig = require(root.path + '/.codelyzer');
   Object.assign(Config, newConfig);
 } catch (e) {}
 

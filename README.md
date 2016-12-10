@@ -158,8 +158,11 @@ Below you can find a recommended configuration which is based on the [Angular 2 
   "no-forward-ref": true,
   "use-life-cycle-interface": true,
   "use-pipe-transform-interface": true,
-  "component-class-suffix": true,
-  "directive-class-suffix": true,
+
+  // [ENABLED, "SUFFIX"]
+  // Where "SUFFIX" is your custom suffix, for instance "Page" for Ionic 2 components.
+  "component-class-suffix": [true, "Component"],
+  "directive-class-suffix": [true, "Directive"],
   "import-destructuring-spacing": true,
   "templates-use-public": true,
   "no-access-missing-member": true,

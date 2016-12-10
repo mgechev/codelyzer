@@ -134,7 +134,6 @@ export class Ng2Walker extends Lint.RuleWalker {
         this.visitNg2TemplateHelper(templateAst, metadata, getPosition(template.node));
       } catch (e) {
         logger.error('Cannot parse the template of', ((<any>metadata.controller || {}).name || {}).text);
-        console.log(e);
       }
     }
     const styles = metadata.styles;
