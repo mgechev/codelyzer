@@ -44,11 +44,17 @@ export const Config: Config = {
   },
 
   transformTemplate(code: string, url: string, d: ts.Decorator) {
-    return { code, url };
+    if (!url || url.endsWith('.html')) {
+      return { code, url };
+    }
+    return { code: '', url };
   },
 
   transformStyle(code: string, url: string, d: ts.Decorator) {
-    return { code, url };
+    if (!url || url.endsWith('.css')) {
+      return { code, url };
+    }
+    return { code: '', url };
   },
 
   predefinedDirectives: [

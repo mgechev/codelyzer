@@ -44,8 +44,8 @@
   },
   "homepage": "https://github.com/mgechev/codelyzer#readme",
   "devDependencies": {
-    "@angular/compiler": "^2.2.0",
-    "@angular/core": "^2.2.0",
+    "@angular/compiler": "^2.3.0",
+    "@angular/core": "^2.3.0",
     "@types/chai": "^3.4.33",
     "@types/less": "0.0.31",
     "@types/mocha": "^2.2.32",
@@ -62,7 +62,7 @@
     "rxjs": "5.0.0-rc.4",
     "ts-node": "1.2.2",
     "tslint": "~4.0.0",
-    "typescript": "^2.0.3",
+    "typescript": "^2.1.4",
     "zone.js": "^0.7.2"
   },
   "peerDependencies": {

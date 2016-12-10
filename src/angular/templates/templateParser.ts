@@ -55,7 +55,7 @@ export const parseTemplate = (template: string, directives: { selector: string, 
   const interpolation = Config.interpolation;
 
   // Make sure it works with 2.2.x & 2.3.x
-  const summaryKind = ((compiler.CompileSummaryKind as any) || {}).Template;
+  const summaryKind = ((compiler as any).CompileSummaryKind || {}).Template;
   const templateMetadata: compiler.CompileTemplateMetadata = {
     encapsulation: 0,
     template: template,
@@ -78,7 +78,19 @@ export const parseTemplate = (template: string, directives: { selector: string, 
   };
 
   // Make sure it works with 2.2.x & 2.3.x
-  const type = { diDeps: [], lifecycleHooks: [], reference: null };
+  const type = {
+    diDeps: [],
+    lifecycleHooks: [],
+    reference: null,
+
+    // Used by Angular 2.2.x
+    isHost: false,
+    name: '',
+    prefix: '',
+    moduleUrl: '',
+    value: '',
+    identifier: null
+  };
   return tmplParser.tryParse(
       compiler.CompileDirectiveMetadata.create({ type, template: templateMetadata }),
       template, defaultDirectives, [], [NO_ERRORS_SCHEMA], '').templateAst;
