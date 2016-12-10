@@ -67,8 +67,8 @@
   },
   "peerDependencies": {
     "tslint": "~4.0.0",
-    "@angular/compiler": "^2.2.0",
-    "@angular/core": "^2.2.0"
+    "@angular/compiler": "<=2.3 >=2.2.0",
+    "@angular/core": "<=2.3 >=2.2.0"
   },
   "dependencies": {
     "app-root-path": "^2.0.1",
