@@ -23,7 +23,7 @@ export class Rule extends Lint.Rules.AbstractRule {
                     .fmap(name => {
                         const className = name.text;
                         if (!Rule.validate(className)) {
-                            return new Failure(name, sprintf(Rule.FAILURE, className));
+                            return [ new Failure(name, sprintf(Rule.FAILURE, className)) ];
                         }
                     })
             ));

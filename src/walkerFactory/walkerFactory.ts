@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import * as ts from 'typescript';
 import {Ng2Walker} from '../angular/ng2Walker';
 import {IOptions} from 'tslint';
 import {ComponentMetadata} from '../angular/metadata';
@@ -41,7 +41,7 @@ class Ng2ComponentWalkerBuilder implements WalkerBuilder<'Ng2Component'> {
                 });
                 super.visitNg2Component(meta);
             }
-        }
+        };
         return new e(sourceFile, options);
     }
 }

@@ -75,3 +75,7 @@ export function ifTrue<T>(pred: F1<T, boolean>): F1<T, Maybe<T>> {
     return (t: T) => (pred(t)) ? Maybe.lift(t) : Maybe.nothing;
 }
 
+export function listToMaybe<T>(ms: Maybe<T>[]):Maybe<T[]> {
+    const unWrapped = ms.filter(m => m.isSomething).map(m => m.unwrap());
+    return unWrapped.length !== 0 ? Maybe.lift(unWrapped) : Maybe.nothing;
+}

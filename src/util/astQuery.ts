@@ -72,4 +72,7 @@ export function decoratorArgument(dec: ts.Decorator): Maybe<ts.ObjectLiteralExpr
         .bind(objectLiteralExpression);
 }
 
+export function isDecorator(expr: ts.Node): expr is ts.Decorator {
+    return expr && expr.kind === kinds.Decorator;
+}
 
