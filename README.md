@@ -178,7 +178,7 @@ Codelyzer supports any template and style language by custom hooks. If you're us
 // Demo of transforming Sass styles
 var sass = require('node-sass');
 
-module.exports {
+module.exports = {
 
   // Definition of custom interpolation strings
   interpolation: ['{{', '}}'],
