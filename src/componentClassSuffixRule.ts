@@ -22,13 +22,14 @@ export class ClassMetadataWalker extends Ng2Walker {
   visitNg2Component(meta: ComponentMetadata) {
     let name = meta.controller.name;
     let className: string = name.text;
-    const suffix = this.getOptions()[0] || 'Component';
-    if (!Rule.validate(className, suffix)) {
+    const suffixList = this.getOptions().length > 0 ? this.getOptions() : ['Component'];
+    let ruleInvalidate = suffixList.map(suffix => Rule.validate(className, suffix)).indexOf(true) == -1;
+    if (ruleInvalidate) {
       this.addFailure(
         this.createFailure(
           name.getStart(),
           name.getWidth(),
-          sprintf.apply(this, [Rule.FAILURE, className, suffix])));
+          sprintf.apply(this, [Rule.FAILURE, className, suffixList])));
     }
     super.visitNg2Component(meta);
   }
