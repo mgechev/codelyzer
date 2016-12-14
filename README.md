@@ -191,13 +191,19 @@ module.exports {
   // Transformation of the templates. This hooks is quite useful
   // if you're using any other templating language, for instance
   // jade, markdown, haml, etc.
+  // 
+  // NOTE that this method WILL NOT throw an error in case of invalid template.
+  //
   transformTemplate(code, url, decorator) {
     return { code: code, url: url };
   },
 
   // Transformation of styles. This hook is useful is you're using
   // any other style language, for instance Sass, Less, etc.
-  transformTemplate(code, url, decorator) {
+  //
+  // NOTE that this method WILL NOT throw an error in case of invalid style.
+  //
+  transformStyle(code, url, decorator) {
     var result = { code: code, url: url };
     if (url && /\.scss$/.test(url)) {
       var transformed = sass.renderSync({ data: code, sourceMap: true, outFile: '/dev/null' });
@@ -222,4 +228,3 @@ module.exports {
 ## License
 
 MIT
-
