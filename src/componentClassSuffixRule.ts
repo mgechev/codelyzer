@@ -23,7 +23,7 @@ export class ClassMetadataWalker extends Ng2Walker {
     let name = meta.controller.name;
     let className: string = name.text;
     const suffixList = this.getOptions().length > 0 ? this.getOptions() : ['Component'];
-    let ruleInvalidate = suffixList.map(suffix => Rule.validate(className, suffix)).indexOf(true) == -1;
+    let ruleInvalidate = !suffixList.some(suffix => Rule.validate(className, suffix));
     if (ruleInvalidate) {
       this.addFailure(
         this.createFailure(
