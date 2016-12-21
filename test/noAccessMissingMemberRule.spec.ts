@@ -302,6 +302,93 @@ describe('no-access-missing-member', () => {
         assertSuccess('no-access-missing-member', source);
     });
 
+    it('should not throw when routerLinkActive template ref is used in component', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<a #test="routerLinkActive" [routerLinkActive]="">{{ test }}</a>'
+        })
+        class Test {}`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
+
+    it('should not throw when ngModel template ref is used in component', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<input #test="ngModel" [(ngModel)]="foo">{{ test }}'
+        })
+        class Test {
+          foo: string;
+        }`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
+    it('should not throw when [md-menu-item] template ref is used in component', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<div md-menu-item #test="mdMenuItem">{{ test }}</div>'
+        })
+        class Test {
+          foo: string;
+        }`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
+    it('should not throw when md-menu template ref is used in component', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<md-menu #test="mdMenu">{{ test }}</md-menu>'
+        })
+        class Test {
+          foo: string;
+        }`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
+    it('should not throw when md-button-toggle-group template ref is used in component', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<md-button-toggle-group #test="mdButtonToggleGroup">{{ test }}</md-button-toggle-group>'
+        })
+        class Test {}`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
+    it('should not throw when md-menu-trigger-for template ref is used in component', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<div mdMenuTriggerFor #test="mdMenuTrigger">{{ test }}</div>'
+        })
+        class Test {}`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
+    it('should not throw when mdTooltip template ref is used in component', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<div mdTooltip #test="mdTooltip">{{ test }}</div>'
+        })
+        class Test {}`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
+    it('should not throw when mdSelect template ref is used in component', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<md-select #test="mdSelect">{{ test }}</md-select>'
+        })
+        class Test {}`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
     it('should fail with missing ref', () => {
       let source = `
         @Component({
