@@ -1,6 +1,6 @@
 {
   "name": "codelyzer",
-  "version": "2.0.0-beta.3",
+  "version": "2.0.0-beta.4",
   "description": "Linting for Angular 2 applications, following angular.io/styleguide.",
   "scripts": {
     "lint": "tslint -c tslint.json src/**/*.ts test/**/*.ts",
@@ -78,3 +78,4 @@
     "sprintf-js": "^1.0.3"
   }
 }
+
