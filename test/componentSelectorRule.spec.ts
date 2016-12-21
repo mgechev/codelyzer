@@ -194,7 +194,7 @@ describe('component-selector-name', () => {
       })
       class Test {}`;
             assertFailure('component-selector', source, {
-                message: 'The selector of the component "Test" should be named kebab-case ($$05-02$$)',
+                message: 'The selector of the component "Test" should be named kebab-case and include dash ($$05-02$$)',
                 startPosition: {
                     line: 2,
                     character: 18
@@ -213,7 +213,7 @@ describe('component-selector-name', () => {
       })
       class Test {}`;
             assertFailure('component-selector', source, {
-                message: 'The selector of the component "Test" should be named kebab-case ($$05-02$$)',
+                message: 'The selector of the component "Test" should be named kebab-case and include dash ($$05-02$$)',
                 startPosition: {
                     line: 2,
                     character: 18
