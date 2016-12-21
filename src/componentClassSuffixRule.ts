@@ -9,21 +9,23 @@ import {IOptions} from 'tslint';
 import {Ng2Walker} from './angular/ng2Walker';
 
 export class Rule extends Lint.Rules.AbstractRule {
-    static FAILURE: string = 'The name of the class %s should end with the suffix Component ($$02-03$$)';
 
-    static validate(className: string): boolean {
-        return /.*Component$/.test(className);
+    static FAILURE: string = 'The name of the class %s should end with the suffix %s ($$02-03$$)';
+
+    static validate(className: string, suffixList: string[]): boolean {
+        return suffixList.some(suffix => className.endsWith(suffix));
     }
 
     static walkerBuilder: F2<ts.SourceFile, IOptions, Ng2Walker> =
         all(
-            validateComponent((meta: ComponentMetadata) =>
+            validateComponent((meta: ComponentMetadata, suffixList?: string[]) =>
                 Maybe.lift(meta.controller)
                     .fmap(controller => controller.name)
                     .fmap(name => {
                         const className = name.text;
-                        if (!Rule.validate(className)) {
-                            return [ new Failure(name, sprintf(Rule.FAILURE, className)) ];
+                        const _suffixList = suffixList.length > 0 ? suffixList : ['Component'];
+                        if (!Rule.validate(className, _suffixList)) {
+                            return [new Failure(name, sprintf(Rule.FAILURE, className, _suffixList))];
                         }
                     })
             ));
@@ -34,3 +36,5 @@ export class Rule extends Lint.Rules.AbstractRule {
         );
     }
 }
+
+

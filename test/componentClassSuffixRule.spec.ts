@@ -72,4 +72,81 @@ describe('component-class-suffix', () => {
             assertSuccess('component-class-suffix', source);
         });
     });
+
+    describe('changed suffix', () => {
+        it('should succeed when different suffix is set', () => {
+            let source = `
+            @Component({
+                selector: 'sgBarFoo'
+            })
+            class TestPage {}`;
+            assertSuccess('component-class-suffix', source, ['Page']);
+        });
+
+        it('should succeed when different list of suffix is set', () => {
+            let source = `
+            @Component({
+                selector: 'sgBarFoo'
+            })
+            class TestPage {}`;
+            assertSuccess('component-class-suffix', source, ['Page', 'View']);
+        });
+
+        it('should fail when different list of suffix is set and doesnt match', function () {
+            let source = `
+            @Component({
+                selector: 'sgBarFoo'
+            })
+            class TestPage {}`;
+            assertFailure('component-class-suffix', source, {
+                message: 'The name of the class TestPage should end with the suffix Component,View ($$02-03$$)',
+                startPosition: {
+                    line: 4,
+                    character: 18
+                },
+                endPosition: {
+                    line: 4,
+                    character: 26
+                }
+            }, ['Component', 'View']);
+        });
+
+        it('should fail when different sufix is set and doesnt match', () => {
+            let source = `
+            @Component({
+                selector: 'sgBarFoo'
+            })
+            class TestPage {}`;
+            assertFailure('component-class-suffix', source, {
+                message: 'The name of the class TestPage should end with the suffix Component ($$02-03$$)',
+                startPosition: {
+                    line: 4,
+                    character: 18
+                },
+                endPosition: {
+                    line: 4,
+                    character: 26
+                }
+            }, ['Component']);
+        });
+
+        it('should fail when different sufix is set and doesnt match', () => {
+            let source = `
+            @Component({
+                selector: 'sgBarFoo'
+            })
+            class TestDirective {}`;
+            assertFailure('component-class-suffix', source, {
+                message: 'The name of the class TestDirective should end with the suffix Page ($$02-03$$)',
+                startPosition: {
+                    line: 4,
+                    character: 18
+                },
+                endPosition: {
+                    line: 4,
+                    character: 31
+                }
+            }, ['Page']);
+        });
+    });
 });

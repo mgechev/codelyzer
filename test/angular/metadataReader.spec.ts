@@ -279,7 +279,6 @@ describe('metadataReader', () => {
       }
     });
 
-
     it('should work work with templates with "`"', () => {
       const code = `
       @Component({
@@ -301,6 +300,29 @@ describe('metadataReader', () => {
       chai.expect(m.template.url.endsWith('foo.html')).eq(true);
       chai.expect(m.styles[0].style.code).eq('baz');
       chai.expect(m.styles[0].url).eq(null);
+    });
+
+    it('should work work with templates with "`"', () => {
+      const code = `
+      @Component({
+        selector: 'foo',
+        moduleId: module.id,
+        templateUrl: 'foo.dust',
+        styleUrls: ['foo.sty']
+      })
+      class Bar {}
+      `;
+      const reader = new MetadataReader(new FsFileResolver());
+      const ast = getAst(code, __dirname + '/../../test/fixtures/metadataReader/notsupported/foo.ts');
+      const classDeclaration = <ts.ClassDeclaration>ast.statements.pop();
+      const metadata = reader.read(classDeclaration);
+      chai.expect(metadata instanceof ComponentMetadata).eq(true);
+      chai.expect(metadata.selector).eq('foo');
+      const m = <ComponentMetadata>metadata;
+      chai.expect(m.template.template.code.trim()).eq('');
+      chai.expect(m.template.url.endsWith('foo.dust')).eq(true);
+      chai.expect(m.styles[0].style.code).eq('');
+      chai.expect(m.styles[0].url.endsWith('foo.sty')).eq(true);
     });
   });
 });

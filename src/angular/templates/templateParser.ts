@@ -53,6 +53,9 @@ export const parseTemplate = (template: string, directives: { selector: string, 
   const tmplParser =
     new TemplateParser(expressionParser, elementSchemaRegistry, htmlParser, ngConsole, []);
   const interpolation = Config.interpolation;
+
+  // Make sure it works with 2.2.x & 2.3.x
+  const summaryKind = ((compiler as any).CompileSummaryKind || {}).Template;
   const templateMetadata: compiler.CompileTemplateMetadata = {
     encapsulation: 0,
     template: template,
@@ -68,11 +71,26 @@ export const parseTemplate = (template: string, directives: { selector: string, 
         isSummary: true,
         animations: this.animations.map(anim => anim.name),
         ngContentSelectors: this.ngContentSelectors,
-        encapsulation: this.encapsulation
-      };
+        encapsulation: this.encapsulation,
+        summaryKind: summaryKind
+      } as any;
     }
   };
-  const type = new compiler.CompileTypeMetadata({ diDeps: [] });
+
+  // Make sure it works with 2.2.x & 2.3.x
+  const type = {
+    diDeps: [],
+    lifecycleHooks: [],
+    reference: null,
+
+    // Used by Angular 2.2.x
+    isHost: false,
+    name: '',
+    prefix: '',
+    moduleUrl: '',
+    value: '',
+    identifier: null
+  };
   return tmplParser.tryParse(
       compiler.CompileDirectiveMetadata.create({ type, template: templateMetadata }),
       template, defaultDirectives, [], [NO_ERRORS_SCHEMA], '').templateAst;

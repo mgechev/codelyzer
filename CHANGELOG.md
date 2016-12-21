@@ -1,3 +1,26 @@
+# 2.0.0-beta.3
+
+### Bug Fixes
+
+- Restrict `peerDependencies` to Angular `<=2.3 >=2.2.0` [#188](https://github.com/mgechev/codelyzer/issues/188) [08a0029](https://github.com/mgechev/codelyzer/commit/08a0029b716252f23a2797ec703b683eb226d753)
+
+# 2.0.0-beta.2
+
+### Features
+
+- Ionic 2 Support [#132](https://github.com/mgechev/codelyzer/issues/132) [a019e3f](https://github.com/mgechev/codelyzer/commit/a019e3fe2ab33e818c67840ed2cff11a51bd02c5)
+- Support for TypeScript 2.2.x [#149](https://github.com/mgechev/codelyzer/issues/149) [d5f117e](https://github.com/mgechev/codelyzer/commit/d5f117e19b793405b46102f547ecb14e5643faca)
+- Support for Angular 2.3.0 [#182](https://github.com/mgechev/codelyzer/issues/182) [20ce61a](https://github.com/mgechev/codelyzer/commit/20ce61a64346b9ac17a1d5d5f364889ef90e6d47)
+
+### Bug Fixes
+
+- False positive with TypeScript 2.1.4 [#184](https://github.com/mgechev/codelyzer/issues/184) [d5f117e](https://github.com/mgechev/codelyzer/commit/d5f117e19b793405b46102f547ecb14e5643faca)
+- Certain Codelyzer Rules hang linting [#181](https://github.com/mgechev/codelyzer/issues/181) [d5f117e](https://github.com/mgechev/codelyzer/commit/d5f117e19b793405b46102f547ecb14e5643faca)
+- Do not process non-css & non-html files by default [#186](https://github.com/mgechev/codelyzer/issues/186) [d5f117e](https://github.com/mgechev/codelyzer/commit/d5f117e19b793405b46102f547ecb14e5643faca)
+- Handle properly `KeyedRead`s and `KeyadWrite`s [#185](https://github.com/mgechev/codelyzer/issues/185) [20ce61a](https://github.com/mgechev/codelyzer/commit/20ce61a64346b9ac17a1d5d5f364889ef90e6d47)
+- False positive of `no-access-missing-member` [#179](https://github.com/mgechev/codelyzer/issues/179) [20ce61a](https://github.com/mgechev/codelyzer/commit/20ce61a64346b9ac17a1d5d5f364889ef90e6d47)
+- Atom fatal error from app-root-path [#177](https://github.com/mgechev/codelyzer/pull/177) [5b26419](https://github.com/mgechev/codelyzer/commit/5b264197cb30b4680477116eab8fdd99c1da696e)
+
 # 2.0.0-beta.1
 
 ### Breaking Changes

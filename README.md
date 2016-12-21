@@ -158,8 +158,11 @@ Below you can find a recommended configuration which is based on the [Angular 2 
   "no-forward-ref": true,
   "use-life-cycle-interface": true,
   "use-pipe-transform-interface": true,
-  "component-class-suffix": true,
-  "directive-class-suffix": true,
+
+  // [ENABLED, "SUFFIX"]
+  // Where "SUFFIX" is your custom suffix, for instance "Page" for Ionic 2 components.
+  "component-class-suffix": [true, "Component"],
+  "directive-class-suffix": [true, "Directive"],
   "import-destructuring-spacing": true,
   "templates-use-public": true,
   "no-access-missing-member": true,
@@ -175,7 +178,7 @@ Codelyzer supports any template and style language by custom hooks. If you're us
 // Demo of transforming Sass styles
 var sass = require('node-sass');
 
-module.exports {
+module.exports = {
 
   // Definition of custom interpolation strings
   interpolation: ['{{', '}}'],
@@ -188,13 +191,19 @@ module.exports {
   // Transformation of the templates. This hooks is quite useful
   // if you're using any other templating language, for instance
   // jade, markdown, haml, etc.
+  // 
+  // NOTE that this method WILL NOT throw an error in case of invalid template.
+  //
   transformTemplate(code, url, decorator) {
     return { code: code, url: url };
   },
 
   // Transformation of styles. This hook is useful is you're using
   // any other style language, for instance Sass, Less, etc.
-  transformTemplate(code, url, decorator) {
+  //
+  // NOTE that this method WILL NOT throw an error in case of invalid style.
+  //
+  transformStyle(code, url, decorator) {
     var result = { code: code, url: url };
     if (url && /\.scss$/.test(url)) {
       var transformed = sass.renderSync({ data: code, sourceMap: true, outFile: '/dev/null' });
@@ -219,4 +228,3 @@ module.exports {
 ## License
 
 MIT
-

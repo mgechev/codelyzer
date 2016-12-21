@@ -44,11 +44,17 @@ export const Config: Config = {
   },
 
   transformTemplate(code: string, url: string, d: ts.Decorator) {
-    return { code, url };
+    if (!url || url.endsWith('.html')) {
+      return { code, url };
+    }
+    return { code: '', url };
   },
 
   transformStyle(code: string, url: string, d: ts.Decorator) {
-    return { code, url };
+    if (!url || url.endsWith('.css')) {
+      return { code, url };
+    }
+    return { code: '', url };
   },
 
   predefinedDirectives: [
@@ -58,10 +64,10 @@ export const Config: Config = {
   logLevel: BUILD_TYPE === 'dev' ? LogLevel.Debug : LogLevel.None
 };
 
-const root = require('app-root-path');
 
 try {
-  let newConfig = require(root.path + '/.codelyzer');
+  const root = require('app-root-path');
+  const newConfig = require(root.path + '/.codelyzer');
   Object.assign(Config, newConfig);
 } catch (e) {}
 

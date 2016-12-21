@@ -8,7 +8,8 @@ import {Failure} from './walkerFactory';
 type ComponentWalkable = 'Ng2Component';
 
 type Validator = NodeValidator | ComponentValidator;
-type ValidateFn<T> = F1<T, Maybe<Failure[]>>;
+type ValidateFn<T> = F2<T, IOptions, Maybe<Failure[]>>;
+type WalkerOptions = any;
 
 interface NodeValidator {
     kind: 'Node';
@@ -23,11 +24,11 @@ interface ComponentValidator {
 export function validate(syntaxKind: ts.SyntaxKind): F1<ValidateFn<ts.Node>, NodeValidator> {
     return validateFn => ({
         kind: 'Node',
-        validate: (node: ts.Node) => (node.kind === syntaxKind) ? validateFn(node) : Maybe.nothing,
+        validate: (node: ts.Node, options: WalkerOptions) => (node.kind === syntaxKind) ? validateFn(node, options) : Maybe.nothing,
     });
 }
 
-export function validateComponent(validate: F1<ComponentMetadata, Maybe<Failure[]>>): ComponentValidator {
+export function validateComponent(validate: F2<ComponentMetadata, WalkerOptions, Maybe<Failure[]>>): ComponentValidator {
     return {
         kind: 'Ng2Component',
         validate,
@@ -40,7 +41,7 @@ export function all(...validators: Validator[]): F2<ts.SourceFile, IOptions, Ng2
             visitNg2Component(meta: ComponentMetadata) {
                 validators.forEach(v => {
                     if (v.kind === 'Ng2Component') {
-                        v.validate(meta).fmap(
+                        v.validate(meta, this.getOptions()).fmap(
                             failures => failures.forEach(f => this.failed(f)));
                     }
                 });
@@ -50,7 +51,7 @@ export function all(...validators: Validator[]): F2<ts.SourceFile, IOptions, Ng2
             visitNode(node: ts.Node) {
                 validators.forEach(v => {
                     if (v.kind === 'Node') {
-                        v.validate(node).fmap(
+                        v.validate(node, this.getOptions()).fmap(
                             failures => failures.forEach(f => this.failed(f)));
                     }
                 });
