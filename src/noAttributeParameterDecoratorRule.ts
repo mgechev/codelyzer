@@ -2,51 +2,57 @@ import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
 import SyntaxKind = require('./util/syntaxKind');
+import {validate, all} from './walkerFactory/walkerFn';
+import {Maybe, listToMaybe} from './util/function';
+import {isDecorator, withIdentifier, callExpression} from './util/astQuery';
+import {Failure} from './walkerFactory/walkerFactory';
 
 export class Rule extends Lint.Rules.AbstractRule {
-  static  FAILURE_STRING:string = 'In the constructor of class "%s",' +
-    ' the parameter "%s" uses the @Attribute decorator, ' +
-    'which is considered as a bad practice. Please,' +
-    ' consider construction of type "@Input() %s: string"';
+    static FAILURE_STRING: string = 'In the constructor of class "%s",' +
+        ' the parameter "%s" uses the @Attribute decorator, ' +
+        'which is considered as a bad practice. Please,' +
+        ' consider construction of type "@Input() %s: string"';
 
-  public apply(sourceFile:ts.SourceFile):Lint.RuleFailure[] {
-    return this.applyWithWalker(
-      new ConstructorMetadataWalker(sourceFile,
-        this.getOptions()));
-  }
-}
 
-export class ConstructorMetadataWalker extends Lint.RuleWalker {
-  visitConstructorDeclaration(node:ts.ConstructorDeclaration) {
-    let syntaxKind = SyntaxKind.current();
-    let parentName: string = '';
-    let parent = (<any>node.parent);
-    if (parent.kind === syntaxKind.ClassExpression) {
-      parentName= parent.parent.name.text;
-    } else if (parent.kind = syntaxKind.ClassDeclaration) {
-      parentName= parent.name.text;
-    }
-    (<any[]>node.parameters || []).forEach(this.validateParameter.bind(this, parentName));
-    super.visitConstructorDeclaration(node);
-  }
+    static walkerBuilder = all(
+        validate(SyntaxKind.current().Constructor)((node: ts.ConstructorDeclaration) => {
+            const syntaxKind = SyntaxKind.current();
+            return Maybe.lift(node.parent)
+                .fmap(parent => {
+                    if (parent.kind === syntaxKind.ClassExpression) {
+                        return parent.parent.name.text;
+                    } else if (parent.kind = syntaxKind.ClassDeclaration) {
+                        return parent.name.text;
+                    }
+                })
+                .bind(parentName => {
+                    const failures: Maybe<Failure>[] = node.parameters.map(p =>
+                        Maybe.lift(p.decorators)
+                            .bind(decorators => {
+                                // Check if any @Attribute
+                                const decoratorsFailed = listToMaybe(
+                                    decorators.map(d => Rule.decoratorIsAttribute(d)));
 
-  validateParameter(className: string, parameter) {
-    let parameterName = (<ts.Identifier>parameter.name).text;
-    if (parameter.decorators) {
-      parameter.decorators.forEach((decorator)=> {
-        let baseExpr = <any>decorator.expression || {};
-        let expr = baseExpr.expression || {};
-        let name = expr.text;
-        if (name === 'Attribute') {
-          let failureConfig:string[] = [className, parameterName, parameterName];
-          failureConfig.unshift(Rule.FAILURE_STRING);
-          this.addFailure(
-            this.createFailure(
-              parameter.getStart(),
-              parameter.getWidth(),
-              sprintf.apply(this, failureConfig)));
+                                // We only care about 1 since we highlight the whole 'parameter'
+                                return decoratorsFailed.fmap(() =>
+                                    new Failure(p, sprintf(Rule.FAILURE_STRING,
+                                        parentName, (<any>p.name).text, (<any>p.name).text)))
+                            })
+                    );
+                    return listToMaybe(failures)
+                });
+        })
+    );
+
+    private static decoratorIsAttribute(dec: ts.Decorator): Maybe<ts.CallExpression> {
+        if (isDecorator(dec)) {
+            return callExpression(dec).bind(withIdentifier('Attribute'));
         }
-      });
+        return Maybe.nothing;
     }
-  }
+
+    public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+        return this.applyWithWalker(
+            Rule.walkerBuilder(sourceFile, this.getOptions()));
+    }
 }
