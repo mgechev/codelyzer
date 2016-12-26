@@ -47,7 +47,7 @@ You can easily use codelyzer with your custom setup:
 #### Installation
 
 ```shell
-npm i codelyzer tslint typescript @angular/core@2.0.2 @angular/compiler@2.0.2 rxjs@5.0.0-beta.12 zone.js@0.6.21
+npm i codelyzer@2.0.0-beta.4 tslint@4.0.0 typescript@2.0.9 @angular/core@2.4.0 @angular/compiler@2.4.0 rxjs@5.0.1 zone.js@0.7.2
 ```
 
 Now create the following `tslint.json` file where your `node_modules` directory is:
