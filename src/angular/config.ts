@@ -58,7 +58,15 @@ export const Config: Config = {
   },
 
   predefinedDirectives: [
-    { selector: 'form', exportAs: 'ngForm' }
+    { selector: 'form', exportAs: 'ngForm' },
+    { selector: '[routerLinkActive]', exportAs: 'routerLinkActive' },
+    { selector: '[ngModel]:not([formControlName]):not([formControl])', exportAs: 'ngModel' },
+    { selector: '[md-menu-item], [mat-menu-item]', exportAs: 'mdMenuItem' },
+    { selector: 'md-menu, mat-menu', exportAs: 'mdMenu' },
+    { selector: 'md-button-toggle-group:not([multiple])', exportAs: 'mdButtonToggleGroup' },
+    { selector: '[md-menu-trigger-for], [mat-menu-trigger-for], [mdMenuTriggerFor]', exportAs: 'mdMenuTrigger' },
+    { selector: '[md-tooltip], [mat-tooltip], [mdTooltip]', exportAs: 'mdTooltip' },
+    { selector: 'md-select, mat-select', exportAs: 'mdSelect' }
   ],
 
   logLevel: BUILD_TYPE === 'dev' ? LogLevel.Debug : LogLevel.None

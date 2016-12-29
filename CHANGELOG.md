@@ -1,3 +1,16 @@
+# 2.0.0-beta.4
+
+### Features
+
+- Allow multiple suffixes for better compatibility with Ionic [#194](https://github.com/mgechev/codelyzer/issues/194) [08fdaf0](https://github.com/mgechev/codelyzer/commit/08fdaf089236bd84598957233173867109d7dbcf)
+- Add declarations of frequiently used directive declarations [#199](https://github.com/mgechev/codelyzer/issues/199) [36f5cb4](https://github.com/mgechev/codelyzer/commit/36f5cb4efb6d558744a2ee62f4e53e73ee333a04)
+- Support for Angular 2.4.x [#201](https://github.com/mgechev/codelyzer/issues/201) [ad81f2d](https://github.com/mgechev/codelyzer/pull/202/commits/ad81f2deae24fe4cd16a754930c1cf6d0291bd36)
+- Support for tslint@^4.1.0 [#204](https://github.com/mgechev/codelyzer/issues/204) [13b722e](https://github.com/mgechev/codelyzer/commit/13b722e31d5f53856d2bd98260b425c491cb6894)
+
+### Bug Fixes
+
+- Warn when component element selector doesn't have a dash [#192](https://github.com/mgechev/codelyzer/issues/192) [36f5cb4](https://github.com/mgechev/codelyzer/commit/3d53a187c559067f9d71d364773fb55aedf4a0da)
+
 # 2.0.0-beta.3
 
 ### Bug Fixes

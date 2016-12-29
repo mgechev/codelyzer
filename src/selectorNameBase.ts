@@ -63,10 +63,6 @@ export abstract class SelectorRule extends Lint.Rules.AbstractRule {
         this));
   }
 
-  public getFailureString(failureConfig): string {
-    return sprintf(failureConfig.fail, failureConfig.className, this.getOptions().ruleArguments, failureConfig.selector);
-  }
-
   public abstract getTypeFailure(): any;
   public abstract  getNameFailure(): any;
   protected abstract getSinglePrefixFailure(): any;
@@ -81,7 +77,7 @@ export abstract class SelectorRule extends Lint.Rules.AbstractRule {
   }
 
   private setMultiPrefix(prefix:string) {
-    this.isMultiPrefix = typeof prefix==='string';
+    this.isMultiPrefix = typeof prefix ==='string';
   }
 
   private setPrefixArguments(prefix:any) {
@@ -153,7 +149,11 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
             let error = sprintf(this.rule.getTypeFailure(), className,this.rule.getOptions().ruleArguments[0]);
             this.addFailure(this.createFailure(i.getStart(), i.getWidth(),error));
           } else if (!validateSelectors(this.rule.validateName.bind(this.rule))) {
-            let error = sprintf(this.rule.getNameFailure(),className,this.rule.getOptions().ruleArguments[2]);
+            let name = this.rule.getOptions().ruleArguments[2];
+            if (name === 'kebab-case') {
+              name += ' and include dash';
+            }
+            let error = sprintf(this.rule.getNameFailure(), className, name);
             this.addFailure(this.createFailure(i.getStart(), i.getWidth(), error));
           } else if (!validateSelectors(this.rule.validatePrefix.bind(this.rule))) {
             let error = sprintf(this.rule.getPrefixFailure(),className,this.rule.prefixArguments);
