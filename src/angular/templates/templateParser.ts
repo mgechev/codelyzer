@@ -1,20 +1,20 @@
 import { __core_private__ as r, NO_ERRORS_SCHEMA } from '@angular/core';
 import * as compiler from '@angular/compiler';
 
-import { Config } from '../config';
+import { Config, DirectiveDeclaration } from '../config';
 
 let refId = 0;
 
-const dummyMetadataFactory = (selector: string, exportAs: string) => {
+const dummyMetadataFactory = (declaration: DirectiveDeclaration) => {
   if (refId > 1e10) {
     refId = 0;
   }
   return {
-    inputs: {},
-    outputs: {},
-    hostListeners: {},
-    hostProperties: {},
-    hostAttributes: {},
+    inputs: declaration.inputs || [],
+    outputs: declaration.outputs || [],
+    hostListeners: declaration.hostListeners || {},
+    hostProperties: declaration.hostProperties || {},
+    hostAttributes: declaration.hostAttributes || {},
     isSummary: true,
     type: {
       diDeps: [],
@@ -23,8 +23,8 @@ const dummyMetadataFactory = (selector: string, exportAs: string) => {
       reference: ++refId + '-ref'
     },
     isComponent: false,
-    selector,
-    exportAs,
+    selector: declaration.selector,
+    exportAs: declaration.exportAs,
     providers: [],
     viewProviders: [],
     queries: [],
@@ -41,8 +41,8 @@ const dummyMetadataFactory = (selector: string, exportAs: string) => {
 
 let defaultDirectives = [];
 
-export const parseTemplate = (template: string, directives: { selector: string, exportAs: string }[] = []) => {
-  defaultDirectives = directives.map(d => dummyMetadataFactory(d.selector, d.exportAs));
+export const parseTemplate = (template: string, directives: DirectiveDeclaration[] = []) => {
+  defaultDirectives = directives.map(d => dummyMetadataFactory(d));
 
   const TemplateParser = <any>compiler.TemplateParser;
   const expressionParser = new compiler.Parser(new compiler.Lexer());
