@@ -152,7 +152,16 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
 
   visitText(text: ast.TextAst, context: any): any {}
 
-  visitDirective(ast: ast.DirectiveAst, context: any): any {}
+  visitDirective(ast: ast.DirectiveAst, context: any): any {
+    ast.inputs.forEach(o => this.visit(o, context));
+    ast.hostProperties.forEach(p => this.visit(p, context));
+    ast.hostEvents.forEach(e => this.visit(e, context));
+  }
 
-  visitDirectiveProperty(ast: ast.BoundDirectivePropertyAst, context: any): any {}
+  visitDirectiveProperty(prop: ast.BoundDirectivePropertyAst, context: any): any {
+    if (ExpTypes.ASTWithSource(prop.value)) {
+      const ast: any = (<e.ASTWithSource>prop.value).ast;
+      this.visitNg2TemplateAST(prop.value, this.templateStart + getExpressionDisplacement(prop));
+    }
+  }
 }
