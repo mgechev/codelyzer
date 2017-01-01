@@ -31,7 +31,12 @@ export interface Config {
 
 export interface DirectiveDeclaration {
   selector: string;
-  exportAs: string;
+  exportAs?: string;
+  inputs?: string[];
+  outputs?: string[];
+  hostProperties?: string[];
+  hostAttributes?: string[];
+  hostListeners?: string[];
 }
 
 let BUILD_TYPE = '<%= BUILD_TYPE %>';
@@ -66,7 +71,9 @@ export const Config: Config = {
     { selector: 'md-button-toggle-group:not([multiple])', exportAs: 'mdButtonToggleGroup' },
     { selector: '[md-menu-trigger-for], [mat-menu-trigger-for], [mdMenuTriggerFor]', exportAs: 'mdMenuTrigger' },
     { selector: '[md-tooltip], [mat-tooltip], [mdTooltip]', exportAs: 'mdTooltip' },
-    { selector: 'md-select, mat-select', exportAs: 'mdSelect' }
+    { selector: 'md-select, mat-select', exportAs: 'mdSelect' },
+    { selector: '[ngIf]', exportAs: 'ngIf', inputs: ['ngIf'] },
+    { selector: '[ngSwitch]', exportAs: 'ngSwitch', inputs: ['ngSwitch'] }
   ],
 
   logLevel: BUILD_TYPE === 'dev' ? LogLevel.Debug : LogLevel.None

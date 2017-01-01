@@ -723,6 +723,50 @@ describe('no-access-missing-member', () => {
         }`;
         assertSuccess('no-access-missing-member', source);
     });
+
+    it('should succeed with array element access', () => {
+      let source = `
+        @Component({
+          template: '<div *ngIf="context"></div>'
+        })
+        class Test {
+        }`;
+        assertFailure('no-access-missing-member', source, {
+          message: 'The property "context" that you\'re trying to access does not exist in the class declaration.',
+          startPosition: {
+            line: 2,
+            character: 21
+          },
+          endPosition: {
+            line: 2,
+            character: 28
+          }
+        });
+    });
+
+
+    it('should succeed with array element access', () => {
+      let source = `
+        @Component({
+          template: \`<div *ngSwitch="context">
+              <span *ngSwitchCase="bar"></span>
+            </div>\`
+        })
+        class Test {
+        }`;
+        assertFailure('no-access-missing-member', source, {
+          message: 'The property "context" that you\'re trying to access does not exist in the class declaration.',
+          startPosition: {
+            line: 2,
+            character: 21
+          },
+          endPosition: {
+            line: 2,
+            character: 28
+          }
+        });
+    });
+
 //    TODO
 //    it('should work with getters', () => {
 //      let source = `
