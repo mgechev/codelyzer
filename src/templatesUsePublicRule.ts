@@ -37,10 +37,8 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
     const allMembers = getDeclaredMethods(this.context.controller).concat(getDeclaredProperties(this.context.controller));
     const member = allMembers.filter((m: any) => m.name && m.name.text === ast.name).pop();
     if (member) {
-      let isPublic = !member.modifiers;
-      if (member.modifiers) {
-        isPublic = member.modifiers.some(m => m.kind === SyntaxKind.current().PublicKeyword);
-      }
+      let isPublic = !member.modifiers || !member.modifiers
+        .some(m => m.kind === SyntaxKind.current().PrivateKeyword || m.kind === SyntaxKind.current().ProtectedKeyword);
       const width = ast.name.length;
       if (!isPublic) {
         const failureString = 'You can bind only to public class members.';
