@@ -140,7 +140,7 @@ You can find it [here](https://github.com/mgechev/codelyzer/blob/master/CHANGELO
 
 ## Recommended configuration
 
-Below you can find a recommended configuration which is based on the [Angular 2 Style Guide](https://angular.io/styleguide).
+Below you can find a recommended configuration which is based on the [Angular Style Guide](https://angular.io/styleguide).
 
 ```js
 {
