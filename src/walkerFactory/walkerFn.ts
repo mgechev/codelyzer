@@ -5,19 +5,17 @@ import {ComponentMetadata} from '../angular/metadata';
 import {F1, F2, Maybe} from '../util/function';
 import {Failure} from './walkerFactory';
 
-type ComponentWalkable = 'Ng2Component';
+export type Validator = NodeValidator | ComponentValidator;
+export type ValidateFn<T> = F2<T, IOptions, Maybe<Failure[]>>;
+export type WalkerOptions = any;
 
-type Validator = NodeValidator | ComponentValidator;
-type ValidateFn<T> = F2<T, IOptions, Maybe<Failure[]>>;
-type WalkerOptions = any;
-
-interface NodeValidator {
+export interface NodeValidator {
     kind: 'Node';
     validate: ValidateFn<ts.Node>;
 }
 
-interface ComponentValidator {
-    kind: ComponentWalkable;
+export interface ComponentValidator {
+    kind: 'Ng2Component';
     validate: ValidateFn<ComponentMetadata>;
 }
 
