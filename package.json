@@ -44,8 +44,8 @@
   },
   "homepage": "https://github.com/mgechev/codelyzer#readme",
   "devDependencies": {
-    "@angular/compiler": "^2.4.0",
-    "@angular/core": "^2.4.0",
+    "@angular/compiler": "^4.0.0-beta.6",
+    "@angular/core": "^4.0.0-beta.6",
     "@types/chai": "^3.4.33",
     "@types/less": "0.0.31",
     "@types/mocha": "^2.2.32",
@@ -67,8 +67,8 @@
   },
   "peerDependencies": {
     "tslint": "^4.0.0",
-    "@angular/compiler": "<=2.4 >=2.2.0",
-    "@angular/core": "<=2.4 >=2.2.0"
+    "@angular/compiler": "^2.3.1 || >=4.0.0-beta <5.0.0",
+    "@angular/core": "^2.3.1 || >=4.0.0-beta <5.0.0"
   },
   "dependencies": {
     "app-root-path": "^2.0.1",
