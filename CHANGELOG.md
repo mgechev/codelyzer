@@ -1,3 +1,16 @@
+# 2.0.0
+
+### Bug Fixes
+
+- The rule for binding to publich members breaks for readonly properties [#206](https://github.com/mgechev/codelyzer/issues/206) [cc3ed9a](https://github.com/mgechev/codelyzer/commit/cc3ed9a60d7a569f39e4197e541b18dc7ded54b4)
+- Add checks for ngIf and ngSwitch [#193](https://github.com/mgechev/codelyzer/issues/193) [0118b56](https://github.com/mgechev/codelyzer/commit/0118b569561d97ad31bd2e7216ad90834091942c)
+- Support for tslint@^4.3.1 (4.3.0 was broken) [3e7edfa](https://github.com/mgechev/codelyzer/commit/3e7edfafbc2b3a92045d7eef33c9e5c131681c53)
+- Support for Angular 4 [#214](https://github.com/mgechev/codelyzer/issues/214) [4d79933](https://github.com/mgechev/codelyzer/commit/4d799335fc335ec3f0ae2825e54c2dafeb58925d)
+
+### Refactoring
+
+- Refactoring `readTemplate` and `readStyle` to use `Maybe<T>` [373b152](https://github.com/mgechev/codelyzer/commit/373b152a7aa371895e10ae1726aa6f0d7db7146d)
+
 # 2.0.0-beta.4
 
 ### Features
