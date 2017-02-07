@@ -14,7 +14,7 @@ export class Rule extends Lint.Rules.AbstractRule {
         ' consider construction of type "@Input() %s: string"';
 
 
-    static walkerBuilder = all(
+    private static walkerBuilder = all(
         validate(SyntaxKind.current().Constructor)((node: ts.ConstructorDeclaration) => {
             const syntaxKind = SyntaxKind.current();
             return Maybe.lift(node.parent)
