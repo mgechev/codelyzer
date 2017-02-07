@@ -1,7 +1,7 @@
 {
   "name": "codelyzer",
-  "version": "2.0.0-beta.4",
-  "description": "Linting for Angular 2 applications, following angular.io/styleguide.",
+  "version": "2.0.0",
+  "description": "Linting for Angular applications, following angular.io/styleguide.",
   "scripts": {
     "lint": "tslint -c tslint.json src/**/*.ts test/**/*.ts",
     "release": "npm run build && rimraf dist && tsc -p tsconfig-release.json && npm run copy:common && npm run prepare:package && BUILD_TYPE=prod npm run set:vars && npm run build:links",
@@ -26,10 +26,9 @@
   },
   "keywords": [
     "Angular",
-    "Angular 2",
     "style guide",
     "styleguide",
-    "ng2lint",
+    "nglint",
     "codelyzer",
     "lint",
     "tslint"
