@@ -1362,9 +1362,9 @@ semver-diff@^2.0.0:
   dependencies:
     semver "^5.0.3"
 
-semver-dsl@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/semver-dsl/-/semver-dsl-1.0.0.tgz#462ce8159950ef8def4e0d797caee19cb6ad94cf"
+semver-dsl@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/semver-dsl/-/semver-dsl-1.0.1.tgz#d3678de5555e8a61f629eed025366ae5f27340a0"
   dependencies:
     semver "^5.3.0"
 
