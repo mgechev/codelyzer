@@ -251,7 +251,7 @@ describe('templates-use-public', () => {
         })
         class Test extends Base {}`;
         assertFailure('templates-use-public', source, {
-          message: 'You can bind only to public class members.',
+          message: 'You can bind only to public class members. "foo" is not a public class member.',
           startPosition: {
             line: 7,
             character: 29

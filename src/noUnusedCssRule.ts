@@ -221,7 +221,7 @@ export class UnusedCssNg2Visitor extends Ng2Walker {
               this.templateAst =
                 new ElementAstCtr('*', [], [], [], [], [], [], false, [], parseTemplate(meta.template.template.code), 0, null, null);
             })
-            .lt('4.0.0-beta.8', () => {
+            .else(() => {
               this.templateAst =
                 new ElementAstCtr('*', [], [], [], [], [], [], false, parseTemplate(meta.template.template.code), 0, null, null);
             });

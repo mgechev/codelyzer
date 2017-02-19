@@ -60,7 +60,7 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
       tmplParser =
         new TemplateParser(config, expressionParser, elementSchemaRegistry, htmlParser, ngConsole, []);
     })
-    .lt('4.0.0-beta.8', () => {
+    .else(() => {
       tmplParser =
         new TemplateParser(expressionParser, elementSchemaRegistry, htmlParser, ngConsole, []);
     });
