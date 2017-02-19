@@ -42,7 +42,7 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
         .some(m => m.kind === SyntaxKind.current().PrivateKeyword || m.kind === SyntaxKind.current().ProtectedKeyword);
       const width = ast.name.length;
       if (!isPublic) {
-        const failureString = 'You can bind only to public class members.';
+        const failureString = `You can bind only to public class members. "${member.name.getText()}" is not a public class member.`;
         this.addFailure(this.createFailure(ast.span.start, width, failureString));
       }
     }
