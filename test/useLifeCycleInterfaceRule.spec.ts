@@ -185,4 +185,48 @@ describe('use-life-cycle-interface', () => {
             assertSuccess('use-life-cycle-interface', source);
         });
     });
+
+    describe('inheritance', () => {
+        it('should support inheritance', () => {
+            let source = `
+            class BaseComponent implements OnInit {
+                ngOnInit() {}
+            }
+            class Component extends BaseComponent {
+                ngOnInit() {}
+            }
+            class App extends Component  {
+                ngOnInit(){
+                }
+            }`;
+            assertSuccess('use-life-cycle-interface', source);
+        });
+
+        it('should support mixture between subclassing and subtyping', () => {
+            let source = `
+            class BaseComponent implements OnInit {
+                ngOnInit() {}
+            }
+            class Component extends BaseComponent {
+                ngOnInit() {}
+            }
+            class App extends Component implements SomeInterface {
+                ngOnInit(){
+                }
+            }`;
+            assertSuccess('use-life-cycle-interface', source);
+            source = `
+            class BaseComponent implements OnInit {
+                ngOnInit() {}
+            }
+            class Component extends BaseComponent {
+                ngOnInit() {}
+            }
+            class App extends Component, BaseComponent implements SomeInterface {
+                ngOnInit(){
+                }
+            }`;
+            assertSuccess('use-life-cycle-interface', source);
+        });
+    });
 });

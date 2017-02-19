@@ -9,7 +9,7 @@ export class RecursiveAngularExpressionVisitor extends SourceMappingVisitor impl
   public preDefinedVariables = [];
 
   constructor(sourceFile: ts.SourceFile, options: Lint.IOptions,
-      protected context: ComponentMetadata, protected basePosition: number) {
+      protected context: ComponentMetadata, protected basePosition: number, protected languageService: ts.LanguageService) {
     super(sourceFile, options, context.template.template, basePosition);
   }
 

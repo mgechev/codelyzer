@@ -5,7 +5,7 @@ import {stringDistance} from './util/utils';
 import {Ng2Walker} from './angular/ng2Walker';
 import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAngularExpressionVisitor';
 import {ExpTypes} from './angular/expressionTypes';
-import {getDeclaredMethodNames, getDeclaredPropertyNames} from './util/classDeclarationUtils';
+import {getClassMembers} from './util/classDeclarationUtils';
 import * as e from '@angular/compiler/src/expression_parser/ast';
 
 import {Config} from './angular/config';
@@ -44,8 +44,10 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
       symbolType = 'property';
     }
 
-    available = getDeclaredMethodNames(this.context.controller)
-      .concat(getDeclaredPropertyNames(this.context.controller))
+    const typeChecker = this.languageService.getProgram().getTypeChecker();
+
+    available = getClassMembers(this.context.controller, typeChecker)
+      .map(p => p.name)
       .concat(this.preDefinedVariables);
 
     // Do not support nested properties yet
@@ -122,14 +124,24 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
   }
 }
 
-export class Rule extends Lint.Rules.AbstractRule {
-  static FAILURE: string = 'The %s "%s" that you\'re trying to access does not exist in the class declaration.';
+export class Rule extends Lint.Rules.TypedRule {
+  public static FAILURE: string = 'The %s "%s" that you\'re trying to access does not exist in the class declaration.';
+  public static metadata: Lint.IRuleMetadata = {
+    ruleName: 'no-access-missing-member',
+    description: 'Prevents bindings to expressions containing non-existing methods or properties',
+    optionsDescription: 'Not configurable',
+    options: null,
+    type: 'functionality',
+    typescriptOnly: true
+  };
 
-  public apply(sourceFile:ts.SourceFile): Lint.RuleFailure[] {
+  public applyWithProgram(sourceFile: ts.SourceFile, languageService: ts.LanguageService): Lint.RuleFailure[] {
+    const sf = languageService.getProgram().getSourceFiles().filter(sf => sf.fileName === sourceFile.fileName).pop();
     return this.applyWithWalker(
-        new Ng2Walker(sourceFile,
+        new Ng2Walker(sf,
             this.getOptions(), {
-              expressionVisitorCtrl: SymbolAccessValidator
+              expressionVisitorCtrl: SymbolAccessValidator,
+              languageService
             }));
   }
 }

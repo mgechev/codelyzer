@@ -223,4 +223,44 @@ describe('templates-use-public', () => {
         assertSuccess('templates-use-public', source);
     });
   });
+
+  describe('inheritance', () => {
+    it('should support inheritance chain', () => {
+      let source = `
+        class Base {
+          readonly foo: any;
+        }
+
+        @Component({
+          selector: 'foobar',
+          template: '<div>{{ foo }}</div>
+        })
+        class Test extends Base {}`;
+        assertSuccess('templates-use-public', source);
+    });
+
+    it('should fail in case of protected inherited property', () => {
+      let source = `
+        class Base {
+          readonly protected foo: any;
+        }
+
+        @Component({
+          selector: 'foobar',
+          template: '<div>{{ foo }}</div>
+        })
+        class Test extends Base {}`;
+        assertFailure('templates-use-public', source, {
+          message: 'You can bind only to public class members. "foo" is not a public class member.',
+          startPosition: {
+            line: 7,
+            character: 29
+          },
+          endPosition: {
+            line: 7,
+            character: 32
+          }
+       });
+    });
+  });
 });

@@ -1,7 +1,8 @@
-import { __core_private__ as r, NO_ERRORS_SCHEMA } from '@angular/core';
+import { __core_private__ as r, NO_ERRORS_SCHEMA, ViewEncapsulation } from '@angular/core';
 import * as compiler from '@angular/compiler';
 
 import { Config, DirectiveDeclaration } from '../config';
+import { SemVerDSL } from '../../util/ngVersion';
 
 let refId = 0;
 
@@ -50,8 +51,20 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
   const ngConsole = new r.Console();
   const htmlParser =
       new compiler.I18NHtmlParser(new compiler.HtmlParser());
-  const tmplParser =
-    new TemplateParser(expressionParser, elementSchemaRegistry, htmlParser, ngConsole, []);
+
+  let tmplParser: any;
+
+  SemVerDSL
+    .gte('4.0.0-beta.8', () => {
+      const config = new compiler.CompilerConfig({});
+      tmplParser =
+        new TemplateParser(config, expressionParser, elementSchemaRegistry, htmlParser, ngConsole, []);
+    })
+    .else(() => {
+      tmplParser =
+        new TemplateParser(expressionParser, elementSchemaRegistry, htmlParser, ngConsole, []);
+    });
+
   const interpolation = Config.interpolation;
 
   // Make sure it works with 2.2.x & 2.3.x
@@ -91,7 +104,8 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
     value: '',
     identifier: null
   };
-  return tmplParser.tryParse(
+  const result = tmplParser.tryParse(
       compiler.CompileDirectiveMetadata.create({ type, template: templateMetadata }),
       template, defaultDirectives, [], [NO_ERRORS_SCHEMA], '').templateAst;
+  return result;
 };
