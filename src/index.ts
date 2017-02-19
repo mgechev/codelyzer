@@ -2,7 +2,6 @@ export { Rule as ComponentClassSuffixRule } from './componentClassSuffixRule';
 export { Rule as ComponentSelectorRule } from './componentSelectorRule';
 export { Rule as DirectiveClassSuffixRule } from './directiveClassSuffixRule';
 export { Rule as DirectiveSelectorRule } from './directiveSelectorRule';
-export { Rule as ImportDestructuringSpacingRule } from './importDestructuringSpacingRule';
 export { Rule as InvokeInjectableRule } from './invokeInjectableRule';
 export { Rule as NoAccessMissingMemberRule } from './noAccessMissingMemberRule';
 export { Rule as NoAttributeParameterDecoratorRule } from './noAttributeParameterDecoratorRule';
