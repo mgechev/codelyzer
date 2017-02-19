@@ -1,7 +1,7 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import {stringDistance} from './util/utils';
-import {getDeclaredProperties, getDeclaredMethods} from './util/classDeclarationUtils';
+import {getClassMembers} from './util/classDeclarationUtils';
 import {Ng2Walker} from './angular/ng2Walker';
 import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAngularExpressionVisitor';
 import * as e from '@angular/compiler/src/expression_parser/ast';
@@ -34,7 +34,8 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
       }
       ast = <e.PropertyRead>receiver;
     }
-    const allMembers = getDeclaredMethods(this.context.controller).concat(getDeclaredProperties(this.context.controller));
+    const allMembers = getClassMembers(this.context.controller, this.languageService.getProgram().getTypeChecker())
+      .map(s => s.declarations[0]);
     const member = allMembers.filter((m: any) => m.name && m.name.text === ast.name).pop();
     if (member) {
       let isPublic = !member.modifiers || !member.modifiers
@@ -73,14 +74,16 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
   }
 }
 
-export class Rule extends Lint.Rules.AbstractRule {
+export class Rule extends Lint.Rules.TypedRule {
   static FAILURE: string = 'The %s "%s" that you\'re trying to access does not exist in the class declaration.';
 
-  public apply(sourceFile:ts.SourceFile): Lint.RuleFailure[] {
+  public applyWithProgram(sourceFile: ts.SourceFile, languageService: ts.LanguageService): Lint.RuleFailure[] {
+    const sf = languageService.getProgram().getSourceFiles().filter(sf => sf.fileName === sourceFile.fileName).pop();
     return this.applyWithWalker(
-        new Ng2Walker(sourceFile,
+        new Ng2Walker(sf,
             this.getOptions(), {
-              expressionVisitorCtrl: SymbolAccessValidator
+              expressionVisitorCtrl: SymbolAccessValidator,
+              languageService
             }));
   }
 }
