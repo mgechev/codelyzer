@@ -1,4 +1,4 @@
-import {assertFailure, assertSuccess} from './testHelper';
+import {assertFailure, assertSuccess, assertAnnotated} from './testHelper';
 
 describe('invoke-injectable', () => {
   describe('success', () => {
@@ -35,41 +35,31 @@ describe('invoke-injectable', () => {
     it('should fail when injectable is not invoked', () => {
       let source = `
         @Injectable
+        ~~~~~~~~~~~
         class Foobar {
           foo() {}
         }
       `;
-      assertFailure('invoke-injectable', source, {
+      assertAnnotated({
+        ruleName: 'invoke-injectable',
         message: 'You have to invoke @Injectable()',
-        startPosition: {
-          line: 1,
-          character: 8
-        },
-        endPosition: {
-          line: 1,
-          character: 19
-        }
+        source
       });
     });
 
     it('should fail when injectable is not invoked and multiple decorators are used', () => {
       let source = `
         @Injectable
+        ~~~~~~~~~~~
         @Component()
         class Foobar {
           foo() {}
         }
       `;
-      assertFailure('invoke-injectable', source, {
+      assertAnnotated({
+        ruleName: 'invoke-injectable',
         message: 'You have to invoke @Injectable()',
-        startPosition: {
-          line: 1,
-          character: 8
-        },
-        endPosition: {
-          line: 1,
-          character: 19
-        }
+        source
       });
     });
 
