@@ -1,4 +1,4 @@
 import {Version, VERSION} from '@angular/core';
-import {SemVerDSL as DSL} from 'semver-dsl';
+import {SemVerDSL as DSL, ISemVerDSL} from 'semver-dsl';
 
-export const SemVerDSL = DSL(VERSION.full);
+export const SemVerDSL: ISemVerDSL = DSL(VERSION.full);
