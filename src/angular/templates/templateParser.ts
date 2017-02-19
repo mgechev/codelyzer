@@ -2,7 +2,7 @@ import { __core_private__ as r, NO_ERRORS_SCHEMA, ViewEncapsulation } from '@ang
 import * as compiler from '@angular/compiler';
 
 import { Config, DirectiveDeclaration } from '../config';
-import { VersionRunner } from '../../util/ngVersion';
+import { SemVerDSL } from '../../util/ngVersion';
 
 let refId = 0;
 
@@ -54,7 +54,7 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
 
   let tmplParser: any;
 
-  VersionRunner
+  SemVerDSL
     .gte('4.0.0-beta.8', () => {
       const config = new compiler.CompilerConfig({});
       tmplParser =

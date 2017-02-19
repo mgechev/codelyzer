@@ -16,7 +16,7 @@ import {CssAst, CssSelectorRuleAst, CssSelectorAst} from './angular/styles/cssAs
 import {ComponentMetadata, StyleMetadata} from './angular/metadata';
 import {ng2WalkerFactoryUtils} from './angular/ng2WalkerFactoryUtils';
 import {logger} from './util/logger';
-import {VersionRunner} from './util/ngVersion';
+import {SemVerDSL} from './util/ngVersion';
 
 const CssSelectorTokenizer = require('css-selector-tokenizer');
 
@@ -216,7 +216,7 @@ export class UnusedCssNg2Visitor extends Ng2Walker {
       if (meta.template && meta.template.template) {
         try {
           const ElementAstCtr = ElementAst as any;
-          VersionRunner
+          SemVerDSL
             .gte('4.0.0-beta.8', () => {
               this.templateAst =
                 new ElementAstCtr('*', [], [], [], [], [], [], false, [], parseTemplate(meta.template.template.code), 0, null, null);
