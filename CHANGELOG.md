@@ -1,3 +1,17 @@
+# 2.0.1
+
+### Features
+
+- Improve testing [#235](https://github.com/mgechev/codelyzer/issues/235) [77ef89e](https://github.com/mgechev/codelyzer/commit/77ef89e6a0f8d772f7e6a3e27a64e0225d2b10fd)
+- Log template parsing errors on log-level debug [#227](https://github.com/mgechev/codelyzer/issues/227) [19fdabf](https://github.com/mgechev/codelyzer/commit/19fdabf90ca89161b31af445dcbba600ff249da3)
+- Better error messages for `template-use-public` [#229](https://github.com/mgechev/codelyzer/issues/229) [0b7e459](https://github.com/comfroels/codelyzer/commit/0b7e459f7826995e50dab05169d528bebb58c9b4)
+- Support for Angular 4.0.0-beta.8 [#241](https://github.com/mgechev/codelyzer/issues/241) [98639a9](https://github.com/mgechev/codelyzer/commit/98639a9fbf4b8b4f39d9260be69b5f5a9e5d387d)
+
+### Bug Fixes
+
+- Fix semantic error when declaration's generation is enabled [#221](https://github.com/mgechev/codelyzer/issues/221) [c694405](https://github.com/mgechev/codelyzer/pull/223/commits/c694405918fcc573ea05a77d465e472159031925)
+- Inconsistent links to the style guide sections [#233](https://github.com/mgechev/codelyzer/issues/233) [c9e87f6](https://github.com/mgechev/codelyzer/commit/c9e87f6dccd1535745d16019880877c31373e31f)
+
 # 2.0.0
 
 ### Bug Fixes
