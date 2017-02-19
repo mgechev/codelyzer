@@ -6,7 +6,7 @@ describe('import-destructruing-spacing', () => {
       let source = `import {Foo} from './foo'`;
 
       assertFailure('import-destructuring-spacing', source, {
-        message: 'You need to leave whitespaces inside of the import statement\'s curly braces ($$03-05$$)',
+        message: 'You need to leave whitespaces inside of the import statement\'s curly braces',
         startPosition: {
           line: 0,
           character: 7
@@ -22,7 +22,7 @@ describe('import-destructruing-spacing', () => {
       let source = `import {Foo,Bar} from './foo'`;
 
       assertFailure('import-destructuring-spacing', source, {
-        message: 'You need to leave whitespaces inside of the import statement\'s curly braces ($$03-05$$)',
+        message: 'You need to leave whitespaces inside of the import statement\'s curly braces',
         startPosition: {
           line: 0,
           character: 7
@@ -38,7 +38,7 @@ describe('import-destructruing-spacing', () => {
       let source = `import {Foo,  Bar} from './foo'`;
 
       assertFailure('import-destructuring-spacing', source, {
-        message: 'You need to leave whitespaces inside of the import statement\'s curly braces ($$03-05$$)',
+        message: 'You need to leave whitespaces inside of the import statement\'s curly braces',
         startPosition: {
           line: 0,
           character: 7
@@ -54,7 +54,7 @@ describe('import-destructruing-spacing', () => {
       let source = `import { Foo} from './foo';`
 
       assertFailure('import-destructuring-spacing', source, {
-        message: 'You need to leave whitespaces inside of the import statement\'s curly braces ($$03-05$$)',
+        message: 'You need to leave whitespaces inside of the import statement\'s curly braces',
         startPosition: {
           line: 0,
           character: 7
@@ -70,7 +70,7 @@ describe('import-destructruing-spacing', () => {
       let source = `import {Foo } from './foo';`
 
       assertFailure('import-destructuring-spacing', source, {
-        message: 'You need to leave whitespaces inside of the import statement\'s curly braces ($$03-05$$)',
+        message: 'You need to leave whitespaces inside of the import statement\'s curly braces',
         startPosition: {
           line: 0,
           character: 7
