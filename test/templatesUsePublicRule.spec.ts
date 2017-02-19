@@ -12,7 +12,7 @@ describe('templates-use-public', () => {
           constructor(private foo: number) {}
         }`;
         assertFailure('templates-use-public', source, {
-          message: 'You can bind only to public class members.',
+          message: 'You can bind only to public class members. foo is not a public class member.',
           startPosition: {
             line: 3,
             character: 24
@@ -34,7 +34,7 @@ describe('templates-use-public', () => {
           private foo: number;
         }`;
         assertFailure('templates-use-public', source, {
-          message: 'You can bind only to public class members.',
+          message: 'You can bind only to public class members. foo is not a public class member.',
           startPosition: {
             line: 3,
             character: 29
@@ -56,7 +56,7 @@ describe('templates-use-public', () => {
           protected foo: number;
         }`;
         assertFailure('templates-use-public', source, {
-          message: 'You can bind only to public class members.',
+          message: 'You can bind only to public class members. foo is not a public class member.',
           startPosition: {
             line: 3,
             character: 29
@@ -78,7 +78,7 @@ describe('templates-use-public', () => {
           protected foo: number;
         }`;
         assertFailure('templates-use-public', source, {
-          message: 'You can bind only to public class members.',
+          message: 'You can bind only to public class members. foo is not a public class member.',
           startPosition: {
             line: 3,
             character: 29
@@ -100,7 +100,7 @@ describe('templates-use-public', () => {
           protected foo: number;
         }`;
         assertFailure('templates-use-public', source, {
-          message: 'You can bind only to public class members.',
+          message: 'You can bind only to public class members. foo is not a public class member.',
           startPosition: {
             line: 3,
             character: 35
@@ -122,7 +122,7 @@ describe('templates-use-public', () => {
           protected foo() {};
         }`;
         assertFailure('templates-use-public', source, {
-          message: 'You can bind only to public class members.',
+          message: 'You can bind only to public class members. foo is not a public class member.',
           startPosition: {
             line: 3,
             character: 33
