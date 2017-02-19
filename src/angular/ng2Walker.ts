@@ -32,6 +32,7 @@ export interface Ng2WalkerConfig {
   expressionVisitorCtrl?: RecursiveAngularExpressionVisitorCtr;
   templateVisitorCtrl?: TemplateAstVisitorCtr;
   cssVisitorCtrl?: CssAstVisitorCtrl;
+  languageService?: ts.LanguageService;
 }
 
 export class Ng2Walker extends Lint.RuleWalker {
@@ -41,11 +42,6 @@ export class Ng2Walker extends Lint.RuleWalker {
     protected _metadataReader?: MetadataReader) {
     super(sourceFile, _originalOptions);
     this._metadataReader = this._metadataReader || ng2WalkerFactoryUtils.defaultMetadataReader();
-    this._config = Object.assign({
-      templateVisitorCtrl: BasicTemplateAstVisitor,
-      expressionVisitorCtrl: RecursiveAngularExpressionVisitor,
-      cssVisitorCtrl: BasicCssAstVisitor
-    }, this._config || {});
 
     this._config = Object.assign({
       templateVisitorCtrl: BasicTemplateAstVisitor,
@@ -169,7 +165,8 @@ export class Ng2Walker extends Lint.RuleWalker {
       const referenceVisitor = new ReferenceCollectorVisitor();
       const visitor =
         new this._config.templateVisitorCtrl(
-          sourceFile, this._originalOptions, context, baseStart, this._config.expressionVisitorCtrl);
+          sourceFile, this._originalOptions, context, baseStart, this._config.expressionVisitorCtrl,
+          this._config.languageService);
       compiler.templateVisitAll(referenceVisitor, roots, null);
       visitor._variables = referenceVisitor.variables;
       compiler.templateVisitAll(visitor, roots, context.controller);

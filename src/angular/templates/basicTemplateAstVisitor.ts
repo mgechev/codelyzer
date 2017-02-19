@@ -64,13 +64,14 @@ const getExpressionDisplacement = (binding: any) => {
 
 
 export interface RecursiveAngularExpressionVisitorCtr {
-  new(sourceFile: ts.SourceFile, options: Lint.IOptions, context: ComponentMetadata, basePosition: number);
+  new(sourceFile: ts.SourceFile, options: Lint.IOptions, context: ComponentMetadata, basePosition: number,
+    languageService?: ts.LanguageService);
 }
 
 
 export interface TemplateAstVisitorCtr {
   new(sourceFile: ts.SourceFile, options: Lint.IOptions, context: ComponentMetadata,
-    templateStart: number, expressionVisitorCtrl: RecursiveAngularExpressionVisitorCtr);
+    templateStart: number, expressionVisitorCtrl: RecursiveAngularExpressionVisitorCtr, languageService?: ts.LanguageService);
 }
 
 export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast.TemplateAstVisitor {
@@ -80,13 +81,14 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
     private _originalOptions: Lint.IOptions,
     protected context: ComponentMetadata,
     protected templateStart: number,
-    private expressionVisitorCtrl: RecursiveAngularExpressionVisitorCtr = RecursiveAngularExpressionVisitor) {
+    private expressionVisitorCtrl: RecursiveAngularExpressionVisitorCtr = RecursiveAngularExpressionVisitor,
+    protected languageService?: ts.LanguageService) {
       super(sourceFile, _originalOptions, context.template.template, templateStart);
     }
 
   protected visitNg2TemplateAST(ast: e.AST, templateStart: number) {
     const templateVisitor =
-      new this.expressionVisitorCtrl(this.getSourceFile(), this._originalOptions, this.context, templateStart);
+      new this.expressionVisitorCtrl(this.getSourceFile(), this._originalOptions, this.context, templateStart, this.languageService);
     templateVisitor.preDefinedVariables = this._variables;
     templateVisitor.visit(ast);
     templateVisitor.getFailures().forEach(f => this.addFailure(f));

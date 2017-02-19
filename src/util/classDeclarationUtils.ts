@@ -3,6 +3,11 @@ import { current } from './syntaxKind';
 
 const SyntaxKind = current();
 
+export const getClassMembers = (declaration: ts.ClassDeclaration, tc: ts.TypeChecker): ts.Symbol[] => {
+  const properties = tc.getTypeAtLocation(declaration).getProperties();
+  return properties;
+};
+
 export const getDeclaredProperties = (declaration: ts.ClassDeclaration) => {
   const m = declaration.members;
   const ctr = m.filter((m: any) => m.kind === SyntaxKind.Constructor).pop();
