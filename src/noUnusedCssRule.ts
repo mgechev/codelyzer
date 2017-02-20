@@ -21,7 +21,10 @@ import {SemVerDSL} from './util/ngVersion';
 const CssSelectorTokenizer = require('css-selector-tokenizer');
 
 const getSymbolName = (t: any) => {
-  let expr = t.expression;
+  let expr = t;
+  if (t.expression) {
+    expr = t.expression;
+  }
   if (t.expression && t.expression.name) {
     expr = t.expression.name;
   }
