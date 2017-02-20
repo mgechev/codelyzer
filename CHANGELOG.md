@@ -1,3 +1,16 @@
+# 3.0.0-rc.0
+
+### Breaking Changes
+
+- Remove `importDestructuringSpacing`.
+- `no-access-missing-member`, `use-life-cycle-interface` and `template-use-public` require type checking which means that tslint should be run with [the corresponding options](https://github.com/palantir/tslint#type-checking)
+
+### Features
+
+- `no-access-missing-member` support for inheritance [#191](https://github.com/mgechev/codelyzer/issues/191) [2901718](https://github.com/mgechev/codelyzer/commit/2901718d93633284be59ae04c1b00a99df7cf885)
+- `use-life-cycle-interface` support for inheritance [#64](https://github.com/mgechev/codelyzer/issues/64) [d0d7138](https://github.com/mgechev/codelyzer/commit/d0d71387ab322f7bbb612c79bc673fe9dbf4880f)
+- `template-use-public` support for inheritance [#240](https://github.com/mgechev/codelyzer/issues/240) [2e285e2](https://github.com/mgechev/codelyzer/commit/2e285e22efb7bdc031ded2721c52cf8e041b9901)
+
 # 2.0.1
 
 ### Features
