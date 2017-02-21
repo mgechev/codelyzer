@@ -150,15 +150,28 @@ export class Rule extends Lint.Rules.AbstractRule {
 class UnusedCssVisitor extends BasicCssAstVisitor {
   templateAst: TemplateAst;
 
+  constructor(sourceFile: ts.SourceFile,
+    originalOptions: Lint.IOptions,
+    context: ComponentMetadata,
+    protected style: StyleMetadata,
+    templateStart: number) {
+      super(sourceFile, originalOptions, context, style, templateStart);
+    }
+
   visitCssSelectorRule(ast: CssSelectorRuleAst) {
     try {
       const match = ast.selectors.some(s => this.visitCssSelector(s));
       if (!match) {
         // We need this because of eventual source maps
         const start = ast.start.offset;
-        const length = ast.end.offset - ast.start.offset;
+        const end = ast.end.offset;
+        const length = end - ast.start.offset + 1;
+        let removeLength = length;
         // length + 1 because we want to drop the '}'
-        const fix = this.createFix(this.createReplacement(start, length + 1, ''));
+        if (/\s/.test(this.style.style.source[this.getSourcePosition(end) - this.style.node.getStart()])) {
+          removeLength += 1;
+        }
+        const fix = this.createFix(this.createReplacement(start, removeLength, ''));
         this.addFailure(this.createFailure(start, length, 'Unused styles', fix));
       }
     } catch (e) {

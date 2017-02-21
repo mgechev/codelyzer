@@ -233,7 +233,7 @@ describe('no-unused-css', () => {
           },
           endPosition: {
             line: 12,
-            character: 12
+            character: 13
           }
       });
     });
@@ -271,7 +271,7 @@ describe('no-unused-css', () => {
           },
           endPosition: {
             line: 17,
-            character: 12
+            character: 13
           }
       });
     });
@@ -304,7 +304,7 @@ describe('no-unused-css', () => {
           },
           endPosition: {
             line: 12,
-            character: 12
+            character: 13
           }
       });
     });
@@ -339,7 +339,7 @@ describe('no-unused-css', () => {
             },
             endPosition: {
               line: 12,
-              character: 14
+              character: 15
             }
         });
       });
@@ -399,7 +399,7 @@ describe('no-unused-css', () => {
           },
           endPosition: {
             line: 12,
-            character: 12
+            character: 13
           }
       });
     });
@@ -457,7 +457,7 @@ describe('no-unused-css', () => {
           },
           endPosition: {
             line: 12,
-            character: 12
+            character: 13
           }
       });
     });
@@ -513,7 +513,7 @@ describe('no-unused-css', () => {
           },
           endPosition: {
             line: 12,
-            character: 12
+            character: 13
           }
       });
     });
@@ -572,7 +572,7 @@ describe('no-unused-css', () => {
           },
           endPosition: {
             line: 12,
-            character: 12
+            character: 13
           }
       });
     });
@@ -638,7 +638,7 @@ describe('no-unused-css', () => {
           },
           endPosition: {
             line: 9,
-            character: 12
+            character: 13
           }
       });
     });
@@ -666,7 +666,7 @@ describe('no-unused-css', () => {
           },
           endPosition: {
             line: 9,
-            character: 12
+            character: 13
           }
       });
     });
@@ -694,7 +694,7 @@ describe('no-unused-css', () => {
           },
           endPosition: {
             line: 9,
-            character: 12
+            character: 13
           }
       });
     });
