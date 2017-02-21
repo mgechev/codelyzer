@@ -11,7 +11,7 @@ import {
   PropertyBindingType
 } from '@angular/compiler';
 import {parseTemplate} from './angular/templates/templateParser';
-import {CssAst, CssSelectorRuleAst, CssSelectorAst} from './angular/styles/cssAst';
+import { CssAst, CssSelectorRuleAst, CssSelectorAst, CssBlockAst } from './angular/styles/cssAst';
 
 import {ComponentMetadata, StyleMetadata} from './angular/metadata';
 import {ng2WalkerFactoryUtils} from './angular/ng2WalkerFactoryUtils';
@@ -154,8 +154,12 @@ class UnusedCssVisitor extends BasicCssAstVisitor {
     try {
       const match = ast.selectors.some(s => this.visitCssSelector(s));
       if (!match) {
-        this.addFailure(this.createFailure(ast.start.offset,
-          ast.end.offset - ast.start.offset, 'Unused styles'));
+        // We need this because of eventual source maps
+        const start = ast.start.offset;
+        const length = ast.end.offset - ast.start.offset;
+        // length + 1 because we want to drop the '}'
+        const fix = this.createFix(this.createReplacement(start, length + 1, ''));
+        this.addFailure(this.createFailure(start, length, 'Unused styles', fix));
       }
     } catch (e) {
       logger.error(e);

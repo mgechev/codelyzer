@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import {RuleWalker, RuleFailure, IOptions} from 'tslint';
+import {RuleWalker, RuleFailure, IOptions, Fix, Replacement} from 'tslint';
 import {ComponentMetadata, CodeWithSourceMap} from './metadata';
 import {SourceMapConsumer} from 'source-map';
 
@@ -35,7 +35,17 @@ export class SourceMappingVisitor extends RuleWalker {
     super(sourceFile, options);
   }
 
-  createFailure(start: number, length: number, message: string): RuleFailure {
+  createFailure(s: number, l: number, message: string, fix?: Fix): RuleFailure {
+    const { start, length } = this.getMappedInterval(s, l);
+    return super.createFailure(start, length, message, fix);
+  }
+
+  createReplacement(s: number, l: number, replacement: string): Replacement {
+    const { start, length } = this.getMappedInterval(s, l);
+    return super.createReplacement(start, length, replacement);
+  }
+
+  private getMappedInterval(start: number, length: number) {
     let end = start + length;
     if (this.codeWithMap.map) {
       const consumer = new SourceMapConsumer(this.codeWithMap.map);
@@ -45,7 +55,7 @@ export class SourceMappingVisitor extends RuleWalker {
       start += this.basePosition;
       end = start + length;
     }
-    return super.createFailure(start, end - start, message);
+    return { start, length: end - start };
   }
 
   private getMappedPosition(pos: number, consumer: SourceMapConsumer) {
