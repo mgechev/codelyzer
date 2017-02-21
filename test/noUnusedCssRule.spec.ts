@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import {Decorator} from 'typescript';
 
 import * as sass from 'node-sass';
@@ -769,6 +770,98 @@ describe('no-unused-css', () => {
         private hero: Hero;
       }`;
       assertSuccess('no-unused-css', source);
+    });
+
+  });
+
+  describe('autofixes', () => {
+
+    it('should work with regular CSS', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          encapsulation: prefix.foo.ViewEncapsulation.Emulated,
+          template: \`<div></div>\`,
+          styles: [
+            \`
+            p {
+              color: red;
+            }
+            \`
+          ]
+        })
+        class Test {}`;
+      const failures = assertFailure('no-unused-css', source, {
+        message: 'Unused styles',
+        startPosition: {
+          line: 7,
+          character: 12
+        },
+        endPosition: {
+          line: 9,
+          character: 13
+        }
+      }, null);
+      const fix = failures[0].getFix();
+      const replacements = fix.replacements;
+      expect(replacements.length).to.eq(1);
+      const replacement = replacements[0];
+      expect(replacement.text).to.eq('');
+      expect(replacement.start).to.eq(197);
+      expect(replacement.end).to.eq(240);
+    });
+
+    it('should work with SASS', () => {
+      Config.transformStyle = (source: string, url: string, d: Decorator) => {
+        const res = sass.renderSync({
+          sourceMap: true, data: source, sourceMapEmbed: true
+        });
+        const code = res.css.toString();
+        const base64Map = code.match(/\/\*(.*?)\*\//)[1].replace('# sourceMappingURL=data:application/json;base64,', '');
+        const map = JSON.parse(new Buffer(base64Map, 'base64').toString('ascii'));
+        return { code, source, map };
+      };
+
+      let source = `
+      @Component({
+        selector: 'hero-cmp',
+        template: \`
+          <h1>Hello <span>{{ hero.name }}</span></h1>
+        \`,
+        styles: [
+          \`
+          h1 {
+            spam {
+              baz {
+                color: red;
+              }
+            }
+          }
+          \`
+        ]
+      })
+      class HeroComponent {
+        private hero: Hero;
+      }`;
+      const failures = assertFailure('no-unused-css', source, {
+        message: 'Unused styles',
+        startPosition: {
+          line: 8,
+          character: 9
+        },
+        endPosition: {
+          line: 12,
+          character: 14
+        }
+      });
+      Config.transformStyle = (code: string) => ({ code, map: null });
+      const fix = failures[0].getFix();
+      const replacements = fix.replacements;
+      expect(replacements.length).to.eq(1);
+      const replacement = replacements[0];
+      expect(replacement.text).to.eq('');
+      expect(replacement.start).to.eq(174);
+      expect(replacement.end).to.eq(261); // should be 276
     });
 
   });
