@@ -166,12 +166,8 @@ class UnusedCssVisitor extends BasicCssAstVisitor {
         const start = ast.start.offset;
         const end = ast.end.offset;
         const length = end - ast.start.offset + 1;
-        let removeLength = length;
         // length + 1 because we want to drop the '}'
-        if (/\s/.test(this.style.style.source[this.getSourcePosition(end) - this.style.node.getStart()])) {
-          removeLength += 1;
-        }
-        const fix = this.createFix(this.createReplacement(start, removeLength, ''));
+        const fix = this.createFix(this.createReplacement(start, length, ''));
         this.addFailure(this.createFailure(start, length, 'Unused styles', fix));
       }
     } catch (e) {
