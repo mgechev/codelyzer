@@ -737,12 +737,12 @@ describe('no-unused-css', () => {
     assertFailure('no-unused-css', source, {
       message: 'Unused styles',
       startPosition: {
-        line: 9,
-        character: 8
+        line: 8,
+        character: 7
       },
       endPosition: {
-        line: 13,
-        character: 11
+        line: 12,
+        character: 12
       }
     });
     Config.transformStyle = (code: string) => ({ code, map: null });
