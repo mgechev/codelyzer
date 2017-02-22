@@ -4,6 +4,7 @@ import {Ng2Walker} from './angular/ng2Walker';
 import {getComponentDecorator, isSimpleTemplateString, getDecoratorPropertyInitializer} from './util/utils';
 import {BasicCssAstVisitor} from './angular/styles/basicCssAstVisitor';
 import {BasicTemplateAstVisitor} from './angular/templates/basicTemplateAstVisitor';
+import {VERSION} from '@angular/core';
 import {
   TemplateAst,
   ElementAst,
@@ -15,11 +16,15 @@ import {CssAst, CssSelectorRuleAst, CssSelectorAst} from './angular/styles/cssAs
 import {ComponentMetadata, StyleMetadata} from './angular/metadata';
 import {ng2WalkerFactoryUtils} from './angular/ng2WalkerFactoryUtils';
 import {logger} from './util/logger';
+import {SemVerDSL} from './util/ngVersion';
 
 const CssSelectorTokenizer = require('css-selector-tokenizer');
 
 const getSymbolName = (t: any) => {
-  let expr = t.expression;
+  let expr = t;
+  if (t.expression) {
+    expr = t.expression;
+  }
   if (t.expression && t.expression.name) {
     expr = t.expression.name;
   }
@@ -210,8 +215,16 @@ export class UnusedCssNg2Visitor extends Ng2Walker {
       this.visitNg2Component(meta);
       if (meta.template && meta.template.template) {
         try {
-          this.templateAst =
-            new ElementAst('*', [], [], [], [], [], [], false, parseTemplate(meta.template.template.code), 0, null, null);
+          const ElementAstCtr = ElementAst as any;
+          SemVerDSL
+            .gte('4.0.0-beta.8', () => {
+              this.templateAst =
+                new ElementAstCtr('*', [], [], [], [], [], [], false, [], parseTemplate(meta.template.template.code), 0, null, null);
+            })
+            .else(() => {
+              this.templateAst =
+                new ElementAstCtr('*', [], [], [], [], [], [], false, parseTemplate(meta.template.template.code), 0, null, null);
+            });
         } catch (e) {
           logger.error('Cannot parse the template', e);
         }

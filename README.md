@@ -72,7 +72,6 @@ Now create the following `tslint.json` file where your `node_modules` directory 
     "pipe-naming": [true, "camelCase", "sg"],
     "component-class-suffix": true,
     "directive-class-suffix": true,
-    "import-destructuring-spacing": true,
     "templates-use-public": true,
     "no-access-missing-member": true,
     "invoke-injectable": true
@@ -163,7 +162,6 @@ Below you can find a recommended configuration which is based on the [Angular St
   // Where "SUFFIX" is your custom suffix, for instance "Page" for Ionic 2 components.
   "component-class-suffix": [true, "Component"],
   "directive-class-suffix": [true, "Directive"],
-  "import-destructuring-spacing": true,
   "templates-use-public": true,
   "no-access-missing-member": true,
   "invoke-injectable": true

@@ -1,6 +1,6 @@
 {
   "name": "codelyzer",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Linting for Angular applications, following angular.io/styleguide.",
   "scripts": {
     "lint": "tslint -c tslint.json src/**/*.ts test/**/*.ts",
@@ -73,8 +73,8 @@
     "app-root-path": "^2.0.1",
     "css-selector-tokenizer": "^0.7.0",
     "cssauron": "^1.4.0",
+    "semver-dsl": "^1.0.1",
     "source-map": "^0.5.6",
     "sprintf-js": "^1.0.3"
   }
 }
-
