@@ -701,6 +701,73 @@ describe('no-unused-css', () => {
 
   });
 
+  it('should fail when having a valid simple selector and an invalid simple selector', () => {
+    let source = `
+      @Component({
+        selector: 'foobar',
+        template: '<div bar="{{baz}}" [ngClass]="expr">{{ foo }}</div>',
+        styles: [
+          \`
+          div {
+            color: red;
+          }
+
+          span {
+            color: black;
+          }
+          \`
+        ]
+      })
+      class Test {
+        bar: number;
+      }`;
+      assertFailure('no-unused-css', source, {
+        message: 'Unused styles',
+        startPosition: {
+          line: 10,
+          character: 10
+        },
+        endPosition: {
+          line: 12,
+          character: 10
+        }
+      });
+  });
+
+  it('should fail when having a valid complex selector and an invalid complex selector', () => {
+    let source = `
+      @Component({
+        selector: 'foobar',
+        template: \`<div bar="{{baz}}" [ngClass]="expr">
+          <span>{{ foo }}</span>
+        </div>\`,
+        styles: [
+          \`
+          div span {
+            color: red;
+          }
+
+          div span p {
+            color: black;
+          }
+          \`
+        ]
+      })
+      class Test {
+        bar: number;
+      }`;
+      assertFailure('no-unused-css', source, {
+        message: 'Unused styles',
+        startPosition: {
+          line: 12,
+          character: 10
+        },
+        endPosition: {
+          line: 14,
+          character: 10
+        }
+      });
+  });
 
   it('should work with sass', () => {
     Config.transformStyle = (source: string, url: string, d: Decorator) => {
