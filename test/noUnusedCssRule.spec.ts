@@ -94,6 +94,30 @@ describe('no-unused-css', () => {
           assertSuccess('no-unused-css', source);
       });
 
+      it('should succeed for structural directives when selector matches', () => {
+        let source = `
+          @Component({
+            selector: 'foobar',
+            template: \`<div>
+              <section>
+                <span><h1>{{ foo }}</h1></span>
+              </section>
+            </div>\`,
+            styles: [
+              \`
+              div h1 {
+                color: red;
+              }
+              \`
+            ]
+          })
+          class Test {
+            bar: number;
+          }`;
+          
+          assertSuccess('no-unused-css', source);
+      });
+
       describe('multiple styles', () => {
 
         it('should succeed when having valid complex selector', () => {
@@ -308,6 +332,39 @@ describe('no-unused-css', () => {
           }
       });
     });
+
+      it('should fail for structural directives when selector does not match', () => {
+        let source = `
+          @Component({
+            selector: 'foobar',
+            template: \`<div>
+              <section>
+                <span><h1 *ngIf="true">{{ foo }}</h1></span>
+              </section>
+            </div>\`,
+            styles: [
+              \`
+              div h1#header {
+                color: red;
+              }
+              \`
+            ]
+          })
+          class Test {
+            bar: number;
+          }`;
+          assertFailure('no-unused-css', source, {
+            message: 'Unused styles',
+            startPosition: {
+              line: 10,
+              character: 14
+            },
+            endPosition: {
+              line: 12,
+              character: 14
+            }
+        });
+      });
 
     describe('class setter', () => {
 

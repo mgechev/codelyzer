@@ -8,6 +8,7 @@ import {VERSION} from '@angular/core';
 import {
   TemplateAst,
   ElementAst,
+  EmbeddedTemplateAst,
   PropertyBindingType
 } from '@angular/compiler';
 import {parseTemplate} from './angular/templates/templateParser';
@@ -131,7 +132,9 @@ class ElementFilterVisitor extends BasicTemplateAstVisitor {
       const strategy = strategies[s];
       return !selectorTypes[s] || !strategy(ast);
     }) && (ast.children || [])
-      .every(c => ast instanceof ElementAst && this.shouldVisit(<ElementAst>c, strategies, selectorTypes));
+      .every(c => ast instanceof ElementAst && this.shouldVisit(<ElementAst>c, strategies, selectorTypes)
+                  || ast instanceof EmbeddedTemplateAst && 
+                  (ast.children || []).every(c => this.shouldVisit(<ElementAst>c, strategies, selectorTypes)));
   }
 }
 
