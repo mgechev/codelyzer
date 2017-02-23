@@ -155,10 +155,11 @@ class UnusedCssVisitor extends BasicCssAstVisitor {
 
   visitCssSelectorRule(ast: CssSelectorRuleAst) {
     try {
-      const match = ast.selectors.some(s => this.visitCssSelector(s));
-      if (!match) {
-        this.addFailure(this.createFailure(ast.start.offset,
-          ast.end.offset - ast.start.offset, 'Unused styles'));
+      for (let i = 0; i < ast.selectors.length; i += 1) {
+        if (!this.visitCssSelector(ast.selectors[i])) {
+          this.addFailure(this.createFailure(ast.start.offset,
+            ast.end.offset - ast.start.offset, 'Unused styles'));
+        }
       }
     } catch (e) {
       logger.error(e);
