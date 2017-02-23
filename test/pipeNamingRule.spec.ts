@@ -1,4 +1,4 @@
-import {assertFailure, assertSuccess} from './testHelper';
+import { assertSuccess, assertAnnotated} from './testHelper';
 
 describe('pipe-naming', () => {
     describe('invalid pipe name', () => {
@@ -6,76 +6,60 @@ describe('pipe-naming', () => {
             let source = `
                       @Pipe({
                         name: 'foo-bar'
+                        ~~~~~~~~~~~~~~~
                       })
                       class Test {}`;
-            assertFailure('pipe-naming', source, {
-                message: 'The name of the Pipe decorator of class Test should be named camelCase with prefix ng, however its value is "foo-bar".',
-                startPosition: {
-                    line: 2,
-                    character: 24
-                },
-                endPosition: {
-                    line: 2,
-                    character: 39
-                }
-            }, ['camelCase', 'ng']);
+            assertAnnotated({
+                ruleName: 'pipe-naming',
+                message:  'The name of the Pipe decorator of class Test should be named camelCase with prefix ng, however its value is "foo-bar".',
+                source,
+                options:  ['camelCase', 'ng']
+            })
         });
 
         it('should fail when Pipe is named camelCase without prefix applying multiple prefixes', () => {
             let source = `
                       @Pipe({
                         name: 'foo-bar'
+                        ~~~~~~~~~~~~~~~
                       })
                       class Test {}`;
-            assertFailure('pipe-naming', source, {
-                message: 'The name of the Pipe decorator of class Test should be named camelCase with prefix ng,mg,sg, however its value is "foo-bar".',
-                startPosition: {
-                    line: 2,
-                    character: 24
-                },
-                endPosition: {
-                    line: 2,
-                    character: 39
-                }
-            }, ['camelCase', 'ng','mg','sg']);
+            assertAnnotated({
+                ruleName: 'pipe-naming',
+                message:  'The name of the Pipe decorator of class Test should be named camelCase with prefix ng,mg,sg, however its value is "foo-bar".',
+                source,
+                options:  ['camelCase', 'ng','mg','sg']
+            })
         });
 
         it('should fail when Pipe is named camelCase and has longer prefix', () => {
             let source = `
                       @Pipe({
                         name: 'fooBar'
+                        ~~~~~~~~~~~~~~
                       })
                       class Test {}`;
-            assertFailure('pipe-naming', source, {
-                message: 'The name of the Pipe decorator of class Test should be named camelCase with prefix fo,mg,sg, however its value is "fooBar".',
-                startPosition: {
-                    line: 2,
-                    character: 24
-                },
-                endPosition: {
-                    line: 2,
-                    character: 38
-                }
-            }, ['camelCase', 'fo','mg','sg']);
+            assertAnnotated({
+                ruleName: 'pipe-naming',
+                message:  'The name of the Pipe decorator of class Test should be named camelCase with prefix fo,mg,sg, however its value is "fooBar".',
+                source,
+                options:  ['camelCase', 'fo','mg','sg']
+            })
         });
 
         it('should fail when Pipe is not named camelCase without prefix', () => {
             let source = `
                       @Pipe({
                         name: 'foo-bar'
+                        ~~~~~~~~~~~~~~~
                       })
                       class Test {}`;
-            assertFailure('pipe-naming', source, {
-                message: 'The name of the Pipe decorator of class Test should be named camelCase, however its value is "foo-bar".',
-                startPosition: {
-                    line: 2,
-                    character: 24
-                },
-                endPosition: {
-                    line: 2,
-                    character: 39
-                }
-            }, 'camelCase');
+            assertAnnotated({
+                ruleName: 'pipe-naming',
+                message:  'The name of the Pipe decorator of class Test should be named camelCase, however its value is "foo-bar".',
+                source,
+                options:  'camelCase'
+            })
         });
     });
 
