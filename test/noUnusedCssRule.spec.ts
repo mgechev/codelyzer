@@ -362,7 +362,7 @@ describe('no-unused-css', () => {
             },
             endPosition: {
               line: 12,
-              character: 14
+              character: 15
             }
         });
       });
