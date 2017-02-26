@@ -1,9 +1,13 @@
-# 3.0.0-rc.0
+# 3.0.0-beta.0
 
 ### Breaking Changes
 
 - Remove `importDestructuringSpacing`.
 - `no-access-missing-member`, `use-life-cycle-interface` and `template-use-public` require type checking which means that tslint should be run with [the corresponding options](https://github.com/palantir/tslint#type-checking)
+
+```
+$ tslint --type-check --project src/client/tsconfig.json
+```
 
 ### Features
 

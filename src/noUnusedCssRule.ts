@@ -8,10 +8,11 @@ import {VERSION} from '@angular/core';
 import {
   TemplateAst,
   ElementAst,
+  EmbeddedTemplateAst,
   PropertyBindingType
 } from '@angular/compiler';
 import {parseTemplate} from './angular/templates/templateParser';
-import {CssAst, CssSelectorRuleAst, CssSelectorAst} from './angular/styles/cssAst';
+import { CssAst, CssSelectorRuleAst, CssSelectorAst, CssBlockAst } from './angular/styles/cssAst';
 
 import {ComponentMetadata, StyleMetadata} from './angular/metadata';
 import {ng2WalkerFactoryUtils} from './angular/ng2WalkerFactoryUtils';
@@ -131,7 +132,9 @@ class ElementFilterVisitor extends BasicTemplateAstVisitor {
       const strategy = strategies[s];
       return !selectorTypes[s] || !strategy(ast);
     }) && (ast.children || [])
-      .every(c => ast instanceof ElementAst && this.shouldVisit(<ElementAst>c, strategies, selectorTypes));
+      .every(c => ast instanceof ElementAst && this.shouldVisit(<ElementAst>c, strategies, selectorTypes)
+                  || ast instanceof EmbeddedTemplateAst && 
+                  (ast.children || []).every(c => this.shouldVisit(<ElementAst>c, strategies, selectorTypes)));
   }
 }
 
@@ -150,12 +153,25 @@ export class Rule extends Lint.Rules.AbstractRule {
 class UnusedCssVisitor extends BasicCssAstVisitor {
   templateAst: TemplateAst;
 
+  constructor(sourceFile: ts.SourceFile,
+    originalOptions: Lint.IOptions,
+    context: ComponentMetadata,
+    protected style: StyleMetadata,
+    templateStart: number) {
+      super(sourceFile, originalOptions, context, style, templateStart);
+    }
+
   visitCssSelectorRule(ast: CssSelectorRuleAst) {
     try {
       const match = ast.selectors.some(s => this.visitCssSelector(s));
       if (!match) {
-        this.addFailure(this.createFailure(ast.start.offset,
-          ast.end.offset - ast.start.offset, 'Unused styles'));
+        // We need this because of eventual source maps
+        const start = ast.start.offset;
+        const end = ast.end.offset;
+        const length = end - ast.start.offset + 1;
+        // length + 1 because we want to drop the '}'
+        const fix = this.createFix(this.createReplacement(start, length, ''));
+        this.addFailure(this.createFailure(start, length, 'Unused styles', fix));
       }
     } catch (e) {
       logger.error(e);
