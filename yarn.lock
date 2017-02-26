@@ -959,6 +959,10 @@ nan@^2.3.2:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.5.1.tgz#d5b01691253326a97a2bbee9e61c55d8d60351e2"
 
+ngast@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/ngast/-/ngast-0.0.1.tgz#a63f599dbc8270773f68d4afd9d10397515d2db3"
+
 node-gyp@^3.3.1:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/node-gyp/-/node-gyp-3.5.0.tgz#a8fe5e611d079ec16348a3eb960e78e11c85274a"

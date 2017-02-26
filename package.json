@@ -73,7 +73,7 @@
     "app-root-path": "^2.0.1",
     "css-selector-tokenizer": "^0.7.0",
     "cssauron": "^1.4.0",
-    "ngast": "0.0.0",
+    "ngast": "^0.0.1",
     "semver-dsl": "^1.0.1",
     "source-map": "^0.5.6",
     "sprintf-js": "^1.0.3"
