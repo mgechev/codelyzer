@@ -11,7 +11,7 @@ os:
 branches:
   only: master
 
-before_install: npm i rxjs@5.0.1 @angular/core @angular/compiler zone.js@0.7.2
+before_install: npm i -g yarn && yarn add rxjs@5.0.1 @angular/core @angular/compiler zone.js@0.7.2
 
 script: npm run tscv && npm run lint && npm t
 
