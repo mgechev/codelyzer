@@ -1,6 +1,6 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import * as e from '@angular/compiler/src/expression_parser/ast';
+import * as e from '@angular/compiler';
 
 import {SourceMappingVisitor} from '../sourceMappingVisitor';
 import {ComponentMetadata} from '../metadata';

@@ -1,4 +1,4 @@
-import { __core_private__ as r, NO_ERRORS_SCHEMA, ViewEncapsulation } from '@angular/core';
+import { NO_ERRORS_SCHEMA, ViewEncapsulation } from '@angular/core';
 import * as compiler from '@angular/compiler';
 
 import { Config, DirectiveDeclaration } from '../config';
@@ -45,25 +45,14 @@ let defaultDirectives = [];
 export const parseTemplate = (template: string, directives: DirectiveDeclaration[] = []) => {
   defaultDirectives = directives.map(d => dummyMetadataFactory(d));
 
-  const TemplateParser = <any>compiler.TemplateParser;
   const expressionParser = new compiler.Parser(new compiler.Lexer());
   const elementSchemaRegistry = new compiler.DomElementSchemaRegistry();
-  const ngConsole = new r.Console();
   const htmlParser =
       new compiler.I18NHtmlParser(new compiler.HtmlParser());
 
-  let tmplParser: any;
-
-  SemVerDSL
-    .gte('4.0.0-beta.8', () => {
       const config = new compiler.CompilerConfig({});
-      tmplParser =
-        new TemplateParser(config, expressionParser, elementSchemaRegistry, htmlParser, ngConsole, []);
-    })
-    .else(() => {
-      tmplParser =
-        new TemplateParser(expressionParser, elementSchemaRegistry, htmlParser, ngConsole, []);
-    });
+  const tmplParser: compiler.TemplateParser =
+        new compiler.TemplateParser(config, expressionParser, elementSchemaRegistry, htmlParser, null, []);
 
   const interpolation = Config.interpolation;
 

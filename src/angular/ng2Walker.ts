@@ -2,6 +2,7 @@ import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import * as compiler from '@angular/compiler';
 import { parseTemplate } from './templates/templateParser';
+import { parseTemplate as parseTemplateWithContext } from './templates/contextAwareTemplateParser';
 
 import {parseCss} from './styles/parseCss';
 import {CssAst} from './styles/cssAst';
@@ -126,9 +127,18 @@ export class Ng2Walker extends Lint.RuleWalker {
     };
     if (template && template.template) {
       try {
-        const templateAst = parseTemplate(template.template.code, Config.predefinedDirectives);
+        let templateAst: any;
+        if (!this._config.languageService) {
+          templateAst = parseTemplate(template.template.code, Config.predefinedDirectives);
+        } else {
+          const fileName = this.getSourceFile().fileName;
+          const program = this._config.languageService.getProgram();
+          templateAst = parseTemplateWithContext(metadata.controller, fileName, program);
+          console.log('%%%%%%%%%%', templateAst);
+        }
         this.visitNg2TemplateHelper(templateAst, metadata, getPosition(template.node));
       } catch (e) {
+        console.log(e);
         logger.error('Cannot parse the template of', ((<any>metadata.controller || {}).name || {}).text, e);
       }
     }

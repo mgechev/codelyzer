@@ -65,11 +65,12 @@
     "zone.js": "^0.7.2"
   },
   "peerDependencies": {
-    "tslint": "^4.0.0",
     "@angular/compiler": ">=4.0.0-rc <5.0.0",
-    "@angular/core": ">=4.0.0-rc <5.0.0"
+    "@angular/core": ">=4.0.0-rc <5.0.0",
+    "tslint": "^4.0.0"
   },
   "dependencies": {
+    "@angular/compiler-cli": "4.0.0-rc.1",
     "app-root-path": "^2.0.1",
     "css-selector-tokenizer": "^0.7.0",
     "cssauron": "^1.4.0",

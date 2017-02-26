@@ -6,7 +6,7 @@ import {Ng2Walker} from './angular/ng2Walker';
 import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAngularExpressionVisitor';
 import {ExpTypes} from './angular/expressionTypes';
 import {getClassMembers} from './util/classDeclarationUtils';
-import * as e from '@angular/compiler/src/expression_parser/ast';
+import * as e from '@angular/compiler';
 
 import {Config} from './angular/config';
 

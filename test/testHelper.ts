@@ -95,6 +95,8 @@ export const getProgram = (project: Project, config: any, root: string = ''): ts
   };
   const parsed = ts.parseJsonConfigFileContent(config, parseConfigHost, root);
   parsed.options.baseUrl = parsed.options.baseUrl || root;
+  parsed.options.basePath = parsed.options.baseUrl;
+  parsed.options.genDir = parsed.options.baseUrl;
   parsed.options.allowJs = true;
   parsed.options.target = ts.ScriptTarget.ES5;
   parsed.options.module = ts.ModuleKind.CommonJS;

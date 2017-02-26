@@ -4,7 +4,7 @@ import {stringDistance} from './util/utils';
 import {getClassMembers} from './util/classDeclarationUtils';
 import {Ng2Walker} from './angular/ng2Walker';
 import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAngularExpressionVisitor';
-import * as e from '@angular/compiler/src/expression_parser/ast';
+import * as e from '@angular/compiler';
 import SyntaxKind = require('./util/syntaxKind');
 
 enum DeclarationType {

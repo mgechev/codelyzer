@@ -2,6 +2,14 @@
 # yarn lockfile v1
 
 
+"@angular/compiler-cli@4.0.0-rc.1":
+  version "4.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-4.0.0-rc.1.tgz#48cdcfb691eac2152602f296fb9fa7ffc4bfa5bd"
+  dependencies:
+    "@angular/tsc-wrapped" "4.0.0-rc.1"
+    minimist "^1.2.0"
+    reflect-metadata "^0.1.2"
+
 "@angular/compiler@^4.0.0-rc.1":
   version "4.0.0-rc.1"
   resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-4.0.0-rc.1.tgz#e89f2d76f8800cb599e9dc6c7f8a381e79b92715"
@@ -9,6 +17,12 @@
 "@angular/core@^4.0.0-rc.1":
   version "4.0.0-rc.1"
   resolved "https://registry.yarnpkg.com/@angular/core/-/core-4.0.0-rc.1.tgz#7f87b7696b407476e45d6d3c1880a50d5afbb6e3"
+
+"@angular/tsc-wrapped@4.0.0-rc.1":
+  version "4.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@angular/tsc-wrapped/-/tsc-wrapped-4.0.0-rc.1.tgz#767ce64d70c66b9d4bd8ba1ef99a47bc02836336"
+  dependencies:
+    tsickle "^0.21.0"
 
 "@types/chai@^3.4.33":
   version "3.4.35"
@@ -1193,6 +1207,10 @@ redent@^1.0.0:
     indent-string "^2.1.0"
     strip-indent "^1.0.1"
 
+reflect-metadata@^0.1.2:
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.10.tgz#b4f83704416acad89988c9b15635d47e03b9344a"
+
 regenerate@^1.2.1:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/regenerate/-/regenerate-1.3.2.tgz#d1941c67bad437e1be76433add5b385f95b19260"
@@ -1324,7 +1342,7 @@ sntp@1.x.x:
   dependencies:
     hoek "2.x.x"
 
-source-map-support@^0.4.0:
+source-map-support@^0.4.0, source-map-support@^0.4.2:
   version "0.4.11"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.4.11.tgz#647f939978b38535909530885303daf23279f322"
   dependencies:
@@ -1468,6 +1486,15 @@ tsconfig@^5.0.2:
     parse-json "^2.2.0"
     strip-bom "^2.0.0"
     strip-json-comments "^2.0.0"
+
+tsickle@^0.21.0:
+  version "0.21.5"
+  resolved "https://registry.yarnpkg.com/tsickle/-/tsickle-0.21.5.tgz#341c1834b9d293c8cbffc295a86a1e46268ed22f"
+  dependencies:
+    minimist "^1.2.0"
+    mkdirp "^0.5.1"
+    source-map "^0.5.6"
+    source-map-support "^0.4.2"
 
 tslint@^4.0.0:
   version "4.4.2"
