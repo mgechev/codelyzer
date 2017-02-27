@@ -17,7 +17,7 @@ describe('no-access-missing-member', () => {
           ruleName: 'no-access-missing-member',
           message: 'The property "foo" that you\'re trying to access does not exist in the class declaration.',
           source
-        })
+        });
     });
 
     it('should work with existing properties and pipes', () => {
@@ -32,7 +32,7 @@ describe('no-access-missing-member', () => {
           ruleName: 'no-access-missing-member',
           message: 'The property "showMenu" that you\'re trying to access does not exist in the class declaration.',
           source
-        })
+        });
     });
 
     it('should fail when using missing method', () => {
@@ -49,7 +49,7 @@ describe('no-access-missing-member', () => {
          ruleName: 'no-access-missing-member',
          message: 'The method "baz" that you\'re trying to access does not exist in the class declaration. Probably you mean: "bar".',
          source
-       })
+       });
     });
 
     it('should fail when using missing method in an interpolation mixed with text', () => {
@@ -66,7 +66,7 @@ describe('no-access-missing-member', () => {
           ruleName: 'no-access-missing-member',
           message: 'The method "baz" that you\'re trying to access does not exist in the class declaration. Probably you mean: "bar".',
           source
-        })
+        });
     });
 
     it('should fail when using missing method in an interpolation mixed with text and interpolation', () => {
@@ -83,7 +83,7 @@ describe('no-access-missing-member', () => {
         ruleName: 'no-access-missing-member',
         message: 'The method "baz" that you\'re trying to access does not exist in the class declaration. Probably you mean: "bar".',
         source
-      })
+      });
     });
 
     it('should fail when using missing method in an interpolation mixed with text, interpolation & binary expression', () => {
@@ -100,7 +100,7 @@ describe('no-access-missing-member', () => {
         ruleName: 'no-access-missing-member',
         message: 'The method "baz" that you\'re trying to access does not exist in the class declaration. Probably you mean: "bar".',
         source
-      })
+      });
     });
 
     it('should fail in binary operation with missing property', () => {
@@ -117,7 +117,7 @@ describe('no-access-missing-member', () => {
         ruleName: 'no-access-missing-member',
         message: 'The property "foo" that you\'re trying to access does not exist in the class declaration.',
         source
-      })
+      });
     });
 
     it('should fail in binary operation with missing method', () => {
@@ -133,9 +133,10 @@ describe('no-access-missing-member', () => {
         }`;
       assertAnnotated({
         ruleName: 'no-access-missing-member',
-        message: 'The method "getPrsonName" that you\'re trying to access does not exist in the class declaration. Probably you mean: "getPersonName".',
+        message: 'The method "getPrsonName" that you\'re trying to access does not exist in ' +
+        'the class declaration. Probably you mean: "getPersonName".',
         source
-      })
+      });
     });
 
     it('should fail with property binding and missing method', () => {
@@ -152,7 +153,7 @@ describe('no-access-missing-member', () => {
         ruleName: 'no-access-missing-member',
         message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
         source
-      })
+      });
     });
 
     it('should fail with style binding and missing method', () => {
@@ -169,7 +170,7 @@ describe('no-access-missing-member', () => {
         ruleName: 'no-access-missing-member',
         message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
         source
-      })
+      });
     });
 
     it('should fail on event handling with missing method', () => {
@@ -186,7 +187,7 @@ describe('no-access-missing-member', () => {
         ruleName: 'no-access-missing-member',
         message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
         source
-      })
+      });
     });
 
     it('should fail on event handling on the right position with a lot of whitespace', () => {
@@ -203,7 +204,7 @@ describe('no-access-missing-member', () => {
         ruleName: 'no-access-missing-member',
         message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
         source
-      })
+      });
     });
 
     it('should fail on event handling on the right position with spaces and newlines', () => {
@@ -221,7 +222,7 @@ describe('no-access-missing-member', () => {
         ruleName: 'no-access-missing-member',
         message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
         source
-      })
+      });
     });
 
 
@@ -338,7 +339,7 @@ describe('no-access-missing-member', () => {
           ruleName: 'no-access-missing-member',
           message: 'The property "todoForm" that you\'re trying to access does not exist in the class declaration.',
           source
-        })
+        });
     });
 
     it('should succeed with elementref', () => {
@@ -449,7 +450,7 @@ describe('no-access-missing-member', () => {
         ruleName: 'no-access-missing-member',
         message: 'The property "foo" that you\'re trying to access does not exist in the class declaration. Probably you mean: "foo1".',
         source
-      })
+      });
     });
 
     it('should work with existing properties and pipes', () => {
@@ -605,7 +606,7 @@ describe('no-access-missing-member', () => {
         ruleName: 'no-access-missing-member',
         message: 'The property "t" that you\'re trying to access does not exist in the class declaration.',
         source
-      })
+      });
     });
 
     it('should fail with array element access', () => {
@@ -623,7 +624,7 @@ describe('no-access-missing-member', () => {
         ruleName: 'no-access-missing-member',
         message: 'The property "t" that you\'re trying to access does not exist in the class declaration.',
         source
-      })
+      });
     });
 
     it('should succeed with array element access', () => {
@@ -652,7 +653,7 @@ describe('no-access-missing-member', () => {
         ruleName: 'no-access-missing-member',
         message: 'The property "context" that you\'re trying to access does not exist in the class declaration.',
         source
-      })
+      });
     });
 
 
@@ -670,7 +671,7 @@ describe('no-access-missing-member', () => {
         ruleName: 'no-access-missing-member',
         message: 'The property "context" that you\'re trying to access does not exist in the class declaration.',
         source
-      })
+      });
     });
 
 //    TODO

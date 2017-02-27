@@ -115,7 +115,6 @@ describe('no-unused-css', () => {
           class Test {
             bar: number;
           }`;
-          
           assertSuccess('no-unused-css', source);
       });
 

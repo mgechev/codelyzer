@@ -13,7 +13,7 @@ describe('no-output-rename', () => {
         message: 'In the class "ButtonComponent", the directive output property "change" should not be renamed.'+
         'Please, consider the following use "@Output() change = new EventEmitter();"',
         source
-      })
+      });
     });
   });
 

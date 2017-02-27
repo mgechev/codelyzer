@@ -16,7 +16,7 @@ describe('templates-use-public', () => {
           ruleName: 'templates-use-public',
           message: 'You can bind only to public class members. "foo" is not a public class member.',
           source
-        })
+        });
     });
 
     it('should fail when interpolating private property', () => {
@@ -33,7 +33,7 @@ describe('templates-use-public', () => {
         ruleName: 'templates-use-public',
         message: 'You can bind only to public class members. "foo" is not a public class member.',
         source
-      })
+      });
     });
 
     it('should fail when interpolating protected property', () => {
@@ -50,7 +50,7 @@ describe('templates-use-public', () => {
         ruleName: 'templates-use-public',
         message: 'You can bind only to public class members. "foo" is not a public class member.',
         source
-      })
+      });
     });
 
     it('should fail when interpolating protected nested property', () => {
@@ -67,7 +67,7 @@ describe('templates-use-public', () => {
         ruleName: 'templates-use-public',
         message: 'You can bind only to public class members. "foo" is not a public class member.',
         source
-      })
+      });
     });
 
     it('should fail when interpolating protected nested property', () => {
@@ -84,7 +84,7 @@ describe('templates-use-public', () => {
         ruleName: 'templates-use-public',
         message: 'You can bind only to public class members. "foo" is not a public class member.',
         source
-      })
+      });
     });
 
     it('should fail when binding to protected method', () => {
@@ -101,7 +101,7 @@ describe('templates-use-public', () => {
         ruleName: 'templates-use-public',
         message: 'You can bind only to public class members. "foo" is not a public class member.',
         source
-      })
+      });
     });
 
   });

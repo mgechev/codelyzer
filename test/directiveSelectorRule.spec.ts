@@ -14,7 +14,7 @@ describe('directive-selector-name', () => {
                 message: 'The selector of the directive "Test" should be named camelCase ($$02-06$$)',
                 source,
                 options: ['attribute','sg','camelCase']
-            })
+            });
         });
     });
     describe('valid directive selector, using multiple selectors', () => {
@@ -50,7 +50,7 @@ describe('directive-selector-name', () => {
                 message: 'The selector of the directive "Test" should be named camelCase ($$02-06$$)',
                 source,
                 options: ['attribute','sg','camelCase']
-            })
+            });
         });
     });
 });
@@ -68,7 +68,7 @@ describe('directive-selector-prefix', () => {
                 message: 'The selector of the directive "Test" should have prefix "sg" ($$02-08$$)',
                 source,
                 options: ['attribute','sg','camelCase']
-            })
+            });
         });
 
         it('should fail when directive used without longer prefix', () => {
@@ -83,7 +83,7 @@ describe('directive-selector-prefix', () => {
                 message: 'The selector of the directive "Test" should have prefix "fo" ($$02-08$$)',
                 source,
                 options: ['attribute','fo','camelCase']
-            })
+            });
         });
 
         it('should fail when directive used without prefix applying multiple prefixes', () => {
@@ -98,7 +98,7 @@ describe('directive-selector-prefix', () => {
                 message: 'The selector of the directive "Test" should have one of the prefixes: sg,ng,mg ($$02-08$$)',
                 source,
                 options: ['attribute',['sg', 'ng', 'mg'],'camelCase']
-            })
+            });
         });
         it('should fail when directive used without prefix applying multiple prefixes and selectors', () => {
             let source = `
@@ -112,7 +112,7 @@ describe('directive-selector-prefix', () => {
                 message: 'The selector of the directive "Test" should have one of the prefixes: sg,ng,mg ($$02-08$$)',
                 source,
                 options: ['attribute',['sg', 'ng', 'mg'],'camelCase']
-            })
+            });
         });
     });
     describe('valid directive selector', () => {
@@ -157,7 +157,7 @@ describe('directive-selector-type', () => {
                 message: 'The selector of the directive "Test" should be used as attribute ($$02-06$$)',
                 source,
                 options: ['attribute','sg','camelCase']
-            })
+            });
         });
     });
     describe('invalid directive selector, using multiple selectors', () => {
@@ -173,7 +173,7 @@ describe('directive-selector-type', () => {
                 message: 'The selector of the directive "Test" should be used as attribute ($$02-06$$)',
                 source,
                 options: ['attribute','sg','camelCase']
-            })
+            });
         });
     });
     describe('valid directive selector', () => {

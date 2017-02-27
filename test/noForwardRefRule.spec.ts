@@ -13,7 +13,7 @@ describe('no-forward-ref', () => {
         ruleName: 'no-forward-ref',
         message: 'Avoid using forwardRef in class "Test"',
         source
-      })
+      });
     });
 
     it('should fail when we are calling forwardRef in Component directives array', () => {
@@ -28,7 +28,7 @@ describe('no-forward-ref', () => {
         ruleName: 'no-forward-ref',
         message: 'Avoid using forwardRef in class "Test"',
         source
-      })
+      });
     });
 
     it('should fail when we are calling forwardRef in variable', () => {
@@ -43,7 +43,7 @@ describe('no-forward-ref', () => {
         ruleName: 'no-forward-ref',
         message: 'Avoid using forwardRef in variable "TAGS_INPUT_CONTROL_VALUE_ACCESSOR"',
         source
-      })
+      });
     });
   });
   it('should work with NG_VALUE_ACCESSORs', () => {
@@ -55,7 +55,7 @@ describe('no-forward-ref', () => {
       ruleName: 'no-forward-ref',
       message: 'Avoid using forwardRef in variable "CUSTOM_VALUE_ACCESSOR"',
       source
-    })
+    });
   });
   describe('valid function call', ()=> {
     it('should succeed, when we are not calling forwardRef', () => {
@@ -69,5 +69,5 @@ describe('no-forward-ref', () => {
       }`;
       assertSuccess('no-forward-ref', source);
     });
-  })
+  });
 });

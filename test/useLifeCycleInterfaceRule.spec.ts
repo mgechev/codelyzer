@@ -13,7 +13,7 @@ describe('use-life-cycle-interface', () => {
                 ruleName: 'use-life-cycle-interface',
                 message: 'Implement lifecycle hook interface OnInit for method ngOnInit in class App ($$09-01$$)',
                 source
-            })
+            });
         });
         it(`should fail, when life cycle hooks are used without implementing their interfaces`, () => {
             let source = `
@@ -59,7 +59,7 @@ describe('use-life-cycle-interface', () => {
                 ruleName: 'use-life-cycle-interface',
                 message: 'Implement lifecycle hook interface OnDestroy for method ngOnDestroy in class App ($$09-01$$)',
                 source
-            })
+            });
         });
     });
     describe('invalid declaration of life hooks, using ng.hookName', () => {
@@ -76,7 +76,7 @@ describe('use-life-cycle-interface', () => {
                 ruleName: 'use-life-cycle-interface',
                 message: 'Implement lifecycle hook interface OnDestroy for method ngOnDestroy in class App ($$09-01$$)',
                 source
-            })
+            });
         });
     });
     describe('valid declaration of life hook', () => {

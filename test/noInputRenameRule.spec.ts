@@ -13,7 +13,7 @@ describe('no-input-rename', () => {
         message: 'In the class "ButtonComponent", the directive input property "label" should not be renamed.' +
         'Please, consider the following use "@Input() label: string"',
         source
-      })
+      });
     });
   });
 

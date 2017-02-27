@@ -9,22 +9,11 @@ describe('pipe-impure', () => {
                         ~~~~~~~~~~~
                       })
                       class Test {}`;
-/*            assertFailure('pipe-impure', source, {
-                message: 'Warning: impure pipe declared in class Test.',
-                startPosition: {
-                    line: 2,
-                    character: 24
-                },
-                endPosition: {
-                    line: 2,
-                    character: 35
-                }
-            });*/
             assertAnnotated({
                 ruleName: 'pipe-impure',
                 message: 'Warning: impure pipe declared in class Test.',
                 source
-            })
+            });
         });
     });
 

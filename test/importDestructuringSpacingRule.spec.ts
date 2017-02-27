@@ -11,7 +11,7 @@ describe('import-destructuring-spacing', () => {
         ruleName: 'import-destructuring-spacing',
         message: 'You need to leave whitespaces inside of the import statement\'s curly braces',
         source
-      })
+      });
     });
 
     it('should fail with multiple items to import', () => {
@@ -23,7 +23,7 @@ describe('import-destructuring-spacing', () => {
             ruleName: 'import-destructuring-spacing',
             message: 'You need to leave whitespaces inside of the import statement\'s curly braces',
             source
-        })
+        });
     });
 
     it('should fail with spaces between items', () => {
@@ -35,7 +35,7 @@ describe('import-destructuring-spacing', () => {
           ruleName: 'import-destructuring-spacing',
           message: 'You need to leave whitespaces inside of the import statement\'s curly braces',
           source
-      })
+      });
     });
 
     it('should fail with only one whitespace in the left', () => {
@@ -47,7 +47,7 @@ describe('import-destructuring-spacing', () => {
           ruleName: 'import-destructuring-spacing',
           message: 'You need to leave whitespaces inside of the import statement\'s curly braces',
           source
-      })
+      });
     });
 
     it('should fail with only one whitespace in the right', () => {
@@ -59,7 +59,7 @@ describe('import-destructuring-spacing', () => {
           ruleName: 'import-destructuring-spacing',
           message: 'You need to leave whitespaces inside of the import statement\'s curly braces',
           source
-      })
+      });
     });
   });
 
@@ -70,7 +70,7 @@ describe('import-destructuring-spacing', () => {
     });
 
     it('should work with alias imports', () => {
-      let source = `import * as Foo from './foo';`
+      let source = `import * as Foo from './foo';`;
       assertSuccess('import-destructuring-spacing', source);
     });
   });

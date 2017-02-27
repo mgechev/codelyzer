@@ -14,7 +14,7 @@ describe('directive-class-suffix', () => {
                 ruleName: 'directive-class-suffix',
                 message: 'The name of the class Test should end with the suffix Directive ($$02-03$$)',
                 source
-            })
+            });
         });
     });
 
@@ -100,7 +100,7 @@ describe('directive-class-suffix', () => {
                 message: 'The name of the class TestPage should end with the suffix Directive ($$02-03$$)',
                 source,
                 options: ['Directive']
-            })
+            });
         });
 
         it('should fail when different sufix is set and doesnt match', () => {
@@ -116,7 +116,7 @@ describe('directive-class-suffix', () => {
                 message: 'The name of the class TestDirective should end with the suffix Page ($$02-03$$)',
                 source,
                 options: ['Page']
-            })
+            });
         });
     });
 });
