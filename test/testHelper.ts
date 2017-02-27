@@ -1,4 +1,5 @@
 import * as tslint from 'tslint';
+import * as Lint from 'tslint';
 import chai = require('chai');
 
 interface ISourcePosition {
@@ -12,7 +13,7 @@ export interface IExpectedFailure {
   endPosition: ISourcePosition;
 }
 
-function lint(ruleName: string, source: string, options): tslint.LintResult {
+function lint(ruleName: string, source: string, options: any): tslint.LintResult {
   let configuration = {
     rules: {}
   };
@@ -97,8 +98,8 @@ export function assertAnnotated(config: AssertConfig) {
   }
 };
 
-export function assertFailure(ruleName: string, source: string, fail: IExpectedFailure, options = null) {
-  let result;
+export function assertFailure(ruleName: string, source: string, fail: IExpectedFailure, options = null): Lint.RuleFailure[] {
+  let result: Lint.LintResult;
   try {
     result = lint(ruleName, source, options);
   } catch (e) {
@@ -110,6 +111,10 @@ export function assertFailure(ruleName: string, source: string, fail: IExpectedF
     chai.assert.deepEqual(fail.startPosition, ruleFail.getStartPosition().getLineAndCharacter(), 'start char doesn\'t match');
     chai.assert.deepEqual(fail.endPosition, ruleFail.getEndPosition().getLineAndCharacter(),  'end char doesn\'t match');
   });
+  if (result) {
+    return result.failures;
+  }
+  return undefined;
 };
 
 export function assertFailures(ruleName: string, source: string, fails: IExpectedFailure[], options = null) {
@@ -122,7 +127,8 @@ export function assertFailures(ruleName: string, source: string, fails: IExpecte
     chai.assert(result.failureCount > 0, 'no failures');
     result.failures.forEach((ruleFail,index) => {
             chai.assert.equal(fails[index].message, ruleFail.getFailure(), 'error messages dont\'t match');
-            chai.assert.deepEqual(fails[index].startPosition, ruleFail.getStartPosition().getLineAndCharacter(), 'start char doesn\'t match');
+            chai.assert.deepEqual(fails[index].startPosition, ruleFail.getStartPosition().getLineAndCharacter(),
+              'start char doesn\'t match');
             chai.assert.deepEqual(fails[index].endPosition, ruleFail.getEndPosition().getLineAndCharacter(), 'end char doesn\'t match');
     });
 };

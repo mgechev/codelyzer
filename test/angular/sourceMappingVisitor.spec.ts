@@ -25,7 +25,7 @@ const fixture1 =
 export class Foo {}
 `;
 
-describe('metadataReader', () => {
+describe('SourceMappingVisitor', () => {
 
   it('should map to correct position', () => {
     const ast = getAst(fixture1);
@@ -39,8 +39,8 @@ describe('metadataReader', () => {
       map: JSON.parse(result.map.toString()),
       source: scss
     }, styleNode.getStart() + 1);
-    const failure = visitor.createFailure(0, 4, 'bar');
-    chai.expect(failure.getStartPosition().getPosition()).eq(46);
-    chai.expect(failure.getEndPosition().getPosition()).eq(50);
+    const failure = visitor.createFailure(0, 3, 'bar');
+    chai.expect(failure.getStartPosition().getPosition()).eq(34);
+    chai.expect(failure.getEndPosition().getPosition()).eq(38);
   });
 });

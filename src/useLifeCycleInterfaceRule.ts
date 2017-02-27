@@ -57,7 +57,7 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
     }
 
     private validateMethods( methods:any[],interfaces:string[],className:string){
-        methods.forEach(m=>{
+        methods.forEach(m => {
             let n = (<any>m.name).text;
             if(n && this.isMethodValidHook(m,interfaces)){
                 let hookName = n.substr(2, n.lenght);

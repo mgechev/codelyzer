@@ -1,9 +1,15 @@
-# 3.0.0-rc.0
+# 3.0.0-beta.0
 
 ### Breaking Changes
 
-- Remove `importDestructuringSpacing`.
+- Remove `importDestructuringSpacing`. Can be enforced with the tslint's rule [`whitespace`](https://palantir.github.io/tslint/rules/whitespace/).
 - `no-access-missing-member`, `use-life-cycle-interface` and `template-use-public` require type checking which means that tslint should be run with [the corresponding options](https://github.com/palantir/tslint#type-checking)
+
+The rules should now be run as follows:
+
+```
+$ tslint --type-check --project src/client/tsconfig.json
+```
 
 ### Features
 
