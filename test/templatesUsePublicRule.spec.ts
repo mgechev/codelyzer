@@ -4,14 +4,14 @@ describe('templates-use-public', () => {
   describe('invalid expressions', () => {
     it('should fail inline property private declaration', () => {
       let source = `
-        import {Component, NgModule} from '@angular/core';
+        import {Component, NgModule, Renderer} from '@angular/core';
 
         @Component({
           selector: 'foobar',
-          template: '{{ foo }}'
+          template: '{{ renderer }}'
         })
         export class Test {
-          constructor(private foo: number) {}
+          constructor(private renderer: Renderer) {}
         }
         
         @NgModule({
@@ -21,14 +21,14 @@ describe('templates-use-public', () => {
         export class MainModule {}
         `;
         assertFailure('templates-use-public', source, {
-          message: 'You can bind only to public class members. "foo" is not a public class member.',
+          message: 'You can bind only to public class members. "renderer" is not a public class member.',
           startPosition: {
             line: 5,
             character: 24
           },
           endPosition: {
             line: 5,
-            character: 27
+            character: 32
           }
        });
     });
