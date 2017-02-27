@@ -2,109 +2,63 @@ import * as ts from 'typescript';
 import * as tslint from 'tslint';
 import * as Lint from 'tslint';
 import chai = require('chai');
-import {dirname} from 'path';
-import {readFileSync, existsSync} from 'fs';
+import * as rimraf from 'rimraf';
+import {dirname, join} from 'path';
+import { readFileSync, existsSync, mkdirSync, writeFileSync } from 'fs';
 
 export type File = string;
 export type Path = string;
 export type Project = {[key: string]: string};
 
-const moduleCache = new Map<string, string>();
-const existenceCache = new Map<string, boolean>();
+// const proxyInMemoryHost = (host: ts.CompilerHost, project: Project): ts.CompilerHost => {
+//   return new Proxy(host, {
+//     get(target: ts.CompilerHost, propKey: string, receiver: any) {
+//       var original = target[propKey];
+//       if (typeof original === 'function') {
+//         original = original.bind(target);
+//         if (propKey === 'fileExists') {
+//           return function (filename: string) {
+//             return !!project[filename] || original(filename);
+//           };
+//         } else if (propKey === 'getSourceFile') {
+//           return function (filename: string, version: ts.ScriptTarget) {
+//             // if (project[filename]) {
+//             //   return ts.createSourceFile(filename, project[filename], version);
+//             // }
+//             return original(filename, version);
+//           };
+//         } else {
+//           return original;
+//         }
+//       } else {
+//         return original;
+//       }
+//     }
+//   });
+// };
 
-const isNodeModule = (filename: string) => filename.startsWith('node_module');
+export const normalizeOptions = (options: any, configFilePath: string) => {
+  options.genDir = options.basePath = options.baseUrl;
+  options.configFilePath = configFilePath;
+};
 
-export class CompilerHost implements ts.CompilerHost {
-  private currentDir = '';
+export const createProgramFromTsConfig = (configFile: string): ts.Program => {
+  const projectDirectory = dirname(configFile);
+  const { config } = ts.readConfigFile(configFile, ts.sys.readFile);
 
-  constructor(public project: Project, private options: ts.CompilerOptions) {}
-
-  useCaseSensitiveFileNames() {
-    return true;
-  }
-
-  getNewLine() {
-    return '\n';
-  }
-
-  getSourceFile(filename: string, version: ts.ScriptTarget) {
-    return ts.createSourceFile(filename, this.readFile(filename), version, true);
-  }
-
-  readFile(filename: string) {
-    if (isNodeModule(filename) || filename === this.getDefaultLibFileName()) {
-      return '';
-    }
-    return this.project[filename];
-  }
-
-  fileExists(filename: string) {
-    if (isNodeModule(filename)) {
-      return true;
-    }
-    return !!this.project[filename];
-  }
-
-  getDefaultLibFileName() {
-    return ts.getDefaultLibFileName(this.options);
-  }
-
-  getCompilationSettings() {
-    return this.options;
-  }
-
-  getCurrentDirectory() {
-    return this.currentDir;
-  }
-
-  getScriptFileNames() {
-    const iter = Object.keys(this.project);
-    const result = [];
-    for (let file of iter) {
-      result.push(file);
-    }
-    return result;
-  }
-
-  writeFile(file: string, content: string) {
-    this.project[file] = content;
-  }
-
-  getScriptSnapshot(name: string) {
-    const content = this.readFile(name);
-    return ts.ScriptSnapshot.fromString(content);
-  }
-
-  getDirectories() {
-    return [];
-  }
-
-  getCanonicalFileName(name: string) {
-    return name;
-  }
-}
-
-export const getProgram = (project: Project, config: any, root: string = ''): ts.Program => {
-  const filenames = Object.keys(project);
   // Any because of different APIs in TypeScript 2.1 and 2.0
   const parseConfigHost: any = {
-    fileExists: (path: string) => true,
-    readFile: (file) => null,
-    readDirectory: (dir: string) => [],
+    fileExists: existsSync,
+    readDirectory: ts.sys.readDirectory,
+    readFile: (file) => readFileSync(file, 'utf8'),
     useCaseSensitiveFileNames: true,
   };
-  const parsed = ts.parseJsonConfigFileContent(config, parseConfigHost, root);
-  parsed.options.baseUrl = parsed.options.baseUrl || root;
-  parsed.options.basePath = parsed.options.baseUrl;
-  parsed.options.genDir = parsed.options.baseUrl;
-  parsed.options.allowJs = true;
-  parsed.options.target = ts.ScriptTarget.ES5;
-  parsed.options.module = ts.ModuleKind.CommonJS;
-  parsed.options.declaration = false;
-  parsed.options.emitDecoratorMetadata = true;
-  parsed.options.experimentalDecorators = true;
-  const host = new CompilerHost(project, parsed.options);
-  const program = ts.createProgram(filenames, parsed.options, host);
+  const parsed = ts.parseJsonConfigFileContent(config, parseConfigHost, projectDirectory);
+  parsed.options.baseUrl = parsed.options.baseUrl || projectDirectory;
+  normalizeOptions(parsed.options, configFile);
+  const host = ts.createCompilerHost(parsed.options, true);
+  const program = ts.createProgram(parsed.fileNames, parsed.options, host);
+
   return program;
 };
 
@@ -118,6 +72,31 @@ export interface IExpectedFailure {
   startPosition: ISourcePosition;
   endPosition: ISourcePosition;
 }
+
+const cleanMockEnvironment = (dir: string) => {
+  rimraf.sync(dir);
+};
+
+const createMockEnvironment = (content: string) => {
+  const dir = join(__dirname, '..', 'fixture');
+  mkdirSync(dir);
+  writeFileSync(join(dir, 'file.ts'), content);
+  writeFileSync(join(dir, 'tsconfig.json'), `
+    {
+      "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "moduleResolution": "node"
+      },
+      "files": [
+        "file.ts"
+      ]
+    }
+  `);
+  return dir;
+};
 
 function lint(ruleName: string, source: string, options: any): tslint.LintResult {
   let configuration = {
@@ -134,12 +113,12 @@ function lint(ruleName: string, source: string, options: any): tslint.LintResult
     formattersDirectory: null,
     fix: false
   };
-  let project: Project = {
-    'file.ts': source
-  };
-  let linter: tslint.Linter = new tslint.Linter(linterOptions, getProgram(project, {}));
-  linter.lint('file.ts', source, configuration);
-  return linter.getResult();
+  const dir = createMockEnvironment(source);
+  let linter: tslint.Linter = new tslint.Linter(linterOptions, createProgramFromTsConfig(join(dir, 'tsconfig.json')));
+  linter.lint(join(dir, 'file.ts'), source, configuration);
+  const result = linter.getResult();
+  cleanMockEnvironment(dir);
+  return result;
 }
 
 export interface AssertConfig {

@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@angular/compiler-cli@4.0.0-rc.1":
+"@angular/compiler-cli@^4.0.0-rc.1":
   version "4.0.0-rc.1"
   resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-4.0.0-rc.1.tgz#48cdcfb691eac2152602f296fb9fa7ffc4bfa5bd"
   dependencies:

@@ -134,7 +134,6 @@ export class Ng2Walker extends Lint.RuleWalker {
           const fileName = this.getSourceFile().fileName;
           const program = this._config.languageService.getProgram();
           templateAst = parseTemplateWithContext(metadata.controller, fileName, program);
-          console.log('%%%%%%%%%%', templateAst);
         }
         this.visitNg2TemplateHelper(templateAst, metadata, getPosition(template.node));
       } catch (e) {
