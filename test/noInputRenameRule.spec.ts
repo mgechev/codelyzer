@@ -1,4 +1,4 @@
-import {assertFailure, assertSuccess} from './testHelper';
+import { assertSuccess, assertAnnotated} from './testHelper';
 
 describe('no-input-rename', () => {
   describe('invalid directive input property', () => {
@@ -6,19 +6,14 @@ describe('no-input-rename', () => {
       let source = `
       class ButtonComponent {
         @Input('labelAttribute') label: string;
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       }`;
-      assertFailure('no-input-rename', source, {
+      assertAnnotated({
+        ruleName: 'no-input-rename',
         message: 'In the class "ButtonComponent", the directive input property "label" should not be renamed.' +
         'Please, consider the following use "@Input() label: string"',
-        startPosition: {
-          line: 2,
-          character: 8
-        },
-        endPosition: {
-          line: 2,
-          character: 47
-        }
-      });
+        source
+      })
     });
   });
 

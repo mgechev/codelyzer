@@ -1,4 +1,4 @@
-import {assertFailure, assertSuccess} from './testHelper';
+import {assertAnnotated, assertFailure, assertSuccess} from './testHelper';
 
 describe('directive-class-suffix', () => {
     describe('invalid directive class suffix', () => {
@@ -7,18 +7,14 @@ describe('directive-class-suffix', () => {
               @Directive({
                 selector: 'sgBarFoo'
               })
-              class Test {}`;
-            assertFailure('directive-class-suffix', source, {
+              class Test {}
+                    ~~~~  
+            `;
+            assertAnnotated({
+                ruleName: 'directive-class-suffix',
                 message: 'The name of the class Test should end with the suffix Directive ($$02-03$$)',
-                startPosition: {
-                    line: 4,
-                    character: 20
-                },
-                endPosition: {
-                    line: 4,
-                    character: 24
-                }
-            });
+                source
+            })
         });
     });
 
@@ -96,18 +92,15 @@ describe('directive-class-suffix', () => {
             @Directive({
                 selector: 'sgBarFoo'
             })
-            class TestPage {}`;
-            assertFailure('directive-class-suffix', source, {
+            class TestPage {}
+                  ~~~~~~~~
+            `;
+            assertAnnotated({
+                ruleName: 'directive-class-suffix',
                 message: 'The name of the class TestPage should end with the suffix Directive ($$02-03$$)',
-                startPosition: {
-                    line: 4,
-                    character: 18
-                },
-                endPosition: {
-                    line: 4,
-                    character: 26
-                }
-            }, ['Directive']);
+                source,
+                options: ['Directive']
+            })
         });
 
         it('should fail when different sufix is set and doesnt match', () => {
@@ -115,18 +108,15 @@ describe('directive-class-suffix', () => {
             @Directive({
                 selector: 'sgBarFoo'
             })
-            class TestDirective {}`;
-            assertFailure('directive-class-suffix', source, {
+            class TestDirective {}
+                  ~~~~~~~~~~~~~
+            `;
+            assertAnnotated({
+                ruleName: 'directive-class-suffix',
                 message: 'The name of the class TestDirective should end with the suffix Page ($$02-03$$)',
-                startPosition: {
-                    line: 4,
-                    character: 18
-                },
-                endPosition: {
-                    line: 4,
-                    character: 31
-                }
-            }, ['Page']);
+                source,
+                options: ['Page']
+            })
         });
     });
 });

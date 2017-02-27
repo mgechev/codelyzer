@@ -75,7 +75,9 @@ const parseInvalidSource = (source: string, message: string) => {
     whitespace += ' ';
   }
   source = source.substring(0, linearStart) + whitespace + source.substring(linearEnd, source.length);
-  console.log(source.substring(0, linearStart));
+  //console.log(source.substring(0, linearStart));
+  console.log(start);
+  console.log(end);
   return {
     source: source,
     failure: {

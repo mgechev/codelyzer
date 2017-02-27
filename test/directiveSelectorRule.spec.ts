@@ -1,4 +1,4 @@
-import {assertFailure, assertSuccess} from './testHelper';
+import { assertAnnotated, assertSuccess} from './testHelper';
 
 describe('directive-selector-name', () => {
     describe('invalid directive selectors', () => {
@@ -6,19 +6,15 @@ describe('directive-selector-name', () => {
             let source = `
       @Directive({
         selector: '[sg-foo-bar]'
+                  ~~~~~~~~~~~~~~
       })
       class Test {}`;
-            assertFailure('directive-selector', source, {
+            assertAnnotated({
+                ruleName: 'directive-selector',
                 message: 'The selector of the directive "Test" should be named camelCase ($$02-06$$)',
-                startPosition: {
-                    line: 2,
-                    character: 18
-                },
-                endPosition: {
-                    line: 2,
-                    character: 32
-                }
-            }, ['attribute','sg','camelCase']);
+                source,
+                options: ['attribute','sg','camelCase']
+            })
         });
     });
     describe('valid directive selector, using multiple selectors', () => {
@@ -46,19 +42,15 @@ describe('directive-selector-name', () => {
             let source = `
       @Directive({
         selector: 'test[sg-bar-foo].test:not(p)'
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       })
       class Test {}`;
-            assertFailure('directive-selector', source, {
+            assertAnnotated({
+                ruleName: 'directive-selector',
                 message: 'The selector of the directive "Test" should be named camelCase ($$02-06$$)',
-                startPosition: {
-                    line: 2,
-                    character: 18
-                },
-                endPosition: {
-                    line: 2,
-                    character: 48
-                }
-            }, ['attribute','sg','camelCase']);
+                source,
+                options: ['attribute','sg','camelCase']
+            })
         });
     });
 });
@@ -68,75 +60,59 @@ describe('directive-selector-prefix', () => {
             let source = `
           @Directive({
             selector: '[fooBar]'
+                      ~~~~~~~~~~
           })
           class Test {}`;
-            assertFailure('directive-selector', source, {
+            assertAnnotated({
+                ruleName: 'directive-selector',
                 message: 'The selector of the directive "Test" should have prefix "sg" ($$02-08$$)',
-                startPosition: {
-                    line: 2,
-                    character: 22
-                },
-                endPosition: {
-                    line: 2,
-                    character: 32
-                }
-            }, ['attribute','sg','camelCase']);
+                source,
+                options: ['attribute','sg','camelCase']
+            })
         });
 
         it('should fail when directive used without longer prefix', () => {
             let source = `
           @Directive({
             selector: '[fooBar]'
+                      ~~~~~~~~~~
           })
           class Test {}`;
-            assertFailure('directive-selector', source, {
+            assertAnnotated({
+                ruleName: 'directive-selector',
                 message: 'The selector of the directive "Test" should have prefix "fo" ($$02-08$$)',
-                startPosition: {
-                    line: 2,
-                    character: 22
-                },
-                endPosition: {
-                    line: 2,
-                    character: 32
-                }
-            }, ['attribute','fo','camelCase']);
+                source,
+                options: ['attribute','fo','camelCase']
+            })
         });
 
         it('should fail when directive used without prefix applying multiple prefixes', () => {
             let source = `
           @Directive({
             selector: '[fooBar]'
+                      ~~~~~~~~~~
           })
           class Test {}`;
-            assertFailure('directive-selector', source, {
+            assertAnnotated({
+                ruleName: 'directive-selector',
                 message: 'The selector of the directive "Test" should have one of the prefixes: sg,ng,mg ($$02-08$$)',
-                startPosition: {
-                    line: 2,
-                    character: 22
-                },
-                endPosition: {
-                    line: 2,
-                    character: 32
-                }
-            }, ['attribute',['sg', 'ng', 'mg'],'camelCase']);
+                source,
+                options: ['attribute',['sg', 'ng', 'mg'],'camelCase']
+            })
         });
         it('should fail when directive used without prefix applying multiple prefixes and selectors', () => {
             let source = `
           @Directive({
             selector: 'baz.bar[fooBar]'
+                      ~~~~~~~~~~~~~~~~~
           })
           class Test {}`;
-            assertFailure('directive-selector', source, {
+            assertAnnotated({
+                ruleName: 'directive-selector',
                 message: 'The selector of the directive "Test" should have one of the prefixes: sg,ng,mg ($$02-08$$)',
-                startPosition: {
-                    line: 2,
-                    character: 22
-                },
-                endPosition: {
-                    line: 2,
-                    character: 39
-                }
-            }, ['attribute',['sg', 'ng', 'mg'],'camelCase']);
+                source,
+                options: ['attribute',['sg', 'ng', 'mg'],'camelCase']
+            })
         });
     });
     describe('valid directive selector', () => {
@@ -173,19 +149,15 @@ describe('directive-selector-type', () => {
             let source = `
       @Directive({
         selector: 'foo-bar'
+                  ~~~~~~~~~
       })
       class Test {}`;
-            assertFailure('directive-selector', source, {
+            assertAnnotated({
+                ruleName: 'directive-selector',
                 message: 'The selector of the directive "Test" should be used as attribute ($$02-06$$)',
-                startPosition: {
-                    line: 2,
-                    character: 18
-                },
-                endPosition: {
-                    line: 2,
-                    character: 27
-                }
-            }, ['attribute','sg','camelCase']);
+                source,
+                options: ['attribute','sg','camelCase']
+            })
         });
     });
     describe('invalid directive selector, using multiple selectors', () => {
@@ -193,19 +165,15 @@ describe('directive-selector-type', () => {
             let source = `
       @Directive({
         selector: 'test.test:not(p)'
+                  ~~~~~~~~~~~~~~~~~~
       })
       class Test {}`;
-            assertFailure('directive-selector', source, {
+            assertAnnotated({
+                ruleName: 'directive-selector',
                 message: 'The selector of the directive "Test" should be used as attribute ($$02-06$$)',
-                startPosition: {
-                    line: 2,
-                    character: 18
-                },
-                endPosition: {
-                    line: 2,
-                    character: 36
-                }
-            }, ['attribute','sg','camelCase']);
+                source,
+                options: ['attribute','sg','camelCase']
+            })
         });
     });
     describe('valid directive selector', () => {

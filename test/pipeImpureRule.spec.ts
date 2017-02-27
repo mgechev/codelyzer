@@ -1,4 +1,4 @@
-import {assertFailure, assertSuccess} from './testHelper';
+import {assertFailure, assertSuccess, assertAnnotated} from './testHelper';
 
 describe('pipe-impure', () => {
     describe('impure pipe', () => {
@@ -6,9 +6,10 @@ describe('pipe-impure', () => {
             let source = `
                       @Pipe({
                         pure: false
+                        ~~~~~~~~~~~
                       })
                       class Test {}`;
-            assertFailure('pipe-impure', source, {
+/*            assertFailure('pipe-impure', source, {
                 message: 'Warning: impure pipe declared in class Test.',
                 startPosition: {
                     line: 2,
@@ -18,7 +19,12 @@ describe('pipe-impure', () => {
                     line: 2,
                     character: 35
                 }
-            });
+            });*/
+            assertAnnotated({
+                ruleName: 'pipe-impure',
+                message: 'Warning: impure pipe declared in class Test.',
+                source
+            })
         });
     });
 

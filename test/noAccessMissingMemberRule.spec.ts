@@ -1,4 +1,4 @@
-import {assertFailure, assertSuccess} from './testHelper';
+import { assertSuccess, assertAnnotated} from './testHelper';
 import {Config} from '../src/angular/config';
 
 describe('no-access-missing-member', () => {
@@ -7,22 +7,17 @@ describe('no-access-missing-member', () => {
       let source = `
         @Component({
           selector: 'foobar',
-          template: '<div>{{ foo }}</div>
+          template: '<div>{{ foo }}</div>'
+                             ~~~
         })
         class Test {
           bar: number;
         }`;
-        assertFailure('no-access-missing-member', source, {
+        assertAnnotated({
+          ruleName: 'no-access-missing-member',
           message: 'The property "foo" that you\'re trying to access does not exist in the class declaration.',
-          startPosition: {
-            line: 3,
-            character: 29
-          },
-          endPosition: {
-            line: 3,
-            character: 32
-          }
-       });
+          source
+        })
     });
 
     it('should work with existing properties and pipes', () => {
@@ -30,19 +25,14 @@ describe('no-access-missing-member', () => {
         @Component({
           selector: 'foobar',
           template: \`<div class="1 + {{ showMenu ? '' : 'pure-hidden-sm' }})"></div>\`
+                                        ~~~~~~~~
         })
         class Test {}`;
-        assertFailure('no-access-missing-member', source, {
+        assertAnnotated({
+          ruleName: 'no-access-missing-member',
           message: 'The property "showMenu" that you\'re trying to access does not exist in the class declaration.',
-          startPosition: {
-            line: 3,
-            character: 40
-          },
-          endPosition: {
-            line: 3,
-            character: 48
-          }
-       });
+          source
+        })
     });
 
     it('should fail when using missing method', () => {
@@ -50,21 +40,16 @@ describe('no-access-missing-member', () => {
         @Component({
           selector: 'foobar',
           template: '<div>{{ baz() }}</div>
+                             ~~~
         })
         class Test {
           bar() {}
         }`;
-        assertFailure('no-access-missing-member', source, {
-          message: 'The method "baz" that you\'re trying to access does not exist in the class declaration. Probably you mean: "bar".',
-          startPosition: {
-            line: 3,
-            character: 29
-          },
-          endPosition: {
-            line: 3,
-            character: 32
-          }
-       });
+       assertAnnotated({
+         ruleName: 'no-access-missing-member',
+         message: 'The method "baz" that you\'re trying to access does not exist in the class declaration. Probably you mean: "bar".',
+         source
+       })
     });
 
     it('should fail when using missing method in an interpolation mixed with text', () => {
@@ -72,21 +57,16 @@ describe('no-access-missing-member', () => {
         @Component({
           selector: 'foobar',
           template: '<div> test {{ baz() }}</div>
+                                   ~~~
         })
         class Test {
           bar() {}
         }`;
-        assertFailure('no-access-missing-member', source, {
+        assertAnnotated({
+          ruleName: 'no-access-missing-member',
           message: 'The method "baz" that you\'re trying to access does not exist in the class declaration. Probably you mean: "bar".',
-          startPosition: {
-            line: 3,
-            character: 35
-          },
-          endPosition: {
-            line: 3,
-            character: 38
-          }
-       });
+          source
+        })
     });
 
     it('should fail when using missing method in an interpolation mixed with text and interpolation', () => {
@@ -94,21 +74,16 @@ describe('no-access-missing-member', () => {
         @Component({
           selector: 'foobar',
           template: '<div> test {{ bar() }} {{ baz() }}</div>
+                                               ~~~
         })
         class Test {
           bar() {}
         }`;
-        assertFailure('no-access-missing-member', source, {
-          message: 'The method "baz" that you\'re trying to access does not exist in the class declaration. Probably you mean: "bar".',
-          startPosition: {
-            line: 3,
-            character: 47
-          },
-          endPosition: {
-            line: 3,
-            character: 50
-          }
-       });
+      assertAnnotated({
+        ruleName: 'no-access-missing-member',
+        message: 'The method "baz" that you\'re trying to access does not exist in the class declaration. Probably you mean: "bar".',
+        source
+      })
     });
 
     it('should fail when using missing method in an interpolation mixed with text, interpolation & binary expression', () => {
@@ -116,21 +91,16 @@ describe('no-access-missing-member', () => {
         @Component({
           selector: 'foobar',
           template: '<div> test {{ bar() }} {{ bar() + baz() }}</div>
+                                                       ~~~                                 
         })
         class Test {
           bar() {}
         }`;
-        assertFailure('no-access-missing-member', source, {
-          message: 'The method "baz" that you\'re trying to access does not exist in the class declaration. Probably you mean: "bar".',
-          startPosition: {
-            line: 3,
-            character: 55
-          },
-          endPosition: {
-            line: 3,
-            character: 58
-          }
-       });
+      assertAnnotated({
+        ruleName: 'no-access-missing-member',
+        message: 'The method "baz" that you\'re trying to access does not exist in the class declaration. Probably you mean: "bar".',
+        source
+      })
     });
 
     it('should fail in binary operation with missing property', () => {
@@ -138,44 +108,34 @@ describe('no-access-missing-member', () => {
         @Component({
           selector: 'foobar',
           template: '<div>{{ baz2() + foo }}</div>
+                                      ~~~
         })
         class Test {
           baz2() {}
         }`;
-        assertFailure('no-access-missing-member', source, {
-          message: 'The property "foo" that you\'re trying to access does not exist in the class declaration.',
-          startPosition: {
-            line: 3,
-            character: 38
-          },
-          endPosition: {
-            line: 3,
-            character: 41
-          }
-       });
+      assertAnnotated({
+        ruleName: 'no-access-missing-member',
+        message: 'The property "foo" that you\'re trying to access does not exist in the class declaration.',
+        source
+      })
     });
 
-    it('should fail fail in binary operation with missing method', () => {
+    it('should fail in binary operation with missing method', () => {
       let source = `
         @Component({
           selector: 'foobar',
           template: '<div>{{ baz() + getPrsonName(1, 2, 3) }}</div>
+                                     ~~~~~~~~~~~~
         })
         class Test {
           baz() {}
           getPersonName() {}
         }`;
-        assertFailure('no-access-missing-member', source, {
-          message: 'The method "getPrsonName" that you\'re trying to access does not exist in the class declaration. Probably you mean: "getPersonName".',
-          startPosition: {
-            line: 3,
-            character: 37
-          },
-          endPosition: {
-            line: 3,
-            character: 49
-          }
-       });
+      assertAnnotated({
+        ruleName: 'no-access-missing-member',
+        message: 'The method "getPrsonName" that you\'re trying to access does not exist in the class declaration. Probably you mean: "getPersonName".',
+        source
+      })
     });
 
     it('should fail with property binding and missing method', () => {
@@ -183,21 +143,16 @@ describe('no-access-missing-member', () => {
         @Component({
           selector: 'foobar',
           template: '<div [className]="bar()"></div>
+                                       ~~~
         })
         class Test {
           baz() {}
         }`;
-        assertFailure('no-access-missing-member', source, {
-          message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
-          startPosition: {
-            line: 3,
-            character: 39
-          },
-          endPosition: {
-            line: 3,
-            character: 42
-          }
-       });
+      assertAnnotated({
+        ruleName: 'no-access-missing-member',
+        message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
+        source
+      })
     });
 
     it('should fail with style binding and missing method', () => {
@@ -205,21 +160,16 @@ describe('no-access-missing-member', () => {
         @Component({
           selector: 'foobar',
           template: '<div [style.color]="bar()"></div>
+                                         ~~~
         })
         class Test {
           baz() {}
         }`;
-        assertFailure('no-access-missing-member', source, {
-          message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
-          startPosition: {
-            line: 3,
-            character: 41
-          },
-          endPosition: {
-            line: 3,
-            character: 44
-          }
-       });
+      assertAnnotated({
+        ruleName: 'no-access-missing-member',
+        message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
+        source
+      })
     });
 
     it('should fail on event handling with missing method', () => {
@@ -227,21 +177,16 @@ describe('no-access-missing-member', () => {
         @Component({
           selector: 'foobar',
           template: '<div (click)="bar()"></div>
+                                   ~~~
         })
         class Test {
           baz() {}
         }`;
-        assertFailure('no-access-missing-member', source, {
-          message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
-          startPosition: {
-            line: 3,
-            character: 35
-          },
-          endPosition: {
-            line: 3,
-            character: 38
-          }
-       });
+      assertAnnotated({
+        ruleName: 'no-access-missing-member',
+        message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
+        source
+      })
     });
 
     it('should fail on event handling on the right position with a lot of whitespace', () => {
@@ -249,21 +194,16 @@ describe('no-access-missing-member', () => {
         @Component({
           selector: 'foobar',
           template: '<div (click)=   "   bar()"></div>
+                                         ~~~
         })
         class Test {
           baz() {}
         }`;
-        assertFailure('no-access-missing-member', source, {
-          message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
-          startPosition: {
-            line: 3,
-            character: 41
-          },
-          endPosition: {
-            line: 3,
-            character: 44
-          }
-       });
+      assertAnnotated({
+        ruleName: 'no-access-missing-member',
+        message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
+        source
+      })
     });
 
     it('should fail on event handling on the right position with spaces and newlines', () => {
@@ -272,21 +212,16 @@ describe('no-access-missing-member', () => {
           selector: 'foobar',
           template: \`<div [class.foo]=   "
             bar()"></div>\`
+            ~~~
         })
         class Test {
           baz() {}
         }`;
-        assertFailure('no-access-missing-member', source, {
-          message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
-          startPosition: {
-            line: 4,
-            character: 12
-          },
-          endPosition: {
-            line: 4,
-            character: 15
-          }
-       });
+      assertAnnotated({
+        ruleName: 'no-access-missing-member',
+        message: 'The method "bar" that you\'re trying to access does not exist in the class declaration. Probably you mean: "baz".',
+        source
+      })
     });
 
 
@@ -394,21 +329,16 @@ describe('no-access-missing-member', () => {
         @Component({
           selector: 'foobar',
           template: '<bar #todoForm="baz"><button [disabled]="!todoForm.form.valid"></button></bar>'
+                                                               ~~~~~~~~
         })
         class Test {
           foo: number;
         }`;
-        assertFailure('no-access-missing-member', source, {
+        assertAnnotated({
+          ruleName: 'no-access-missing-member',
           message: 'The property "todoForm" that you\'re trying to access does not exist in the class declaration.',
-          startPosition: {
-            line: 3,
-            character: 63
-          },
-          endPosition: {
-            line: 3,
-            character: 71
-          }
-       });
+          source
+        })
     });
 
     it('should succeed with elementref', () => {
@@ -510,21 +440,16 @@ describe('no-access-missing-member', () => {
         @Component({
           selector: 'foobar',
           template: '<div>{{ foo.bar }}</div>
+                             ~~~
         })
         class Test {
           foo1 = {};
         }`;
-        assertFailure('no-access-missing-member', source, {
-          message: 'The property "foo" that you\'re trying to access does not exist in the class declaration. Probably you mean: "foo1".',
-          startPosition: {
-            line: 3,
-            character: 29
-          },
-          endPosition: {
-            line: 3,
-            character: 32
-          }
-       });
+      assertAnnotated({
+        ruleName: 'no-access-missing-member',
+        message: 'The property "foo" that you\'re trying to access does not exist in the class declaration. Probably you mean: "foo1".',
+        source
+      })
     });
 
     it('should work with existing properties and pipes', () => {
@@ -669,46 +594,36 @@ describe('no-access-missing-member', () => {
       let source = `
         @Component({
           template: '{{t.errorData.errorMessages[0].message}}'
+                       ~
         })
         class Test {
           get names() {
             return [{ firstName: 'foo' }];
           }
         }`;
-        assertFailure('no-access-missing-member', source, {
-          message: 'The property "t" that you\'re trying to access does not exist in the class declaration.',
-          startPosition: {
-            line: 2,
-            character: 23
-          },
-          endPosition: {
-            line: 2,
-            character: 24
-          }
-        });
+      assertAnnotated({
+        ruleName: 'no-access-missing-member',
+        message: 'The property "t" that you\'re trying to access does not exist in the class declaration.',
+        source
+      })
     });
 
     it('should fail with array element access', () => {
       let source = `
         @Component({
           template: '{{t.errorData[0].errorMessages.message}}'
+                       ~
         })
         class Test {
           get names() {
             return [{ firstName: 'foo' }];
           }
         }`;
-        assertFailure('no-access-missing-member', source, {
-          message: 'The property "t" that you\'re trying to access does not exist in the class declaration.',
-          startPosition: {
-            line: 2,
-            character: 23
-          },
-          endPosition: {
-            line: 2,
-            character: 24
-          }
-        });
+      assertAnnotated({
+        ruleName: 'no-access-missing-member',
+        message: 'The property "t" that you\'re trying to access does not exist in the class declaration.',
+        source
+      })
     });
 
     it('should succeed with array element access', () => {
@@ -727,21 +642,17 @@ describe('no-access-missing-member', () => {
     it('should succeed with array element access', () => {
       let source = `
         @Component({
-          template: '<div *ngIf="context"></div>'
+          template: \`<div *ngIf="context"></div>
+                     ~~~~~~~
+          \`
         })
         class Test {
         }`;
-        assertFailure('no-access-missing-member', source, {
-          message: 'The property "context" that you\'re trying to access does not exist in the class declaration.',
-          startPosition: {
-            line: 2,
-            character: 21
-          },
-          endPosition: {
-            line: 2,
-            character: 28
-          }
-        });
+      assertAnnotated({
+        ruleName: 'no-access-missing-member',
+        message: 'The property "context" that you\'re trying to access does not exist in the class declaration.',
+        source
+      })
     });
 
 
@@ -749,22 +660,17 @@ describe('no-access-missing-member', () => {
       let source = `
         @Component({
           template: \`<div *ngSwitch="context">
+                     ~~~~~~~
               <span *ngSwitchCase="bar"></span>
             </div>\`
         })
         class Test {
         }`;
-        assertFailure('no-access-missing-member', source, {
-          message: 'The property "context" that you\'re trying to access does not exist in the class declaration.',
-          startPosition: {
-            line: 2,
-            character: 21
-          },
-          endPosition: {
-            line: 2,
-            character: 28
-          }
-        });
+      assertAnnotated({
+        ruleName: 'no-access-missing-member',
+        message: 'The property "context" that you\'re trying to access does not exist in the class declaration.',
+        source
+      })
     });
 
 //    TODO

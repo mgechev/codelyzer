@@ -1,4 +1,4 @@
-import {assertFailure, assertSuccess} from './testHelper';
+import {assertFailure, assertSuccess, assertAnnotated} from './testHelper';
 
 describe('use-host-property-decorator', () => {
   it('should fail when "host" is used in @Component', () => {
@@ -21,6 +21,11 @@ describe('use-host-property-decorator', () => {
         character: 9
       }
     });
+/*    assertAnnotated({
+      ruleName: 'use-host-property-decorator',
+      message: 'Use @HostBindings and @HostListeners instead of the host property ($$06-03$$)',
+      source
+    })*/
   });
 
   it('should succeed when "host" is not used', () => {
@@ -53,5 +58,10 @@ describe('use-host-property-decorator', () => {
         character: 9
       }
     });
+/*    assertAnnotated({
+      ruleName: 'use-host-property-decorator',
+      message: 'Use @HostBindings and @HostListeners instead of the host property ($$06-03$$)',
+      source
+    })*/
   });
 });

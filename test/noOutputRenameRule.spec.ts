@@ -1,4 +1,4 @@
-import {assertFailure, assertSuccess} from './testHelper';
+import { assertSuccess, assertAnnotated} from './testHelper';
 
 describe('no-output-rename', () => {
   describe('invalid directive output property', () => {
@@ -6,19 +6,14 @@ describe('no-output-rename', () => {
       let source = `
       class ButtonComponent {
         @Output('changeEvent') change = new EventEmitter<any>();
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       }`;
-      assertFailure('no-output-rename', source, {
+      assertAnnotated({
+        ruleName: 'no-output-rename',
         message: 'In the class "ButtonComponent", the directive output property "change" should not be renamed.'+
         'Please, consider the following use "@Output() change = new EventEmitter();"',
-        startPosition: {
-          line: 2,
-          character: 8
-        },
-        endPosition: {
-          line: 2,
-          character: 64
-        }
-      });
+        source
+      })
     });
   });
 
