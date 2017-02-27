@@ -42,6 +42,7 @@ export const normalizeOptions = (options: any, configFilePath: string) => {
   options.configFilePath = configFilePath;
 };
 
+// TODO: Use in-memory CompilerHost to speed-up tests.
 export const createProgramFromTsConfig = (configFile: string): ts.Program => {
   const projectDirectory = dirname(configFile);
   const { config } = ts.readConfigFile(configFile, ts.sys.readFile);
@@ -77,8 +78,7 @@ const cleanMockEnvironment = (dir: string) => {
   rimraf.sync(dir);
 };
 
-const createMockEnvironment = (content: string) => {
-  const dir = join(__dirname, '..', 'fixture');
+const createMockEnvironment = (dir: string, content: string) => {
   mkdirSync(dir);
   writeFileSync(join(dir, 'file.ts'), content);
   writeFileSync(join(dir, 'tsconfig.json'), `
@@ -113,11 +113,12 @@ function lint(ruleName: string, source: string, options: any): tslint.LintResult
     formattersDirectory: null,
     fix: false
   };
-  const dir = createMockEnvironment(source);
+  const dir = join(__dirname, '..', 'fixture');
+  cleanMockEnvironment(dir);
+  createMockEnvironment(dir, source);
   let linter: tslint.Linter = new tslint.Linter(linterOptions, createProgramFromTsConfig(join(dir, 'tsconfig.json')));
   linter.lint(join(dir, 'file.ts'), source, configuration);
   const result = linter.getResult();
-  cleanMockEnvironment(dir);
   return result;
 }
 
