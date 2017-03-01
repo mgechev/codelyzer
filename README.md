@@ -50,6 +50,51 @@ You can easily use codelyzer with your custom setup:
 npm i codelyzer@2.0.0-beta.4 tslint@4.0.0 typescript@2.0.9 @angular/core@2.4.0 @angular/compiler@2.4.0 rxjs@5.0.1 zone.js@0.7.2
 ```
 
+A. Using codelyzer package in PATH
+
+Create the following `tslint.json` file like:
+
+```json
+{
+  "extends": [ "codelyzer" ],
+  "rules":{
+    "directive-selector": [true, "attribute", "sg", "camelCase"],
+    "component-selector": [true, "element", "sg", "kebab-case"],
+    "use-input-property-decorator": true,
+    "use-output-property-decorator": true,
+    "use-host-property-decorator": true,
+    "no-attribute-parameter-decorator": true,
+    "no-input-rename": true,
+    "no-output-rename": true,
+    "no-forward-ref": true,
+    "use-life-cycle-interface": true,
+    "use-pipe-transform-interface": true,
+    "pipe-naming": [true, "camelCase", "sg"],
+    "component-class-suffix": true,
+    "directive-class-suffix": true,
+    "templates-use-public": true,
+    "no-access-missing-member": true,
+    "invoke-injectable": true
+  }
+}
+```
+
+To run TSLint with this setup you can use one of the following alternatives:
+
+1. Install codelyzer globally `npm install -g codelyzer`
+
+2. Run TSLint from a package.json script by adding a script like `tslint .` to your package.json, similar to:
+```
+"scripts": {
+  ...
+  "lint": "tslint .",
+  ...
+},
+```
+Then run `npm run lint`
+
+B. Using codelyzer from node_modules directory
+
 Now create the following `tslint.json` file where your `node_modules` directory is:
 
 ```json
@@ -189,7 +234,7 @@ module.exports = {
   // Transformation of the templates. This hooks is quite useful
   // if you're using any other templating language, for instance
   // jade, markdown, haml, etc.
-  // 
+  //
   // NOTE that this method WILL NOT throw an error in case of invalid template.
   //
   transformTemplate(code, url, decorator) {
