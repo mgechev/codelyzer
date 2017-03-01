@@ -1,4 +1,4 @@
-import {assertAnnotated, assertFailure, assertSuccess} from './testHelper';
+import {assertAnnotated, assertSuccess} from './testHelper';
 
 describe('directive-class-suffix', () => {
     describe('invalid directive class suffix', () => {

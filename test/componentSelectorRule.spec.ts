@@ -1,4 +1,4 @@
-import {assertFailure, assertSuccess, assertAnnotated} from './testHelper';
+import { assertSuccess, assertAnnotated} from './testHelper';
 
 describe('component-selector-prefix', () => {
     describe('invalid component selectors', () => {

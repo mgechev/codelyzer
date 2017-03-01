@@ -1,24 +1,20 @@
-import {assertFailure, assertSuccess} from './testHelper';
+import {assertSuccess, assertAnnotated} from './testHelper';
 
 describe('use-pipe-transform-interface', () => {
   describe('invalid declaration of pipe', () => {
     it(`should fail, when a Pipe is declared without implementing the PipeTransform interface`, () => {
       let source = `
       @Pipe({name: 'fetch'})
+      ~~~~~~~~~~~~~~~~~~~~~~
       export class NewPipe {
         transform(url:string):any {
         }
-      }`;
-      assertFailure('use-pipe-transform-interface', source, {
+      }
+      ~`;
+      assertAnnotated({
+        ruleName: 'use-pipe-transform-interface',
         message: 'The NewPipe class has the Pipe decorator, so it should implement the PipeTransform interface',
-        startPosition: {
-          line: 1,
-          character: 6
-        },
-        endPosition: {
-          line: 5,
-          character: 7
-        }
+        source
       });
     });
   });

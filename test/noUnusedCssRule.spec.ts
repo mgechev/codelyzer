@@ -3,7 +3,7 @@ import {Decorator} from 'typescript';
 
 import * as sass from 'node-sass';
 
-import {assertFailure, assertSuccess} from './testHelper';
+import {assertFailure, assertSuccess, assertAnnotated} from './testHelper';
 import {Config} from '../src/angular/config';
 
 describe('no-unused-css', () => {
@@ -241,25 +241,21 @@ describe('no-unused-css', () => {
           styles: [
             \`
             div h2 {
+            ~~~~~~~~
               color: red;
             }
+            ~
             \`
           ]
         })
         class Test {
           bar: number;
         }`;
-        assertFailure('no-unused-css', source, {
-          message: 'Unused styles',
-          startPosition: {
-            line: 10,
-            character: 12
-          },
-          endPosition: {
-            line: 12,
-            character: 13
-          }
-      });
+       assertAnnotated({
+         ruleName:'no-unused-css',
+         message: 'Unused styles',
+         source
+       });
     });
 
     it('should fail with multiple styles', () => {
@@ -279,24 +275,20 @@ describe('no-unused-css', () => {
             \`,
             \`
             h1 {
+            ~~~~
               color: black;
             }
+            ~
             \`
           ]
         })
         class Test {
           bar: number;
         }`;
-        assertFailure('no-unused-css', source, {
-          message: 'Unused styles',
-          startPosition: {
-            line: 15,
-            character: 12
-          },
-          endPosition: {
-            line: 17,
-            character: 13
-          }
+      assertAnnotated({
+        ruleName:'no-unused-css',
+        message: 'Unused styles',
+        source
       });
     });
 
@@ -312,25 +304,21 @@ describe('no-unused-css', () => {
           styles: [
             \`
             div section.bar h2 {
+            ~~~~~~~~~~~~~~~~~~~~
               color: red;
             }
+            ~
             \`
           ]
         })
         class Test {
           bar: number;
         }`;
-        assertFailure('no-unused-css', source, {
-          message: 'Unused styles',
-          startPosition: {
-            line: 10,
-            character: 12
-          },
-          endPosition: {
-            line: 12,
-            character: 13
-          }
-      });
+     assertAnnotated({
+       ruleName:'no-unused-css',
+       message: 'Unused styles',
+       source
+     });
     });
 
       it('should fail for structural directives when selector does not match', () => {
@@ -345,24 +333,20 @@ describe('no-unused-css', () => {
             styles: [
               \`
               div h1#header {
+              ~~~~~~~~~~~~~~~
                 color: red;
               }
+              ~
               \`
             ]
           })
           class Test {
             bar: number;
           }`;
-          assertFailure('no-unused-css', source, {
-            message: 'Unused styles',
-            startPosition: {
-              line: 10,
-              character: 14
-            },
-            endPosition: {
-              line: 12,
-              character: 15
-            }
+        assertAnnotated({
+          ruleName:'no-unused-css',
+          message: 'Unused styles',
+          source
         });
       });
 
@@ -380,24 +364,20 @@ describe('no-unused-css', () => {
             styles: [
               \`
               div h1.header {
+              ~~~~~~~~~~~~~~~
                 color: red;
               }
+              ~
               \`
             ]
           })
           class Test {
             bar: number;
           }`;
-          assertFailure('no-unused-css', source, {
-            message: 'Unused styles',
-            startPosition: {
-              line: 10,
-              character: 14
-            },
-            endPosition: {
-              line: 12,
-              character: 15
-            }
+        assertAnnotated({
+          ruleName:'no-unused-css',
+          message: 'Unused styles',
+          source
         });
       });
     });
@@ -440,24 +420,20 @@ describe('no-unused-css', () => {
           styles: [
             \`
             :host section h2 {
+            ~~~~~~~~~~~~~~~~~~
               color: red;
             }
+            ~
             \`
           ]
         })
         class Test {
           bar: number;
         }`;
-        assertFailure('no-unused-css', source, {
-          message: 'Unused styles',
-          startPosition: {
-            line: 10,
-            character: 12
-          },
-          endPosition: {
-            line: 12,
-            character: 13
-          }
+      assertAnnotated({
+        ruleName:'no-unused-css',
+        message: 'Unused styles',
+        source
       });
     });
   });
@@ -498,24 +474,20 @@ describe('no-unused-css', () => {
           styles: [
             \`
             div section /deep/ h2 {
+            ~~~~~~~~~~~~~~~~~~~~~~~
               color: red;
             }
+            ~
             \`
           ]
         })
         class Test {
           bar: number;
         }`;
-       assertFailure('no-unused-css', source, {
-          message: 'Unused styles',
-          startPosition: {
-            line: 10,
-            character: 12
-          },
-          endPosition: {
-            line: 12,
-            character: 13
-          }
+      assertAnnotated({
+        ruleName:'no-unused-css',
+        message: 'Unused styles',
+        source
       });
     });
 
@@ -554,24 +526,20 @@ describe('no-unused-css', () => {
           styles: [
             \`
             div section >>> h2 {
+            ~~~~~~~~~~~~~~~~~~~~
               color: red;
             }
+            ~
             \`
           ]
         })
         class Test {
           bar: number;
         }`;
-       assertFailure('no-unused-css', source, {
-          message: 'Unused styles',
-          startPosition: {
-            line: 10,
-            character: 12
-          },
-          endPosition: {
-            line: 12,
-            character: 13
-          }
+      assertAnnotated({
+        ruleName:'no-unused-css',
+        message: 'Unused styles',
+        source
       });
     });
   });
@@ -613,24 +581,20 @@ describe('no-unused-css', () => {
           styles: [
             \`
             div content::before {
+            ~~~~~~~~~~~~~~~~~~~~~
               color: red;
             }
+            ~
             \`
           ]
         })
         class Test {
           bar: number;
         }`;
-        assertFailure('no-unused-css', source, {
-          message: 'Unused styles',
-          startPosition: {
-            line: 10,
-            character: 12
-          },
-          endPosition: {
-            line: 12,
-            character: 13
-          }
+      assertAnnotated({
+        ruleName:'no-unused-css',
+        message: 'Unused styles',
+        source
       });
     });
   });
@@ -681,22 +645,18 @@ describe('no-unused-css', () => {
           styles: [
             \`
             p {
+            ~~~
               color: red;
             }
+            ~
             \`
           ]
         })
         class Test {}`;
-        assertFailure('no-unused-css', source, {
-          message: 'Unused styles',
-          startPosition: {
-            line: 7,
-            character: 12
-          },
-          endPosition: {
-            line: 9,
-            character: 13
-          }
+      assertAnnotated({
+        ruleName:'no-unused-css',
+        message: 'Unused styles',
+        source
       });
     });
 
@@ -709,22 +669,18 @@ describe('no-unused-css', () => {
           styles: [
             \`
             p {
+            ~~~
               color: red;
             }
+            ~
             \`
           ]
         })
         class Test {}`;
-        assertFailure('no-unused-css', source, {
-          message: 'Unused styles',
-          startPosition: {
-            line: 7,
-            character: 12
-          },
-          endPosition: {
-            line: 9,
-            character: 13
-          }
+      assertAnnotated({
+        ruleName:'no-unused-css',
+        message: 'Unused styles',
+        source
       });
     });
 
@@ -737,22 +693,18 @@ describe('no-unused-css', () => {
           styles: [
             \`
             p {
+            ~~~
               color: red;
             }
+            ~
             \`
           ]
         })
         class Test {}`;
-        assertFailure('no-unused-css', source, {
-          message: 'Unused styles',
-          startPosition: {
-            line: 7,
-            character: 12
-          },
-          endPosition: {
-            line: 9,
-            character: 13
-          }
+      assertAnnotated({
+        ruleName:'no-unused-css',
+        message: 'Unused styles',
+        source
       });
     });
 
@@ -779,10 +731,12 @@ describe('no-unused-css', () => {
       styles: [
         \`
         h1 {
+       ~~~~~
           spam {
             baz {
               color: red;
             }
+           ~
           }
         }
         \`
@@ -791,16 +745,10 @@ describe('no-unused-css', () => {
     class HeroComponent {
       private hero: Hero;
     }`;
-    assertFailure('no-unused-css', source, {
+    assertAnnotated({
+      ruleName:'no-unused-css',
       message: 'Unused styles',
-      startPosition: {
-        line: 8,
-        character: 7
-      },
-      endPosition: {
-        line: 12,
-        character: 12
-      }
+      source
     });
     Config.transformStyle = (code: string) => ({ code, map: null });
   });
