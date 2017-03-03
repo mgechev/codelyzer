@@ -1,9 +1,9 @@
-import { __core_private__ as r, NO_ERRORS_SCHEMA, ViewEncapsulation } from '@angular/core';
 import * as compiler from '@angular/compiler';
 
 import { Config, DirectiveDeclaration } from '../config';
 import { SemVerDSL } from '../../util/ngVersion';
-
+import { NO_ERRORS_SCHEMA } from "@angular/core";
+import { ɵConsole } from "@angular/core";
 let refId = 0;
 
 const dummyMetadataFactory = (declaration: DirectiveDeclaration) => {
@@ -48,7 +48,7 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
   const TemplateParser = <any>compiler.TemplateParser;
   const expressionParser = new compiler.Parser(new compiler.Lexer());
   const elementSchemaRegistry = new compiler.DomElementSchemaRegistry();
-  const ngConsole = new r.Console();
+  const ngConsole = new ɵConsole();
   const htmlParser =
       new compiler.I18NHtmlParser(new compiler.HtmlParser());
 
