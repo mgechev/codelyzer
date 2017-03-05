@@ -407,7 +407,6 @@ describe('no-access-missing-member', () => {
        });
     });
 
-
     it('should not throw when template ref used outside component scope', () => {
       let source = `
         import { Component, NgModule } from '@angular/core';
@@ -435,6 +434,7 @@ describe('no-access-missing-member', () => {
     it('should not throw when routerLinkActive template ref is used in component', () => {
       let source = `
         import { Component, NgModule } from '@angular/core';
+        import { RouterModule } from '@angular/router';
 
         @Component({
           selector: 'foobar',
@@ -443,6 +443,7 @@ describe('no-access-missing-member', () => {
         export class Test {}
         
         @NgModule({
+          imports: [RouterModule.forRoot([])],
           declarations: [Test],
           exports: [Test]
         })
@@ -450,7 +451,6 @@ describe('no-access-missing-member', () => {
         `;
         assertSuccess('no-access-missing-member', source);
     });
-
 
     it('should not throw when ngModel template ref is used in component', () => {
       let source = `
@@ -526,6 +526,42 @@ describe('no-access-missing-member', () => {
         export class MainModule {}
         `;
         assertSuccess('no-access-missing-member', source);
+    });
+
+    it('should fail with nonexisting @HostBinding', () => {
+      let source = `
+        import { Directive, HostBinding, Component, NgModule } from '@angular/core';
+        import { CommonModule } from '@angular/common';
+
+        @Directive({
+          selector: '[foo]'
+        })
+        export class FooDirective {}
+
+        @Component({
+          template: \`<div foo [attr.title]="foo"></div>\`
+        })
+        export class Test {
+        }
+        
+        @NgModule({
+          imports: [CommonModule],
+          declarations: [Test, FooDirective],
+          exports: [Test]
+        })
+        export class MainModule {}
+        `;
+        assertFailure('no-access-missing-member', source, {
+          message: 'The property "foo" that you\'re trying to access does not exist in the class declaration.',
+          startPosition: {
+            line: 10,
+            character: 44
+          },
+          endPosition: {
+            line: 10,
+            character: 47
+          }
+       });
     });
 
   });
@@ -649,6 +685,99 @@ describe('no-access-missing-member', () => {
         `;
         assertSuccess('no-access-missing-member', source);
     });
+
+    it('should succeed with existing @HostBinding', () => {
+      let source = `
+        import { Directive, HostBinding, Component, NgModule } from '@angular/core';
+        import { CommonModule } from '@angular/common';
+
+        @Directive({
+          selector: '[foo]',
+          host: {
+            '[attr.title]': 'foo'
+          }
+        })
+        export class FooDirective {
+          foo = 42;
+        }
+
+        @Component({
+          template: \`<div foo [attr.title]="foo"></div>\`
+        })
+        export class Test {
+        }
+        
+        @NgModule({
+          imports: [CommonModule],
+          declarations: [Test, FooDirective],
+          exports: [Test]
+        })
+        export class MainModule {}
+        `;
+        assertSuccess('no-access-missing-member', source);
+    });
+
+    it('should succeed with existing @HostBinding', () => {
+      let source = `
+        import { Directive, HostBinding, Component, NgModule } from '@angular/core';
+        import { CommonModule } from '@angular/common';
+
+        @Directive({
+          selector: '[foo]',
+          host: {
+            '[attr.title]': 'foo.bar'
+          }
+        })
+        export class FooDirective {
+          foo = {
+            bar: 42
+          };
+        }
+
+        @Component({
+          template: \`<div foo [attr.title]="foo"></div>\`
+        })
+        export class Test {
+        }
+        
+        @NgModule({
+          imports: [CommonModule],
+          declarations: [Test, FooDirective],
+          exports: [Test]
+        })
+        export class MainModule {}
+        `;
+        assertSuccess('no-access-missing-member', source);
+    });
+
+    it('should succeed with existing @HostBinding', () => {
+      let source = `
+        import { Directive, HostBinding, Component, NgModule } from '@angular/core';
+        import { CommonModule } from '@angular/common';
+
+        @Directive({
+          selector: '[foo]'
+        })
+        export class FooDirective {
+          @HostBinding('attr.title') foo = 42;
+        }
+
+        @Component({
+          template: \`<div foo [attr.title]="foo"></div>\`
+        })
+        export class Test {
+        }
+        
+        @NgModule({
+          imports: [CommonModule],
+          declarations: [Test, FooDirective],
+          exports: [Test]
+        })
+        export class MainModule {}
+        `;
+        assertSuccess('no-access-missing-member', source);
+    });
+
   });
 
   describe('nested properties and pipes', () => {
@@ -1017,8 +1146,7 @@ describe('no-access-missing-member', () => {
         @Component({
           template: '<div *ngIf="context"></div>'
         })
-        export class Test {
-        }
+        export class Test {}
         
         @NgModule({
           imports: [CommonModule],
@@ -1039,7 +1167,6 @@ describe('no-access-missing-member', () => {
           }
         });
     });
-
 
     it('should succeed with array element access', () => {
       let source = `

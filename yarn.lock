@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@angular/common@^4.0.0-rc.1":
+  version "4.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@angular/common/-/common-4.0.0-rc.2.tgz#69f68639270d71b2e8c552e4fa939975fcb88304"
+
 "@angular/compiler-cli@^4.0.0-rc.1":
   version "4.0.0-rc.1"
   resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-4.0.0-rc.1.tgz#48cdcfb691eac2152602f296fb9fa7ffc4bfa5bd"
@@ -17,6 +21,18 @@
 "@angular/core@^4.0.0-rc.1":
   version "4.0.0-rc.1"
   resolved "https://registry.yarnpkg.com/@angular/core/-/core-4.0.0-rc.1.tgz#7f87b7696b407476e45d6d3c1880a50d5afbb6e3"
+
+"@angular/forms@^4.0.0-rc.1":
+  version "4.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@angular/forms/-/forms-4.0.0-rc.2.tgz#6d9df97783b6023d652d97369db13d6ad6c7fa9e"
+
+"@angular/platform-browser@^4.0.0-rc.1":
+  version "4.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-4.0.0-rc.2.tgz#bcca05ce85d320ee0b257640f15479b59fed20f0"
+
+"@angular/router@^4.0.0-rc.1":
+  version "4.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@angular/router/-/router-4.0.0-rc.2.tgz#66fc5be012caa38441314d0a0b9c9b6a723c471a"
 
 "@angular/tsc-wrapped@4.0.0-rc.1":
   version "4.0.0-rc.1"
@@ -45,6 +61,10 @@
 "@types/node@*", "@types/node@^6.0.41":
   version "6.0.63"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.63.tgz#e08acbbd5946e0e95990b1c76f3ce5b7882a48eb"
+
+"@types/rimraf@0.0.28":
+  version "0.0.28"
+  resolved "https://registry.yarnpkg.com/@types/rimraf/-/rimraf-0.0.28.tgz#5562519bc7963caca8abf7f128cae3b594d41d06"
 
 "@types/source-map@^0.5.0":
   version "0.5.0"
@@ -973,9 +993,9 @@ nan@^2.3.2:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.5.1.tgz#d5b01691253326a97a2bbee9e61c55d8d60351e2"
 
-ngast@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/ngast/-/ngast-0.0.1.tgz#a63f599dbc8270773f68d4afd9d10397515d2db3"
+ngast@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/ngast/-/ngast-0.0.2.tgz#faf989566b0ff608dbbe427f0cd79d77ad92836a"
 
 node-gyp@^3.3.1:
   version "3.5.0"

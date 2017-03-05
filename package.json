@@ -43,9 +43,12 @@
   },
   "homepage": "https://github.com/mgechev/codelyzer#readme",
   "devDependencies": {
+    "@angular/common": "^4.0.0-rc.1",
     "@angular/compiler": "^4.0.0-rc.1",
     "@angular/core": "^4.0.0-rc.1",
     "@angular/forms": "^4.0.0-rc.1",
+    "@angular/platform-browser": "^4.0.0-rc.1",
+    "@angular/router": "^4.0.0-rc.1",
     "@types/chai": "^3.4.33",
     "@types/less": "0.0.31",
     "@types/mocha": "^2.2.32",
