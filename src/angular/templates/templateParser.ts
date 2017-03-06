@@ -1,5 +1,6 @@
 import { NO_ERRORS_SCHEMA, ViewEncapsulation } from '@angular/core';
 import * as compiler from '@angular/compiler';
+import { TemplateAst } from '@angular/compiler';
 
 import { Config, DirectiveDeclaration } from '../config';
 import { SemVerDSL } from '../../util/ngVersion';
@@ -42,7 +43,7 @@ const dummyMetadataFactory = (declaration: DirectiveDeclaration) => {
 
 let defaultDirectives = [];
 
-export const parseTemplate = (template: string, directives: DirectiveDeclaration[] = []) => {
+export const parseTemplate = (template: string, directives: DirectiveDeclaration[] = []): TemplateAst[] => {
   defaultDirectives = directives.map(d => dummyMetadataFactory(d));
 
   const expressionParser = new compiler.Parser(new compiler.Lexer());

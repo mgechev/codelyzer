@@ -1,4 +1,5 @@
 import {ProjectSymbols, ContextSymbols, DirectiveSymbol} from 'ngast';
+import {TemplateAst} from '@angular/compiler';
 import {readFileSync} from 'fs';
 import * as ts from 'typescript';
 
@@ -6,7 +7,7 @@ let projectSymbols: ProjectSymbols = undefined;
 let lastProgram: ts.Program;
 let contexts: ContextSymbols[];
 
-export const parseTemplate = (declaration: ts.ClassDeclaration, fileName: string, program: ts.Program) => {
+export const parseTemplate = (declaration: ts.ClassDeclaration, fileName: string, program: ts.Program): TemplateAst[] => {
   if (!projectSymbols || lastProgram !== program) {
     projectSymbols = new ProjectSymbols({
       create() {
