@@ -1,8 +1,8 @@
-# 3.0.0-beta.2
+# 3.0.0-beta.3
 
 ### Bug Fixes
 
-- Update peerDependency ngast to version `^0.0.4` [#257](https://github.com/mgechev/codelyzer/issues/257) [30e921a](https://github.com/mgechev/codelyzer/commit/30e921a48fb98b9d929d46f905aa87d3d7e81d98).
+- Update peerDependency ngast to version `^0.0.6` [#257](https://github.com/mgechev/codelyzer/issues/257) [30e921a](https://github.com/mgechev/codelyzer/commit/30e921a48fb98b9d929d46f905aa87d3d7e81d98).
 
 # 3.0.0-beta.1
 
