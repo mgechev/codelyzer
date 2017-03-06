@@ -57,8 +57,7 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
 
   const interpolation = Config.interpolation;
 
-  // Make sure it works with 2.2.x & 2.3.x
-  const summaryKind = ((compiler as any).CompileSummaryKind || {}).Template;
+  const summaryKind = compiler.CompileSummaryKind.Directive;
   const templateMetadata: compiler.CompileTemplateMetadata = {
     encapsulation: 0,
     template: template,
@@ -76,7 +75,7 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
         ngContentSelectors: this.ngContentSelectors,
         encapsulation: this.encapsulation,
         summaryKind: summaryKind
-      } as any;
+      };
     }
   };
 
