@@ -1,3 +1,21 @@
+# 3.0.0-beta.2
+
+### Bug Fixes
+
+- Update peerDependency ngast to version `^0.0.4` [#257](https://github.com/mgechev/codelyzer/issues/257) [30e921a](https://github.com/mgechev/codelyzer/commit/30e921a48fb98b9d929d46f905aa87d3d7e81d98).
+
+# 3.0.0-beta.1
+
+### Features
+
+- Deep metadata collection with [ngast](https://github.com/mgechev/ngast) ✨ 🎆 ✨ [#217](https://github.com/mgechev/codelyzer/issues/217) [de13ceb](https://github.com/mgechev/codelyzer/commit/de13cebd0f243415fb0fe6cd67e8a8838c4a895f)
+- Built-in support for template references.
+
+### Bug Fixes
+
+- Access to inline template objects results in "no-access-missing-member" rule being triggerred [#231](https://github.com/mgechev/codelyzer/issues/231) [d10e980](https://github.com/mgechev/codelyzer/commit/d10e9809531b6795a6ab403f87b5f68b05c8afb6)
+- no-access-missing-member and async pipe [#190](https://github.com/mgechev/codelyzer/issues/190) [de13ceb](https://github.com/mgechev/codelyzer/commit/de13cebd0f243415fb0fe6cd67e8a8838c4a895f)
+
 # 3.0.0-beta.0
 
 ### Breaking Changes
