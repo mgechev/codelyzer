@@ -1,4 +1,4 @@
-import {assertFailure, assertSuccess} from './testHelper';
+import {assertAnnotated, assertSuccess} from './testHelper';
 
 describe('no-forward-ref', () => {
   describe('invalid function call', ()=> {
@@ -6,18 +6,13 @@ describe('no-forward-ref', () => {
       let source = `
       class Test {
         constructor(@Inject(forwardRef(()=>NameService)) nameService) {}
+                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~
       }
       class NameService {}`;
-      assertFailure('no-forward-ref', source, {
+      assertAnnotated({
+        ruleName: 'no-forward-ref',
         message: 'Avoid using forwardRef in class "Test"',
-        startPosition: {
-          line: 2,
-          character: 28
-        },
-        endPosition: {
-          line: 2,
-          character: 55
-        }
+        source
       });
     });
 
@@ -25,19 +20,14 @@ describe('no-forward-ref', () => {
       let source = `
       @Component({
         directives: [forwardRef(()=>NameService)]
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~
       })
       class Test {}
       class NameService {}`;
-      assertFailure('no-forward-ref', source, {
+      assertAnnotated({
+        ruleName: 'no-forward-ref',
         message: 'Avoid using forwardRef in class "Test"',
-        startPosition: {
-          line: 2,
-          character: 21
-        },
-        endPosition: {
-          line: 2,
-          character: 48
-        }
+        source
       });
     });
 
@@ -46,34 +36,25 @@ describe('no-forward-ref', () => {
       const TAGS_INPUT_CONTROL_VALUE_ACCESSOR = new Provider(
           NG_VALUE_ACCESSOR, {
             useExisting: forwardRef(() => TagsInput),
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~
             multi: true
       });`;
-      assertFailure('no-forward-ref', source, {
+      assertAnnotated({
+        ruleName: 'no-forward-ref',
         message: 'Avoid using forwardRef in variable "TAGS_INPUT_CONTROL_VALUE_ACCESSOR"',
-        startPosition: {
-          line: 3,
-          character: 25
-        },
-        endPosition: {
-          line: 3,
-          character: 52
-        }
+        source
       });
     });
   });
   it('should work with NG_VALUE_ACCESSORs', () => {
     let source = `const CUSTOM_VALUE_ACCESSOR = new Provider(
-    NG_VALUE_ACCESSOR, { useExisting: forwardRef(() => CountryListValueAccessor)});`;
-    assertFailure('no-forward-ref', source, {
+    NG_VALUE_ACCESSOR, { useExisting: forwardRef(() => CountryListValueAccessor)});
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    `;
+    assertAnnotated({
+      ruleName: 'no-forward-ref',
       message: 'Avoid using forwardRef in variable "CUSTOM_VALUE_ACCESSOR"',
-      startPosition: {
-        line: 1,
-        character: 38
-      },
-      endPosition: {
-        line: 1,
-        character: 80
-      }
+      source
     });
   });
   describe('valid function call', ()=> {
@@ -88,5 +69,5 @@ describe('no-forward-ref', () => {
       }`;
       assertSuccess('no-forward-ref', source);
     });
-  })
+  });
 });

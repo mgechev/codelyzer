@@ -1,4 +1,4 @@
-import {assertFailure, assertSuccess} from './testHelper';
+import { assertSuccess, assertAnnotated} from './testHelper';
 
 describe('component-class-suffix', () => {
     describe('invalid component class suffix', () => {
@@ -7,17 +7,13 @@ describe('component-class-suffix', () => {
               @Component({
                 selector: 'sg-foo-bar'
               })
-              class Test {}`;
-            assertFailure('component-class-suffix', source, {
-                message: 'The name of the class Test should end with the suffix Component ($$02-03$$)',
-                startPosition: {
-                    line: 4,
-                    character: 20
-                },
-                endPosition: {
-                    line: 4,
-                    character: 24
-                }
+              class Test {}
+                    ~~~~    
+              `;
+            assertAnnotated({
+                ruleName: 'component-class-suffix',
+                message:  'The name of the class Test should end with the suffix Component ($$02-03$$)',
+                source
             });
         });
     });
@@ -97,18 +93,15 @@ describe('component-class-suffix', () => {
             @Component({
                 selector: 'sgBarFoo'
             })
-            class TestPage {}`;
-            assertFailure('component-class-suffix', source, {
-                message: 'The name of the class TestPage should end with the suffix Component,View ($$02-03$$)',
-                startPosition: {
-                    line: 4,
-                    character: 18
-                },
-                endPosition: {
-                    line: 4,
-                    character: 26
-                }
-            }, ['Component', 'View']);
+            class TestPage {}
+                  ~~~~~~~~
+            `;
+            assertAnnotated({
+                ruleName: 'component-class-suffix',
+                message:  'The name of the class TestPage should end with the suffix Component,View ($$02-03$$)',
+                source,
+                options: ['Component', 'View']
+            });
         });
 
         it('should fail when different sufix is set and doesnt match', () => {
@@ -116,18 +109,15 @@ describe('component-class-suffix', () => {
             @Component({
                 selector: 'sgBarFoo'
             })
-            class TestPage {}`;
-            assertFailure('component-class-suffix', source, {
-                message: 'The name of the class TestPage should end with the suffix Component ($$02-03$$)',
-                startPosition: {
-                    line: 4,
-                    character: 18
-                },
-                endPosition: {
-                    line: 4,
-                    character: 26
-                }
-            }, ['Component']);
+            class TestPage {}
+                  ~~~~~~~~
+            `;
+            assertAnnotated({
+                ruleName: 'component-class-suffix',
+                message:  'The name of the class TestPage should end with the suffix Component ($$02-03$$)',
+                source,
+                options: ['Component']
+            });
         });
 
         it('should fail when different sufix is set and doesnt match', () => {
@@ -135,18 +125,15 @@ describe('component-class-suffix', () => {
             @Component({
                 selector: 'sgBarFoo'
             })
-            class TestDirective {}`;
-            assertFailure('component-class-suffix', source, {
-                message: 'The name of the class TestDirective should end with the suffix Page ($$02-03$$)',
-                startPosition: {
-                    line: 4,
-                    character: 18
-                },
-                endPosition: {
-                    line: 4,
-                    character: 31
-                }
-            }, ['Page']);
+            class TestDirective {}
+                  ~~~~~~~~~~~~~
+            `;
+            assertAnnotated({
+                ruleName: 'component-class-suffix',
+                message:  'The name of the class TestDirective should end with the suffix Page ($$02-03$$)',
+                source,
+                options: ['Page']
+            });
         });
     });
 });

@@ -2,13 +2,13 @@
 # yarn lockfile v1
 
 
-"@angular/compiler@^4.0.0-beta.6":
-  version "4.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-4.0.0-beta.6.tgz#dd3af2278a3926b4d7975f16876ed43a1e71011b"
+"@angular/compiler@^4.0.0-rc.2":
+  version "4.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-4.0.0-rc.2.tgz#643e199e6792413f42cf149a9cf1672284787c11"
 
-"@angular/core@^4.0.0-beta.6":
-  version "4.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/@angular/core/-/core-4.0.0-beta.6.tgz#33a90316776f7c96037e5d41137303a789071615"
+"@angular/core@^4.0.0-rc.2":
+  version "4.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@angular/core/-/core-4.0.0-rc.2.tgz#59535050e5d0e6141417186eee571296f8e9c3d0"
 
 "@types/chai@^3.4.33":
   version "3.4.34"

@@ -1,4 +1,4 @@
-import {assertFailure, assertSuccess, assertFailures} from './testHelper';
+import { assertSuccess, assertFailures, assertAnnotated} from './testHelper';
 
 describe('use-life-cycle-interface', () => {
     describe('invalid declaration of life hook', () => {
@@ -6,18 +6,13 @@ describe('use-life-cycle-interface', () => {
             let source = `
             class App {
                 ngOnInit(){
+                ~~~~~~~~
                 }
             }`;
-            assertFailure('use-life-cycle-interface', source, {
+            assertAnnotated({
+                ruleName: 'use-life-cycle-interface',
                 message: 'Implement lifecycle hook interface OnInit for method ngOnInit in class App ($$09-01$$)',
-                startPosition: {
-                    line: 2,
-                    character: 16
-                },
-                endPosition: {
-                    line: 2,
-                    character: 24
-                }
+                source
             });
         });
         it(`should fail, when life cycle hooks are used without implementing their interfaces`, () => {
@@ -57,18 +52,13 @@ describe('use-life-cycle-interface', () => {
                 ngOnInit(){
                 }
                 ngOnDestroy(){
+                ~~~~~~~~~~~
                 }
             }`;
-            assertFailure('use-life-cycle-interface', source, {
+            assertAnnotated({
+                ruleName: 'use-life-cycle-interface',
                 message: 'Implement lifecycle hook interface OnDestroy for method ngOnDestroy in class App ($$09-01$$)',
-                startPosition: {
-                    line: 4,
-                    character: 16
-                },
-                endPosition: {
-                    line: 4,
-                    character: 27
-                }
+                source
             });
         });
     });
@@ -79,18 +69,13 @@ describe('use-life-cycle-interface', () => {
                 ngOnInit(){
                 }
                 ngOnDestroy(){
+                ~~~~~~~~~~~
                 }
             }`;
-            assertFailure('use-life-cycle-interface', source, {
+            assertAnnotated({
+                ruleName: 'use-life-cycle-interface',
                 message: 'Implement lifecycle hook interface OnDestroy for method ngOnDestroy in class App ($$09-01$$)',
-                startPosition: {
-                    line: 4,
-                    character: 16
-                },
-                endPosition: {
-                    line: 4,
-                    character: 27
-                }
+                source
             });
         });
     });

@@ -1,7 +1,7 @@
 import * as ast from '@angular/compiler';
 import * as ts from 'typescript';
 import * as Lint from 'tslint';
-import * as e from '@angular/compiler/src/expression_parser/ast';
+import * as e from '@angular/compiler/typings/src/expression_parser/ast';
 
 import { ExpTypes } from '../expressionTypes';
 import { ComponentMetadata } from '../metadata';

@@ -1,25 +1,21 @@
-import {assertFailure, assertSuccess} from './testHelper';
+import { assertSuccess, assertAnnotated} from './testHelper';
 
 describe('use-output-property-decorator', () => {
   it('should fail when "outputs" is used in @Component', () => {
     let source = `
       @Component({
         outputs: [
+        ~~~~~~~~~~
           'id: foo'
         ]
+        ~
       })
       class Bar {}
     `;
-    assertFailure('use-output-property-decorator', source, {
+    assertAnnotated({
+      ruleName: 'use-output-property-decorator',
       message: 'Use the @Output property decorator instead of the outputs property ($$05-12$$)',
-      startPosition: {
-        line: 2,
-        character: 8
-      },
-      endPosition: {
-        line: 4,
-        character: 9
-      }
+      source
     });
   });
 
@@ -37,21 +33,17 @@ describe('use-output-property-decorator', () => {
     let source = `
       @Directive({
         outputs: [
+        ~~~~~~~~~~
           'id: foo'
         ]
+        ~
       })
       class Baz {}
     `;
-    assertFailure('use-output-property-decorator', source, {
+    assertAnnotated({
+      ruleName: 'use-output-property-decorator',
       message: 'Use the @Output property decorator instead of the outputs property ($$05-12$$)',
-      startPosition: {
-        line: 2,
-        character: 8
-      },
-      endPosition: {
-        line: 4,
-        character: 9
-      }
+      source
     });
   });
 });

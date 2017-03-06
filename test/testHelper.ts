@@ -43,26 +43,17 @@ export interface AssertConfig {
 
 const parseInvalidSource = (source: string, message: string) => {
   let start = null;
-  let end = null;
-  let ended = false;
+  let end;
   let line = 0;
   let col = 0;
-  let linearStart = 0;
-  let linearEnd = 0;
-  for (let i = 0; i < source.length && !ended; i += 1) {
+  let lastCol = 0;
+  let lastLine = 0;
+  for (let i = 0; i < source.length; i += 1) {
     if (source[i] === '~' && source[i - 1] !== '/' && start === null) {
       start = {
         line: line - 1,
         character: col
       };
-      linearStart = i;
-    } else if (start !== null && source[i] !== '~') {
-      end = {
-        line: line - 1,
-        character: col
-      };
-      linearEnd = i;
-      ended = true;
     }
     if (source[i] === '\n') {
       col = 0;
@@ -70,13 +61,16 @@ const parseInvalidSource = (source: string, message: string) => {
     } else {
       col += 1;
     }
+    if (source[i] === '~' && source[i - 1] !== '/') {
+      lastCol = col;
+      lastLine = line - 1;
+    }
   }
-  let whitespace = '';
-  for (let i = start; i < end; i += 1) {
-    whitespace += ' ';
-  }
-  source = source.substring(0, linearStart) + whitespace + source.substring(linearEnd, source.length);
-  console.log(source.substring(0, linearStart));
+  end = {
+    line: lastLine,
+    character: lastCol
+  };
+  source = source.replace(/~/g,'');
   return {
     source: source,
     failure: {
