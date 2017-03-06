@@ -1,3 +1,9 @@
+# 3.0.0-beta.2
+
+### Bug Fixes
+
+- Update peerDependency ngast to version `^0.0.4`.
+
 # 3.0.0-beta.1
 
 ### Features
