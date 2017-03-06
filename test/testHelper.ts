@@ -13,6 +13,19 @@ export interface IExpectedFailure {
   endPosition: ISourcePosition;
 }
 
+/**
+ * A helper function for specs. Lints the given `source` string against the `ruleName` with
+ *  `options`.
+ *
+ *  You're unlikely to use these in actual specs. Usually you'd use some of the following:
+ *    - `assertAnnotated` or
+ *    - `assertSuccess`.
+ *
+ * @param ruleName the name of the rule which is being tested
+ * @param source the source code, as a string
+ * @param options additional options for the lint rule
+ * @returns {LintResult} the result of linting
+ */
 function lint(ruleName: string, source: string, options: any): tslint.LintResult {
   let configuration = {
     rules: {}
@@ -41,6 +54,31 @@ export interface AssertConfig {
   message?: string;
 }
 
+/**
+ * When testing a failure, we also test to see if the linter will report the correct place where
+ * the source code doesn't match the rule.
+ *
+ * For example, if you use a private property in your template, the linter should report _where_
+ * did it happen. Because it's tedious to supply actual line/column number in the spec, we use
+ * some custom syntax with "underlining" the problematic part with tildes:
+ *
+ * ```
+ * template: '{{ foo }}'
+ *               ~~~
+ * ```
+ *
+ * When giving a spec which we expect to fail, we give it "source code" such as above, with tildes.
+ * We call this kind of source code "annotated". This source code cannot be compiled (and thus
+ * cannot be linted/tested), so we use this function to get rid of tildes, but maintain the
+ * information about where the linter is supposed to catch error.
+ *
+ * The result of the function contains "cleaned" source (`.source`) and a `.failure` object which
+ * contains the `.startPosition` and `.endPosition` of the tildes.
+ *
+ * @param source The annotated source code with tildes.
+ * @param message Passed to the result's `.failure.message` property.
+ * @returns {{source: string, failure: {message: string, startPosition: null, endPosition: any}}}
+ */
 const parseInvalidSource = (source: string, message: string) => {
   let start = null;
   let end;
@@ -70,7 +108,7 @@ const parseInvalidSource = (source: string, message: string) => {
     line: lastLine,
     character: lastCol
   };
-  source = source.replace(/~/g,'');
+  source = source.replace(/~/g, '');
   return {
     source: source,
     failure: {
@@ -81,6 +119,12 @@ const parseInvalidSource = (source: string, message: string) => {
   };
 };
 
+/**
+ * Helper function used in specs for asserting an annotated failure.
+ * See explanation given in `parseInvalidSource` about annotated source code. *
+ *
+ * @param config
+ */
 export function assertAnnotated(config: AssertConfig) {
   if (config.message) {
     const parsed = parseInvalidSource(config.source, config.message);
@@ -90,6 +134,16 @@ export function assertAnnotated(config: AssertConfig) {
   }
 };
 
+/**
+ * A helper function used in specs to assert a failure (meaning that the code contains a lint error).
+ * Consider using `assertAnnotated` instead.
+ *
+ * @param ruleName
+ * @param source
+ * @param fail
+ * @param options
+ * @returns {any}
+ */
 export function assertFailure(ruleName: string, source: string, fail: IExpectedFailure, options = null): Lint.RuleFailure[] {
   let result: Lint.LintResult;
   try {
@@ -99,9 +153,9 @@ export function assertFailure(ruleName: string, source: string, fail: IExpectedF
   }
   chai.assert(result.failureCount > 0, 'no failures');
   result.failures.forEach((ruleFail: tslint.RuleFailure) => {
-    chai.assert.equal(fail.message, ruleFail.getFailure(), 'error messages dont\'t match');
-    chai.assert.deepEqual(fail.startPosition, ruleFail.getStartPosition().getLineAndCharacter(), 'start char doesn\'t match');
-    chai.assert.deepEqual(fail.endPosition, ruleFail.getEndPosition().getLineAndCharacter(),  'end char doesn\'t match');
+    chai.assert.equal(fail.message, ruleFail.getFailure(), `error messages don't match`);
+    chai.assert.deepEqual(fail.startPosition, ruleFail.getStartPosition().getLineAndCharacter(), `start char doesn't match`);
+    chai.assert.deepEqual(fail.endPosition, ruleFail.getEndPosition().getLineAndCharacter(), `end char doesn't match`);
   });
   if (result) {
     return result.failures;
@@ -109,22 +163,37 @@ export function assertFailure(ruleName: string, source: string, fail: IExpectedF
   return undefined;
 };
 
+/**
+ * A helper function used in specs to assert more than one failure.
+ * Consider using `assertAnnotated` instead.
+ *
+ * @param ruleName
+ * @param source
+ * @param fails
+ * @param options
+ */
 export function assertFailures(ruleName: string, source: string, fails: IExpectedFailure[], options = null) {
-    let result;
-    try {
-        result = lint(ruleName, source, options);
-    } catch (e) {
-        console.log(e.stack);
-    }
-    chai.assert(result.failureCount > 0, 'no failures');
-    result.failures.forEach((ruleFail,index) => {
-            chai.assert.equal(fails[index].message, ruleFail.getFailure(), 'error messages dont\'t match');
-            chai.assert.deepEqual(fails[index].startPosition, ruleFail.getStartPosition().getLineAndCharacter(),
-              'start char doesn\'t match');
-            chai.assert.deepEqual(fails[index].endPosition, ruleFail.getEndPosition().getLineAndCharacter(), 'end char doesn\'t match');
-    });
+  let result;
+  try {
+    result = lint(ruleName, source, options);
+  } catch (e) {
+    console.log(e.stack);
+  }
+  chai.assert(result.failureCount > 0, 'no failures');
+  result.failures.forEach((ruleFail, index) => {
+    chai.assert.equal(fails[index].message, ruleFail.getFailure(), `error messages don't match`);
+    chai.assert.deepEqual(fails[index].startPosition, ruleFail.getStartPosition().getLineAndCharacter(), `start char doesn't match`);
+    chai.assert.deepEqual(fails[index].endPosition, ruleFail.getEndPosition().getLineAndCharacter(), `end char doesn't match`);
+  });
 };
 
+/**
+ * A helper function used in specs to assert a success (meaning that there are no lint errors).
+ *
+ * @param ruleName
+ * @param source
+ * @param options
+ */
 export function assertSuccess(ruleName: string, source: string, options = null) {
   chai.assert.equal(lint(ruleName, source, options).failureCount, 0);
 };
