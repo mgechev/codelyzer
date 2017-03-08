@@ -123,6 +123,17 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
 }
 
 export class Rule extends Lint.Rules.AbstractRule {
+  public static metadata: Lint.IRuleMetadata = {
+    ruleName: 'no-access-missing-member',
+    type: 'functionality',
+    description: `Disallows using non-existing properties and methods from the component in templates.`,
+    rationale: `Such occurances in code are most likely a result of a typo.`,
+    options: null,
+    optionsDescription: `Not configurable.`,
+    typescriptOnly: true,
+  };
+
+
   static FAILURE: string = 'The %s "%s" that you\'re trying to access does not exist in the class declaration.';
 
   public apply(sourceFile:ts.SourceFile): Lint.RuleFailure[] {

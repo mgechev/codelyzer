@@ -8,6 +8,16 @@ import {isDecorator, withIdentifier, callExpression} from './util/astQuery';
 import {Failure} from './walkerFactory/walkerFactory';
 
 export class Rule extends Lint.Rules.AbstractRule {
+  public static metadata: Lint.IRuleMetadata = {
+    ruleName: 'no-attribute-parameter-decorator-rule',
+    type: 'maintainability',
+    description: `Disallow usage of @Attribute decorator`,
+    rationale: `@Attribute is considered bad practice. Use @Input instead.`,
+    options: null,
+    optionsDescription: `Not configurable.`,
+    typescriptOnly: true,
+  };
+
     static FAILURE_STRING: string = 'In the constructor of class "%s",' +
         ' the parameter "%s" uses the @Attribute decorator, ' +
         'which is considered as a bad practice. Please,' +

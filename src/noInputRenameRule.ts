@@ -4,6 +4,17 @@ import {sprintf} from 'sprintf-js';
 import {Ng2Walker} from './angular/ng2Walker';
 
 export class Rule extends Lint.Rules.AbstractRule {
+  public static metadata: Lint.IRuleMetadata = {
+    ruleName: 'no-input-rename-rule',
+    type: 'maintainability',
+    description: `Disallows renaming directive inputs by providing a string to the decorator.`,
+    descriptionDetails: `See more at https://angular.io/styleguide#!#05-13.`,
+    rationale: `Two names for the same property (one private, one public) is inherently confusing.`,
+    options: null,
+    optionsDescription: `Not configurable.`,
+    typescriptOnly: true,
+  };
+
   static FAILURE_STRING:string = 'In the class "%s", the directive ' +
     'input property "%s" should not be renamed.' +
     'Please, consider the following use "@Input() %s: string"';
