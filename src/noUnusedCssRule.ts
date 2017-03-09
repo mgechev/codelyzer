@@ -139,6 +139,16 @@ class ElementFilterVisitor extends BasicTemplateAstVisitor {
 }
 
 export class Rule extends Lint.Rules.AbstractRule {
+  public static metadata: Lint.IRuleMetadata = {
+    ruleName: 'no-unused-css-rule',
+    type: 'maintainability',
+    description: `Disallows having an unused CSS rule in the component's stylesheet.`,
+    options: null,
+    optionsDescription: `Not configurable.`,
+    typescriptOnly: true,
+  };
+
+
   static FAILURE: string = 'The %s "%s" that you\'re trying to access does not exist in the class declaration.';
 
   public apply(sourceFile:ts.SourceFile): Lint.RuleFailure[] {

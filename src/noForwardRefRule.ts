@@ -4,6 +4,17 @@ import {sprintf} from 'sprintf-js';
 import SyntaxKind = require('./util/syntaxKind');
 
 export class Rule extends Lint.Rules.AbstractRule {
+  public static metadata: Lint.IRuleMetadata = {
+    ruleName: 'no-forward-ref',
+    type: 'maintainability',
+    description: `Disallows usage of forward references for DI.`,
+    rationale: `The flow of DI is disrupted by using \`forwardRef\` and might make code more difficult to understand.`,
+    options: null,
+    optionsDescription: `Not configurable.`,
+    typescriptOnly: true,
+  };
+
+
   static FAILURE_IN_CLASS: string = 'Avoid using forwardRef in class "%s"';
 
   static FAILURE_IN_VARIABLE: string = 'Avoid using forwardRef in variable "%s"';

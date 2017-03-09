@@ -2,6 +2,16 @@ import * as ts from 'typescript';
 import * as Lint from 'tslint';
 
 export class Rule extends Lint.Rules.AbstractRule {
+  public static metadata: Lint.IRuleMetadata = {
+    ruleName: 'import-destructing-spacing-rule',
+    type: 'style',
+    description: `Ensure consistent and tidy imports.`,
+    rationale: `Imports are easier for the reader to look at when they're tidy.`,
+    options: null,
+    optionsDescription: `Not configurable.`,
+    typescriptOnly: true,
+  };
+
   public static FAILURE_STRING = 'You need to leave whitespaces inside of the import statement\'s curly braces';
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {

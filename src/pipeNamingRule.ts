@@ -6,6 +6,31 @@ import {Ng2Walker} from './angular/ng2Walker';
 import {SelectorValidator} from './util/selectorValidator';
 
 export class Rule extends Lint.Rules.AbstractRule {
+  public static metadata: Lint.IRuleMetadata = {
+    ruleName: 'pipe-naming-rule',
+    type: 'style',
+    description: `Enforce consistent case and prefix for pipes.`,
+    rationale: `Consistent conventions make it easy to quickly identify and reference assets of different types.`,
+    options: {
+      "type": "array",
+      "items": [
+        {"enum": ["kebab-case", "attribute"]},
+        {"type": "string"}
+      ],
+      "minItems": 1
+    },
+    optionExamples: [
+      `["camelCase", "myPrefix"]`,
+      `["camelCase", "myPrefix", "myOtherPrefix"]`,
+      `["kebab-case", "my-prefix"]`,
+    ],
+    optionsDescription: Lint.Utils.dedent`
+    * The first item in the array is \`"kebab-case"\` or \`"camelCase"\`, which allows you to pick a case.
+    * The rest of the arguments are supported prefixes (given as strings). They are optional.`,
+    typescriptOnly: true,
+  };
+
+
   static  FAILURE_WITHOUT_PREFIX: string = 'The name of the Pipe decorator of class %s should' +
     ' be named camelCase, however its value is "%s".';
 

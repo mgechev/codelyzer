@@ -4,6 +4,17 @@ import {sprintf} from 'sprintf-js';
 import {Ng2Walker} from './angular/ng2Walker';
 
 export class Rule extends Lint.Rules.AbstractRule {
+  public static metadata: Lint.IRuleMetadata = {
+    ruleName: 'invoke-injectable',
+    type: 'functionality',
+    description: `Ensures that @Injectable decorator is properly invoked.`,
+    rationale: `Application will fail mysteriously if we forget the parentheses.`,
+    options: null,
+    optionsDescription: `Not configurable.`,
+    typescriptOnly: true,
+  };
+
+
   static FAILURE_STRING: string = 'You have to invoke @Injectable()';
 
   public apply(sourceFile:ts.SourceFile):Lint.RuleFailure[] {
