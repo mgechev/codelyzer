@@ -54,6 +54,13 @@ export interface AssertConfig {
   message?: string;
 }
 
+export interface AssertMultipleConfigs {
+  ruleName: string;
+  source: string;
+  options?: any;
+  failures: {char: string; msg: string}[];
+}
+
 /**
  * When testing a failure, we also test to see if the linter will report the correct place where
  * the source code doesn't match the rule.
@@ -77,9 +84,13 @@ export interface AssertConfig {
  *
  * @param source The annotated source code with tildes.
  * @param message Passed to the result's `.failure.message` property.
+ * @param specialChar The character to look for; in the above example that's ~.
+ * @param otherChars All other characters which should be ignored. Used when asserting multiple
+ *                   failures where there are multiple invalid characters.
  * @returns {{source: string, failure: {message: string, startPosition: null, endPosition: any}}}
  */
-const parseInvalidSource = (source: string, message: string) => {
+const parseInvalidSource = (source: string, message: string, specialChar: string = '~', otherChars: string[] = []) => {
+  otherChars.forEach(char => source.replace(new RegExp(char, 'g'), ' '));
   let start = null;
   let end;
   let line = 0;
@@ -87,7 +98,7 @@ const parseInvalidSource = (source: string, message: string) => {
   let lastCol = 0;
   let lastLine = 0;
   for (let i = 0; i < source.length; i += 1) {
-    if (source[i] === '~' && source[i - 1] !== '/' && start === null) {
+    if (source[i] === specialChar && source[i - 1] !== '/' && start === null) {
       start = {
         line: line - 1,
         character: col
@@ -99,7 +110,7 @@ const parseInvalidSource = (source: string, message: string) => {
     } else {
       col += 1;
     }
-    if (source[i] === '~' && source[i - 1] !== '/') {
+    if (source[i] === specialChar && source[i - 1] !== '/') {
       lastCol = col;
       lastLine = line - 1;
     }
@@ -108,7 +119,7 @@ const parseInvalidSource = (source: string, message: string) => {
     line: lastLine,
     character: lastCol
   };
-  source = source.replace(/~/g, '');
+  source = source.replace(new RegExp(specialChar, 'g'), '');
   return {
     source: source,
     failure: {
@@ -135,6 +146,22 @@ export function assertAnnotated(config: AssertConfig) {
 };
 
 /**
+ * Helper function which asserts multiple annotated failures.
+ * @param configs
+ */
+export function assertMultipleAnnotated(configs: AssertMultipleConfigs): void {
+  configs.failures.forEach((failure, index) => {
+    const otherCharacters = configs.failures.map(message => message.char).filter(x => x !== failure.char);
+    if (failure.msg) {
+      const parsed = parseInvalidSource(configs.source, failure.msg, failure.char, otherCharacters);
+      assertFailure(configs.ruleName, parsed.source, parsed.failure, configs.options, index);
+    } else {
+      assertSuccess(configs.ruleName, configs.source, configs.options);
+    }
+  })
+}
+
+/**
  * A helper function used in specs to assert a failure (meaning that the code contains a lint error).
  * Consider using `assertAnnotated` instead.
  *
@@ -142,9 +169,12 @@ export function assertAnnotated(config: AssertConfig) {
  * @param source
  * @param fail
  * @param options
+ * @param onlyNthFailure When there are multiple failures in code, we might want to test only some.
+ *                       This is 0-based index of the error that will be tested for. 0 by default.
  * @returns {any}
  */
-export function assertFailure(ruleName: string, source: string, fail: IExpectedFailure, options = null): Lint.RuleFailure[] {
+export function assertFailure(ruleName: string, source: string, fail: IExpectedFailure,
+                              options = null, onlyNthFailure: number = 0): Lint.RuleFailure[] {
   let result: Lint.LintResult;
   try {
     result = lint(ruleName, source, options);
@@ -152,11 +182,10 @@ export function assertFailure(ruleName: string, source: string, fail: IExpectedF
     console.log(e.stack);
   }
   chai.assert(result.failureCount > 0, 'no failures');
-  result.failures.forEach((ruleFail: tslint.RuleFailure) => {
-    chai.assert.equal(fail.message, ruleFail.getFailure(), `error messages don't match`);
-    chai.assert.deepEqual(fail.startPosition, ruleFail.getStartPosition().getLineAndCharacter(), `start char doesn't match`);
-    chai.assert.deepEqual(fail.endPosition, ruleFail.getEndPosition().getLineAndCharacter(), `end char doesn't match`);
-  });
+  const ruleFail = result.failures[onlyNthFailure];
+  chai.assert.equal(fail.message, ruleFail.getFailure(), `error messages don't match`);
+  chai.assert.deepEqual(fail.startPosition, ruleFail.getStartPosition().getLineAndCharacter(), `start char doesn't match`);
+  chai.assert.deepEqual(fail.endPosition, ruleFail.getEndPosition().getLineAndCharacter(), `end char doesn't match`);
   if (result) {
     return result.failures;
   }

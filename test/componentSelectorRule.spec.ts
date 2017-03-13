@@ -1,4 +1,4 @@
-import { assertSuccess, assertAnnotated} from './testHelper';
+import {assertSuccess, assertAnnotated, assertMultipleAnnotated} from './testHelper';
 
 describe('component-selector-prefix', () => {
     describe('invalid component selectors', () => {
@@ -49,14 +49,17 @@ describe('component-selector-prefix', () => {
 
         it('should fail when component used longer prefix', () => {
             let source = `
-          @Component({
-            selector: 'foo-bar'
-                      ~~~~~~~~~
-          })
-      class Test {}`;
-            assertAnnotated({
+          @Component({selector: 'foo-bar'}) class TestOne {} 
+                                ~~~~~~~~~
+          @Component({selector: 'ngg-bar'}) class TestTwo {}
+                                ^^^^^^^^^
+          `;
+            assertMultipleAnnotated({
                 ruleName: 'component-selector',
-                message:  'The selector of the component "Test" should have one of the prefixes: fo,mg,ng ($$02-07$$)',
+                failures: [
+                  { char: '~', msg: 'The selector of the component "TestOne" should have one of the prefixes: fo,mg,ng ($$02-07$$)'},
+                  { char: '^', msg: 'The selector of the component "TestTwo" should have one of the prefixes: fo,mg,ng ($$02-07$$)'},
+                ],
                 source,
                 options: ['element', ['fo','mg','ng'], 'kebab-case']
             });
