@@ -1,3 +1,9 @@
+# 3.0.0-beta.4
+
+### Features
+
+- Support for Angular 4.0.0-rc.5 & ngast 0.0.15 [#270](https://github.com/mgechev/codelyzer/issues/270) [35aa900](https://github.com/mgechev/codelyzer/commit/35aa9005c963ef2a302eaef892ee817f0b9101c0)
+
 # 3.0.0-beta.3
 
 ### Bug Fixes
