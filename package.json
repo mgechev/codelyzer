@@ -1,6 +1,6 @@
 {
   "name": "codelyzer",
-  "version": "3.0.0-beta.3",
+  "version": "3.0.0-beta.4",
   "description": "Linting for Angular applications, following angular.io/styleguide.",
   "scripts": {
     "lint": "tslint -c tslint.json src/**/*.ts test/**/*.ts",
@@ -43,12 +43,12 @@
   },
   "homepage": "https://github.com/mgechev/codelyzer#readme",
   "devDependencies": {
-    "@angular/common": "^4.0.0-rc.1",
-    "@angular/compiler": "^4.0.0-rc.1",
-    "@angular/core": "^4.0.0-rc.1",
-    "@angular/forms": "^4.0.0-rc.1",
-    "@angular/platform-browser": "^4.0.0-rc.1",
-    "@angular/router": "^4.0.0-rc.1",
+    "@angular/common": "^4.0.0-rc.5",
+    "@angular/compiler": "^4.0.0-rc.5",
+    "@angular/core": "^4.0.0-rc.5",
+    "@angular/forms": "^4.0.0-rc.5",
+    "@angular/platform-browser": "^4.0.0-rc.5",
+    "@angular/router": "^4.0.0-rc.5",
     "@types/chai": "^3.4.33",
     "@types/less": "0.0.31",
     "@types/mocha": "^2.2.32",
@@ -67,7 +67,7 @@
     "ts-node": "1.2.2",
     "tslint": "^4.0.0",
     "typescript": "^2.1.4",
-    "zone.js": "^0.7.2"
+    "zone.js": "^0.8.4"
   },
   "peerDependencies": {
     "@angular/compiler": ">=4.0.0-rc <5.0.0",
@@ -75,11 +75,11 @@
     "tslint": "^4.0.0"
   },
   "dependencies": {
-    "@angular/compiler-cli": "^4.0.0-rc.1",
+    "@angular/compiler-cli": "^4.0.0-rc.5",
     "app-root-path": "^2.0.1",
     "css-selector-tokenizer": "^0.7.0",
     "cssauron": "^1.4.0",
-    "ngast": "^0.0.6",
+    "ngast": "^0.0.15",
     "semver-dsl": "^1.0.1",
     "source-map": "^0.5.6",
     "sprintf-js": "^1.0.3"

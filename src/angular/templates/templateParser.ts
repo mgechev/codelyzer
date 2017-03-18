@@ -59,6 +59,7 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
 
   const summaryKind = compiler.CompileSummaryKind.Directive;
   const templateMetadata: compiler.CompileTemplateMetadata = {
+    isInline: false,
     encapsulation: 0,
     template: template,
     templateUrl: '',
