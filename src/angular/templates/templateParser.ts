@@ -2,8 +2,8 @@ import * as compiler from '@angular/compiler';
 
 import { Config, DirectiveDeclaration } from '../config';
 import { SemVerDSL } from '../../util/ngVersion';
-import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { ɵConsole } from "@angular/core";
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ɵConsole } from '@angular/core';
 let refId = 0;
 
 const dummyMetadataFactory = (declaration: DirectiveDeclaration) => {
@@ -72,6 +72,7 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
   const templateMetadata: compiler.CompileTemplateMetadata = {
     encapsulation: 0,
     template: template,
+    isInline: false,
     templateUrl: '',
     styles: [],
     styleUrls: [],

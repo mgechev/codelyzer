@@ -32,10 +32,6 @@ export class Rule extends Lint.Rules.AbstractRule {
 
     static FAILURE: string = 'The name of the class %s should end with the suffix %s ($$02-03$$)';
 
-    static validate(className: string, suffixList: string[]): boolean {
-        return suffixList.some(suffix => className.endsWith(suffix));
-    }
-
     static walkerBuilder: F2<ts.SourceFile, IOptions, Ng2Walker> =
         all(
             validateComponent((meta: ComponentMetadata, suffixList?: string[]) =>
@@ -49,6 +45,10 @@ export class Rule extends Lint.Rules.AbstractRule {
                         }
                     })
             ));
+
+    static validate(className: string, suffixList: string[]): boolean {
+      return suffixList.some(suffix => className.endsWith(suffix));
+    }
 
     public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
         return this.applyWithWalker(

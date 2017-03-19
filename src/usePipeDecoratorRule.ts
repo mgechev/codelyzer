@@ -12,9 +12,9 @@ const getInterfaceName = (t: any) => {
 
 export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'use-pipe-transform-interface',
+    ruleName: 'use-pipe-decorator',
     type: 'maintainability',
-    description: `Ensure that pipes implement PipeTransform interface.`,
+    description: `Ensure that classes implementing PipeTransform interface, use Pipe decorator`,
     rationale: `Interfaces prescribe typed method signatures. Use those signatures to flag spelling and syntax mistakes.`,
     options: null,
     optionsDescription: `Not configurable.`,
@@ -22,7 +22,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   };
 
 
-  static FAILURE: string = 'The %s class has the Pipe decorator, so it should implement the PipeTransform interface';
+  static FAILURE: string = 'The %s class implements the PipeTransform interface, so it should use the @Pipe decorator';
   static PIPE_INTERFACE_NAME = 'PipeTransform';
 
   public apply(sourceFile:ts.SourceFile):Lint.RuleFailure[] {
@@ -33,27 +33,26 @@ export class Rule extends Lint.Rules.AbstractRule {
 }
 
 export class ClassMetadataWalker extends Lint.RuleWalker {
+
   visitClassDeclaration(node:ts.ClassDeclaration) {
-    let decorators = node.decorators;
-    if (decorators) {
-      let pipes:Array<string> = decorators.map(d =>
-          (<any>d.expression).text ||
-          ((<any>d.expression).expression || {}).text).filter(t=> t === 'Pipe');
-      if (pipes.length !== 0) {
+    if (this.hasIPipeTransform(node)) {
+        let decorators =  <any[]>node.decorators || [];
         let className:string = node.name.text;
-        if (!this.hasIPipeTransform(node)) {
-          this.addFailure(
-            this.createFailure(
-              node.getStart(),
-              node.getWidth(),
-              sprintf.apply(this, [Rule.FAILURE,className])));
+        let pipes:Array<string> = decorators.map(d =>
+        (<any>d.expression).text ||
+        ((<any>d.expression).expression || {}).text).filter( t=> t === 'Pipe');
+        if (pipes.length === 0) {
+         this.addFailure(
+                    this.createFailure(
+                    node.getStart(),
+                    node.getWidth(),
+                    sprintf.apply(this, [Rule.FAILURE, className])));
         }
-      }
     }
     super.visitClassDeclaration(node);
   }
 
-  private hasIPipeTransform(node:ts.ClassDeclaration): boolean {
+  private hasIPipeTransform(node: ts.ClassDeclaration): boolean {
     let interfaces = [];
     if (node.heritageClauses) {
       let interfacesClause = node.heritageClauses
