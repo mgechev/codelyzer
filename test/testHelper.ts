@@ -158,7 +158,7 @@ export function assertMultipleAnnotated(configs: AssertMultipleConfigs): void {
     } else {
       assertSuccess(configs.ruleName, configs.source, configs.options);
     }
-  })
+  });
 }
 
 /**

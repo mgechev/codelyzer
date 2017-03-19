@@ -38,7 +38,7 @@ export class ClassMetadataWalker extends Ng2Walker {
     let argument = this.extractArgument(pipe);
     if (argument.kind === SyntaxKind.current().ObjectLiteralExpression) {
       argument.properties.filter(n => n.name.text === 'pure')
-      .forEach(this.validateProperty.bind(this, className))
+      .forEach(this.validateProperty.bind(this, className));
     }
   }
 

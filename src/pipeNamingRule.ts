@@ -12,12 +12,12 @@ export class Rule extends Lint.Rules.AbstractRule {
     description: `Enforce consistent case and prefix for pipes.`,
     rationale: `Consistent conventions make it easy to quickly identify and reference assets of different types.`,
     options: {
-      "type": "array",
-      "items": [
-        {"enum": ["kebab-case", "attribute"]},
-        {"type": "string"}
+      'type': 'array',
+      'items': [
+        {'enum': ['kebab-case', 'attribute']},
+        {'type': 'string'}
       ],
-      "minItems": 1
+      'minItems': 1
     },
     optionExamples: [
       `["camelCase", "myPrefix"]`,

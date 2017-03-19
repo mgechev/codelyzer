@@ -39,7 +39,7 @@ export class ReferenceCollectorVisitor implements ast.TemplateAstVisitor {
     element.children.forEach(e => this.visit(e, context));
     this._variables = this._variables.concat(references);
   }
-  
+
   get variables() {
     return this._variables;
   }

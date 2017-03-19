@@ -133,7 +133,7 @@ class ElementFilterVisitor extends BasicTemplateAstVisitor {
       return !selectorTypes[s] || !strategy(ast);
     }) && (ast.children || [])
       .every(c => ast instanceof ElementAst && this.shouldVisit(<ElementAst>c, strategies, selectorTypes)
-                  || ast instanceof EmbeddedTemplateAst && 
+                  || ast instanceof EmbeddedTemplateAst &&
                   (ast.children || []).every(c => this.shouldVisit(<ElementAst>c, strategies, selectorTypes)));
   }
 }

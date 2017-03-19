@@ -55,7 +55,7 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
         super.visitClassDeclaration(node);
     }
 
-    private extractInterfaces(node:ts.ClassDeclaration,syntaxKind:SyntaxKind.SyntaxKind):string[]{
+    private extractInterfaces(node:ts.ClassDeclaration,syntaxKind:SyntaxKind.SyntaxKind): string[] {
         let interfaces:string[] = [];
         if (node.heritageClauses) {
             let interfacesClause = node.heritageClauses.filter(h=>h.token === syntaxKind.ImplementsKeyword);
@@ -66,26 +66,26 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
         return interfaces;
     }
 
-    private validateMethods( methods:any[],interfaces:string[],className:string){
-        methods.forEach(m => {
+    private validateMethods( methods: any[], interfaces: string[], className: string) {
+        methods.forEach( m => {
             let n = (<any>m.name).text;
-            if(n && this.isMethodValidHook(m,interfaces)){
+            if(n && this.isMethodValidHook(m, interfaces)) {
                 let hookName = n.substr(2, n.lenght);
                 this.addFailure(
                     this.createFailure(
                         m.name.getStart(),
                         m.name.getWidth(),
-                        sprintf.apply(this, [Rule.FAILURE, hookName,Rule.HOOKS_PREFIX + hookName, className])));
+                        sprintf.apply(this, [Rule.FAILURE, hookName, Rule.HOOKS_PREFIX + hookName, className])));
             }
         });
     }
 
-    private isMethodValidHook(m:any,interfaces:string[]):boolean{
+    private isMethodValidHook(m:any,interfaces:string[]): boolean {
         let n = (<any>m.name).text;
-        let isNg:boolean = n.substr(0, 2) === Rule.HOOKS_PREFIX;
+        let isNg: boolean = n.substr(0, 2) === Rule.HOOKS_PREFIX;
         let hookName = n.substr(2, n.lenght);
         let isHook = Rule.LIFE_CYCLE_HOOKS_NAMES.indexOf(hookName) !== -1;
-        let isNotIn:boolean = interfaces.indexOf(hookName) === -1;
+        let isNotIn: boolean = interfaces.indexOf(hookName) === -1;
         return isNg && isHook && isNotIn;
     }
 

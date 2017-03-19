@@ -16,30 +16,30 @@ export class Rule extends SelectorRule {
     * It is easier to recognize that a symbol is a directive by looking at the template's HTML.
     `,
     options: {
-      "type": "array",
-      "items": [
+      'type': 'array',
+      'items': [
         {
-          "enum": ["element", "attribute"]
+          'enum': ['element', 'attribute']
         },
         {
-          "oneOf": [
+          'oneOf': [
             {
-              "type": "array",
-              "items": {
-                "type": "string"
+              'type': 'array',
+              'items': {
+                'type': 'string'
               }
             },
             {
-              "type": "string"
+              'type': 'string'
             }
           ]
         },
         {
-          "enum": ["kebab-case", "camelCase"]
+          'enum': ['kebab-case', 'camelCase']
         }
       ],
-      "minItems": 3,
-      "maxItems": 3
+      'minItems': 3,
+      'maxItems': 3
     },
     optionExamples: [
       `["element", "my-prefix", "kebab-case"]`,
