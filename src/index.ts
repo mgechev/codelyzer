@@ -18,4 +18,5 @@ export { Rule as UseInputPropertyDecoratorRule } from './useInputPropertyDecorat
 export { Rule as UseLifeCycleInterfaceRule } from './useLifeCycleInterfaceRule';
 export { Rule as UseOutputPropertyDecoratorRule } from './useOutputPropertyDecoratorRule';
 export { Rule as UsePipeTransformInterfaceRule } from './usePipeTransformInterfaceRule';
+export { Rule as TemplateToNgTemplateRule } from './templateToNgTemplateRule';
 export * from './angular/config';

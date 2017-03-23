@@ -54,6 +54,7 @@ class TemplateToNgTemplateVisitor extends BasicTemplateAstVisitor {
       if (!TemplateEndRe.test(rest)) {
         this._fix = null;
         this._prevClosing = 0;
+        this._visitedElements = new Set();
       }
     }
   }
