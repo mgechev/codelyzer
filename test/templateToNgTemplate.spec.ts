@@ -1,7 +1,7 @@
 import { assertSuccess, assertAnnotated, assertFailure } from './testHelper';
 import chai = require('chai');
 
-describe('templates-use-public', () => {
+describe('template-to-ng-template', () => {
   it('should skip elements with *-prefixed attr', () => {
     let source = `
       @Component({

@@ -74,7 +74,9 @@ Create the following `tslint.json` file like:
     "directive-class-suffix": true,
     "templates-use-public": true,
     "no-access-missing-member": true,
-    "invoke-injectable": true
+    "invoke-injectable": true,
+    "invoke-injectable": true,
+    "template-to-ng-template": true
   }
 }
 ```
