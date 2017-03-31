@@ -59,7 +59,7 @@ describe('template-to-ng-template', () => {
       });
   });
 
-  xdescribe('autofixes', () => {
+  describe('autofixes', () => {
 
     it('should not autofix template suggar', () => {
       let source = `
