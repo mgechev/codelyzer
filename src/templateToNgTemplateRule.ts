@@ -40,7 +40,8 @@ class TemplateToNgTemplateVisitor extends BasicTemplateAstVisitor {
       } else {
         this._fix.replacements.push(replacement);
       }
-      this.addFailure(this.createFailure(sp.start.offset, sp.end.offset - sp.start.offset, ErrorMessage, this._fix));
+      // this.addFailure(this.createFailure(sp.start.offset, sp.end.offset - sp.start.offset, ErrorMessage, this._fix));
+      this.addFailure(this.createFailure(sp.start.offset, sp.end.offset - sp.start.offset, ErrorMessage));
     }
 
     super.visitEmbeddedTemplate(element, ctx);
