@@ -1,9 +1,9 @@
+import { NO_ERRORS_SCHEMA, ViewEncapsulation } from '@angular/core';
 import * as compiler from '@angular/compiler';
 
 import { Config, DirectiveDeclaration } from '../config';
 import { SemVerDSL } from '../../util/ngVersion';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ɵConsole } from '@angular/core';
+
 let refId = 0;
 
 const dummyMetadataFactory = (declaration: DirectiveDeclaration) => {
@@ -40,6 +40,12 @@ const dummyMetadataFactory = (declaration: DirectiveDeclaration) => {
   };
 };
 
+class Console {
+  log(message: string) {}
+  warn(message: string) {}
+}
+
+
 let defaultDirectives = [];
 
 export const parseTemplate = (template: string, directives: DirectiveDeclaration[] = []) => {
@@ -48,7 +54,7 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
   const TemplateParser = <any>compiler.TemplateParser;
   const expressionParser = new compiler.Parser(new compiler.Lexer());
   const elementSchemaRegistry = new compiler.DomElementSchemaRegistry();
-  const ngConsole = new ɵConsole();
+  const ngConsole = new Console();
   const htmlParser =
       new compiler.I18NHtmlParser(new compiler.HtmlParser());
 
@@ -69,12 +75,12 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
 
   // Make sure it works with 2.2.x & 2.3.x
   const summaryKind = ((compiler as any).CompileSummaryKind || {}).Template;
-  const templateMetadata: compiler.CompileTemplateMetadata = {
+  let templateMetadata: any = {
     encapsulation: 0,
     template: template,
-    isInline: false,
     templateUrl: '',
     styles: [],
+    isInline: true,
     styleUrls: [],
     ngContentSelectors: [],
     animations: [],

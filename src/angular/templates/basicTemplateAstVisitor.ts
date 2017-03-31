@@ -116,8 +116,7 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
     element.directives.forEach(d => this.visit(d, context));
   }
 
-  visitReference(ast: ast.ReferenceAst, context: any): any {
-  }
+  visitReference(ast: ast.ReferenceAst, context: any): any {}
 
   visitVariable(ast: ast.VariableAst, context: any): any {
     this._variables.push(ast.name);
