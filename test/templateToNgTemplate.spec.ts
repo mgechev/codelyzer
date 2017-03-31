@@ -1,7 +1,7 @@
 import { assertSuccess, assertAnnotated, assertFailure } from './testHelper';
 import chai = require('chai');
 
-describe.only('templates-use-public', () => {
+describe('templates-use-public', () => {
   it('should skip elements with *-prefixed attr', () => {
     let source = `
       @Component({
