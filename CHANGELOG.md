@@ -1,3 +1,16 @@
+# 2.1.0
+
+### Features
+
+- Automatic removal of dead styles (experimental) [#244](https://github.com/mgechev/codelyzer/issues/244) [30f2667](https://github.com/mgechev/codelyzer/pull/246)
+- Warning for the deprecated `<template>` element [#280](https://github.com/mgechev/codelyzer/issues/280) [0d0e81c](https://github.com/mgechev/codelyzer/commit/0d0e81cd501c7aecb59786553e75356d96e03e41)
+- Rise a warning if given class implements PipeTransform but is not decorated with @Pipe [#104](https://github.com/mgechev/codelyzer/issues/104) [638e72f](https://github.com/mgechev/codelyzer/pull/271)
+
+### Bug Fixes
+
+- no-unused-css ignores elements with structural directives [#249](https://github.com/mgechev/codelyzer/issues/249) [0aff6b7](https://github.com/tmair/codelyzer/commit/0aff6b7773f8359bc93c78238e1a61aff11c9f56)
+- Improve position to line & character and line & character to position [#245](https://github.com/mgechev/codelyzer/issues/245) [30f2667](https://github.com/mgechev/codelyzer/pull/246)
+
 # 3.0.0-beta.4
 
 ### Features
