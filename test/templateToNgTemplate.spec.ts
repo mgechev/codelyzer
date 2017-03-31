@@ -242,6 +242,48 @@ describe('templates-use-public', () => {
       @Component({
         selector: 'foobar',
         template: \`
+          <template>
+            <template></template>
+          </template>
+          <template></template>
+        \`
+      })
+      class Test {}`;
+      const failures = assertFailure('template-to-ng-template', source, {
+        message: 'You should use <ng-template/> instead of <template/>',
+          startPosition: {
+            line: 4,
+            character: 10
+          },
+          endPosition: {
+            line: 4,
+            character: 20
+          }
+        });
+      chai.expect(failures[0].hasFix()).to.eq(true);
+      const fixes = failures[0].getFix();
+      chai.expect(fixes.replacements.length).to.eq(6);
+      const reps = fixes.replacements;
+      const res = fixes.apply(source);
+      const expected = `
+      @Component({
+        selector: 'foobar',
+        template: \`
+          <ng-template>
+            <ng-template></ng-template>
+          </ng-template>
+          <ng-template></ng-template>
+        \`
+      })
+      class Test {}`;
+      chai.expect(res).to.eq(expected);
+    });
+
+    it('should fix template with no suggar & nested templates & nested elements', () => {
+      let source = `
+      @Component({
+        selector: 'foobar',
+        template: \`
           <div *ngIf="foo">
             <template></template>
           </div>
