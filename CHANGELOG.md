@@ -1,3 +1,9 @@
+# 2.1.1
+
+### Fix
+
+- Breaking change in the TypeScript AST regarding `importDestructuringSpacingRule` [#282](https://github.com/mgechev/codelyzer/issues/282)
+
 # 2.1.0
 
 ### Features
