@@ -2,7 +2,7 @@
 
 ### Fix
 
-- Breaking change in the TypeScript AST regarding `importDestructuringSpacingRule` [#282](https://github.com/mgechev/codelyzer/issues/282)
+- Breaking change in the TypeScript AST regarding `importDestructuringSpacingRule` [#282](https://github.com/mgechev/codelyzer/issues/282) [eebf10a](https://github.com/mgechev/codelyzer/commit/eebf10adc3bd67101a06abfb19d35729a2210d46)
 
 # 2.1.0
 
