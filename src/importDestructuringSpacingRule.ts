@@ -30,7 +30,7 @@ class ImportDestructuringSpacingWalker extends Lint.SkippableTokenAwareRuleWalke
 
   public visitImportDeclaration(node: ts.ImportDeclaration) {
     const importClause = node.importClause;
-    if (importClause !== null && importClause.namedBindings !== null) {
+    if (importClause && importClause.namedBindings) {
       const text = importClause.namedBindings.getText();
 
       if (!this.checkForWhiteSpace(text)) {
