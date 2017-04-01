@@ -23,7 +23,7 @@ describe('template-to-ng-template', () => {
       class Test {}`;
       assertAnnotated({
         ruleName: 'template-to-ng-template',
-        message: 'You should use <ng-template/> instead of <template/>',
+        message: 'You should use <ng-template> instead of <template>',
         source
       });
   });
@@ -38,7 +38,7 @@ describe('template-to-ng-template', () => {
       class Test {}`;
       assertAnnotated({
         ruleName: 'template-to-ng-template',
-        message: 'You should use <ng-template/> instead of <template/>',
+        message: 'You should use <ng-template> instead of <template>',
         source
       });
   });
@@ -55,7 +55,7 @@ describe('template-to-ng-template', () => {
       class Test {}`;
       assertAnnotated({
         ruleName: 'template-to-ng-template',
-        message: 'You should use <ng-template/> instead of <template/>',
+        message: 'You should use <ng-template> instead of <template>',
         source
       });
   });
@@ -83,7 +83,7 @@ describe('template-to-ng-template', () => {
       const failures = assertAnnotated({
         ruleName: 'template-to-ng-template',
         source,
-        message: 'You should use <ng-template/> instead of <template/>'
+        message: 'You should use <ng-template> instead of <template>'
       });
       chai.expect(failures[0].hasFix()).to.eq(true);
       const fixes = [failures[0].getFix()].concat(failures[1].getFix());
@@ -110,7 +110,7 @@ describe('template-to-ng-template', () => {
       const failures = assertAnnotated({
         ruleName: 'template-to-ng-template',
         source,
-        message: 'You should use <ng-template/> instead of <template/>'
+        message: 'You should use <ng-template> instead of <template>'
       });
       chai.expect(failures[0].hasFix()).to.eq(true);
       chai.expect((failures as RuleFailure[]).length).to.eq(2);
@@ -139,7 +139,7 @@ describe('template-to-ng-template', () => {
       })
       class Test {}`;
       const failures = assertFailure('template-to-ng-template', source, {
-        message: 'You should use <ng-template/> instead of <template/>',
+        message: 'You should use <ng-template> instead of <template>',
         startPosition: {
           line: 5,
           character: 10
@@ -183,7 +183,7 @@ describe('template-to-ng-template', () => {
       })
       class Test {}`;
       const failures = assertFailure('template-to-ng-template', source, {
-        message: 'You should use <ng-template/> instead of <template/>',
+        message: 'You should use <ng-template> instead of <template>',
         startPosition: {
           line: 4,
           character: 10
@@ -230,7 +230,7 @@ describe('template-to-ng-template', () => {
       })
       class Test {}`;
       const failures = assertFailure('template-to-ng-template', source, {
-        message: 'You should use <ng-template/> instead of <template/>',
+        message: 'You should use <ng-template> instead of <template>',
         startPosition: {
           line: 4,
           character: 10
@@ -272,7 +272,7 @@ describe('template-to-ng-template', () => {
       })
       class Test {}`;
       const failures = assertFailure('template-to-ng-template', source, {
-        message: 'You should use <ng-template/> instead of <template/>',
+        message: 'You should use <ng-template> instead of <template>',
         startPosition: {
           line: 5,
           character: 12
