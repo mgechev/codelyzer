@@ -1,7 +1,8 @@
 import { assertSuccess, assertAnnotated, assertFailure } from './testHelper';
+import { Fix, RuleFailure } from 'tslint';
 import chai = require('chai');
 
-describe('templates-use-public', () => {
+describe('template-to-ng-template', () => {
   it('should skip elements with *-prefixed attr', () => {
     let source = `
       @Component({
@@ -76,40 +77,23 @@ describe('templates-use-public', () => {
       @Component({
         selector: 'foobar',
         template: '<div></div><template></template><template></template>'
+                              ~~~~~~~~~~
       })
       class Test {}`;
-      const failures = assertFailure('template-to-ng-template', source, {
-        message: 'You should use <ng-template/> instead of <template/>',
-          startPosition: {
-            line: 3,
-            character: 30
-          },
-          endPosition: {
-            line: 3,
-            character: 40
-          }
-        });
+      const failures = assertAnnotated({
+        ruleName: 'template-to-ng-template',
+        source,
+        message: 'You should use <ng-template/> instead of <template/>'
+      });
       chai.expect(failures[0].hasFix()).to.eq(true);
-      const fixes = failures[0].getFix();
-      chai.expect(fixes.replacements.length).to.eq(4);
-      const reps = fixes.replacements;
-      chai.expect(reps[0].text).to.eq('<ng-template');
-      chai.expect(reps[1].text).to.eq('</ng-template>');
-      chai.expect(reps[2].text).to.eq('<ng-template');
-      chai.expect(reps[3].text).to.eq('</ng-template>');
-      chai.expect(reps[0].start).to.eq(78);
-      chai.expect(reps[0].end).to.eq(87);
-      chai.expect(reps[1].start).to.eq(88);
-      chai.expect(reps[1].end).to.eq(99);
-      chai.expect(reps[2].start).to.eq(99);
-      chai.expect(reps[2].end).to.eq(108);
-      chai.expect(reps[3].start).to.eq(109);
-      chai.expect(reps[3].end).to.eq(120);
-      const res = fixes.apply(source);
+      const fixes = [failures[0].getFix()].concat(failures[1].getFix());
+      chai.expect(fixes[0].replacements.length).to.eq(2);
+      const res = Fix.applyAll(source, fixes);
       const expected = `
       @Component({
         selector: 'foobar',
         template: '<div></div><ng-template></ng-template><ng-template></ng-template>'
+                              ~~~~~~~~~~
       })
       class Test {}`;
       chai.expect(res).to.eq(expected);
@@ -120,28 +104,25 @@ describe('templates-use-public', () => {
       @Component({
         selector: 'foobar',
         template: '<div></div><template><template></template></template>'
+                              ~~~~~~~~~~
       })
       class Test {}`;
-      const failures = assertFailure('template-to-ng-template', source, {
-        message: 'You should use <ng-template/> instead of <template/>',
-          startPosition: {
-            line: 3,
-            character: 30
-          },
-          endPosition: {
-            line: 3,
-            character: 40
-          }
-        });
+      const failures = assertAnnotated({
+        ruleName: 'template-to-ng-template',
+        source,
+        message: 'You should use <ng-template/> instead of <template/>'
+      });
       chai.expect(failures[0].hasFix()).to.eq(true);
-      const fixes = failures[0].getFix();
-      chai.expect(fixes.replacements.length).to.eq(4);
-      const reps = fixes.replacements;
-      const res = fixes.apply(source);
+      chai.expect((failures as RuleFailure[]).length).to.eq(2);
+      const fixes = [failures[0].getFix()].concat(failures[1].getFix());
+      chai.expect(fixes[0].replacements.length).to.eq(2);
+      chai.expect(fixes[1].replacements.length).to.eq(2);
+      const res = Fix.applyAll(source, fixes);
       const expected = `
       @Component({
         selector: 'foobar',
         template: '<div></div><ng-template><ng-template></ng-template></ng-template>'
+                              ~~~~~~~~~~
       })
       class Test {}`;
       chai.expect(res).to.eq(expected);
@@ -159,20 +140,19 @@ describe('templates-use-public', () => {
       class Test {}`;
       const failures = assertFailure('template-to-ng-template', source, {
         message: 'You should use <ng-template/> instead of <template/>',
-          startPosition: {
-            line: 5,
-            character: 10
-          },
-          endPosition: {
-            line: 5,
-            character: 20
-          }
-        });
+        startPosition: {
+          line: 5,
+          character: 10
+        },
+        endPosition: {
+          line: 5,
+          character: 20
+        }
+      });
       chai.expect(failures[0].hasFix()).to.eq(true);
-      const fixes = failures[0].getFix();
-      chai.expect(fixes.replacements.length).to.eq(2);
-      const reps = fixes.replacements;
-      const res = fixes.apply(source);
+      chai.expect((failures as RuleFailure[]).length).to.eq(1);
+      const fixes = [failures[0].getFix()];
+      const res = Fix.applyAll(source, fixes);
       const expected = `
       @Component({
         selector: 'foobar',
@@ -204,20 +184,20 @@ describe('templates-use-public', () => {
       class Test {}`;
       const failures = assertFailure('template-to-ng-template', source, {
         message: 'You should use <ng-template/> instead of <template/>',
-          startPosition: {
-            line: 4,
-            character: 10
-          },
-          endPosition: {
-            line: 4,
-            character: 20
-          }
-        });
+        startPosition: {
+          line: 4,
+          character: 10
+        },
+        endPosition: {
+          line: 4,
+          character: 20
+        }
+      });
+      chai.expect((failures as any).length).to.eq(3);
       chai.expect(failures[0].hasFix()).to.eq(true);
       const fixes = failures[0].getFix();
-      chai.expect(fixes.replacements.length).to.eq(6);
-      const reps = fixes.replacements;
-      const res = fixes.apply(source);
+      chai.expect(fixes.replacements.length).to.eq(2);
+      const res = Fix.applyAll(source, (failures as any).map(f => f.getFix()));
       const expected = `
       @Component({
         selector: 'foobar',
@@ -251,20 +231,21 @@ describe('templates-use-public', () => {
       class Test {}`;
       const failures = assertFailure('template-to-ng-template', source, {
         message: 'You should use <ng-template/> instead of <template/>',
-          startPosition: {
-            line: 4,
-            character: 10
-          },
-          endPosition: {
-            line: 4,
-            character: 20
-          }
-        });
+        startPosition: {
+          line: 4,
+          character: 10
+        },
+        endPosition: {
+          line: 4,
+          character: 20
+        }
+      });
       chai.expect(failures[0].hasFix()).to.eq(true);
       const fixes = failures[0].getFix();
-      chai.expect(fixes.replacements.length).to.eq(6);
+      chai.expect(fixes.replacements.length).to.eq(2);
+      chai.expect(failures.length).to.eq(3);
       const reps = fixes.replacements;
-      const res = fixes.apply(source);
+      const res = Fix.applyAll(source, failures.map(f => f.getFix()));
       const expected = `
       @Component({
         selector: 'foobar',
@@ -292,15 +273,15 @@ describe('templates-use-public', () => {
       class Test {}`;
       const failures = assertFailure('template-to-ng-template', source, {
         message: 'You should use <ng-template/> instead of <template/>',
-          startPosition: {
-            line: 5,
-            character: 12
-          },
-          endPosition: {
-            line: 5,
-            character: 22
-          }
-        });
+        startPosition: {
+          line: 5,
+          character: 12
+        },
+        endPosition: {
+          line: 5,
+          character: 22
+        }
+      });
       chai.expect(failures[0].hasFix()).to.eq(true);
       const fixes = failures[0].getFix();
       chai.expect(fixes.replacements.length).to.eq(2);

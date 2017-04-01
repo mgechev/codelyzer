@@ -13,13 +13,12 @@ import SyntaxKind = require('./util/syntaxKind');
 const ErrorMessage = 'You should use <ng-template/> instead of <template/>';
 const TemplateStart = '<template';
 const TemplateEnd = '</template>';
-const TemplateEndRe = /<\/template>/i;
+const TemplateEndRe = /<\s*\/\s*template\s*>/i;
 
 const set = new Set<EmbeddedTemplateAst>();
 
 class TemplateToNgTemplateVisitor extends BasicTemplateAstVisitor {
   private _prevClosing: number = 0;
-  private _fix: Fix;
   private _visitedElements = new Set<EmbeddedTemplateAst>();
 
   visitEmbeddedTemplate(element: EmbeddedTemplateAst, ctx: any) {
@@ -33,26 +32,22 @@ class TemplateToNgTemplateVisitor extends BasicTemplateAstVisitor {
     const content = sp.start.file.content;
     const subtemplate = content.substring(sp.start.offset, sp.end.offset);
 
+    let fix;
     if (subtemplate.startsWith(TemplateStart)) {
       const replacement = this.createReplacement(sp.start.offset, TemplateStart.length, '<ng-template');
-      if (!this._fix) {
-        this._fix = this.createFix(replacement);
-      } else {
-        this._fix.replacements.push(replacement);
-      }
-      this.addFailure(this.createFailure(sp.start.offset, sp.end.offset - sp.start.offset, ErrorMessage, this._fix));
+      fix = this.createFix(replacement);
+      this.addFailure(this.createFailure(sp.start.offset, sp.end.offset - sp.start.offset, ErrorMessage, fix));
     }
 
     super.visitEmbeddedTemplate(element, ctx);
 
     const subcontent = content.substring(this._prevClosing, content.length);
     const matches = TemplateEndRe.exec(subcontent);
-    if (this._fix && matches && typeof matches.index === 'number') {
-      this._fix.replacements.push(this.createReplacement(matches.index + this._prevClosing, TemplateEnd.length, '</ng-template>'));
+    if (fix && matches && typeof matches.index === 'number') {
+      fix.replacements.push(this.createReplacement(matches.index + this._prevClosing, TemplateEnd.length, '</ng-template>'));
       this._prevClosing = matches.index + this._prevClosing + TemplateEnd.length;
       const rest = content.substring(this._prevClosing, content.length);
       if (!TemplateEndRe.test(rest)) {
-        this._fix = null;
         this._prevClosing = 0;
         this._visitedElements = new Set();
       }
