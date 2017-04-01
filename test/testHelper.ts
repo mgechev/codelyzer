@@ -139,9 +139,9 @@ const parseInvalidSource = (source: string, message: string, specialChar: string
 export function assertAnnotated(config: AssertConfig) {
   if (config.message) {
     const parsed = parseInvalidSource(config.source, config.message);
-    assertFailure(config.ruleName, parsed.source, parsed.failure, config.options);
+    return assertFailure(config.ruleName, parsed.source, parsed.failure, config.options);
   } else {
-    assertSuccess(config.ruleName, config.source, config.options);
+    return assertSuccess(config.ruleName, config.source, config.options);
   }
 };
 
