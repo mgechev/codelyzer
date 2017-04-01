@@ -10,7 +10,7 @@ import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVis
 import { Fix } from 'tslint';
 import SyntaxKind = require('./util/syntaxKind');
 
-const ErrorMessage = 'You should use <ng-template/> instead of <template/>';
+const ErrorMessage = 'You should use <ng-template> instead of <template>';
 const TemplateStart = '<template';
 const TemplateEnd = '</template>';
 const TemplateEndRe = /<\s*\/\s*template\s*>/i;
