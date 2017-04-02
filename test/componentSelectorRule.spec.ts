@@ -85,6 +85,15 @@ describe('component-selector-prefix', () => {
             assertSuccess('component-selector', source, ['element', ['sg','ng','mg'], 'kebab-case']);
         });
 
+        it('should succeed when set valid selector in @Component using multiple prefixes and some prefixes are substring of others', () => {
+            let source = `
+      @Component({
+        selector: 'abc-bar-foo'
+      })
+      class Test {}`;
+            assertSuccess('component-selector', source, ['element', ['ab','abc','mg'], 'kebab-case']);
+        });
+
         it('should succeed without prefix', () => {
             let source = `
       @Component({
