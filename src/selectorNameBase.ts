@@ -85,6 +85,11 @@ export abstract class SelectorRule extends Lint.Rules.AbstractRule {
   }
 
   private setPrefixValidator(prefix: any, name: string) {
+    if (!this.isMultiPrefix) {
+      prefix = (prefix||[]).sort((a: string, b: string) => {
+        return a.length < b.length ? 1 : -1;
+      });
+    }
     let prefixExpression: string = this.isMultiPrefix?prefix:(prefix||[]).join('|');
     this.prefixValidator = SelectorValidator.prefix(prefixExpression, name);
   }
