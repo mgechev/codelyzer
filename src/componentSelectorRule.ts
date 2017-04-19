@@ -51,7 +51,7 @@ export class Rule extends SelectorRule {
     ],
     optionsDescription: Lint.Utils.dedent`
     Options accept three obligatory items as an array:
-    
+
     1. \`"element"\` or \`"attribute"\` forces components either to be elements or attributes.
     2. A single prefix (string) or array of prefixes (strings) which have to be used in component selectors.
     3. \`"kebab-case"\` or \`"camelCase"\` allows you to pick a case.

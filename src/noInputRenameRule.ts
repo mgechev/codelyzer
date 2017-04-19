@@ -1,7 +1,7 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
-import {Ng2Walker} from './angular/ng2Walker';
+import {NgWalker} from './angular/ngWalker';
 
 export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
@@ -26,7 +26,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   }
 }
 
-export class InputMetadataWalker extends Ng2Walker {
+export class InputMetadataWalker extends NgWalker {
   visitNg2Input(property:ts.PropertyDeclaration, input:ts.Decorator, args:string[]) {
     let className = (<any>property).parent.name.text;
     let memberName = (<any>property.name).text;

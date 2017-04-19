@@ -2,7 +2,7 @@ import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
 import SyntaxKind = require('./util/syntaxKind');
-import {Ng2Walker} from './angular/ng2Walker';
+import {NgWalker} from './angular/ngWalker';
 import {SelectorValidator} from './util/selectorValidator';
 
 export class Rule extends Lint.Rules.AbstractRule {
@@ -43,7 +43,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   private validator: Function;
 
   constructor(ruleName:string, value:any, disabledIntervals:Lint.IDisabledInterval[]) {
-    super(ruleName, value, disabledIntervals);
+    super({ ruleName, ruleArguments: value, ruleSeverity: 'warning', disabledIntervals });
     if (value[1] === 'camelCase') {
       this.validator = SelectorValidator.camelCase;
     }
@@ -69,7 +69,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   }
 }
 
-export class ClassMetadataWalker extends Ng2Walker {
+export class ClassMetadataWalker extends NgWalker {
 
   constructor(sourceFile:ts.SourceFile, private rule:Rule) {
     super(sourceFile, rule.getOptions());

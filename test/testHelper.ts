@@ -28,7 +28,10 @@ export interface IExpectedFailure {
  */
 function lint(ruleName: string, source: string, options: any): tslint.LintResult {
   let configuration = {
-    rules: {}
+    extends: [],
+    rules: new Map<string, Partial<tslint.IOptions>>(),
+    jsRules: new Map<string, Partial<tslint.IOptions>>(),
+    rulesDirectory: []
   };
   if (options !== null && options.length >= 0) {
     configuration.rules[ruleName] = (<any[]>[true]).concat(options);
@@ -143,7 +146,7 @@ export function assertAnnotated(config: AssertConfig) {
   } else {
     return assertSuccess(config.ruleName, config.source, config.options);
   }
-};
+}
 
 /**
  * Helper function which asserts multiple annotated failures.
@@ -181,7 +184,7 @@ export function assertFailure(ruleName: string, source: string, fail: IExpectedF
   } catch (e) {
     console.log(e.stack);
   }
-  chai.assert(result.failureCount > 0, 'no failures');
+  chai.assert(result.failures && result.failures.length > 0, 'no failures');
   const ruleFail = result.failures[onlyNthFailure];
   chai.assert.equal(fail.message, ruleFail.getFailure(), `error messages don't match`);
   chai.assert.deepEqual(fail.startPosition, ruleFail.getStartPosition().getLineAndCharacter(), `start char doesn't match`);
@@ -190,7 +193,7 @@ export function assertFailure(ruleName: string, source: string, fail: IExpectedF
     return result.failures;
   }
   return undefined;
-};
+}
 
 /**
  * A helper function used in specs to assert more than one failure.
@@ -208,13 +211,13 @@ export function assertFailures(ruleName: string, source: string, fails: IExpecte
   } catch (e) {
     console.log(e.stack);
   }
-  chai.assert(result.failureCount > 0, 'no failures');
+  chai.assert(result.failures && result.failures.length > 0, 'no failures');
   result.failures.forEach((ruleFail, index) => {
     chai.assert.equal(fails[index].message, ruleFail.getFailure(), `error messages don't match`);
     chai.assert.deepEqual(fails[index].startPosition, ruleFail.getStartPosition().getLineAndCharacter(), `start char doesn't match`);
     chai.assert.deepEqual(fails[index].endPosition, ruleFail.getEndPosition().getLineAndCharacter(), `end char doesn't match`);
   });
-};
+}
 
 /**
  * A helper function used in specs to assert a success (meaning that there are no lint errors).
@@ -224,5 +227,6 @@ export function assertFailures(ruleName: string, source: string, fails: IExpecte
  * @param options
  */
 export function assertSuccess(ruleName: string, source: string, options = null) {
-  chai.assert.equal(lint(ruleName, source, options).failureCount, 0);
-};
+  const result = lint(ruleName, source, options);
+  chai.assert.isTrue(result && result.failures.length === 0);
+}

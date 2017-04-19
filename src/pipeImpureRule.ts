@@ -1,7 +1,7 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
-import {Ng2Walker} from './angular/ng2Walker';
+import {NgWalker} from './angular/ngWalker';
 import SyntaxKind = require('./util/syntaxKind');
 
 export class Rule extends Lint.Rules.AbstractRule {
@@ -24,7 +24,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   }
 }
 
-export class ClassMetadataWalker extends Ng2Walker {
+export class ClassMetadataWalker extends NgWalker {
 
   constructor(sourceFile:ts.SourceFile, private rule:Rule) {
     super(sourceFile, rule.getOptions());

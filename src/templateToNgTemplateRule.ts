@@ -2,7 +2,7 @@ import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import {stringDistance} from './util/utils';
 import {getDeclaredProperties, getDeclaredMethods} from './util/classDeclarationUtils';
-import {Ng2Walker} from './angular/ng2Walker';
+import {NgWalker} from './angular/ngWalker';
 import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAngularExpressionVisitor';
 import * as e from '@angular/compiler/src/expression_parser/ast';
 import { EmbeddedTemplateAst, ElementAst } from '@angular/compiler';
@@ -35,8 +35,7 @@ class TemplateToNgTemplateVisitor extends BasicTemplateAstVisitor {
     let fix;
     if (subtemplate.startsWith(TemplateStart)) {
       const replacement = this.createReplacement(sp.start.offset, TemplateStart.length, '<ng-template');
-      fix = this.createFix(replacement);
-      this.addFailure(this.createFailure(sp.start.offset, sp.end.offset - sp.start.offset, ErrorMessage, fix));
+      this.addFailure(this.createFailure(sp.start.offset, sp.end.offset - sp.start.offset, ErrorMessage, replacement));
     }
 
     super.visitEmbeddedTemplate(element, ctx);
@@ -70,7 +69,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 
   public apply(sourceFile:ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
-        new Ng2Walker(sourceFile,
+        new NgWalker(sourceFile,
             this.getOptions(), {
               templateVisitorCtrl: TemplateToNgTemplateVisitor
             }));

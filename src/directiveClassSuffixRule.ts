@@ -1,7 +1,7 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
-import {Ng2Walker} from './angular/ng2Walker';
+import {NgWalker} from './angular/ngWalker';
 
 import {DirectiveMetadata} from './angular/metadata';
 
@@ -40,7 +40,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   }
 }
 
-export class ClassMetadataWalker extends Ng2Walker {
+export class ClassMetadataWalker extends NgWalker {
   visitNg2Directive(meta: DirectiveMetadata) {
     let name = meta.controller.name;
     let className:string = name.text;

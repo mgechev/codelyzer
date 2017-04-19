@@ -34,7 +34,9 @@ describe('SourceMappingVisitor', () => {
     const styleNode = <ts.Node>styles.elements[0];
     const scss = (<any>styleNode).text;
     const result = renderSync({ outFile: '/tmp/bar', data: scss, sourceMap: true });
-    const visitor = new SourceMappingVisitor(ast, { disabledIntervals: null, ruleName: 'foo', ruleArguments: [] }, {
+    const visitor = new SourceMappingVisitor(ast, {
+        disabledIntervals: null, ruleName: 'foo', ruleArguments: [], ruleSeverity: 'warning'
+      }, {
       code: result.css.toString(),
       map: JSON.parse(result.map.toString()),
       source: scss

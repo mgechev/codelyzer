@@ -23,7 +23,7 @@ export abstract class SelectorRule extends Lint.Rules.AbstractRule {
     let type = value[1];
     let prefix = value[2] || [];
     let name = value[3];
-    super(ruleName, value, disabledIntervals);
+    super({ ruleName, ruleArguments: value, ruleSeverity: 'warning', disabledIntervals });
     this.setMultiPrefix(prefix);
     this.setPrefixArguments(prefix);
     this.setPrefixValidator(prefix, name);

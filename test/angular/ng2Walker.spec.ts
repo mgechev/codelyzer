@@ -1,7 +1,7 @@
 import * as ts from 'typescript';
 import * as tslint from 'tslint';
 
-import {Ng2Walker} from '../../src/angular/ng2Walker';
+import {NgWalker} from '../../src/angular/ngWalker';
 import {RecursiveAngularExpressionVisitor} from '../../src/angular/templates/recursiveAngularExpressionVisitor';
 import {BasicTemplateAstVisitor} from '../../src/angular/templates/basicTemplateAstVisitor';
 import {BasicCssAstVisitor} from '../../src/angular/styles/basicCssAstVisitor';
@@ -27,10 +27,11 @@ describe('ng2Walker', () => {
     let ruleArgs: tslint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null
+      disabledIntervals: null,
+      ruleSeverity: 'warning'
     };
     let sf = ts.createSourceFile('foo', source, null);
-    let walker = new Ng2Walker(sf, ruleArgs);
+    let walker = new NgWalker(sf, ruleArgs);
     let cmpSpy = chaiSpy.on(walker, 'visitNg2Component');
     let dirSpy = chaiSpy.on(walker, 'visitNg2Directive');
     walker.walk(sf);
@@ -53,10 +54,11 @@ describe('ng2Walker', () => {
     let ruleArgs: tslint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null
+      disabledIntervals: null,
+      ruleSeverity: 'warning'
     };
     let sf = ts.createSourceFile('foo', source, null);
-    let walker = new Ng2Walker(sf, ruleArgs);
+    let walker = new NgWalker(sf, ruleArgs);
     let outputsSpy = chaiSpy.on(walker, 'visitNg2Output');
     let inputsSpy = chaiSpy.on(walker, 'visitNg2Input');
     walker.walk(sf);
@@ -75,10 +77,11 @@ describe('ng2Walker', () => {
     let ruleArgs: tslint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null
+      disabledIntervals: null,
+      ruleSeverity: 'warning'
     };
     let sf = ts.createSourceFile('foo', source, null);
-    let walker = new Ng2Walker(sf, ruleArgs, {
+    let walker = new NgWalker(sf, ruleArgs, {
       templateVisitorCtrl: BasicTemplateAstVisitor
     });
     let templateSpy = chaiSpy.on(BasicTemplateAstVisitor.prototype, 'visitElement');
@@ -97,10 +100,11 @@ describe('ng2Walker', () => {
     let ruleArgs: tslint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null
+      disabledIntervals: null,
+      ruleSeverity: 'warning'
     };
     let sf = ts.createSourceFile('foo', source, null);
-    let walker = new Ng2Walker(sf, ruleArgs);
+    let walker = new NgWalker(sf, ruleArgs);
     let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
     walker.walk(sf);
     (<any>chai.expect(templateSpy).to.have.been).called();
@@ -118,10 +122,11 @@ describe('ng2Walker', () => {
     let ruleArgs: tslint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null
+      disabledIntervals: null,
+      ruleSeverity: 'warning'
     };
     let sf = ts.createSourceFile('foo', source, null);
-    let walker = new Ng2Walker(sf, ruleArgs);
+    let walker = new NgWalker(sf, ruleArgs);
     (<any>chai).expect(() => {
       let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
       walker.walk(sf);
@@ -141,10 +146,11 @@ describe('ng2Walker', () => {
     let ruleArgs: tslint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null
+      disabledIntervals: null,
+      ruleSeverity: 'warning'
     };
     let sf = ts.createSourceFile('foo', source, null);
-    let walker = new Ng2Walker(sf, ruleArgs);
+    let walker = new NgWalker(sf, ruleArgs);
     (<any>chai).expect(() => {
       let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
       walker.walk(sf);
@@ -164,10 +170,11 @@ describe('ng2Walker', () => {
     let ruleArgs: tslint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null
+      disabledIntervals: null,
+      ruleSeverity: 'warning'
     };
     let sf = ts.createSourceFile('foo', source, null);
-    let walker = new Ng2Walker(sf, ruleArgs);
+    let walker = new NgWalker(sf, ruleArgs);
     (<any>chai).expect(() => {
       let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
       walker.walk(sf);
@@ -186,10 +193,11 @@ describe('ng2Walker', () => {
     let ruleArgs: tslint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null
+      disabledIntervals: null,
+      ruleSeverity: 'warning'
     };
     let sf = ts.createSourceFile('foo', source, null);
-    let walker = new Ng2Walker(sf, ruleArgs);
+    let walker = new NgWalker(sf, ruleArgs);
     (<any>chai).expect(() => {
       let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
       walker.walk(sf);
@@ -205,10 +213,11 @@ describe('ng2Walker', () => {
     let ruleArgs: tslint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null
+      disabledIntervals: null,
+      ruleSeverity: 'warning'
     };
     let sf = ts.createSourceFile('foo', source, null);
-    let walker = new Ng2Walker(sf, ruleArgs);
+    let walker = new NgWalker(sf, ruleArgs);
     (<any>chai).expect(() => {
       let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
       walker.walk(sf);
@@ -224,10 +233,11 @@ describe('ng2Walker', () => {
     let ruleArgs: tslint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null
+      disabledIntervals: null,
+      ruleSeverity: 'warning'
     };
     let sf = ts.createSourceFile('foo', source, null);
-    let walker = new Ng2Walker(sf, ruleArgs);
+    let walker = new NgWalker(sf, ruleArgs);
     (<any>chai).expect(() => {
       walker.walk(sf);
     }).not.to.throw();
@@ -247,10 +257,11 @@ describe('ng2Walker', () => {
       let ruleArgs: tslint.IOptions = {
         ruleName: 'foo',
         ruleArguments: ['foo'],
-        disabledIntervals: null
+        disabledIntervals: null,
+        ruleSeverity: 'warning'
       };
       let sf = ts.createSourceFile('foo', source, null);
-      let walker = new Ng2Walker(sf, ruleArgs);
+      let walker = new NgWalker(sf, ruleArgs);
       (<any>chai).expect(() => {
         walker.walk(sf);
       }).not.to.throw();
@@ -268,10 +279,11 @@ describe('ng2Walker', () => {
       let ruleArgs: tslint.IOptions = {
         ruleName: 'foo',
         ruleArguments: ['foo'],
-        disabledIntervals: null
+        disabledIntervals: null,
+        ruleSeverity: 'warning'
       };
       let sf = ts.createSourceFile('foo', source, null);
-      let walker = new Ng2Walker(sf, ruleArgs);
+      let walker = new NgWalker(sf, ruleArgs);
       (<any>chai).expect(() => {
         let templateSpy = chaiSpy.on(BasicCssAstVisitor.prototype, 'visitCssStyleSheet');
         walker.walk(sf);
@@ -311,10 +323,11 @@ describe('ng2Walker', () => {
       let ruleArgs: tslint.IOptions = {
         ruleName: 'foo',
         ruleArguments: ['foo'],
-        disabledIntervals: null
+        disabledIntervals: null,
+        ruleSeverity: 'warning'
       };
       let sf = ts.createSourceFile('foo', source, null);
-      let walker = new Ng2Walker(sf, ruleArgs);
+      let walker = new NgWalker(sf, ruleArgs);
       (<any>chai).expect(() => {
         walker.walk(sf);
       }).not.to.throw();

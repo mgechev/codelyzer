@@ -1,6 +1,6 @@
 import * as ts from 'typescript';
 import * as Lint from 'tslint';
-import {Ng2Walker, Ng2WalkerConfig} from './ng2Walker';
+import {NgWalker, Ng2WalkerConfig} from './ngWalker';
 import {MetadataReader} from './metadataReader';
 import {UrlResolver} from './urlResolvers/urlResolver';
 import {FsFileResolver} from './fileResolver/fsFileResolver';

@@ -1,7 +1,7 @@
 import * as ts from 'typescript';
 import * as tslint from 'tslint';
 
-import {Ng2Walker} from '../../src/angular/ng2Walker';
+import {NgWalker} from '../../src/angular/ngWalker';
 import {getDeclaredMethodNames, getDeclaredPropertyNames} from '../../src/util/classDeclarationUtils';
 import chai = require('chai');
 
@@ -17,12 +17,13 @@ describe('ng2Walker', () => {
     let ruleArgs: tslint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null
+      disabledIntervals: null,
+      ruleSeverity: 'warning'
     };
     let properties: string[] = [];
     let methods: string[] = [];
 
-    class ClassUtilWalker extends Ng2Walker {
+    class ClassUtilWalker extends NgWalker {
       visitClassDeclaration(node: ts.ClassDeclaration) {
         properties = getDeclaredPropertyNames(node);
         methods = getDeclaredMethodNames(node);

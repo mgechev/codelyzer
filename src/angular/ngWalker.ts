@@ -13,7 +13,7 @@ import {ReferenceCollectorVisitor} from './templates/referenceCollectorVisitor';
 
 import {MetadataReader} from './metadataReader';
 import {ComponentMetadata, DirectiveMetadata, StyleMetadata} from './metadata';
-import {ng2WalkerFactoryUtils} from './ng2WalkerFactoryUtils';
+import {ng2WalkerFactoryUtils} from './ngWalkerFactoryUtils';
 
 import {Config} from './config';
 
@@ -34,12 +34,14 @@ export interface Ng2WalkerConfig {
   cssVisitorCtrl?: CssAstVisitorCtrl;
 }
 
-export class Ng2Walker extends Lint.RuleWalker {
+export class NgWalker extends Lint.RuleWalker {
   constructor(sourceFile: ts.SourceFile,
     protected _originalOptions: Lint.IOptions,
     private _config?: Ng2WalkerConfig,
     protected _metadataReader?: MetadataReader) {
+
     super(sourceFile, _originalOptions);
+
     this._metadataReader = this._metadataReader || ng2WalkerFactoryUtils.defaultMetadataReader();
     this._config = Object.assign({
       templateVisitorCtrl: BasicTemplateAstVisitor,

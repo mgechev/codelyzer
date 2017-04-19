@@ -58,7 +58,7 @@ export class Maybe<T> {
 
   unwrap(): T | undefined {
     return this.t;
-  };
+  }
 
   private constructor(private t: T | undefined) {
   }

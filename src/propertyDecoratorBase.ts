@@ -21,28 +21,22 @@ export class UsePropertyDecorator extends Lint.Rules.AbstractRule {
   }
 
   constructor(private config: IUsePropertyDecoratorConfig, ruleName: string, value: any, disabledIntervals: Lint.IDisabledInterval[]) {
-    super(ruleName, value, disabledIntervals);
+    super({ ruleName, ruleArguments: value, disabledIntervals, ruleSeverity: 'warning' });
   }
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     let documentRegistry = ts.createDocumentRegistry();
-    let languageServiceHost = Lint.createLanguageServiceHost('file.ts', sourceFile.getFullText());
     return this.applyWithWalker(
       new DirectiveMetadataWalker(sourceFile,
-        this.getOptions(),
-        ts.createLanguageService(languageServiceHost, documentRegistry), this.config));
+        this.getOptions(),  this.config));
   }
 }
 
 class DirectiveMetadataWalker extends Lint.RuleWalker {
   private languageService : ts.LanguageService;
-  private typeChecker : ts.TypeChecker;
 
-  constructor(sourceFile: ts.SourceFile, options: Lint.IOptions,
-    languageService : ts.LanguageService, private config: IUsePropertyDecoratorConfig) {
+  constructor(sourceFile: ts.SourceFile, options: Lint.IOptions, private config: IUsePropertyDecoratorConfig) {
       super(sourceFile, options);
-      this.languageService = languageService;
-      this.typeChecker = languageService.getProgram().getTypeChecker();
   }
 
   visitClassDeclaration(node: ts.ClassDeclaration) {

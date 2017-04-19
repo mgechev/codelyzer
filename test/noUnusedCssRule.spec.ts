@@ -807,7 +807,7 @@ describe('no-unused-css', () => {
         }
       }, null);
       const fix = failures[0].getFix();
-      const replacements = fix.replacements;
+      const replacements = fix;
       expect(replacements.length).to.eq(1);
       const replacement = replacements[0];
       expect(replacement.text).to.eq('');
@@ -860,7 +860,7 @@ describe('no-unused-css', () => {
       });
       Config.transformStyle = (code: string) => ({ code, map: null });
       const fix = failures[0].getFix();
-      const replacements = fix.replacements;
+      const replacements = fix;
       expect(replacements.length).to.eq(1);
       const replacement = replacements[0];
       expect(replacement.text).to.eq('');

@@ -1,6 +1,6 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import {Ng2Walker} from './angular/ng2Walker';
+import {NgWalker} from './angular/ngWalker';
 import {getComponentDecorator, isSimpleTemplateString, getDecoratorPropertyInitializer} from './util/utils';
 import {BasicCssAstVisitor} from './angular/styles/basicCssAstVisitor';
 import {BasicTemplateAstVisitor} from './angular/templates/basicTemplateAstVisitor';
@@ -15,7 +15,7 @@ import {parseTemplate} from './angular/templates/templateParser';
 import { CssAst, CssSelectorRuleAst, CssSelectorAst, CssBlockAst } from './angular/styles/cssAst';
 
 import {ComponentMetadata, StyleMetadata} from './angular/metadata';
-import {ng2WalkerFactoryUtils} from './angular/ng2WalkerFactoryUtils';
+import {ng2WalkerFactoryUtils} from './angular/ngWalkerFactoryUtils';
 import {logger} from './util/logger';
 import {SemVerDSL} from './util/ngVersion';
 
@@ -180,8 +180,7 @@ class UnusedCssVisitor extends BasicCssAstVisitor {
         const end = ast.end.offset;
         const length = end - ast.start.offset + 1;
         // length + 1 because we want to drop the '}'
-        const fix = this.createFix(this.createReplacement(start, length, ''));
-        this.addFailure(this.createFailure(start, length, 'Unused styles', fix));
+        this.addFailure(this.createFailure(start, length, 'Unused styles', this.createReplacement(start, length, '')));
       }
     } catch (e) {
       logger.error(e);
@@ -231,7 +230,7 @@ class UnusedCssVisitor extends BasicCssAstVisitor {
 }
 
 // Finds the template and wrapes the parsed content into a root element
-export class UnusedCssNg2Visitor extends Ng2Walker {
+export class UnusedCssNg2Visitor extends NgWalker {
   private templateAst: TemplateAst;
 
   visitClassDeclaration(declaration: ts.ClassDeclaration) {

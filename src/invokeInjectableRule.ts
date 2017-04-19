@@ -1,7 +1,7 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
-import {Ng2Walker} from './angular/ng2Walker';
+import {NgWalker} from './angular/ngWalker';
 
 export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
@@ -24,7 +24,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   }
 }
 
-export class ValidateInjectableWalker extends Ng2Walker {
+export class ValidateInjectableWalker extends NgWalker {
   visitClassDeclaration(declaration: ts.ClassDeclaration) {
     (<ts.Decorator[]>declaration.decorators || [])
       .forEach((d: any) => {

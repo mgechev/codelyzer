@@ -20,7 +20,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 }
 
 // The walker takes care of all the work.
-class ImportDestructuringSpacingWalker extends Lint.SkippableTokenAwareRuleWalker {
+class ImportDestructuringSpacingWalker extends Lint.RuleWalker {
   private scanner: ts.Scanner;
 
   constructor(sourceFile: ts.SourceFile, options: Lint.IOptions) {

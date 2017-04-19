@@ -2,7 +2,7 @@ import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
 import {stringDistance} from './util/utils';
-import {Ng2Walker} from './angular/ng2Walker';
+import {NgWalker} from './angular/ngWalker';
 import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAngularExpressionVisitor';
 import {ExpTypes} from './angular/expressionTypes';
 import {getDeclaredMethodNames, getDeclaredPropertyNames} from './util/classDeclarationUtils';
@@ -13,7 +13,7 @@ import {Config} from './angular/config';
 enum DeclarationType {
   Property,
   Method
-};
+}
 
 export interface ASTField {
   obj?: ASTField;
@@ -138,7 +138,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 
   public apply(sourceFile:ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
-        new Ng2Walker(sourceFile,
+        new NgWalker(sourceFile,
             this.getOptions(), {
               expressionVisitorCtrl: SymbolAccessValidator
             }));

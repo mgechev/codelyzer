@@ -1,5 +1,5 @@
 import { assertSuccess, assertAnnotated, assertFailure } from './testHelper';
-import { Fix, RuleFailure } from 'tslint';
+import { Replacement, RuleFailure } from 'tslint';
 import chai = require('chai');
 
 describe('template-to-ng-template', () => {
@@ -88,7 +88,7 @@ describe('template-to-ng-template', () => {
       chai.expect(failures[0].hasFix()).to.eq(true);
       const fixes = [failures[0].getFix()].concat(failures[1].getFix());
       chai.expect(fixes[0].replacements.length).to.eq(2);
-      const res = Fix.applyAll(source, fixes);
+      const res = Replacement.applyAll(source, fixes);
       const expected = `
       @Component({
         selector: 'foobar',
@@ -117,7 +117,7 @@ describe('template-to-ng-template', () => {
       const fixes = [failures[0].getFix()].concat(failures[1].getFix());
       chai.expect(fixes[0].replacements.length).to.eq(2);
       chai.expect(fixes[1].replacements.length).to.eq(2);
-      const res = Fix.applyAll(source, fixes);
+      const res = Replacement.applyAll(source, fixes);
       const expected = `
       @Component({
         selector: 'foobar',
@@ -151,8 +151,11 @@ describe('template-to-ng-template', () => {
       });
       chai.expect(failures[0].hasFix()).to.eq(true);
       chai.expect((failures as RuleFailure[]).length).to.eq(1);
-      const fixes = [failures[0].getFix()];
-      const res = Fix.applyAll(source, fixes);
+      let fixes = failures[0].getFix();
+      if (!(fixes instanceof Array)) {
+        fixes = [fixes];
+      }
+      const res = Replacement.applyAll(source, fixes);
       const expected = `
       @Component({
         selector: 'foobar',
@@ -195,9 +198,12 @@ describe('template-to-ng-template', () => {
       });
       chai.expect((failures as any).length).to.eq(3);
       chai.expect(failures[0].hasFix()).to.eq(true);
-      const fixes = failures[0].getFix();
-      chai.expect(fixes.replacements.length).to.eq(2);
-      const res = Fix.applyAll(source, (failures as any).map(f => f.getFix()));
+      let fixes = failures[0].getFix();
+      if (!(fixes instanceof Array)) {
+        fixes = [fixes];
+      }
+      chai.expect(fixes.length).to.eq(2);
+      const res = Replacement.applyAll(source, (failures as any).map(f => f.getFix()));
       const expected = `
       @Component({
         selector: 'foobar',
@@ -241,11 +247,19 @@ describe('template-to-ng-template', () => {
         }
       });
       chai.expect(failures[0].hasFix()).to.eq(true);
-      const fixes = failures[0].getFix();
-      chai.expect(fixes.replacements.length).to.eq(2);
+      let fixes = failures[0].getFix();
+      if (!(fixes instanceof Array)) {
+        fixes = [fixes];
+      }
+      chai.expect(fixes.length).to.eq(2);
       chai.expect(failures.length).to.eq(3);
-      const reps = fixes.replacements;
-      const res = Fix.applyAll(source, failures.map(f => f.getFix()));
+      const res = Replacement.applyAll(source, [].concat.apply([], failures.map(f => {
+        let fix = f.getFix();
+        if (!(fix instanceof Array)) {
+          fix = [fix];
+        }
+        return fix;
+      })));
       const expected = `
       @Component({
         selector: 'foobar',
@@ -283,10 +297,13 @@ describe('template-to-ng-template', () => {
         }
       });
       chai.expect(failures[0].hasFix()).to.eq(true);
-      const fixes = failures[0].getFix();
-      chai.expect(fixes.replacements.length).to.eq(2);
-      const reps = fixes.replacements;
-      const res = fixes.apply(source);
+      let fixes = failures[0].getFix();
+      if (!(fixes instanceof Array)) {
+        fixes = [fixes];
+      }
+      chai.expect(fixes.length).to.eq(2);
+      const reps = fixes;
+      const res = Replacement.applyAll(source, fixes);
       const expected = `
       @Component({
         selector: 'foobar',

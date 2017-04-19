@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import {Ng2Walker} from '../angular/ng2Walker';
+import {NgWalker} from '../angular/ngWalker';
 import {IOptions} from 'tslint';
 import {ComponentMetadata} from '../angular/metadata';
 import {F1, Maybe} from '../util/function';
@@ -17,7 +17,7 @@ export class Failure {
 
 export interface WalkerBuilder<T extends Walkable> {
     where: (validate: F1<ComponentMetadata, Maybe<Failure>>) => WalkerBuilder<T>;
-    build: (sourceFile: ts.SourceFile, options: IOptions) => Ng2Walker;
+    build: (sourceFile: ts.SourceFile, options: IOptions) => NgWalker;
 }
 
 class Ng2ComponentWalkerBuilder implements WalkerBuilder<'Ng2Component'> {
@@ -28,9 +28,9 @@ class Ng2ComponentWalkerBuilder implements WalkerBuilder<'Ng2Component'> {
         return this;
     }
 
-    build(sourceFile: ts.SourceFile, options: IOptions): Ng2Walker {
+    build(sourceFile: ts.SourceFile, options: IOptions): NgWalker {
         const self = this;
-        const e = class extends Ng2Walker {
+        const e = class extends NgWalker {
             visitNg2Component(meta: ComponentMetadata) {
                 self._where(meta).fmap(failure => {
                     this.addFailure(

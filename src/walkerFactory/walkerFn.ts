@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import {Ng2Walker} from '../angular/ng2Walker';
+import {NgWalker} from '../angular/ngWalker';
 import {IOptions} from 'tslint';
 import {ComponentMetadata} from '../angular/metadata';
 import {F1, F2, Maybe} from '../util/function';
@@ -33,9 +33,9 @@ export function validateComponent(validate: F2<ComponentMetadata, WalkerOptions,
     };
 }
 
-export function all(...validators: Validator[]): F2<ts.SourceFile, IOptions, Ng2Walker> {
+export function all(...validators: Validator[]): F2<ts.SourceFile, IOptions, NgWalker> {
     return (sourceFile, options) => {
-        const e = class extends Ng2Walker {
+        const e = class extends NgWalker {
             visitNg2Component(meta: ComponentMetadata) {
                 validators.forEach(v => {
                     if (v.kind === 'Ng2Component') {

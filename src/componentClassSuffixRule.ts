@@ -6,7 +6,7 @@ import {Failure} from './walkerFactory/walkerFactory';
 import {all, validateComponent} from './walkerFactory/walkerFn';
 import {Maybe, F2} from './util/function';
 import {IOptions} from 'tslint';
-import {Ng2Walker} from './angular/ng2Walker';
+import {NgWalker} from './angular/ngWalker';
 
 export class Rule extends Lint.Rules.AbstractRule {
 
@@ -32,7 +32,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 
     static FAILURE: string = 'The name of the class %s should end with the suffix %s ($$02-03$$)';
 
-    static walkerBuilder: F2<ts.SourceFile, IOptions, Ng2Walker> =
+    static walkerBuilder: F2<ts.SourceFile, IOptions, NgWalker> =
         all(
             validateComponent((meta: ComponentMetadata, suffixList?: string[]) =>
                 Maybe.lift(meta.controller)

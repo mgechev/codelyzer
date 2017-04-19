@@ -1,7 +1,7 @@
 import * as ts from 'typescript';
 import * as tslint from 'tslint';
 
-import {Ng2Walker} from '../../src/angular/ng2Walker';
+import {NgWalker} from '../../src/angular/ngWalker';
 import {BasicCssAstVisitor} from '../../src/angular/styles/basicCssAstVisitor';
 import chai = require('chai');
 import * as spies from 'chai-spies';
@@ -24,10 +24,11 @@ describe('basicCssAstVisitor', () => {
     let ruleArgs: tslint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null
+      disabledIntervals: null,
+      ruleSeverity: 'warning'
     };
     let sf = ts.createSourceFile('foo', source, null);
-    let walker = new Ng2Walker(sf, ruleArgs);
+    let walker = new NgWalker(sf, ruleArgs);
     (<any>chai).expect(() => {
       let templateSpy = chaiSpy.on(BasicCssAstVisitor.prototype, 'visitCssStyleSheet');
       walker.walk(sf);
@@ -50,10 +51,11 @@ describe('basicCssAstVisitor', () => {
     let ruleArgs: tslint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null
+      disabledIntervals: null,
+      ruleSeverity: 'warning'
     };
     let sf = ts.createSourceFile('foo', source, null);
-    let walker = new Ng2Walker(sf, ruleArgs);
+    let walker = new NgWalker(sf, ruleArgs);
     (<any>chai).expect(() => {
       let selectorSpy = chaiSpy.on(BasicCssAstVisitor.prototype, 'visitCssSelector');
       let pseudoSelectorSpy = chaiSpy.on(BasicCssAstVisitor.prototype, 'visitCssPseudoSelector');

@@ -2,7 +2,7 @@ import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import {stringDistance} from './util/utils';
 import {getDeclaredProperties, getDeclaredMethods} from './util/classDeclarationUtils';
-import {Ng2Walker} from './angular/ng2Walker';
+import {NgWalker} from './angular/ngWalker';
 import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAngularExpressionVisitor';
 import * as e from '@angular/compiler/src/expression_parser/ast';
 import SyntaxKind = require('./util/syntaxKind');
@@ -10,7 +10,7 @@ import SyntaxKind = require('./util/syntaxKind');
 enum DeclarationType {
   Property,
   Method
-};
+}
 
 class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
   visitPropertyRead(ast: e.PropertyRead, context: any): any {
@@ -88,7 +88,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 
   public apply(sourceFile:ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
-        new Ng2Walker(sourceFile,
+        new NgWalker(sourceFile,
             this.getOptions(), {
               expressionVisitorCtrl: SymbolAccessValidator
             }));
