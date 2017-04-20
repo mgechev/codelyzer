@@ -13,7 +13,7 @@ describe('template-to-ng-template', () => {
       assertSuccess('template-to-ng-template', source);
   });
 
-  it('should detect templete elements', () => {
+  it('should detect template elements', () => {
     let source = `
       @Component({
         selector: 'foobar',
@@ -28,7 +28,7 @@ describe('template-to-ng-template', () => {
       });
   });
 
-  it('should detect templete elements', () => {
+  it('should detect template elements', () => {
     let source = `
       @Component({
         selector: 'foobar',
@@ -43,7 +43,7 @@ describe('template-to-ng-template', () => {
       });
   });
 
-  it('should detect templete elements', () => {
+  it('should detect template elements', () => {
     let source = `
       @Component({
         selector: 'foobar',
@@ -60,9 +60,9 @@ describe('template-to-ng-template', () => {
       });
   });
 
-  xdescribe('autofixes', () => {
+  xdescribe('auto-fixes', () => {
 
-    it('should not autofix template suggar', () => {
+    it('should not auto-fix template sugar', () => {
       let source = `
       @Component({
         selector: 'foobar',
@@ -72,7 +72,7 @@ describe('template-to-ng-template', () => {
       assertSuccess('template-to-ng-template', source);
     });
 
-    it('should fix template with no suggar', () => {
+    it('should fix template with no sugar', () => {
       let source = `
       @Component({
         selector: 'foobar',
@@ -99,7 +99,7 @@ describe('template-to-ng-template', () => {
       chai.expect(res).to.eq(expected);
     });
 
-    it('should fix template with no suggar & nested templates', () => {
+    it('should fix template with no sugar & nested templates', () => {
       let source = `
       @Component({
         selector: 'foobar',
@@ -128,7 +128,7 @@ describe('template-to-ng-template', () => {
       chai.expect(res).to.eq(expected);
     });
 
-    it('should fix template with templates & suggar', () => {
+    it('should fix template with templates & sugar', () => {
       let source = `
       @Component({
         selector: 'foobar',
@@ -168,7 +168,7 @@ describe('template-to-ng-template', () => {
       chai.expect(res).to.eq(expected);
     });
 
-    it('should fix template with no suggar & nested templates & nested elements', () => {
+    it('should fix template with no sugar & nested templates & nested elements', () => {
       let source = `
       @Component({
         selector: 'foobar',
@@ -223,7 +223,7 @@ describe('template-to-ng-template', () => {
       chai.expect(res).to.eq(expected);
     });
 
-    it('should fix template with no suggar & nested templates & nested elements', () => {
+    it('should fix template with no sugar & nested templates & nested elements', () => {
       let source = `
       @Component({
         selector: 'foobar',
@@ -274,7 +274,7 @@ describe('template-to-ng-template', () => {
       chai.expect(res).to.eq(expected);
     });
 
-    it('should fix template with no suggar & nested templates & nested elements', () => {
+    it('should fix template with no sugar & nested templates & nested elements', () => {
       let source = `
       @Component({
         selector: 'foobar',
