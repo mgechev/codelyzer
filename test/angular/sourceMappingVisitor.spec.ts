@@ -16,7 +16,7 @@ const fixture1 =
     \`
     .foo {
       .bar {
-        color: red; 
+        color: red;
       }
     }
     \`
