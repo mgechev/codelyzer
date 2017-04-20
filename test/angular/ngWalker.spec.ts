@@ -11,7 +11,7 @@ import * as spies from 'chai-spies';
 chai.use(spies);
 
 const chaiSpy = (<any>chai).spy;
-describe('ng2Walker', () => {
+describe('ngWalker', () => {
   it('should visit components and directives', () => {
     let source = `
       @Component({
@@ -32,8 +32,8 @@ describe('ng2Walker', () => {
     };
     let sf = ts.createSourceFile('foo', source, null);
     let walker = new NgWalker(sf, ruleArgs);
-    let cmpSpy = chaiSpy.on(walker, 'visitNg2Component');
-    let dirSpy = chaiSpy.on(walker, 'visitNg2Directive');
+    let cmpSpy = chaiSpy.on(walker, 'visitNgComponent');
+    let dirSpy = chaiSpy.on(walker, 'visitNgDirective');
     walker.walk(sf);
     (<any>chai.expect(cmpSpy).to.have.been).called();
     (<any>chai.expect(dirSpy).to.have.been).called();
@@ -59,8 +59,8 @@ describe('ng2Walker', () => {
     };
     let sf = ts.createSourceFile('foo', source, null);
     let walker = new NgWalker(sf, ruleArgs);
-    let outputsSpy = chaiSpy.on(walker, 'visitNg2Output');
-    let inputsSpy = chaiSpy.on(walker, 'visitNg2Input');
+    let outputsSpy = chaiSpy.on(walker, 'visitNgOutput');
+    let inputsSpy = chaiSpy.on(walker, 'visitNgInput');
     walker.walk(sf);
     (<any>chai.expect(outputsSpy).to.have.been).called();
     (<any>chai.expect(inputsSpy).to.have.been).called();

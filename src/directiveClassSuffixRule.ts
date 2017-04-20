@@ -41,10 +41,10 @@ export class Rule extends Lint.Rules.AbstractRule {
 }
 
 export class ClassMetadataWalker extends NgWalker {
-  visitNg2Directive(meta: DirectiveMetadata) {
+  visitNgDirective(meta: DirectiveMetadata) {
     let name = meta.controller.name;
     let className:string = name.text;
-    const suffix = this.getOptions()[0] || 'Directive';
+    const suffix = this.getOptions()[1] || 'Directive';
     if (!Rule.validate(className, suffix)) {
       this.addFailure(
         this.createFailure(

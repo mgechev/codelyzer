@@ -5,10 +5,10 @@ import {ComponentMetadata} from '../angular/metadata';
 import {F1, Maybe} from '../util/function';
 
 // Walkable types
-export type Walkable = 'Ng2Component';
+export type Walkable = 'NgComponent';
 
-export function allNg2Component(): WalkerBuilder<'Ng2Component'> {
-    return new Ng2ComponentWalkerBuilder();
+export function allNgComponent(): WalkerBuilder<'NgComponent'> {
+    return new NgComponentWalkerBuilder();
 }
 
 export class Failure {
@@ -20,10 +20,10 @@ export interface WalkerBuilder<T extends Walkable> {
     build: (sourceFile: ts.SourceFile, options: IOptions) => NgWalker;
 }
 
-class Ng2ComponentWalkerBuilder implements WalkerBuilder<'Ng2Component'> {
+class NgComponentWalkerBuilder implements WalkerBuilder<'NgComponent'> {
     private _where: F1<ComponentMetadata, Maybe<Failure>>;
 
-    where(validate: F1<ComponentMetadata, Maybe<Failure>>):Ng2ComponentWalkerBuilder {
+    where(validate: F1<ComponentMetadata, Maybe<Failure>>):NgComponentWalkerBuilder {
         this._where = validate;
         return this;
     }
@@ -31,7 +31,7 @@ class Ng2ComponentWalkerBuilder implements WalkerBuilder<'Ng2Component'> {
     build(sourceFile: ts.SourceFile, options: IOptions): NgWalker {
         const self = this;
         const e = class extends NgWalker {
-            visitNg2Component(meta: ComponentMetadata) {
+            visitNgComponent(meta: ComponentMetadata) {
                 self._where(meta).fmap(failure => {
                     this.addFailure(
                         this.createFailure(
@@ -40,7 +40,7 @@ class Ng2ComponentWalkerBuilder implements WalkerBuilder<'Ng2Component'> {
                             failure.message,
                         ));
                 });
-                super.visitNg2Component(meta);
+                super.visitNgComponent(meta);
             }
         };
         return new e(sourceFile, options);

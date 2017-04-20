@@ -1,6 +1,7 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
+import { IOptions } from 'tslint';
 import SyntaxKind = require('./util/syntaxKind');
 
 export interface IUsePropertyDecoratorConfig {
@@ -20,8 +21,8 @@ export class UsePropertyDecorator extends Lint.Rules.AbstractRule {
     return sprintf(config.errorMessage, decoratorName, className, config.propertyName, decorators);
   }
 
-  constructor(private config: IUsePropertyDecoratorConfig, ruleName: string, value: any, disabledIntervals: Lint.IDisabledInterval[]) {
-    super({ ruleName, ruleArguments: value, disabledIntervals, ruleSeverity: 'warning' });
+  constructor(private config: IUsePropertyDecoratorConfig, options: IOptions) {
+    super(options);
   }
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {

@@ -5,7 +5,7 @@ import {NgWalker} from '../../src/angular/ngWalker';
 import {getDeclaredMethodNames, getDeclaredPropertyNames} from '../../src/util/classDeclarationUtils';
 import chai = require('chai');
 
-describe('ng2Walker', () => {
+describe('ngWalker', () => {
   it('should visit components and directives', () => {
     let source = `
       class Foobar {

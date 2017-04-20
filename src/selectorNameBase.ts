@@ -3,6 +3,7 @@ import {SelectorValidator} from './util/selectorValidator';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
 import * as compiler from '@angular/compiler';
+import { IOptions } from 'tslint';
 import SyntaxKind = require('./util/syntaxKind');
 
 export abstract class SelectorRule extends Lint.Rules.AbstractRule {
@@ -19,11 +20,12 @@ export abstract class SelectorRule extends Lint.Rules.AbstractRule {
   private FAILURE_PREFIX;
   private isMultiSelectors:boolean;
 
-  constructor(ruleName: string, value: any, disabledIntervals: Lint.IDisabledInterval[]) {
-    let type = value[1];
-    let prefix = value[2] || [];
-    let name = value[3];
-    super({ ruleName, ruleArguments: value, ruleSeverity: 'warning', disabledIntervals });
+  constructor(options: IOptions) {
+    const args = options.ruleArguments;
+    let type = args[1];
+    let prefix = args[2] || [];
+    let name = args[3];
+    super(options);
     this.setMultiPrefix(prefix);
     this.setPrefixArguments(prefix);
     this.setPrefixValidator(prefix, name);
@@ -151,10 +153,10 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
             });
           };
           if (!validateSelectors(this.rule.validateType.bind(this.rule))) {
-            let error = sprintf(this.rule.getTypeFailure(), className,this.rule.getOptions().ruleArguments[0]);
+            let error = sprintf(this.rule.getTypeFailure(), className, this.rule.getOptions().ruleArguments[1]);
             this.addFailure(this.createFailure(i.getStart(), i.getWidth(),error));
           } else if (!validateSelectors(this.rule.validateName.bind(this.rule))) {
-            let name = this.rule.getOptions().ruleArguments[2];
+            let name = this.rule.getOptions().ruleArguments[3];
             if (name === 'kebab-case') {
               name += ' and include dash';
             }

@@ -4,6 +4,7 @@ import {sprintf} from 'sprintf-js';
 import SyntaxKind = require('./util/syntaxKind');
 import {NgWalker} from './angular/ngWalker';
 import {SelectorValidator} from './util/selectorValidator';
+import { IOptions } from 'tslint';
 
 export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
@@ -42,15 +43,17 @@ export class Rule extends Lint.Rules.AbstractRule {
   private prefixChecker: Function;
   private validator: Function;
 
-  constructor(ruleName:string, value:any, disabledIntervals:Lint.IDisabledInterval[]) {
-    super({ ruleName, ruleArguments: value, ruleSeverity: 'warning', disabledIntervals });
-    if (value[1] === 'camelCase') {
+  constructor(options: IOptions) {
+    super(options);
+
+    const args = options.ruleArguments;
+    if (args[1] === 'camelCase') {
       this.validator = SelectorValidator.camelCase;
     }
-    if (value.length>2) {
+    if (args.length > 2) {
       this.hasPrefix = true;
-      let prefixExpression:string = (value.slice(2)||[]).join('|');
-      this.prefix = (value.slice(2)||[]).join(',');
+      let prefixExpression: string = (args.slice(2) || []).join('|');
+      this.prefix = (args.slice(2) || []).join(',');
       this.prefixChecker = SelectorValidator.prefix(prefixExpression, 'camelCase');
     }
   }
@@ -75,7 +78,7 @@ export class ClassMetadataWalker extends NgWalker {
     super(sourceFile, rule.getOptions());
   }
 
-  visitNg2Pipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
+  visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
     let className = controller.name.text;
     this.validateProperties(className, decorator);
   }

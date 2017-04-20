@@ -1,6 +1,7 @@
 import * as Lint from 'tslint';
 
 import {UsePropertyDecorator} from './propertyDecoratorBase';
+import { IOptions } from 'tslint';
 
 export class Rule extends UsePropertyDecorator {
   public static metadata: Lint.IRuleMetadata = {
@@ -19,12 +20,12 @@ export class Rule extends UsePropertyDecorator {
   };
 
 
-  constructor(ruleName: string, value: any, disabledIntervals: Lint.IDisabledInterval[]) {
+  constructor(options: IOptions) {
     super({
       decoratorName: 'Input',
       propertyName: 'inputs',
       errorMessage: 'Use the @Input property decorator instead of the inputs property ($$05-12$$)'
-    }, ruleName, value, disabledIntervals);
+    }, options);
   }
 }
 

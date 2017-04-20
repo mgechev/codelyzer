@@ -15,7 +15,7 @@ import {parseTemplate} from './angular/templates/templateParser';
 import { CssAst, CssSelectorRuleAst, CssSelectorAst, CssBlockAst } from './angular/styles/cssAst';
 
 import {ComponentMetadata, StyleMetadata} from './angular/metadata';
-import {ng2WalkerFactoryUtils} from './angular/ngWalkerFactoryUtils';
+import {ngWalkerFactoryUtils} from './angular/ngWalkerFactoryUtils';
 import {logger} from './util/logger';
 import {SemVerDSL} from './util/ngVersion';
 
@@ -153,7 +153,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 
   public apply(sourceFile:ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
-        new UnusedCssNg2Visitor(sourceFile,
+        new UnusedCssNgVisitor(sourceFile,
             this.getOptions(), {
               cssVisitorCtrl: UnusedCssVisitor
             }));
@@ -230,14 +230,14 @@ class UnusedCssVisitor extends BasicCssAstVisitor {
 }
 
 // Finds the template and wrapes the parsed content into a root element
-export class UnusedCssNg2Visitor extends NgWalker {
+export class UnusedCssNgVisitor extends NgWalker {
   private templateAst: TemplateAst;
 
   visitClassDeclaration(declaration: ts.ClassDeclaration) {
     const d = getComponentDecorator(declaration);
     if (d) {
       const meta: ComponentMetadata = <ComponentMetadata>this._metadataReader.read(declaration);
-      this.visitNg2Component(meta);
+      this.visitNgComponent(meta);
       if (meta.template && meta.template.template) {
         try {
           const ElementAstCtr = ElementAst as any;
@@ -258,7 +258,7 @@ export class UnusedCssNg2Visitor extends NgWalker {
     super.visitClassDeclaration(declaration);
   }
 
-  protected visitNg2StyleHelper(style: CssAst, context: ComponentMetadata, styleMetadata: StyleMetadata, baseStart: number) {
+  protected visitNgStyleHelper(style: CssAst, context: ComponentMetadata, styleMetadata: StyleMetadata, baseStart: number) {
     if (!style) {
       return;
     } else {

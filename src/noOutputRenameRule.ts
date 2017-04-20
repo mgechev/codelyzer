@@ -28,7 +28,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 
 
 export class OutputMetadataWalker extends NgWalker {
-  visitNg2Output(property:ts.PropertyDeclaration, output:ts.Decorator, args:string[]) {
+  visitNgOutput(property:ts.PropertyDeclaration, output:ts.Decorator, args:string[]) {
     let className = (<any>property).parent.name.text;
     let memberName = (<any>property.name).text;
     if (args.length !== 0 && memberName !== args[0]) {

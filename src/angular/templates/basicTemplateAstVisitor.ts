@@ -84,7 +84,7 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
       super(sourceFile, _originalOptions, context.template.template, templateStart);
     }
 
-  protected visitNg2TemplateAST(ast: e.AST, templateStart: number) {
+  protected visitNgTemplateAST(ast: e.AST, templateStart: number) {
     const templateVisitor =
       new this.expressionVisitorCtrl(this.getSourceFile(), this._originalOptions, this.context, templateStart);
     templateVisitor.preDefinedVariables = this._variables;
@@ -126,7 +126,7 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
     if (this._variables.indexOf('$event') < 0) {
       this._variables.push('$event');
     }
-    this.visitNg2TemplateAST(ast.handler,
+    this.visitNgTemplateAST(ast.handler,
         this.templateStart + getExpressionDisplacement(ast));
     this._variables.splice(this._variables.indexOf('$event'), 1);
   }
@@ -134,7 +134,7 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
   visitElementProperty(prop: ast.BoundElementPropertyAst, context: any): any {
     const ast: any = (<e.ASTWithSource>prop.value).ast;
     ast.interpolateExpression = (<any>prop.value).source;
-    this.visitNg2TemplateAST(prop.value, this.templateStart + getExpressionDisplacement(prop));
+    this.visitNgTemplateAST(prop.value, this.templateStart + getExpressionDisplacement(prop));
   }
 
   visitAttr(ast: ast.AttrAst, context: any): any {}
@@ -144,7 +144,7 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
       // Note that will not be reliable for different interpolation symbols
       const ast: any = (<e.ASTWithSource>text.value).ast;
       ast.interpolateExpression = (<any>text.value).source;
-      this.visitNg2TemplateAST(ast,
+      this.visitNgTemplateAST(ast,
           this.templateStart + getExpressionDisplacement(text));
     }
   }
@@ -160,7 +160,7 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
   visitDirectiveProperty(prop: ast.BoundDirectivePropertyAst, context: any): any {
     if (ExpTypes.ASTWithSource(prop.value)) {
       const ast: any = (<e.ASTWithSource>prop.value).ast;
-      this.visitNg2TemplateAST(prop.value, this.templateStart + getExpressionDisplacement(prop));
+      this.visitNgTemplateAST(prop.value, this.templateStart + getExpressionDisplacement(prop));
     }
   }
 }

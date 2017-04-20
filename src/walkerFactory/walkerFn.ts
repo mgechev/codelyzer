@@ -10,61 +10,61 @@ export type ValidateFn<T> = F2<T, IOptions, Maybe<Failure[]>>;
 export type WalkerOptions = any;
 
 export interface NodeValidator {
-    kind: 'Node';
-    validate: ValidateFn<ts.Node>;
+  kind: 'Node';
+  validate: ValidateFn<ts.Node>;
 }
 
 export interface ComponentValidator {
-    kind: 'Ng2Component';
-    validate: ValidateFn<ComponentMetadata>;
+  kind: 'NgComponent';
+  validate: ValidateFn<ComponentMetadata>;
 }
 
 export function validate(syntaxKind: ts.SyntaxKind): F1<ValidateFn<ts.Node>, NodeValidator> {
-    return validateFn => ({
-        kind: 'Node',
-        validate: (node: ts.Node, options: WalkerOptions) => (node.kind === syntaxKind) ? validateFn(node, options) : Maybe.nothing,
-    });
+  return validateFn => ({
+    kind: 'Node',
+    validate: (node: ts.Node, options: WalkerOptions) => (node.kind === syntaxKind) ? validateFn(node, options) : Maybe.nothing,
+  });
 }
 
 export function validateComponent(validate: F2<ComponentMetadata, WalkerOptions, Maybe<Failure[]>>): ComponentValidator {
-    return {
-        kind: 'Ng2Component',
-        validate,
-    };
+  return {
+    kind: 'NgComponent',
+    validate,
+  };
 }
 
 export function all(...validators: Validator[]): F2<ts.SourceFile, IOptions, NgWalker> {
-    return (sourceFile, options) => {
-        const e = class extends NgWalker {
-            visitNg2Component(meta: ComponentMetadata) {
-                validators.forEach(v => {
-                    if (v.kind === 'Ng2Component') {
-                        v.validate(meta, this.getOptions()).fmap(
-                            failures => failures.forEach(f => this.failed(f)));
-                    }
-                });
-                super.visitNg2Component(meta);
+  return (sourceFile, options) => {
+    const e = class extends NgWalker {
+      visitNgComponent(meta: ComponentMetadata) {
+        validators.forEach(v => {
+          if (v.kind === 'NgComponent') {
+            v.validate(meta, this.getOptions()).fmap(
+              failures => failures.forEach(f => this.failed(f)));
             }
+          });
+          super.visitNgComponent(meta);
+        }
 
-            visitNode(node: ts.Node) {
-                validators.forEach(v => {
-                    if (v.kind === 'Node') {
-                        v.validate(node, this.getOptions()).fmap(
-                            failures => failures.forEach(f => this.failed(f)));
-                    }
-                });
-                super.visitNode(node);
-            }
+        visitNode(node: ts.Node) {
+          validators.forEach(v => {
+            if (v.kind === 'Node') {
+              v.validate(node, this.getOptions()).fmap(
+                failures => failures.forEach(f => this.failed(f)));
+              }
+            });
+          super.visitNode(node);
+        }
 
-            private failed(failure: Failure) {
-                this.addFailure(
-                    this.createFailure(
-                        failure.node.getStart(),
-                        failure.node.getWidth(),
-                        failure.message,
-                    ));
-            }
-        };
-        return new e(sourceFile, options);
-    };
+        private failed(failure: Failure) {
+          this.addFailure(
+            this.createFailure(
+              failure.node.getStart(),
+              failure.node.getWidth(),
+              failure.message,
+            ));
+        }
+      };
+    return new e(sourceFile, options);
+  };
 }

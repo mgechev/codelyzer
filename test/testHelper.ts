@@ -33,11 +33,13 @@ function lint(ruleName: string, source: string, options: any): tslint.LintResult
     jsRules: new Map<string, Partial<tslint.IOptions>>(),
     rulesDirectory: []
   };
-  if (options !== null && options.length >= 0) {
-    configuration.rules[ruleName] = (<any[]>[true]).concat(options);
+  if (!options) {
+    options = true;
   } else {
-    configuration.rules[ruleName] = true;
+    options = [true].concat(options);
   }
+  const ops: Partial<tslint.IOptions> = { ruleName, ruleArguments: options, disabledIntervals: [] };
+  configuration.rules.set(ruleName, ops);
   var linterOptions: tslint.ILinterOptions = {
     formatter: 'json',
     rulesDirectory: './dist/src',

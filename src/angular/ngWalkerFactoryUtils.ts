@@ -1,6 +1,6 @@
 import * as ts from 'typescript';
 import * as Lint from 'tslint';
-import {NgWalker, Ng2WalkerConfig} from './ngWalker';
+import {NgWalker, NgWalkerConfig} from './ngWalker';
 import {MetadataReader} from './metadataReader';
 import {UrlResolver} from './urlResolvers/urlResolver';
 import {FsFileResolver} from './fileResolver/fsFileResolver';
@@ -12,7 +12,7 @@ import {BasicTemplateAstVisitor} from './templates/basicTemplateAstVisitor';
 
 import {PathResolver} from './urlResolvers/pathResolver';
 
-export const ng2WalkerFactoryUtils = {
+export const ngWalkerFactoryUtils = {
   defaultConfig() {
     return {
       templateVisitorCtrl: BasicTemplateAstVisitor,
@@ -25,7 +25,7 @@ export const ng2WalkerFactoryUtils = {
     return new MetadataReader(new FsFileResolver(), new UrlResolver(new PathResolver()));
   },
 
-  normalizeConfig(config: Ng2WalkerConfig) {
+  normalizeConfig(config: NgWalkerConfig) {
     return Object.assign(this.defaultConfig(), config || {});
   }
 };
