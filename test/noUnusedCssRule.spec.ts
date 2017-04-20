@@ -5,6 +5,7 @@ import * as sass from 'node-sass';
 
 import {assertFailure, assertSuccess, assertAnnotated} from './testHelper';
 import {Config} from '../src/angular/config';
+import { Replacement } from 'tslint';
 
 describe('no-unused-css', () => {
   describe('valid cases', () => {
@@ -806,9 +807,7 @@ describe('no-unused-css', () => {
           character: 13
         }
       }, null);
-      const fix = failures[0].getFix();
-      const replacements = fix;
-      const replacement = replacements[0];
+      const replacement = failures[0].getFix() as Replacement;
       expect(replacement.text).to.eq('');
       expect(replacement.start).to.eq(197);
       expect(replacement.end).to.eq(240);
@@ -858,9 +857,7 @@ describe('no-unused-css', () => {
         }
       });
       Config.transformStyle = (code: string) => ({ code, map: null });
-      const fix = failures[0].getFix();
-      const replacements = fix;
-      const replacement = replacements[0];
+      const replacement = failures[0].getFix() as Replacement;
       expect(replacement.text).to.eq('');
       expect(replacement.start).to.eq(174);
       expect(replacement.end).to.eq(261); // should be 276

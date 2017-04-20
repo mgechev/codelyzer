@@ -86,9 +86,9 @@ describe('template-to-ng-template', () => {
         message: 'You should use <ng-template> instead of <template>'
       });
       chai.expect(failures[0].hasFix()).to.eq(true);
-      const fixes = [failures[0].getFix()].concat(failures[1].getFix());
-      chai.expect(fixes[0].replacements.length).to.eq(2);
-      const res = Replacement.applyAll(source, fixes);
+      const replacements = [failures[0].getFix()].concat(failures[1].getFix());
+      chai.expect(replacements[0].replacements.length).to.eq(2);
+      const res = Replacement.applyAll(source, replacements);
       const expected = `
       @Component({
         selector: 'foobar',
@@ -114,10 +114,10 @@ describe('template-to-ng-template', () => {
       });
       chai.expect(failures[0].hasFix()).to.eq(true);
       chai.expect((failures as RuleFailure[]).length).to.eq(2);
-      const fixes = [failures[0].getFix()].concat(failures[1].getFix());
-      chai.expect(fixes[0].replacements.length).to.eq(2);
-      chai.expect(fixes[1].replacements.length).to.eq(2);
-      const res = Replacement.applyAll(source, fixes);
+      const replacements = [failures[0].getFix()].concat(failures[1].getFix());
+      chai.expect(replacements[0].replacements.length).to.eq(2);
+      chai.expect(replacements[1].replacements.length).to.eq(2);
+      const res = Replacement.applyAll(source, replacements);
       const expected = `
       @Component({
         selector: 'foobar',
@@ -151,11 +151,11 @@ describe('template-to-ng-template', () => {
       });
       chai.expect(failures[0].hasFix()).to.eq(true);
       chai.expect((failures as RuleFailure[]).length).to.eq(1);
-      let fixes = failures[0].getFix();
-      if (!(fixes instanceof Array)) {
-        fixes = [fixes];
+      let replacements = failures[0].getFix();
+      if (!(replacements instanceof Array)) {
+        replacements = [replacements];
       }
-      const res = Replacement.applyAll(source, fixes);
+      const res = Replacement.applyAll(source, replacements);
       const expected = `
       @Component({
         selector: 'foobar',
@@ -198,11 +198,11 @@ describe('template-to-ng-template', () => {
       });
       chai.expect((failures as any).length).to.eq(3);
       chai.expect(failures[0].hasFix()).to.eq(true);
-      let fixes = failures[0].getFix();
-      if (!(fixes instanceof Array)) {
-        fixes = [fixes];
+      let replacements = failures[0].getFix();
+      if (!(replacements instanceof Array)) {
+        replacements = [replacements];
       }
-      chai.expect(fixes.length).to.eq(2);
+      chai.expect(replacements.length).to.eq(2);
       const res = Replacement.applyAll(source, (failures as any).map(f => f.getFix()));
       const expected = `
       @Component({
@@ -247,11 +247,11 @@ describe('template-to-ng-template', () => {
         }
       });
       chai.expect(failures[0].hasFix()).to.eq(true);
-      let fixes = failures[0].getFix();
-      if (!(fixes instanceof Array)) {
-        fixes = [fixes];
+      let replacements = failures[0].getFix();
+      if (!(replacements instanceof Array)) {
+        replacements = [replacements];
       }
-      chai.expect(fixes.length).to.eq(2);
+      chai.expect(replacements.length).to.eq(2);
       chai.expect(failures.length).to.eq(3);
       const res = Replacement.applyAll(source, [].concat.apply([], failures.map(f => {
         let fix = f.getFix();
@@ -297,13 +297,13 @@ describe('template-to-ng-template', () => {
         }
       });
       chai.expect(failures[0].hasFix()).to.eq(true);
-      let fixes = failures[0].getFix();
-      if (!(fixes instanceof Array)) {
-        fixes = [fixes];
+      let replacements = failures[0].getFix();
+      if (!(replacements instanceof Array)) {
+        replacements = [replacements];
       }
-      chai.expect(fixes.length).to.eq(2);
-      const reps = fixes;
-      const res = Replacement.applyAll(source, fixes);
+      chai.expect(replacements.length).to.eq(2);
+      const reps = replacements;
+      const res = Replacement.applyAll(source, replacements);
       const expected = `
       @Component({
         selector: 'foobar',
