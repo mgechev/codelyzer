@@ -95,7 +95,7 @@ describe('directive-selector-prefix', () => {
           class Test {}`;
             assertAnnotated({
                 ruleName: 'directive-selector',
-                message: 'The selector of the directive "Test" should have one of the prefixes: sg,ng,mg ($$02-08$$)',
+                message: 'The selector of the directive "Test" should have one of the prefixes "sg, ng, mg" ($$02-08$$)',
                 source,
                 options: ['attribute',['sg', 'ng', 'mg'],'camelCase']
             });
@@ -109,7 +109,7 @@ describe('directive-selector-prefix', () => {
           class Test {}`;
             assertAnnotated({
                 ruleName: 'directive-selector',
-                message: 'The selector of the directive "Test" should have one of the prefixes: sg,ng,mg ($$02-08$$)',
+                message: 'The selector of the directive "Test" should have one of the prefixes "sg, ng, mg" ($$02-08$$)',
                 source,
                 options: ['attribute',['sg', 'ng', 'mg'],'camelCase']
             });
@@ -123,6 +123,15 @@ describe('directive-selector-prefix', () => {
       })
       class Test {}`;
             assertSuccess('directive-selector', source, ['attribute','sg','camelCase']);
+        });
+
+        it('should succeed when set valid selector in @Directive', () => {
+            let source = `
+      @Directive({
+        selector: 'sgBarFoo'
+      })
+      class Test {}`;
+            assertSuccess('directive-selector', source, [['attribute', 'element'],'sg','camelCase']);
         });
 
         it('should succeed when set valid selector in @Directive using multiple prefixes', () => {

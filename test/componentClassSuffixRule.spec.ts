@@ -8,7 +8,7 @@ describe('component-class-suffix', () => {
                 selector: 'sg-foo-bar'
               })
               class Test {}
-                    ~~~~    
+                    ~~~~
               `;
             assertAnnotated({
                 ruleName: 'component-class-suffix',

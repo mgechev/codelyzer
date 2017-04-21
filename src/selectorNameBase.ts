@@ -1,115 +1,91 @@
 import * as Lint from 'tslint';
-import {SelectorValidator} from './util/selectorValidator';
+import { SelectorValidator } from './util/selectorValidator';
 import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
 import * as compiler from '@angular/compiler';
 import { IOptions } from 'tslint';
 import SyntaxKind = require('./util/syntaxKind');
 
+export type SelectorType = 'element' | 'attribute';
+export type SelectorTypeInternal = 'element' | 'attrs';
+export type SelectorStyle = 'kebab-case' | 'camelCase';
+
 export abstract class SelectorRule extends Lint.Rules.AbstractRule {
-
-  public isMultiPrefix:boolean;
-  public prefixArguments:string;
-  public cssSelectorProperty:string;
-
-  public handleType: string;
-
-  private typeValidator:Function;
-  private prefixValidator:Function;
-  private nameValidator:Function;
-  private FAILURE_PREFIX;
-  private isMultiSelectors:boolean;
+  handleType: string;
+  prefixes: string[];
+  types: SelectorTypeInternal[];
+  style: SelectorStyle[];
 
   constructor(options: IOptions) {
-    const args = options.ruleArguments;
-    let type = args[1];
-    let prefix = args[2] || [];
-    let name = args[3];
     super(options);
-    this.setMultiPrefix(prefix);
-    this.setPrefixArguments(prefix);
-    this.setPrefixValidator(prefix, name);
-    this.setPrefixFailure();
-    this.setTypeValidator(type);
-    this.setNameValidator(name);
-  }
+    const args = options.ruleArguments;
 
-  public getPrefixFailure():string {
-    return this.FAILURE_PREFIX;
-  }
-
-  public validateType(selector:string):boolean {
-    return this.typeValidator(selector);
-  }
-
-  public validateName(selector:any):boolean {
-    if(this.isMultiSelectors) {
-      return selector.some((a) => this.nameValidator(a));
-    } else {
-      return this.nameValidator(selector);
+    let type: SelectorType[] = args[1] || ['element', 'attribute'];
+    if (!(type instanceof Array)) {
+      type = [type];
     }
+    let internal: SelectorTypeInternal[] = [];
+    if (type.indexOf('element') >= 0) {
+      internal.push('element');
+    }
+    if (type.indexOf('attribute') >= 0) {
+      internal.push('attrs');
+    }
+    this.types = internal;
+
+    let prefix = args[2] || [];
+    if (!(prefix instanceof Array)) {
+      prefix = [prefix];
+    }
+    this.prefixes = prefix;
+
+    let style = args[3];
+    if (!(style instanceof Array)) {
+      style = [style];
+    }
+    this.style = style;
   }
 
-  public validatePrefix(selector:any):boolean {
-    if(this.isMultiSelectors) {
-      return selector.some((a) => this.prefixValidator(a));
-    } else {
-      return this.prefixValidator(selector);
-    }
+  public validateType(selectors: compiler.CssSelector[]): boolean {
+    return this.getValidSelectors(selectors).length > 0;
+  }
+
+  public validateStyle(selectors: compiler.CssSelector[]): boolean {
+    return this.getValidSelectors(selectors).some(selector => {
+      return this.style.some(style => {
+        let validator = SelectorValidator.camelCase;
+        if (style === 'kebab-case') {
+          validator = SelectorValidator.kebabCase;
+        }
+        return validator(selector);
+      });
+    });
+  }
+
+  public validatePrefix(selectors: compiler.CssSelector[]): boolean {
+    return this.getValidSelectors(selectors)
+      .some(selector => !this.prefixes.length || this.prefixes.some(p =>
+        this.style.some(s => SelectorValidator.prefix(p, s)(selector))));
   }
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(
-      new SelectorValidatorWalker(
-        sourceFile,
-        this));
+    return this.applyWithWalker(new SelectorValidatorWalker(sourceFile, this));
   }
 
-  public abstract getTypeFailure(): any;
-  public abstract  getNameFailure(): any;
-  protected abstract getSinglePrefixFailure(): any;
-  protected abstract getManyPrefixFailure(): any;
+  abstract getTypeFailure(): string;
+  abstract getStyleFailure(): string;
+  abstract getPrefixFailure(prefixes: string[]): string;
 
-  private setNameValidator(name:string) {
-    if (name === 'camelCase') {
-      this.nameValidator = SelectorValidator.camelCase;
-    } else if(name === 'kebab-case') {
-      this.nameValidator = SelectorValidator.kebabCase;
-    }
-  }
-
-  private setMultiPrefix(prefix:string) {
-    this.isMultiPrefix = typeof prefix ==='string';
-  }
-
-  private setPrefixArguments(prefix:any) {
-    this.prefixArguments = this.isMultiPrefix?prefix:prefix.join(',');
-  }
-
-  private setPrefixValidator(prefix: any, name: string) {
-    if (!this.isMultiPrefix) {
-      prefix = (prefix||[]).sort((a: string, b: string) => {
-        return a.length < b.length ? 1 : -1;
-      });
-    }
-    let prefixExpression: string = this.isMultiPrefix?prefix:(prefix||[]).join('|');
-    this.prefixValidator = SelectorValidator.prefix(prefixExpression, name);
-  }
-
-  private setPrefixFailure() {
-    this.FAILURE_PREFIX = this.isMultiPrefix?this.getSinglePrefixFailure():this.getManyPrefixFailure();
-  }
-
-  private setTypeValidator(type:string) {
-    if (type === 'element') {
-      this.typeValidator = SelectorValidator.element;
-      this.isMultiSelectors = false;
-      this.cssSelectorProperty = 'element';
-    } else if (type === 'attribute') {
-      this.typeValidator = SelectorValidator.attribute;
-      this.isMultiSelectors = true;
-      this.cssSelectorProperty = 'attrs';
-    }
+  private getValidSelectors(selectors: compiler.CssSelector[]) {
+    return [].concat.apply([], selectors.map(selector => {
+      return [].concat.apply([], this.types.map(t => {
+        let prop = selector[t];
+        if (prop && !(prop instanceof Array)) {
+          prop = [prop];
+        }
+        return prop;
+      }).filter(s => !!s));
+    }));
   }
 }
 
@@ -140,30 +116,21 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
   private validateSelector(className: string, arg: ts.Node) {
     if (arg.kind === SyntaxKind.current().ObjectLiteralExpression) {
       (<ts.ObjectLiteralExpression>arg).properties.filter(prop => this.validateProperty(prop))
-        .map(prop=>(<any>prop).initializer)
+        .map(prop => (<any>prop).initializer)
         .forEach(i => {
-          const selectors: any = this.extractMainSelector(i);
-          const validateSelectors = (cb: any) => {
-            // If all selectors fail, this will return true which means that the selector is invalid
-            // according to the validation callback.
-            // Since the method is called validateSelector, it's suppose to return true if the
-            // selector is valid, so we're taking the result with "!".
-            return !selectors.every((selector: any) => {
-              return !cb(selector[this.rule.cssSelectorProperty]);
-            });
-          };
-          if (!validateSelectors(this.rule.validateType.bind(this.rule))) {
+          const selectors: compiler.CssSelector[] = this.extractMainSelector(i);
+          if (!this.rule.validateType(selectors)) {
             let error = sprintf(this.rule.getTypeFailure(), className, this.rule.getOptions().ruleArguments[1]);
-            this.addFailure(this.createFailure(i.getStart(), i.getWidth(),error));
-          } else if (!validateSelectors(this.rule.validateName.bind(this.rule))) {
+            this.addFailure(this.createFailure(i.getStart(), i.getWidth(), error));
+          } else if (!this.rule.validateStyle(selectors)) {
             let name = this.rule.getOptions().ruleArguments[3];
             if (name === 'kebab-case') {
               name += ' and include dash';
             }
-            let error = sprintf(this.rule.getNameFailure(), className, name);
+            let error = sprintf(this.rule.getStyleFailure(), className, name);
             this.addFailure(this.createFailure(i.getStart(), i.getWidth(), error));
-          } else if (!validateSelectors(this.rule.validatePrefix.bind(this.rule))) {
-            let error = sprintf(this.rule.getPrefixFailure(),className,this.rule.prefixArguments);
+          } else if (!this.rule.validatePrefix(selectors)) {
+            let error = sprintf(this.rule.getPrefixFailure(this.rule.prefixes), className, this.rule.prefixes.join(', '));
             this.addFailure(this.createFailure(i.getStart(), i.getWidth(), error));
           }
         });
@@ -179,7 +146,7 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
     return [current.StringLiteral, current.NoSubstitutionTemplateLiteral].some(kindType => kindType === kind);
   }
 
-  private extractMainSelector(i:any) {
+  private extractMainSelector(i: any) {
     return compiler.CssSelector.parse(i.text);
   }
 }

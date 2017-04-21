@@ -60,8 +60,13 @@ export class Rule extends SelectorRule {
   };
 
   public handleType = 'Component';
-  public getTypeFailure():any { return 'The selector of the component "%s" should be used as %s ($$05-03$$)'; }
-  public getNameFailure():any { return 'The selector of the component "%s" should be named %s ($$05-02$$)'; }
-  getSinglePrefixFailure():any { return 'The selector of the component "%s" should have prefix "%s" ($$02-07$$)'; }
-  getManyPrefixFailure():any { return 'The selector of the component "%s" should have one of the prefixes: %s ($$02-07$$)'; }
+  public getTypeFailure(): any { return 'The selector of the component "%s" should be used as %s ($$05-03$$)'; }
+  public getStyleFailure(): any { return 'The selector of the component "%s" should be named %s ($$05-02$$)'; }
+  getPrefixFailure(prefixes: string[]): any {
+    if (prefixes.length === 1) {
+      return 'The selector of the component "%s" should have prefix "%s" ($$02-07$$)';
+    } else {
+      return 'The selector of the component "%s" should have one of the prefixes "%s" ($$02-07$$)';
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import {assertSuccess, assertAnnotated, assertMultipleAnnotated} from './testHelper';
+import { assertSuccess, assertAnnotated, assertMultipleAnnotated } from './testHelper';
 
 describe('component-selector-prefix', () => {
     describe('invalid component selectors', () => {
@@ -26,7 +26,7 @@ describe('component-selector-prefix', () => {
       class Test {}`;
             assertAnnotated({
                 ruleName: 'component-selector',
-                message:  'The selector of the component "Test" should have one of the prefixes: sg,mg,ng ($$02-07$$)',
+                message:  'The selector of the component "Test" should have one of the prefixes "sg, mg, ng" ($$02-07$$)',
                 source,
                 options: ['element', ['sg','mg','ng'], 'kebab-case']
             });
@@ -40,7 +40,7 @@ describe('component-selector-prefix', () => {
       class Test {}`;
             assertAnnotated({
                 ruleName: 'component-selector',
-                message:  'The selector of the component "Test" should have one of the prefixes: sg,mg,ng ($$02-07$$)',
+                message:  'The selector of the component "Test" should have one of the prefixes "sg, mg, ng" ($$02-07$$)',
                 source,
                 options: ['element', ['sg','mg','ng'], 'kebab-case']
             });
@@ -49,7 +49,7 @@ describe('component-selector-prefix', () => {
 
         it('should fail when component used longer prefix', () => {
             let source = `
-          @Component({selector: 'foo-bar'}) class TestOne {} 
+          @Component({selector: 'foo-bar'}) class TestOne {}
                                 ~~~~~~~~~
           @Component({selector: 'ngg-bar'}) class TestTwo {}
                                 ^^^^^^^^^
@@ -57,8 +57,8 @@ describe('component-selector-prefix', () => {
             assertMultipleAnnotated({
                 ruleName: 'component-selector',
                 failures: [
-                  { char: '~', msg: 'The selector of the component "TestOne" should have one of the prefixes: fo,mg,ng ($$02-07$$)'},
-                  { char: '^', msg: 'The selector of the component "TestTwo" should have one of the prefixes: fo,mg,ng ($$02-07$$)'},
+                  { char: '~', msg: 'The selector of the component "TestOne" should have one of the prefixes "fo, mg, ng" ($$02-07$$)'},
+                  { char: '^', msg: 'The selector of the component "TestTwo" should have one of the prefixes "fo, mg, ng" ($$02-07$$)'},
                 ],
                 source,
                 options: ['element', ['fo','mg','ng'], 'kebab-case']
@@ -151,6 +151,15 @@ describe('component-selector-type', () => {
                 source,
                 options: ['element', ['sg','ng'], 'kebab-case']
             });
+        });
+
+        it('should accept several selector types', () => {
+          let source = `
+          @Component({
+            selector: \`[fooBar]\`
+          })
+          class Test {}`;
+          assertSuccess('component-selector', source, [['element', 'attribute'], ['foo','ng'], 'camelCase']);
         });
     });
 
