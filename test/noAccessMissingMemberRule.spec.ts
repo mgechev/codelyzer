@@ -562,6 +562,19 @@ describe('no-access-missing-member', () => {
         assertSuccess('no-access-missing-member', source);
     });
 
+    it('should work with "as" syntax', () => {
+      let source = `
+        @Component({
+          template: \`
+            <ng-container *ngIf="employee$ | async as emp">{{ emp }}</ng-container>
+            \`
+        })
+        class Test {
+          employee$;
+        }`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
 
     it('should work with local template variables', () => {
       let source = `
