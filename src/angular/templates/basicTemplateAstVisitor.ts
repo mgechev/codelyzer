@@ -74,7 +74,7 @@ export interface TemplateAstVisitorCtr {
 }
 
 export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast.TemplateAstVisitor {
-  private _variables = [];
+  private _variables = {};
 
   constructor(sourceFile: ts.SourceFile,
     private _originalOptions: Lint.IOptions,
@@ -119,16 +119,14 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
   visitReference(ast: ast.ReferenceAst, context: any): any {}
 
   visitVariable(ast: ast.VariableAst, context: any): any {
-    this._variables.push(ast.name);
+    this._variables[ast.name] = true;
   }
 
   visitEvent(ast: ast.BoundEventAst, context: any): any {
-    if (this._variables.indexOf('$event') < 0) {
-      this._variables.push('$event');
-    }
+    this._variables['$event'] = true;
     this.visitNgTemplateAST(ast.handler,
         this.templateStart + getExpressionDisplacement(ast));
-    this._variables.splice(this._variables.indexOf('$event'), 1);
+    this._variables['$event'] = false;
   }
 
   visitElementProperty(prop: ast.BoundElementPropertyAst, context: any): any {

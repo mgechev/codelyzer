@@ -1,9 +1,10 @@
 import * as ast from '@angular/compiler';
+import { FlatSymbolTable } from './recursiveAngularExpressionVisitor';
 
 export class ReferenceCollectorVisitor implements ast.TemplateAstVisitor {
-  private _variables = [];
+  private _variables: FlatSymbolTable = {};
 
-  visit?(node: ast.TemplateAst, context: any): string[] {
+  visit?(node: ast.TemplateAst, context: any): FlatSymbolTable {
     node.visit(this, context);
     return this._variables;
   }
@@ -29,15 +30,13 @@ export class ReferenceCollectorVisitor implements ast.TemplateAstVisitor {
   visitEvent(ast: ast.BoundEventAst, context: any): any {}
 
   visitEmbeddedTemplate(ast: ast.EmbeddedTemplateAst, context: any): any {
-    const references = ast.references.map(r => r.name);
+    ast.references.forEach(r => this._variables[r.name] = true);
     ast.children.forEach(e => this.visit(e, context));
-    this._variables = this._variables.concat(references);
   }
 
   visitElement(element: ast.ElementAst, context: any): any {
-    const references = element.references.map(r => r.name);
+    element.references.forEach(r => this._variables[r.name] = true);
     element.children.forEach(e => this.visit(e, context));
-    this._variables = this._variables.concat(references);
   }
 
   get variables() {

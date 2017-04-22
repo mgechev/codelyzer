@@ -91,7 +91,7 @@ describe('no-access-missing-member', () => {
         @Component({
           selector: 'foobar',
           template: '<div> test {{ bar() }} {{ bar() + baz() }}</div>
-                                                       ~~~                                 
+                                                       ~~~
         })
         class Test {
           bar() {}

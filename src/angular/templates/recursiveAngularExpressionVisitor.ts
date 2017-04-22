@@ -5,8 +5,12 @@ import * as e from '@angular/compiler/src/expression_parser/ast';
 import {SourceMappingVisitor} from '../sourceMappingVisitor';
 import {ComponentMetadata} from '../metadata';
 
+export interface FlatSymbolTable {
+  [identifier: string]: boolean;
+}
+
 export class RecursiveAngularExpressionVisitor extends SourceMappingVisitor implements e.AstVisitor {
-  public preDefinedVariables = [];
+  public preDefinedVariables: FlatSymbolTable = {};
 
   constructor(sourceFile: ts.SourceFile, options: Lint.IOptions,
       protected context: ComponentMetadata, protected basePosition: number) {

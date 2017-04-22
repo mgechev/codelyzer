@@ -3,7 +3,7 @@ import * as ts from 'typescript';
 import {sprintf} from 'sprintf-js';
 import {stringDistance} from './util/utils';
 import {NgWalker} from './angular/ngWalker';
-import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAngularExpressionVisitor';
+import { RecursiveAngularExpressionVisitor, FlatSymbolTable } from './angular/templates/recursiveAngularExpressionVisitor';
 import {ExpTypes} from './angular/expressionTypes';
 import {getDeclaredMethodNames, getDeclaredPropertyNames} from './util/classDeclarationUtils';
 import * as e from '@angular/compiler/src/expression_parser/ast';
@@ -37,16 +37,18 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
 
   private doCheck(ast: ASTField, type: DeclarationType, context: any): any {
     let symbolType: string;
-    let available: string[];
+    let available: FlatSymbolTable;
     if (type === DeclarationType.Method) {
       symbolType = 'method';
     } else {
       symbolType = 'property';
     }
 
-    available = getDeclaredMethodNames(this.context.controller)
-      .concat(getDeclaredPropertyNames(this.context.controller))
-      .concat(this.preDefinedVariables);
+    available = Object.assign({},
+      getDeclaredMethodNames(this.context.controller),
+      getDeclaredPropertyNames(this.context.controller),
+      this.preDefinedVariables
+    );
 
     // Do not support nested properties yet
     let tmp = ast;
@@ -71,24 +73,22 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
       }
     }
 
-    if (available.indexOf(ast.name) < 0) {
+    if (ast.name && !available[ast.name]) {
       let failureString = sprintf.apply(this, [Rule.FAILURE, symbolType, ast.name]);
-      if (ast.name) {
-        const top = this.getTopSuggestion(available, ast.name);
-        const getSuggestion = (list: string[]) => {
-          if (list.length === 1) {
-            return `"${list[0]}"`;
-          }
-          let result = `"${list.shift()}"`;
-          while (list.length > 1) {
-            result += `, "${list.shift()}"`;
-          }
-          result += ` or "${list.shift()}"`;
-          return result;
-        };
-        if (top.length && top[0].distance <= 2) {
-          failureString += ` Probably you mean: ${getSuggestion(top.map(s => s.element))}.`;
+      const top = this.getTopSuggestion(Object.keys(available), ast.name);
+      const getSuggestion = (list: string[]) => {
+        if (list.length === 1) {
+          return `"${list[0]}"`;
         }
+        let result = `"${list.shift()}"`;
+        while (list.length > 1) {
+          result += `, "${list.shift()}"`;
+        }
+        result += ` or "${list.shift()}"`;
+        return result;
+      };
+      if (top.length && top[0].distance <= 2) {
+        failureString += ` Probably you mean: ${getSuggestion(top.map(s => s.element))}.`;
       }
       const width = ast.name.length;
       this.addFailure(this.createFailure(ast.span.start, width, failureString));

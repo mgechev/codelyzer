@@ -3,6 +3,7 @@ import * as tslint from 'tslint';
 
 import {NgWalker} from '../../src/angular/ngWalker';
 import {getDeclaredMethodNames, getDeclaredPropertyNames} from '../../src/util/classDeclarationUtils';
+import { FlatSymbolTable } from '../../src/angular/templates/recursiveAngularExpressionVisitor';
 import chai = require('chai');
 
 describe('ngWalker', () => {
@@ -20,8 +21,8 @@ describe('ngWalker', () => {
       disabledIntervals: null,
       ruleSeverity: 'warning'
     };
-    let properties: string[] = [];
-    let methods: string[] = [];
+    let properties: FlatSymbolTable = {};
+    let methods: FlatSymbolTable = {};
 
     class ClassUtilWalker extends NgWalker {
       visitClassDeclaration(node: ts.ClassDeclaration) {
@@ -33,7 +34,7 @@ describe('ngWalker', () => {
     let sf = ts.createSourceFile('foo', source, null);
     let walker = new ClassUtilWalker(sf, ruleArgs);
     walker.walk(sf);
-    (<any>chai.expect(methods.join())).to.equal(['bar', 'baz'].join());
-    (<any>chai.expect(properties.join())).to.equal(['foo'].join());
+    chai.expect(methods).to.deep.eq({ bar: true, baz: true });
+    chai.expect(properties).to.deep.eq({ foo: true });
   });
 });

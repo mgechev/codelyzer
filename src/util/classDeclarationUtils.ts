@@ -1,5 +1,6 @@
 import * as ts from 'typescript';
 import { current } from './syntaxKind';
+import { FlatSymbolTable } from '../angular/templates/recursiveAngularExpressionVisitor';
 
 const SyntaxKind = current();
 
@@ -16,7 +17,12 @@ export const getDeclaredProperties = (declaration: ts.ClassDeclaration) => {
 };
 
 export const getDeclaredPropertyNames = (declaration: ts.ClassDeclaration) => {
-  return getDeclaredProperties(declaration).filter((p: any) => p && p.name).map((p: any) => p.name.text);
+  return getDeclaredProperties(declaration)
+    .filter((p: any) => p && p.name)
+    .reduce((accum: FlatSymbolTable, p: any) => {
+      accum[p.name.text] = true;
+      return accum;
+    }, {});
 };
 
 export const getDeclaredMethods = (declaration: ts.ClassDeclaration) => {
@@ -25,6 +31,10 @@ export const getDeclaredMethods = (declaration: ts.ClassDeclaration) => {
 
 export const getDeclaredMethodNames = (declaration: ts.ClassDeclaration) => {
   return getDeclaredMethods(declaration)
-    .map((d: any) => (<ts.Identifier>d.name).text);
+    .map((d: any) => (<ts.Identifier>d.name).text)
+    .reduce((accum: FlatSymbolTable, m: string) => {
+      accum[m] = true;
+      return accum;
+    }, {});
 };
 
