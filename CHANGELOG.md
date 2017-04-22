@@ -1,3 +1,22 @@
+# 3.0.0
+
+Major release required because of the breaking changes introduced by tslint@5. The `ngast` support will be pushed to codelyzer@4.
+
+### Features
+
+- Support for tslint@5 [#281](https://github.com/mgechev/codelyzer/issues/281) [01bffd5](https://github.com/mgechev/codelyzer/commit/01bffd559044521967962b2a0cfee31f409e4c2e)
+- Allow more than one selector kind of directives & components [#290](https://github.com/mgechev/codelyzer/issues/290) [4fa35f6](https://github.com/mgechev/codelyzer/commit/4fa35f6c0b8d9948cc0b5f38997bb11d4e5af8df)
+  ```
+  "directive-selector": [true, ["attribute", "element"], "sg", "camelCase"],
+  "component-selector": [true, ["element", "attribute"], "sg", "kebab-case"],
+  ```
+- Specs for the support of `as` syntax in expressions [#289](https://github.com/mgechev/codelyzer/issues/289) [a7500cb](https://github.com/mgechev/codelyzer/commit/a7500cb3605f28f65e58e80559a9d3548d95549c)
+
+### Refactoring
+
+- Rename `ng2Walker` to `ngWalker` [01bffd5](https://github.com/mgechev/codelyzer/commit/01bffd559044521967962b2a0cfee31f409e4c2e)
+- Refactor selector-related rules to depend on less mutable state [4fa35f6](https://github.com/mgechev/codelyzer/commit/4fa35f6c0b8d9948cc0b5f38997bb11d4e5af8df)
+
 # 2.1.1
 
 ### Fix
