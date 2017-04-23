@@ -34,9 +34,7 @@ function lint(ruleName: string, source: string, options: any): tslint.LintResult
     rulesDirectory: []
   };
   if (!options) {
-    options = true;
-  } else {
-    options = [true].concat(options);
+    options = [];
   }
   const ops: Partial<tslint.IOptions> = { ruleName, ruleArguments: options, disabledIntervals: [] };
   configuration.rules.set(ruleName, ops);

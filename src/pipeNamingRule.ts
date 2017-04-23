@@ -46,14 +46,17 @@ export class Rule extends Lint.Rules.AbstractRule {
   constructor(options: IOptions) {
     super(options);
 
-    const args = options.ruleArguments;
-    if (args[1] === 'camelCase') {
+    let args = options.ruleArguments;
+    if (!(args instanceof Array)) {
+      args = [args];
+    }
+    if (args[0] === 'camelCase') {
       this.validator = SelectorValidator.camelCase;
     }
-    if (args.length > 2) {
+    if (args.length > 1) {
       this.hasPrefix = true;
-      let prefixExpression: string = (args.slice(2) || []).join('|');
-      this.prefix = (args.slice(2) || []).join(',');
+      let prefixExpression: string = (args.slice(1) || []).join('|');
+      this.prefix = (args.slice(1) || []).join(',');
       this.prefixChecker = SelectorValidator.prefix(prefixExpression, 'camelCase');
     }
   }
@@ -86,7 +89,7 @@ export class ClassMetadataWalker extends NgWalker {
   private validateProperties(className:string, pipe:any) {
     let argument = this.extractArgument(pipe);
     if (argument.kind === SyntaxKind.current().ObjectLiteralExpression) {
-      argument.properties.filter(n=>n.name.text === 'name')
+      argument.properties.filter(n => n.name.text === 'name')
         .forEach(this.validateProperty.bind(this, className));
     }
   }

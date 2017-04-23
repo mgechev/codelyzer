@@ -39,9 +39,7 @@ export class Rule extends Lint.Rules.AbstractRule {
           .fmap(controller => controller.name)
           .fmap(name => {
             const className = name.text;
-            if (suffixList.length > 0) {
-              suffixList = suffixList.slice(1, suffixList.length);
-            } else {
+            if (suffixList.length === 0) {
               suffixList = ['Component'];
             }
             if (!Rule.validate(className, suffixList)) {

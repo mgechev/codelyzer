@@ -62,7 +62,7 @@ describe('pipe-naming', () => {
                 message:  'The name of the Pipe decorator of class Test should be named camelCase,' +
                 ' however its value is "foo-bar".',
                 source,
-                options:  'camelCase'
+                options: 'camelCase'
             });
         });
     });

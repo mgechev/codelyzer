@@ -18,9 +18,9 @@ export abstract class SelectorRule extends Lint.Rules.AbstractRule {
 
   constructor(options: IOptions) {
     super(options);
-    const args = options.ruleArguments;
+    const args = this.getOptions().ruleArguments;
 
-    let type: SelectorType[] = args[1] || ['element', 'attribute'];
+    let type: SelectorType[] = args[0] || ['element', 'attribute'];
     if (!(type instanceof Array)) {
       type = [type];
     }
@@ -33,13 +33,13 @@ export abstract class SelectorRule extends Lint.Rules.AbstractRule {
     }
     this.types = internal;
 
-    let prefix = args[2] || [];
+    let prefix = args[1] || [];
     if (!(prefix instanceof Array)) {
       prefix = [prefix];
     }
     this.prefixes = prefix;
 
-    let style = args[3];
+    let style = args[2];
     if (!(style instanceof Array)) {
       style = [style];
     }
@@ -120,10 +120,10 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
         .forEach(i => {
           const selectors: compiler.CssSelector[] = this.extractMainSelector(i);
           if (!this.rule.validateType(selectors)) {
-            let error = sprintf(this.rule.getTypeFailure(), className, this.rule.getOptions().ruleArguments[1]);
+            let error = sprintf(this.rule.getTypeFailure(), className, this.rule.getOptions().ruleArguments[0]);
             this.addFailure(this.createFailure(i.getStart(), i.getWidth(), error));
           } else if (!this.rule.validateStyle(selectors)) {
-            let name = this.rule.getOptions().ruleArguments[3];
+            let name = this.rule.getOptions().ruleArguments[2];
             if (name === 'kebab-case') {
               name += ' and include dash';
             }

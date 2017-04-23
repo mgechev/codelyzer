@@ -44,7 +44,7 @@ export class ClassMetadataWalker extends NgWalker {
   visitNgDirective(meta: DirectiveMetadata) {
     let name = meta.controller.name;
     let className:string = name.text;
-    const suffix = this.getOptions()[1] || 'Directive';
+    const suffix = this.getOptions()[0] || 'Directive';
     if (!Rule.validate(className, suffix)) {
       this.addFailure(
         this.createFailure(
