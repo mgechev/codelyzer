@@ -124,7 +124,8 @@ Now create the following `tslint.json` file where your `node_modules` directory 
     "directive-class-suffix": true,
     "templates-use-public": true,
     "no-access-missing-member": true,
-    "invoke-injectable": true
+    "invoke-injectable": true,
+    "template-to-ng-template": true
   }
 }
 ```
@@ -272,6 +273,10 @@ module.exports = {
   logLevel: 0b111
 };
 ```
+
+## Changelog
+
+[Here](./CHANGELOG.md)
 
 ## Contributors
 
