@@ -4,7 +4,7 @@ Major release required because of the breaking changes introduced by tslint@5. T
 
 ### Features
 
-- Support for tslint@5 [#281](https://github.com/mgechev/codelyzer/issues/281) [01bffd5](https://github.com/mgechev/codelyzer/commit/01bffd559044521967962b2a0cfee31f409e4c2e)
+- Support for tslint@5 [#281](https://github.com/mgechev/codelyzer/issues/281) [01bffd5](https://github.com/mgechev/codelyzer/commit/01bffd559044521967962b2a0cfee31f409e4c2e) [49b1e80](https://github.com/mgechev/codelyzer/commit/49b1e80debc232719ee56c1fbedf63f3a0761549)
 - Allow more than one selector kind of directives & components [#290](https://github.com/mgechev/codelyzer/issues/290) [4fa35f6](https://github.com/mgechev/codelyzer/commit/4fa35f6c0b8d9948cc0b5f38997bb11d4e5af8df)
   ```
   "directive-selector": [true, ["attribute", "element"], "sg", "camelCase"],
