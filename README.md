@@ -274,10 +274,6 @@ module.exports = {
 };
 ```
 
-## Changelog
-
-[Here](./CHANGELOG.md)
-
 ## Contributors
 
 [<img alt="mgechev" src="https://avatars2.githubusercontent.com/u/455023?v=3&s=117" width="117">](https://github.com/mgechev) |[<img alt="preslavsh" src="https://avatars1.githubusercontent.com/u/6237138?v=3&s=117" width="117">](https://github.com/preslavsh) |[<img alt="eppsilon" src="https://avatars2.githubusercontent.com/u/5643?v=3&s=117" width="117">](https://github.com/eppsilon) |[<img alt="ghsyeung" src="https://avatars3.githubusercontent.com/u/1243185?v=3&s=117" width="117">](https://github.com/ghsyeung) |[<img alt="Kobzol" src="https://avatars3.githubusercontent.com/u/4539057?v=3&s=117" width="117">](https://github.com/Kobzol) |[<img alt="lazarljubenovic" src="https://avatars0.githubusercontent.com/u/7661457?v=3&s=117" width="117">](https://github.com/lazarljubenovic) |
