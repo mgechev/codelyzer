@@ -2,7 +2,7 @@
 
 ### Fix
 
-- Export `usePipeDecoratorRule` [#299](https://github.com/mgechev/codelyzer/issues/299).
+- Export `usePipeDecoratorRule` [#299](https://github.com/mgechev/codelyzer/issues/299) [c5869e0](https://github.com/mgechev/codelyzer/commit/c5869e04cdfedb1c58fac9c0f6bef027a745badf).
 
 # 3.0.0
 
