@@ -1,3 +1,9 @@
+# 3.0.1
+
+### Fix
+
+- Export `usePipeDecoratorRule` [#299](https://github.com/mgechev/codelyzer/issues/299).
+
 # 3.0.0
 
 Major release required because of the breaking changes introduced by tslint@5. The `ngast` support will be pushed to codelyzer@4.
