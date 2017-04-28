@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA, ViewEncapsulation } from '@angular/core';
+import { NO_ERRORS_SCHEMA, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import * as compiler from '@angular/compiler';
 
 import { Config, DirectiveDeclaration } from '../config';
@@ -111,8 +111,37 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
     value: '',
     identifier: null
   };
-  const result = tmplParser.tryParse(
-      compiler.CompileDirectiveMetadata.create({ type, template: templateMetadata }),
+  let result = null;
+  SemVerDSL.lt('4.1.0', () => {
+    result = tmplParser.tryParse(
+      (compiler.CompileDirectiveMetadata as any).create({
+        type,
+        template: templateMetadata
+      }),
+    template, defaultDirectives, [], [NO_ERRORS_SCHEMA], '').templateAst;
+  }).else(() => {
+    result = tmplParser.tryParse(
+      compiler.CompileDirectiveMetadata.create({
+        type,
+        template: templateMetadata,
+        isHost: true,
+        isComponent: true,
+        selector: '',
+        exportAs: '',
+        changeDetection: ChangeDetectionStrategy.Default,
+        inputs: [],
+        outputs: [],
+        host: {},
+        providers: [],
+        viewProviders: [],
+        queries: [],
+        viewQueries: [],
+        entryComponents: [],
+        componentViewType: null,
+        rendererType: null,
+        componentFactory: null
+      }),
       template, defaultDirectives, [], [NO_ERRORS_SCHEMA], '').templateAst;
+  });
   return result;
 };
