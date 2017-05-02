@@ -1,3 +1,5 @@
+import { assertAnnotated, assertSuccess } from './testHelper';
+
 describe('use-view-encapsulation', () => {
   describe('invalid view encapsulation', () => {
     it('should fail if ViewEncapsulation.None is set', () => {
@@ -9,6 +11,12 @@ describe('use-view-encapsulation', () => {
         })
         export class TestComponent { }
       `;
+
+      assertAnnotated({
+        ruleName: 'use-view-encapsulation',
+        message: 'Using "ViewEncapsulation.None" may cause conflicts between css rules having the same selector',
+        source
+      });
     });
   });
 
@@ -21,6 +29,8 @@ describe('use-view-encapsulation', () => {
         })
         export class TestComponent { }
       `;
+
+      assertSuccess('use-view-encapsulation', source);
     });
 
     it('should succeed if ViewEncapsulation.Emulated is set', () => {
@@ -31,6 +41,8 @@ describe('use-view-encapsulation', () => {
         })
         export class TestComponent { }
       `;
+
+      assertSuccess('use-view-encapsulation', source);
     });
   });
 });
