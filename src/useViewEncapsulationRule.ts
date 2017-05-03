@@ -17,7 +17,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static FAILURE = 'Using "ViewEncapsulation.None" may cause conflicts between css rules having the same selector';
+  static FAILURE = 'Using "ViewEncapsulation.None" will make your styles global which may have unintended effect';
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     const walker = new ViewEncapsulationWalker(sourceFile, this.getOptions());

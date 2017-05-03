@@ -14,7 +14,7 @@ describe('use-view-encapsulation', () => {
 
       assertAnnotated({
         ruleName: 'use-view-encapsulation',
-        message: 'Using "ViewEncapsulation.None" may cause conflicts between css rules having the same selector',
+        message: 'Using "ViewEncapsulation.None" will make your styles global which may have unintended effect',
         source
       });
     });
