@@ -20,5 +20,6 @@ export { Rule as UseOutputPropertyDecoratorRule } from './useOutputPropertyDecor
 export { Rule as UsePipeTransformInterfaceRule } from './usePipeTransformInterfaceRule';
 export { Rule as TemplateToNgTemplateRule } from './templateToNgTemplateRule';
 export { Rule as UsePipeDecoratorRule } from './usePipeDecoratorRule';
+export { Rule as UseViewEncapsulationRule } from './useViewEncapsulationRule';
 export * from './angular/config';
 

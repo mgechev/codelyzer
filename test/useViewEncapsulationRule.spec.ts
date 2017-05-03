@@ -7,7 +7,7 @@ describe('use-view-encapsulation', () => {
         @Component({
           selector: 'sg-foo-bar',
           encapsulation: ViewEncapsulation.None
-                                           ~~~~
+                         ~~~~~~~~~~~~~~~~~~~~~~
         })
         export class TestComponent { }
       `;
