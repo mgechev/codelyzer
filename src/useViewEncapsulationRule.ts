@@ -28,10 +28,13 @@ export class Rule extends Lint.Rules.AbstractRule {
 class ViewEncapsulationWalker extends NgWalker {
 
   visitClassDeclaration(node: ts.ClassDeclaration) {
-    const d = getComponentDecorator(node);
-    const encapsulation = getDecoratorPropertyInitializer(d, 'encapsulation');
+    const decorator = getComponentDecorator(node);
+    const encapsulation = getDecoratorPropertyInitializer(decorator, 'encapsulation');
 
-    if(encapsulation.name.text !== 'None') { return; }
+    if(!encapsulation ||
+        encapsulation.name.text !== 'None') {
+      return;
+    }
 
     this.addFailure(
       this.createFailure(

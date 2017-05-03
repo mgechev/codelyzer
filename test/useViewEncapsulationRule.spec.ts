@@ -44,5 +44,16 @@ describe('use-view-encapsulation', () => {
 
       assertSuccess('use-view-encapsulation', source);
     });
+
+    it('should succeed if no ViewEncapsulation is set explicitly', () => {
+      const source = `
+        @Component({
+          selector: 'sg-foo-bar',
+        })
+        export class TestComponent { }
+      `;
+
+      assertSuccess('use-view-encapsulation', source);
+    });
   });
 });
