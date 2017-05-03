@@ -5,7 +5,7 @@ describe('import-destructuring-spacing', () => {
     it('should fail when the imports have no spaces', () => {
       let source = `
                     import {Foo} from './foo'
-                           ~~~~~                     
+                           ~~~~~
       `;
       assertAnnotated({
         ruleName: 'import-destructuring-spacing',
@@ -29,7 +29,7 @@ describe('import-destructuring-spacing', () => {
     it('should fail with spaces between items', () => {
       let source = `
         import {Foo,  Bar} from './foo'
-               ~~~~~~~~~~~    
+               ~~~~~~~~~~~
         `;
       assertAnnotated({
           ruleName: 'import-destructuring-spacing',
