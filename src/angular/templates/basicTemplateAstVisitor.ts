@@ -51,7 +51,7 @@ const getExpressionDisplacement = (binding: any) => {
     totalLength = binding.sourceSpan.end.offset - binding.sourceSpan.start.offset;
     // The whitespace are possible only in:
     // `[foo.bar]          =         "...."`,
-    // and they are verything except the attrLen and the valLen (-1 because of the close quote).
+    // and they are everything except the attrLen and the valLen (-1 because of the close quote).
     let whitespace = totalLength - (attrLen + valLen) - 1;
     // The resulted displacement is the length of the attribute + the whitespaces which
     // can be located ONLY before the value (the binding).
@@ -99,12 +99,12 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
   visitNgContent(ast: ast.NgContentAst, context: any): any {}
 
   visitEmbeddedTemplate(ast: ast.EmbeddedTemplateAst, context: any): any {
+    ast.directives.forEach(d => this.visit(d, context));
     ast.variables.forEach(v => this.visit(v, context));
     ast.children.forEach(e => this.visit(e, context));
     ast.outputs.forEach(o => this.visit(o, context));
     ast.attrs.forEach(a => this.visit(a, context));
     ast.references.forEach(r => this.visit(r, context));
-    ast.directives.forEach(d => this.visit(d, context));
   }
 
   visitElement(element: ast.ElementAst, context: any): any {

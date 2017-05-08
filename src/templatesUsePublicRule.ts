@@ -83,7 +83,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     ruleName: 'templates-use-public-rule',
     type: 'functionality',
     description: `Ensure that properties and methods accessed from the template are public.`,
-    rationale: `When Angular compiles the templates, it has to access these propertes from outside the class.`,
+    rationale: `When Angular compiles the templates, it has to access these properties from outside the class.`,
     options: null,
     optionsDescription: `Not configurable.`,
     typescriptOnly: true,

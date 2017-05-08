@@ -192,7 +192,7 @@ describe('templates-use-public', () => {
         assertSuccess('templates-use-public', source);
     });
 
-    it.only('should succeed shadowed variable', () => {
+    it('should succeed shadowed variable', () => {
       let source = `
         @Component({
           selector: 'foobar',
@@ -206,6 +206,50 @@ describe('templates-use-public', () => {
           smile: any;
         }`;
       assertSuccess('templates-use-public', source);
+    });
+
+    // Angular doesn't provide the correct source span of the property.
+    it('should fail when private property used in *ngFor', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: \`
+            <div *ngFor="let smile of smile2">
+            ~~~~~~
+              <smile-cmp [smile]="smile"></smile-cmp>
+            </div>
+          \`
+        })
+        class Test {
+          private smile2: any;
+        }`;
+      assertAnnotated({
+        ruleName: 'templates-use-public',
+        message: 'You can bind only to public class members. "smile2" is not a public class member.',
+        source
+      });
+    });
+
+    // Angular doesn't provide the correct source span of the property.
+    it('should fail when private property used in *ngFor', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: \`
+            <div *ngFor="let smile of smile">
+            ~~~~~
+              <smile-cmp [smile]="smile"></smile-cmp>
+            </div>
+          \`
+        })
+        class Test {
+          private smile: any;
+        }`;
+      assertAnnotated({
+        ruleName: 'templates-use-public',
+        message: 'You can bind only to public class members. "smile" is not a public class member.',
+        source
+      });
     });
   });
 });

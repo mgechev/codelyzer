@@ -73,6 +73,7 @@ export const Config: Config = {
     { selector: '[md-tooltip], [mat-tooltip], [mdTooltip]', exportAs: 'mdTooltip' },
     { selector: 'md-select, mat-select', exportAs: 'mdSelect' },
     { selector: '[ngIf]', exportAs: 'ngIf', inputs: ['ngIf'] },
+    { selector: '[ngFor][ngForOf]', exportAs: 'ngFor', inputs: ['ngForTemplate', 'ngForOf'] },
     { selector: '[ngSwitch]', exportAs: 'ngSwitch', inputs: ['ngSwitch'] }
   ],
 
