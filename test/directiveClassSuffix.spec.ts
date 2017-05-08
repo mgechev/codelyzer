@@ -8,7 +8,7 @@ describe('directive-class-suffix', () => {
                 selector: 'sgBarFoo'
               })
               class Test {}
-                    ~~~~  
+                    ~~~~
             `;
             assertAnnotated({
                 ruleName: 'directive-class-suffix',
