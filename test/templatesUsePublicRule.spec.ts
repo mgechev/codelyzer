@@ -180,7 +180,6 @@ describe('templates-use-public', () => {
         assertSuccess('templates-use-public', source);
     });
 
-
     it('should succeed on public nested props', () => {
       let source = `
         @Component({
@@ -191,6 +190,22 @@ describe('templates-use-public', () => {
           readonly foo: any;
         }`;
         assertSuccess('templates-use-public', source);
+    });
+
+    it.only('should succeed shadowed variable', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: \`
+            <div *ngFor="let smile of smile">
+              <smile-cmp [smile]="smile"></smile-cmp>
+            </div>
+          \`
+        })
+        class Test {
+          smile: any;
+        }`;
+      assertSuccess('templates-use-public', source);
     });
   });
 });
