@@ -1,0 +1,327 @@
+[
+  {
+    "ruleName": "component-class-suffix",
+    "type": "style",
+    "description": "Classes decorated with @Component must have suffix \"Component\" (or custom) in their name.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#!#02-03.",
+    "rationale": "Consistent conventions make it easy to quickly identify and reference assets of different types.",
+    "options": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "optionExamples": [
+      "true",
+      "[true, \"Component\", \"View\"]"
+    ],
+    "optionsDescription": "Supply a list of allowed component suffixes. Defaults to \"Component\".",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "component-selector",
+    "type": "style",
+    "description": "Component selectors should follow given naming rules.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#!#02-07, https://angular.io/styleguide#!#05-02, and https://angular.io/styleguide#!#05-03.",
+    "rationale": "\n* Consistent conventions make it easy to quickly identify and reference assets of different types.\n* Makes it easier to promote and share the component in other apps.\n* Components are easy to identify in the DOM.\n* Keeps the element names consistent with the specification for Custom Elements.\n* Components have templates containing HTML and optional Angular template syntax.\n    * They display content. Developers place components on the page as they would native HTML elements and WebComponents.\n* It is easier to recognize that a symbol is a component by looking at the template's HTML.\n",
+    "options": {
+      "type": "array",
+      "items": [
+        {
+          "enum": [
+            "element",
+            "attribute"
+          ]
+        },
+        {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "enum": [
+            "kebab-case",
+            "camelCase"
+          ]
+        }
+      ],
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "optionExamples": [
+      "[\"element\", \"my-prefix\", \"kebab-case\"]",
+      "[\"element\", [\"ng\", \"ngx\"], \"kebab-case\"]",
+      "[\"attribute\", \"myPrefix\", \"camelCase\"]"
+    ],
+    "optionsDescription": "\nOptions accept three obligatory items as an array:\n\n1. `\"element\"` or `\"attribute\"` forces components either to be elements or attributes.\n2. A single prefix (string) or array of prefixes (strings) which have to be used in component selectors.\n3. `\"kebab-case\"` or `\"camelCase\"` allows you to pick a case.\n",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "directive-class-suffix",
+    "type": "style",
+    "description": "Classes decorated with @Directive must have suffix \"Directive\" (or custom) in their name.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#!#02-03.",
+    "rationale": "Consistent conventions make it easy to quickly identify and reference assets of different types.",
+    "options": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "optionExamples": [
+      "true",
+      "[true, \"Directive\", \"MySuffix\"]"
+    ],
+    "optionsDescription": "Supply a list of allowed component suffixes. Defaults to \"Directive\".",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "directive-selector",
+    "type": "style",
+    "description": "Directive selectors should follow given naming rules.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#!#02-07, https://angular.io/styleguide#!#05-02, and https://angular.io/styleguide#!#05-03.",
+    "rationale": "\n* Consistent conventions make it easy to quickly identify and reference assets of different types.\n* Makes it easier to promote and share the directive in other apps.\n* Directives are easy to identify in the DOM.\n* It is easier to recognize that a symbol is a directive by looking at the template's HTML.\n",
+    "options": {
+      "type": "array",
+      "items": [
+        {
+          "enum": [
+            "element",
+            "attribute"
+          ]
+        },
+        {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "enum": [
+            "kebab-case",
+            "camelCase"
+          ]
+        }
+      ],
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "optionExamples": [
+      "[\"element\", \"my-prefix\", \"kebab-case\"]",
+      "[\"element\", [\"ng\", \"ngx\"], \"kebab-case\"]",
+      "[\"attribute\", \"myPrefix\", \"camelCase\"]"
+    ],
+    "optionsDescription": "\nOptions accept three obligatory items as an array:\n\n1. `\"element\"` or `\"attribute\"` forces components either to be elements or attributes.\n2. A single prefix (string) or array of prefixes (strings) which have to be used in directive selectors.\n3. `\"kebab-case\"` or `\"camelCase\"` allows you to pick a case.\n",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "import-destructing-spacing-rule",
+    "type": "style",
+    "description": "Ensure consistent and tidy imports.",
+    "rationale": "Imports are easier for the reader to look at when they're tidy.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "invoke-injectable",
+    "type": "functionality",
+    "description": "Ensures that @Injectable decorator is properly invoked.",
+    "rationale": "Application will fail mysteriously if we forget the parentheses.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "no-access-missing-member",
+    "type": "functionality",
+    "description": "Disallows using non-existing properties and methods from the component in templates.",
+    "rationale": "Such occurances in code are most likely a result of a typo.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "no-attribute-parameter-decorator-rule",
+    "type": "maintainability",
+    "description": "Disallow usage of @Attribute decorator",
+    "rationale": "@Attribute is considered bad practice. Use @Input instead.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "no-forward-ref",
+    "type": "maintainability",
+    "description": "Disallows usage of forward references for DI.",
+    "rationale": "The flow of DI is disrupted by using `forwardRef` and might make code more difficult to understand.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "no-input-rename-rule",
+    "type": "maintainability",
+    "description": "Disallows renaming directive inputs by providing a string to the decorator.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#!#05-13.",
+    "rationale": "Two names for the same property (one private, one public) is inherently confusing.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "no-output-rename-rule",
+    "type": "maintainability",
+    "description": "Disallows renaming directive outputs by providing a string to the decorator.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#!#05-13.",
+    "rationale": "Two names for the same property (one private, one public) is inherently confusing.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "no-unused-css-rule",
+    "type": "maintainability",
+    "description": "Disallows having an unused CSS rule in the component's stylesheet.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "pipe-impure",
+    "type": "functionality",
+    "description": "Pipes cannot be declared as impure.",
+    "rationale": "Impure pipes do not perform well because they are run on every change detection cycle.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "pipe-naming-rule",
+    "type": "style",
+    "description": "Enforce consistent case and prefix for pipes.",
+    "rationale": "Consistent conventions make it easy to quickly identify and reference assets of different types.",
+    "options": {
+      "type": "array",
+      "items": [
+        {
+          "enum": [
+            "kebab-case",
+            "attribute"
+          ]
+        },
+        {
+          "type": "string"
+        }
+      ],
+      "minItems": 1
+    },
+    "optionExamples": [
+      "[\"camelCase\", \"myPrefix\"]",
+      "[\"camelCase\", \"myPrefix\", \"myOtherPrefix\"]",
+      "[\"kebab-case\", \"my-prefix\"]"
+    ],
+    "optionsDescription": "\n* The first item in the array is `\"kebab-case\"` or `\"camelCase\"`, which allows you to pick a case.\n* The rest of the arguments are supported prefixes (given as strings). They are optional.",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "templates-use-public-rule",
+    "type": "functionality",
+    "description": "Ensure that properties and methods accessed from the template are public.",
+    "rationale": "When Angular compiles the templates, it has to access these properties from outside the class.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "templates-use-public-rule",
+    "type": "functionality",
+    "description": "Ensure that properties and methods accessed from the template are public.",
+    "rationale": "When Angular compiles the templates, it has to access these propertes from outside the class.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "use-host-property-decorator-rule",
+    "type": "style",
+    "description": "Use @HostProperty decorator rather than the `host` property of `@Component` and `@Directive` metadata.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#!#06-03.",
+    "rationale": "The property associated with `@HostBinding` or the method associated with `@HostListener` can be modified only in a single place: in the directive's class. If you use the `host` metadata property, you must modify both the property declaration inside the controller, and the metadata associated with the directive.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "use-input-property-decorator-rule",
+    "type": "style",
+    "description": "Use `@Input` decorator rather than the `inputs` property of `@Component` and `@Directive` metadata.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#!#05-12.",
+    "rationale": "\n* It is easier and more readable to identify which properties in a class are inputs.\n* If you ever need to rename the property name associated with `@Input`, you can modify it in a single place.\n* The metadata declaration attached to the directive is shorter and thus more readable.\n* Placing the decorator on the same line usually makes for shorter code and still easily identifies the property as an input.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "use-life-cycle-interface",
+    "type": "maintainability",
+    "description": "Ensure that components implement life cycle interfaces if they use them.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#!#09-01.",
+    "rationale": "Interfaces prescribe typed method signatures. Use those signatures to flag spelling and syntax mistakes.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "use-output-property-decorator-rule",
+    "type": "style",
+    "description": "Use `@Output` decorator rather than the `outputs` property of `@Component` and `@Directive` metadata.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#!#05-12.",
+    "rationale": "\n* It is easier and more readable to identify which properties in a class are events.\n* If you ever need to rename the event name associated with `@Output`, you can modify it in a single place.\n* The metadata declaration attached to the directive is shorter and thus more readable.\n* Placing the decorator on the same line usually makes for shorter code and still easily identifies the property as an output.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "use-pipe-decorator",
+    "type": "maintainability",
+    "description": "Ensure that classes implementing PipeTransform interface, use Pipe decorator",
+    "rationale": "Interfaces prescribe typed method signatures. Use those signatures to flag spelling and syntax mistakes.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "use-pipe-transform-interface",
+    "type": "maintainability",
+    "description": "Ensure that pipes implement PipeTransform interface.",
+    "rationale": "Interfaces prescribe typed method signatures. Use those signatures to flag spelling and syntax mistakes.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "use-view-encapsulation",
+    "type": "maintainability",
+    "description": "Disallows using of ViewEncapsulation.None",
+    "rationale": "",
+    "options": null,
+    "optionsDescription": "Not configurable",
+    "typescriptOnly": true
+  }
+]
