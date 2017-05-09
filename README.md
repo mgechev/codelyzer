@@ -67,7 +67,6 @@ Create the following `tslint.json` file like:
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
     "use-host-property-decorator": true,
-    "use-host-property-decorator": true,
     "use-view-encapsulation": true,
     "no-attribute-parameter-decorator": true,
     "no-input-rename": true,
