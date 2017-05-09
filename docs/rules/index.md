@@ -1,6 +1,6 @@
 ---
 layout: page
-title: TSLint core rules
+title: Codelyzer core rules
 permalink: /rules/
 menu: main
 order: 2
