@@ -1,7 +1,7 @@
 import * as ts from 'typescript';
 
-import * as Linter from 'tslint/lib/lint';
-import { LintResult } from 'tslint/lib/lint';
+import * as Linter from 'tslint';
+import { LintResult } from 'tslint';
 
 export function getSourceFile(fileName: string, source: string): ts.SourceFile {
   const normalizedName = fileName;
@@ -62,7 +62,8 @@ export class WebLinter {
     const output = formatter.format(this.failures);
 
     return {
-      failureCount: this.failures.length,
+      warningCount: 0,
+      errorCount: this.failures.length,
       failures: this.failures,
       format: 'json',
       output,
