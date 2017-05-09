@@ -1,5 +1,6 @@
 import {WebLinter} from './worker/web-linter';
-import * as rules from 'codelyzer';
+// import * as rules from 'codelyzer';
+const rules = require('codelyzer');
 
 const rulesConfig = {
   'directive-selector': [true, 'attribute', 'sg', 'camelCase'],
@@ -29,7 +30,7 @@ const getRules = (config: any) => {
   return Object.keys(config).map(k => {
     const className = ruleToClass(k);
     const ruleConfig = config[k];
-    return new (<any>rules)[className](k, ruleConfig, [])
+    return new (<any>rules)[className](k, ruleConfig, []);
   });
 };
 
