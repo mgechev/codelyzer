@@ -1,75 +1,63 @@
 ---
-title: Developing TSLint rules
+title: Developing codelyzer rules
 layout: page
 permalink: "/develop/custom-rules/"
 ---
 
-TSLint ships with a set of core rules that can be configured. However, users are also allowed to write their own rules, which allows them to enforce specific behavior not covered by the core of TSLint. TSLint's internal rules are itself written to be pluggable, so adding a new rule is as simple as creating a new rule file named by convention. New rules can be written in either TypeScript or JavaScript; if written in TypeScript, the code must be compiled to JavaScript before invoking TSLint.
+Codelyzer uses tslint and the Angular template, expression and styles parser. In order to explore the basics of how you can develop rules which perform validation over your TypeScript code, visit tslint's [manual page](https://palantir.github.io/tslint/develop/custom-rules/).
 
-Let us take the example of how to write a new rule to forbid all import statements (you know, *for science*). Let us name the rule file `noImportsRule.ts`. Rules are referenced in `tslint.json` with their kebab-cased identifer, so `"no-imports": true` would configure the rule.
+In order to perform custom validation over templates, styles and template expressions, you can provide a custom visitors. Here's an example for how you can develop a custom rule for traversal of the styles of your components:
 
-__Important conventions__: 
-
-- Rule identifiers are always kebab-cased.
-- Rule files are always camel-cased (`camelCasedRule.ts`).
-- Rule files *must* contain the suffix `Rule`. 
-- The exported class must always be named `Rule` and extend from `Lint.Rules.AbstractRule`.
-
-Now, let us first write the rule in TypeScript:
-
-```typescript
-import * as ts from "typescript";
-import * as Lint from "tslint";
+```ts
+class ElementVisitor extends BasicTemplateAstVisitor {
+  visitElement(ast: ElementAst, fn: any) {
+    console.log('Visiting a template element!');
+  }
+}
 
 export class Rule extends Lint.Rules.AbstractRule {
-    public static FAILURE_STRING = "import statement forbidden";
+  public static metadata: Lint.IRuleMetadata = {
+    // Same metadata you'd declare for a tslint rule.
+  };
 
-    public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-        return this.applyWithWalker(new NoImportsWalker(sourceFile, this.getOptions()));
-    }
+
+  static FAILURE: string = 'Failure string';
+
+  public apply(sourceFile:ts.SourceFile): Lint.RuleFailure[] {
+    return this.applyWithWalker(
+        new TypeScriptVisitor(sourceFile,
+            this.getOptions(), {
+              cssVisitorCtrl: CssVisitor,
+              templateVisitorCtrl: ElementVisitor,
+              // expressionVisitorCtrl: ExpressionVisitorCtrlImpl
+            }));
+  }
 }
 
-// The walker takes care of all the work.
-class NoImportsWalker extends Lint.RuleWalker {
-    public visitImportDeclaration(node: ts.ImportDeclaration) {
-        // create a failure at the current position
-        this.addFailure(this.createFailure(node.getStart(), node.getWidth(), Rule.FAILURE_STRING));
+class CssVisitor extends BasicCssAstVisitor {
+  templateAst: TemplateAst;
 
-        // call the base version of this visitor to actually parse this node
-        super.visitImportDeclaration(node);
+  constructor(sourceFile: ts.SourceFile,
+    originalOptions: Lint.IOptions,
+    context: ComponentMetadata,
+    protected style: StyleMetadata,
+    templateStart: number) {
+      super(sourceFile, originalOptions, context, style, templateStart);
     }
+
+  visitCssSelectorRule(ast: CssSelectorRuleAst) {
+    console.log('Visiting a CSS selector rule!');
+  }
+
+  visitCssSelector(ast: CssSelectorAst) {
+    console.log('Visiting a CSS selector!');
+  }
+}
+
+export class TypeScriptVisitor extends NgWalker {
+  visitClassDeclaration(declaration: ts.ClassDeclaration) {
+    console.log('Visiting a class declaration!');
+  }
 }
 ```
 
-Given a walker, TypeScript's parser visits the AST using the visitor pattern. So the rule walkers only need to override the appropriate visitor methods to enforce its checks. For reference, the base walker can be found in [syntaxWalker.ts](https://github.com/palantir/tslint/blob/master/src/language/walker/syntaxWalker.ts).
-
-We still need to hook up this new rule to TSLint. First make sure to compile `noImportsRule.ts`:
-
-```sh
-tsc noImportsRule.ts
-```
-
-Then, if using the CLI, provide the directory that contains this rule as an option to `--rules-dir`. If using TSLint as a library or via `grunt-tslint`, the `options` hash must contain `"rulesDirectory": "..."`. If you run the linter, you'll see that we have now successfully banned all import statements via TSLint!
-
-Finally, add a line to your [`tslint.json` config file][0] for each of your custom rules.
-
----
-
-Now that you're written a rule to detect problems, let's modify it to *fix* them. 
-
-Instantiate a `Fix` object and pass it in as an argument to `addFailure`. This snippet replaces the offending import statement with an empty string:
-
-```typescript
-// create a fixer for this failure
-const fix = new Lint.Replacement(node.getStart(), node.getWidth(), "");
-
-// create a failure at the current position
-this.addFailure(this.createFailure(node.getStart(), node.getWidth(), Rule.FAILURE_STRING, fix));
-```
----
-Final notes:
-
-- Core rules cannot be overwritten with a custom implementation.
-- Custom rules can also take in options just like core rules (retrieved via `this.getOptions()`).
-
-[0]: {{site.baseurl | append: "/usage/tslint-json/"}}
