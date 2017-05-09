@@ -56,6 +56,13 @@ We want to fix all the issues as soon as possible, but before fixing a bug we ne
 You can file new issues by filling out our [new issue form](https://github.com/mgechev/codelyzer/issues/new).
 
 ### <a name="submit-pr"></a> Submitting a Pull Request (PR)
+
+#### Documentation Related PRs
+
+If the fix that you want to submit is part of the metadata associated with any of the declared rules, make sure you directly update the source code in `src/*.Rule.ts` instead of the files residing in the `docs` directory.
+
+#### General Guidelines
+
 Before you submit your Pull Request (PR) consider the following guidelines:
 
 * Search [GitHub](https://github.com/mgechev/codelyzer/pulls) for an open or closed PR
