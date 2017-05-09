@@ -1,0 +1,132 @@
+/**
+ * Reset some basic elements
+ */
+body, h1, h2, h3, h4, h5, h6,
+p, blockquote, pre, hr,
+dl, dd, ol, ul, figure {
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * Set `margin-bottom` to maintain vertical rhythm
+ */
+h1, h2, h3, h4, h5, h6,
+p, blockquote, pre,
+ul, ol, dl, figure {
+  margin-bottom: 1rem;
+}
+
+/**
+ * Images
+ */
+img {
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+/**
+ * Figures
+ */
+figure > img {
+  display: block;
+}
+
+figcaption {
+  font-size: 10px;
+}
+
+/**
+ * Clearfix
+ */
+/**
+ * Icons
+ */
+.icon > svg {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}
+.icon > svg path {
+  fill: #ccc;
+}
+
+/**
+ * Rules & Feature Badges
+ */
+.rules-list {
+  list-style: none;
+  margin: 0 !important;
+}
+.rules-list > li:nth-child(odd) a {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+.rules-list > li a {
+  display: block;
+  border-left: 3px solid transparent;
+  text-decoration: none;
+  padding: .75rem;
+}
+.rules-list > li a:hover {
+  background-color: rgba(0, 0, 0, 0.075);
+  border-left-color: #159957;
+}
+
+.rule-features {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.feature {
+  display: inline-block;
+  margin-right: 2px;
+  padding: 2px 4px;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  cursor: help;
+}
+.feature:before {
+  display: inline-block;
+  margin-right: 2px;
+}
+.feature.feature-sm {
+  padding: 1px 3px;
+  font-size: 75%;
+}
+.feature.feature-ts-only {
+  background-color: #FCF8E3;
+  border-color: #FAF2CC;
+  color: #8A6D3B;
+}
+.feature.feature-ts-only:before {
+  content: "\1F4C4";
+}
+.feature.feature-fixer {
+  background-color: #DFF0D8;
+  border-color: #D0E9C6;
+  color: #3C763D;
+}
+.feature.feature-fixer:before {
+  content: "\1f527";
+}
+.feature.feature-requires-type-info {
+  background-color: #F2DEDE;
+  border-color: #EBCCCC;
+  color: #A94442;
+}
+.feature.feature-requires-type-info:before {
+  content: "\2139";
+  border-radius: 50%;
+  background: #0078D7;
+  color: #FFF;
+  width: 1em;
+}
