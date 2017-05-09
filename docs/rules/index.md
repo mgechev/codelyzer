@@ -6,11 +6,11 @@ menu: main
 order: 2
 ---
 
-Lint _rules_ encode logic for syntactic & semantic checks of TypeScript source code.
+Lint _rules_ encode logic for syntactic & semantic checks of TypeScript, HTML, CSS and Angular expressions source code.
 
-### TypeScript-specific
+## TypeScript-specific
 
-_These rules find errors related to TypeScript features_:
+_These rules find errors related to TypeScript or Angular features_:
 
 {% include rule_list.html ruleType="typescript" %}
 
