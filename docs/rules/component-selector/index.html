@@ -32,11 +32,12 @@ optionExamples:
   - '["element", "my-prefix", "kebab-case"]'
   - '["element", ["ng", "ngx"], "kebab-case"]'
   - '["attribute", "myPrefix", "camelCase"]'
+  - '[["element", "attribute"], "sg", "kebab-case"]]'
 optionsDescription: |
 
   Options accept three obligatory items as an array:
 
-  1. `"element"` or `"attribute"` forces components either to be elements or attributes.
+  1. `"element"` or `"attribute"` forces components either to be elements or attributes (or allows both - since 3.0.0, an array is also accepted).
   2. A single prefix (string) or array of prefixes (strings) which have to be used in component selectors.
   3. `"kebab-case"` or `"camelCase"` allows you to pick a case.
 typescriptOnly: true
