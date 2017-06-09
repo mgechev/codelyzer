@@ -22,6 +22,11 @@ export class RecursiveAngularExpressionVisitor extends SourceMappingVisitor impl
     return null;
   }
 
+  visitNonNullAssert(ast: e.NonNullAssert, context: any) {
+    ast.visit(this);
+    return null;
+  }
+
   visitBinary(ast: e.Binary, context: any): any {
     ast.left.visit(this);
     ast.right.visit(this);
