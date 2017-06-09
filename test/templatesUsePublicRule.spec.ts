@@ -252,4 +252,37 @@ describe('templates-use-public', () => {
       });
     });
   });
+
+  describe('binding to complex data structure', () => {
+
+    it('should work with binding to an array', () => {
+      const source = `
+        @Component({
+          template: '<span>{{ something["a"].b }}</span>'
+        })
+        export class DemoComponent {
+          public something: { a: any } = { a: { b: 1 } };
+        }
+      `;
+      assertSuccess('templates-use-public', source);
+    });
+
+    it('should work with binding to an array of specific class', () => {
+      const source = `
+        class Something {
+          public a = 1;
+          public b = 2;
+        }
+
+        @Component({
+          template: '<span>{{ something[0].a }}</span>'
+        })
+        export class DemoComponent {
+          public something: Something[] = [new Something()];
+        }
+      `;
+      assertSuccess('templates-use-public', source);
+    });
+
+  });
 });
