@@ -27,6 +27,18 @@ describe('angular-whitespace', () => {
       `;
       assertSuccess('angular-whitespace', source);
     });
+
+    it('should work with properties', () => {
+      let source = `
+      @Component({
+        template: \`
+          <input [value]="  {{ foo }}">
+        \`
+      })
+      class Bar {}
+      `;
+      assertSuccess('angular-whitespace', source);
+    });
   });
 
   describe('failure', () => {
@@ -53,8 +65,8 @@ describe('angular-whitespace', () => {
       let source = `
       @Component({
         template: \`
-          <div>{{foo}}</div>
-               ~~~~~~~
+          <div>  {{foo}}   </div>
+                 ~~~~~~~
         \`
       })
       class Bar {}`;
@@ -68,8 +80,8 @@ describe('angular-whitespace', () => {
       expect(res).to.eq(`
       @Component({
         template: \`
-          <div>{{ foo }}</div>
-               ~~~~~~~
+          <div>  {{ foo }}   </div>
+                 ~~~~~~~
         \`
       })
       class Bar {}`);

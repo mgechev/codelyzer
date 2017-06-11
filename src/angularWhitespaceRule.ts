@@ -19,10 +19,14 @@ const InterpolationExtraWhitespaceRe =
 
 const getReplacements = (text: ast.BoundTextAst, absolutePosition: number) => {
   const expr: string = (text.value as any).source;
-  const trimmed = expr.substring(InterpolationOpen.length, expr.length - InterpolationClose.length).trim();
+  const internalStart = expr.indexOf(InterpolationOpen);
+  const internalEnd = expr.lastIndexOf(InterpolationClose);
+  const len = expr.trim().length - InterpolationOpen.length - InterpolationClose.length;
+  const trimmed = expr.substr(internalStart + InterpolationOpen.length, len).trim();
   return [
-    new Lint.Replacement(absolutePosition + text.sourceSpan.start.offset,
-      expr.length, `${InterpolationOpen} ${trimmed} ${InterpolationClose}`)
+    new Lint.Replacement(absolutePosition,
+      internalEnd - internalStart + InterpolationClose.length,
+      `${InterpolationOpen} ${trimmed} ${InterpolationClose}`)
   ];
 };
 
@@ -39,10 +43,14 @@ class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
         error = 'Extra whitespace in interpolation; expecting {{ expr }}';
       }
       if (error) {
-        const absolutePosition = this.getSourcePosition(text.value.span.start);
+        const internalStart = expr.indexOf(InterpolationOpen);
+        const internalEnd = expr.lastIndexOf(InterpolationClose);
+        const start = text.sourceSpan.start.offset + internalStart;
+        const absolutePosition = this.getSourcePosition(start);
         this.addFailure(
-          this.createFailure(text.sourceSpan.start.offset,
-            expr.length, error, getReplacements(text, absolutePosition)));
+          this.createFailure(start,
+            expr.trim().length,
+            error, getReplacements(text, absolutePosition)));
       }
     }
   }
