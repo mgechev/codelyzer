@@ -30,6 +30,7 @@ const getReplacements = (text: ast.BoundTextAst, absolutePosition: number) => {
   ];
 };
 
+// TODO: check the config options
 class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
   visitBoundText(text: ast.BoundTextAst, context: any): any {
     if (ExpTypes.ASTWithSource(text.value)) {
@@ -58,12 +59,23 @@ class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
 
 export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'templates-use-public-rule',
-    type: 'functionality',
-    description: `Ensure that properties and methods accessed from the template are public.`,
-    rationale: `When Angular compiles the templates, it has to access these properties from outside the class.`,
-    options: null,
-    optionsDescription: `Not configurable.`,
+    ruleName: 'angular-whitespace-rule',
+    type: 'style',
+    description: `Ensures the proper formatting of Angular expressions.`,
+    rationale: `Having whitespace in the right places in an Angular expression makes the template more readable.`,
+    optionsDescription: Lint.Utils.dedent`
+      One argument may be optionally provided:
+      * \`"check-interpolation"\` checks for whitespace before and after the interpolation characters`,
+    options: {
+      type: 'array',
+      items: {
+        type: 'string',
+        enum: ['check-interpolation'],
+      },
+      minLength: 0,
+      maxLength: 1,
+    },
+    optionExamples: ['[true, "check-interpolation"]'],
     typescriptOnly: true,
   };
 
