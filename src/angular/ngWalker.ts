@@ -18,9 +18,7 @@ import {ngWalkerFactoryUtils} from './ngWalkerFactoryUtils';
 import {Config} from './config';
 
 import {logger} from '../util/logger';
-import {getDecoratorName, isSimpleTemplateString, getDecoratorPropertyInitializer} from '../util/utils';
-
-import SyntaxKind = require('../util/syntaxKind');
+import {getDecoratorName} from '../util/utils';
 
 const getDecoratorStringArgs = (decorator: ts.Decorator) => {
   let baseExpr = <any>decorator.expression || {};

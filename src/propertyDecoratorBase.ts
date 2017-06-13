@@ -26,7 +26,6 @@ export class UsePropertyDecorator extends Lint.Rules.AbstractRule {
   }
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    let documentRegistry = ts.createDocumentRegistry();
     return this.applyWithWalker(
       new DirectiveMetadataWalker(sourceFile,
         this.getOptions(),  this.config));
@@ -34,8 +33,6 @@ export class UsePropertyDecorator extends Lint.Rules.AbstractRule {
 }
 
 class DirectiveMetadataWalker extends Lint.RuleWalker {
-  private languageService : ts.LanguageService;
-
   constructor(sourceFile: ts.SourceFile, options: Lint.IOptions, private config: IUsePropertyDecoratorConfig) {
       super(sourceFile, options);
   }

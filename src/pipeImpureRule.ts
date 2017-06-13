@@ -26,7 +26,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 
 export class ClassMetadataWalker extends NgWalker {
 
-  constructor(sourceFile:ts.SourceFile, private rule:Rule) {
+  constructor(sourceFile: ts.SourceFile, private rule: Rule) {
     super(sourceFile, rule.getOptions());
   }
 

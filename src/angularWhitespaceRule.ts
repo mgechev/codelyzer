@@ -1,15 +1,10 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import {stringDistance} from './util/utils';
-import {getDeclaredProperties, getDeclaredMethods} from './util/classDeclarationUtils';
 import {NgWalker} from './angular/ngWalker';
-import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAngularExpressionVisitor';
-import * as e from '@angular/compiler/src/expression_parser/ast';
 import * as ast from '@angular/compiler';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 import { ExpTypes } from './angular/expressionTypes';
 import { Config } from './angular/config';
-import SyntaxKind = require('./util/syntaxKind');
 
 const InterpolationOpen = Config.interpolation[0];
 const InterpolationClose = Config.interpolation[1];
@@ -30,7 +25,6 @@ const getReplacements = (text: ast.BoundTextAst, absolutePosition: number) => {
   ];
 };
 
-// TODO: check the config options
 class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
   visitBoundText(text: ast.BoundTextAst, context: any): any {
     if (ExpTypes.ASTWithSource(text.value)) {
@@ -45,7 +39,6 @@ class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
       }
       if (error) {
         const internalStart = expr.indexOf(InterpolationOpen);
-        const internalEnd = expr.lastIndexOf(InterpolationClose);
         const start = text.sourceSpan.start.offset + internalStart;
         const absolutePosition = this.getSourcePosition(start);
         this.addFailure(
