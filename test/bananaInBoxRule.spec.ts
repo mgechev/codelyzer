@@ -20,7 +20,9 @@ describe('banana-in-box', () => {
     it('should fail when the box is in the banana', () => {
       let source = `
       @Component({
-        template: \` <input type="text" ([ngModel])="foo" name="foo">  \`
+        template: \` <input type="text" ([ngModel])="foo" name="foo">  
+                                       ~~~~~~~~~~~~~~~~~
+        \`
       })
       class Bar {}
       `;
@@ -33,12 +35,15 @@ describe('banana-in-box', () => {
   });
 
   describe('replacements', () => {
-    it('fixes negated pipes', () => {
+    it('should fail when the box is in the banana', () => {
       let source = `
       @Component({
-        template: \`   <input type="text" ([ngModel])="foo" name="foo">   \`
+        template: \` <input type="text" ([ngModel])="foo" name="foo">  
+                                       ~~~~~~~~~~~~~~~~~
+        \`
       })
-      class Bar {}`;
+      class Bar {}
+      `;
       const failures =  assertAnnotated({
         ruleName: 'banana-in-box',
         message: 'The box is in a banana! Expecting Banana in a box [(expr)]',
@@ -48,9 +53,12 @@ describe('banana-in-box', () => {
       const res = Replacement.applyAll(source, failures[0].getFix());
       expect(res).to.eq(`
       @Component({
-        template: \`   <input type="text" [(ngModel)]="foo" name="foo">   \`
+        template: \` <input type="text" [(ngModel)]="foo" name="foo">  
+                                       ~~~~~~~~~~~~~~~~~
+        \`
       })
-      class Bar {}`);
+      class Bar {}
+      `);
     });
 
   });

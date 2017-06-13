@@ -5,7 +5,6 @@ import {BasicTemplateAstVisitor} from './angular/templates/basicTemplateAstVisit
 import {NgWalker} from './angular/ngWalker';
 
 
-
 const BoxInABananaOpen = '([';
 const BoxInABananaClose = '])';
 const BananaInABoxOpen = '[(';
