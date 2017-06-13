@@ -13,7 +13,7 @@ describe.only('angular-whitespace', () => {
       })
       class Bar {}
       `;
-      assertSuccess('angular-whitespace', source);
+      assertSuccess('angular-whitespace', source, ['check-interpolation']);
     });
 
     it('should work with proper style and complex expressions', () => {
@@ -25,7 +25,7 @@ describe.only('angular-whitespace', () => {
       })
       class Bar {}
       `;
-      assertSuccess('angular-whitespace', source);
+      assertSuccess('angular-whitespace', source, ['check-interpolation']);
     });
 
     it('should work with properties', () => {
@@ -37,7 +37,7 @@ describe.only('angular-whitespace', () => {
       })
       class Bar {}
       `;
-      assertSuccess('angular-whitespace', source);
+      assertSuccess('angular-whitespace', source, ['check-interpolation']);
     });
   });
 
@@ -55,7 +55,8 @@ describe.only('angular-whitespace', () => {
       assertAnnotated({
         ruleName: 'angular-whitespace',
         message: 'Missing whitespace in interpolation; expecting {{ expr }}',
-        source
+        source,
+        options: ['check-interpolation']
       });
     });
   });
@@ -73,7 +74,8 @@ describe.only('angular-whitespace', () => {
       const failures =  assertAnnotated({
         ruleName: 'angular-whitespace',
         message: 'Missing whitespace in interpolation; expecting {{ expr }}',
-        source
+        source,
+        options: ['check-interpolation']
       });
 
       const res = Replacement.applyAll(source, failures[0].getFix());
@@ -99,7 +101,8 @@ describe.only('angular-whitespace', () => {
       const failures =  assertAnnotated({
         ruleName: 'angular-whitespace',
         message: 'Extra whitespace in interpolation; expecting {{ expr }}',
-        source
+        source,
+        options: ['check-interpolation']
       });
 
       const res = Replacement.applyAll(source, failures[0].getFix());

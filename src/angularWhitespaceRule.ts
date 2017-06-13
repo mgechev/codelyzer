@@ -25,7 +25,13 @@ const getReplacements = (text: ast.BoundTextAst, absolutePosition: number) => {
   ];
 };
 
-class InterpolationWhitespaceVisitor extends BasicTemplateAstVisitor {
+type Option = 'check-interpolation' | 'check-pipe';
+
+interface ConfigurableVisitor {
+  getOption(): Option;
+}
+
+class InterpolationWhitespaceVisitor extends BasicTemplateAstVisitor implements ConfigurableVisitor {
   visitBoundText(text: ast.BoundTextAst, context: BasicTemplateAstVisitor): any {
     if (ExpTypes.ASTWithSource(text.value)) {
       // Note that will not be reliable for different interpolation symbols
@@ -49,15 +55,21 @@ class InterpolationWhitespaceVisitor extends BasicTemplateAstVisitor {
     }
     return null;
   }
+
+  getOption(): Option {
+    return 'check-interpolation';
+  }
 }
 
 class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
-  private visitors = [
+  private visitors: (BasicTemplateAstVisitor & ConfigurableVisitor)[] = [
     new InterpolationWhitespaceVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart)
   ];
 
   visitBoundText(text: ast.BoundTextAst, context: any): any {
+    const options = this.getOptions();
     this.visitors
+      .filter(v => options.indexOf(v.getOption()) >= 0)
       .map(v => v.visitBoundText(text, this))
       .filter(f => !!f)
       .forEach(f => this.addFailure(f));
