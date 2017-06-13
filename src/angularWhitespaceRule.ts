@@ -25,8 +25,8 @@ const getReplacements = (text: ast.BoundTextAst, absolutePosition: number) => {
   ];
 };
 
-class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
-  visitBoundText(text: ast.BoundTextAst, context: any): any {
+class InterpolationWhitespaceVisitor extends BasicTemplateAstVisitor {
+  visitBoundText(text: ast.BoundTextAst, context: BasicTemplateAstVisitor): any {
     if (ExpTypes.ASTWithSource(text.value)) {
       // Note that will not be reliable for different interpolation symbols
       let error = null;
@@ -40,13 +40,27 @@ class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
       if (error) {
         const internalStart = expr.indexOf(InterpolationOpen);
         const start = text.sourceSpan.start.offset + internalStart;
-        const absolutePosition = this.getSourcePosition(start);
-        this.addFailure(
-          this.createFailure(start,
+        const absolutePosition = context.getSourcePosition(start);
+        return context.addFailure(
+          context.createFailure(start,
             expr.trim().length,
             error, getReplacements(text, absolutePosition)));
       }
     }
+    return null;
+  }
+}
+
+class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
+  private visitors = [
+    new InterpolationWhitespaceVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart)
+  ];
+
+  visitBoundText(text: ast.BoundTextAst, context: any): any {
+    this.visitors
+      .map(v => v.visitBoundText(text, this))
+      .filter(f => !!f)
+      .forEach(f => this.addFailure(f));
   }
 }
 

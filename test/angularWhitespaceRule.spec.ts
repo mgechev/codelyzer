@@ -2,7 +2,7 @@ import { assertSuccess, assertAnnotated } from './testHelper';
 import { Replacement } from 'tslint';
 import { expect } from 'chai';
 
-describe('angular-whitespace', () => {
+describe.only('angular-whitespace', () => {
   describe('success', () => {
     it('should work with proper style', () => {
       let source = `
