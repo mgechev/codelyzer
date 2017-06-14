@@ -28,7 +28,7 @@ describe('banana-in-box', () => {
       `;
       assertAnnotated({
         ruleName: 'banana-in-box',
-        message: 'The box is in a banana! Expecting Banana in a box [(expr)]',
+        message: 'Invalid binding syntax. Use [(expr)] instead',
         source
       });
     });
@@ -46,7 +46,7 @@ describe('banana-in-box', () => {
       `;
       const failures =  assertAnnotated({
         ruleName: 'banana-in-box',
-        message: 'The box is in a banana! Expecting Banana in a box [(expr)]',
+        message: 'Invalid binding syntax. Use [(expr)] instead',
         source
       });
 
