@@ -5,7 +5,7 @@ import { IOptions } from 'tslint';
 
 export class Rule extends UsePropertyDecorator {
   public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'use-output-property-decorator-rule',
+    ruleName: 'use-output-property-decorator',
     type: 'style',
     description: `Use \`@Output\` decorator rather than the \`outputs\` property of \`@Component\` and \`@Directive\` metadata.`,
     descriptionDetails: `See more at https://angular.io/styleguide#!#05-12.`,

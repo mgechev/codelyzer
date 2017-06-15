@@ -5,7 +5,7 @@ import { IOptions } from 'tslint';
 
 export class Rule extends UsePropertyDecorator {
   public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'use-host-property-decorator-rule',
+    ruleName: 'use-host-property-decorator',
     type: 'style',
     description: `Use @HostProperty decorator rather than the \`host\` property of \`@Component\` and \`@Directive\` metadata.`,
     descriptionDetails: `See more at https://angular.io/styleguide#!#06-03.`,

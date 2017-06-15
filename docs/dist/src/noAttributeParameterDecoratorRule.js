@@ -34,7 +34,7 @@ var Rule = (function (_super) {
     return Rule;
 }(Lint.Rules.AbstractRule));
 Rule.metadata = {
-    ruleName: 'no-attribute-parameter-decorator-rule',
+    ruleName: 'no-attribute-parameter-decorator',
     type: 'maintainability',
     description: "Disallow usage of @Attribute decorator",
     rationale: "@Attribute is considered bad practice. Use @Input instead.",

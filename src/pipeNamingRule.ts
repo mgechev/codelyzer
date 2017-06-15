@@ -8,7 +8,7 @@ import { IOptions } from 'tslint';
 
 export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'pipe-naming-rule',
+    ruleName: 'pipe-naming',
     type: 'style',
     description: `Enforce consistent case and prefix for pipes.`,
     rationale: `Consistent conventions make it easy to quickly identify and reference assets of different types.`,

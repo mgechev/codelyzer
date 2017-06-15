@@ -69,10 +69,10 @@ var Rule = (function (_super) {
     return Rule;
 }(Lint.Rules.AbstractRule));
 Rule.metadata = {
-    ruleName: 'templates-use-public-rule',
+    ruleName: 'template-to-ng-template',
     type: 'functionality',
-    description: "Ensure that properties and methods accessed from the template are public.",
-    rationale: "When Angular compiles the templates, it has to access these propertes from outside the class.",
+    description: "Ensure that <ng-template> is used instance of <template>.",
+    rationale: "Since Angular 4.0,  <template> is deprecated.",
     options: null,
     optionsDescription: "Not configurable.",
     typescriptOnly: true,

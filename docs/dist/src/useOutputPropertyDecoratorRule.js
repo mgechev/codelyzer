@@ -24,7 +24,7 @@ var Rule = (function (_super) {
     return Rule;
 }(propertyDecoratorBase_1.UsePropertyDecorator));
 Rule.metadata = {
-    ruleName: 'use-output-property-decorator-rule',
+    ruleName: 'use-output-property-decorator',
     type: 'style',
     description: "Use `@Output` decorator rather than the `outputs` property of `@Component` and `@Directive` metadata.",
     descriptionDetails: "See more at https://angular.io/styleguide#!#05-12.",

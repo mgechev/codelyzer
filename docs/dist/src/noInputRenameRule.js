@@ -24,7 +24,7 @@ var Rule = (function (_super) {
     return Rule;
 }(Lint.Rules.AbstractRule));
 Rule.metadata = {
-    ruleName: 'no-input-rename-rule',
+    ruleName: 'no-input-rename',
     type: 'maintainability',
     description: "Disallows renaming directive inputs by providing a string to the decorator.",
     descriptionDetails: "See more at https://angular.io/styleguide#!#05-13.",

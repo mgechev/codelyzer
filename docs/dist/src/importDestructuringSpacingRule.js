@@ -23,7 +23,7 @@ var Rule = (function (_super) {
     return Rule;
 }(Lint.Rules.AbstractRule));
 Rule.metadata = {
-    ruleName: 'import-destructing-spacing-rule',
+    ruleName: 'import-destructing-spacing',
     type: 'style',
     description: "Ensure consistent and tidy imports.",
     rationale: "Imports are easier for the reader to look at when they're tidy.",

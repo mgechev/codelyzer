@@ -5,7 +5,7 @@ import {NgWalker} from './angular/ngWalker';
 
 export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'no-output-rename-rule',
+    ruleName: 'no-output-rename',
     type: 'maintainability',
     description: `Disallows renaming directive outputs by providing a string to the decorator.`,
     descriptionDetails: `See more at https://angular.io/styleguide#!#05-13.`,

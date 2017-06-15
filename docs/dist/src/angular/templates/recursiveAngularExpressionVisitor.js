@@ -24,6 +24,10 @@ var RecursiveAngularExpressionVisitor = (function (_super) {
         ast.visit(this);
         return null;
     };
+    RecursiveAngularExpressionVisitor.prototype.visitNonNullAssert = function (ast, context) {
+        ast.visit(this);
+        return null;
+    };
     RecursiveAngularExpressionVisitor.prototype.visitBinary = function (ast, context) {
         ast.left.visit(this);
         ast.right.visit(this);

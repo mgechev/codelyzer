@@ -61,9 +61,13 @@ exports.parseTemplate = function (template, directives) {
         tmplParser =
             new TemplateParser(config, expressionParser, elementSchemaRegistry, htmlParser, ngConsole, []);
     })
-        .else(function () {
+        .elseIf.lt('4.1.0', function () {
         tmplParser =
             new TemplateParser(expressionParser, elementSchemaRegistry, htmlParser, ngConsole, []);
+    }).else(function () {
+        var config = new compiler.CompilerConfig({});
+        tmplParser =
+            new TemplateParser(config, new compiler.JitReflector(), expressionParser, elementSchemaRegistry, htmlParser, ngConsole, []);
     });
     var interpolation = config_1.Config.interpolation;
     var summaryKind = (compiler.CompileSummaryKind || {}).Template;
@@ -100,32 +104,58 @@ exports.parseTemplate = function (template, directives) {
         identifier: null
     };
     var result = null;
-    ngVersion_1.SemVerDSL.lt('4.1.0', function () {
-        result = tmplParser.tryParse(compiler.CompileDirectiveMetadata.create({
-            type: type,
-            template: templateMetadata
-        }), template, defaultDirectives, [], [core_1.NO_ERRORS_SCHEMA], '').templateAst;
-    }).else(function () {
-        result = tmplParser.tryParse(compiler.CompileDirectiveMetadata.create({
-            type: type,
-            template: templateMetadata,
-            isHost: true,
-            isComponent: true,
-            selector: '',
-            exportAs: '',
-            changeDetection: core_1.ChangeDetectionStrategy.Default,
-            inputs: [],
-            outputs: [],
-            host: {},
-            providers: [],
-            viewProviders: [],
-            queries: [],
-            viewQueries: [],
-            entryComponents: [],
-            componentViewType: null,
-            rendererType: null,
-            componentFactory: null
-        }), template, defaultDirectives, [], [core_1.NO_ERRORS_SCHEMA], '').templateAst;
-    });
+    try {
+        ngVersion_1.SemVerDSL.lt('4.1.0', function () {
+            result = tmplParser.tryParse(compiler.CompileDirectiveMetadata.create({
+                type: type,
+                template: templateMetadata
+            }), template, defaultDirectives, [], [core_1.NO_ERRORS_SCHEMA], '').templateAst;
+        }).elseIf.lt('4.1.3', function () {
+            result = tmplParser.tryParse(compiler.CompileDirectiveMetadata.create({
+                type: type,
+                template: templateMetadata,
+                isHost: true,
+                isComponent: true,
+                selector: '',
+                exportAs: '',
+                changeDetection: core_1.ChangeDetectionStrategy.Default,
+                inputs: [],
+                outputs: [],
+                host: {},
+                providers: [],
+                viewProviders: [],
+                queries: [],
+                viewQueries: [],
+                entryComponents: [],
+                componentViewType: null,
+                rendererType: null,
+                componentFactory: null
+            }), template, defaultDirectives, [], [core_1.NO_ERRORS_SCHEMA], '').templateAst;
+        }).else(function () {
+            result = tmplParser.tryParse(compiler.CompileDirectiveMetadata.create({
+                type: type,
+                template: templateMetadata,
+                isHost: true,
+                isComponent: true,
+                selector: '',
+                exportAs: '',
+                changeDetection: core_1.ChangeDetectionStrategy.Default,
+                inputs: [],
+                outputs: [],
+                host: {},
+                providers: [],
+                viewProviders: [],
+                queries: [],
+                viewQueries: [],
+                entryComponents: [],
+                componentViewType: null,
+                rendererType: null,
+                componentFactory: null
+            }), template, defaultDirectives, [], [core_1.NO_ERRORS_SCHEMA], '').templateAst;
+        });
+    }
+    catch (e) {
+        console.log(e);
+    }
     return result;
 };

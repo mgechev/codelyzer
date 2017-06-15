@@ -5,7 +5,7 @@ import { IOptions } from 'tslint';
 
 export class Rule extends UsePropertyDecorator {
   public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'use-input-property-decorator-rule',
+    ruleName: 'use-input-property-decorator',
     type: 'style',
     description: `Use \`@Input\` decorator rather than the \`inputs\` property of \`@Component\` and \`@Directive\` metadata.`,
     descriptionDetails: `See more at https://angular.io/styleguide#!#05-12.`,
