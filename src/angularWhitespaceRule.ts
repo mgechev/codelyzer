@@ -5,6 +5,7 @@ import * as ast from '@angular/compiler';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 import { ExpTypes } from './angular/expressionTypes';
 import { Config } from './angular/config';
+import { RecursiveAngularExpressionVisitor } from './angular/templates/recursiveAngularExpressionVisitor';
 
 const InterpolationOpen = Config.interpolation[0];
 const InterpolationClose = Config.interpolation[1];
@@ -31,6 +32,8 @@ interface ConfigurableVisitor {
   getOption(): Option;
 }
 
+/* Inrerpolation visitors */
+
 class InterpolationWhitespaceVisitor extends BasicTemplateAstVisitor implements ConfigurableVisitor {
   visitBoundText(text: ast.BoundTextAst, context: BasicTemplateAstVisitor): any {
     if (ExpTypes.ASTWithSource(text.value)) {
@@ -53,6 +56,7 @@ class InterpolationWhitespaceVisitor extends BasicTemplateAstVisitor implements 
             error, getReplacements(text, absolutePosition)));
       }
     }
+    super.visitBoundText(text, context);
     return null;
   }
 
@@ -71,6 +75,81 @@ class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
     this.visitors
       .filter(v => options.indexOf(v.getOption()) >= 0)
       .map(v => v.visitBoundText(text, this))
+      .filter(f => !!f)
+      .forEach(f => this.addFailure(f));
+    super.visitBoundText(text, context);
+  }
+}
+
+/* Expression visitors */
+
+class PipeWhitespaceVisitor extends RecursiveAngularExpressionVisitor implements ConfigurableVisitor {
+  visitPipe(ast: ast.BindingPipe, context: RecursiveAngularExpressionVisitor): any {
+    const start = ast.span.start;
+    const exprStart = context.getSourcePosition(ast.exp.span.start);
+    const exprEnd = context.getSourcePosition(ast.exp.span.end);
+    const sf = context.getSourceFile().getFullText();
+    const exprText = sf.substring(exprStart, exprEnd);
+
+    const replacements = [];
+    // Handling the right side of the pipe
+    let leftBeginning = exprEnd + 1; // exprEnd === '|'
+    if (sf[leftBeginning] === ' ') {
+      let ignoreSpace = 1;
+      while (sf[leftBeginning + ignoreSpace] === ' ') {
+        ignoreSpace += 1;
+      }
+      if (ignoreSpace > 1) {
+        replacements.push(new Lint.Replacement(exprEnd + 1, ignoreSpace, ' '));
+      }
+    } else {
+      replacements.push(new Lint.Replacement(exprEnd + 1, 0, ' '));
+    }
+
+    // Handling the left side of the pipe
+    if (exprText[exprText.length - 1] === ' ') {
+      let ignoreSpace = 1;
+      while (exprText[exprText.length - 1 - ignoreSpace] === ' ') {
+        ignoreSpace += 1;
+      }
+      if (ignoreSpace > 1) {
+        replacements.push(new Lint.Replacement(exprEnd - ignoreSpace, ignoreSpace, ' '));
+      }
+    } else {
+      replacements.push(new Lint.Replacement(exprEnd, 0, ' '));
+    }
+
+    if (replacements.length) {
+      context.addFailure(
+        context.createFailure(ast.exp.span.end - 1, 3,
+        'The pipe operator should be surrounded by one space on each side, i.e. " | ".',
+        replacements)
+      );
+    }
+    super.visitPipe(ast, context);
+    return null;
+  }
+
+  protected isAsyncBinding(expr: any) {
+    return expr instanceof ast.BindingPipe && expr.name === 'async';
+  }
+
+  getOption(): Option {
+    return 'check-pipe';
+  }
+}
+
+
+class TemplateExpressionVisitor extends RecursiveAngularExpressionVisitor {
+  private visitors: (RecursiveAngularExpressionVisitor & ConfigurableVisitor)[] = [
+    new PipeWhitespaceVisitor(this.getSourceFile(), this.getOptions(), this.context, this.basePosition)
+  ];
+
+  visitPipe(expr: ast.BindingPipe, context: any): any {
+    const options = this.getOptions();
+    this.visitors
+      .filter(v => options.indexOf(v.getOption()) >= 0)
+      .map(v => v.visitPipe(expr, this))
       .filter(f => !!f)
       .forEach(f => this.addFailure(f));
   }
@@ -105,6 +184,7 @@ export class Rule extends Lint.Rules.AbstractRule {
         new NgWalker(sourceFile,
             this.getOptions(), {
               templateVisitorCtrl: WhitespaceTemplateVisitor,
+              expressionVisitorCtrl: TemplateExpressionVisitor
             }));
   }
 }
