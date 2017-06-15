@@ -46,7 +46,7 @@ var Rule = (function (_super) {
     return Rule;
 }(Lint.Rules.AbstractRule));
 Rule.metadata = {
-    ruleName: 'pipe-naming-rule',
+    ruleName: 'pipe-naming',
     type: 'style',
     description: "Enforce consistent case and prefix for pipes.",
     rationale: "Consistent conventions make it easy to quickly identify and reference assets of different types.",

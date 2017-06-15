@@ -80,7 +80,7 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
 
 export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'templates-use-public-rule',
+    ruleName: 'templates-use-public',
     type: 'functionality',
     description: `Ensure that properties and methods accessed from the template are public.`,
     rationale: `When Angular compiles the templates, it has to access these properties from outside the class.`,

@@ -130,7 +130,7 @@
     "typescriptOnly": true
   },
   {
-    "ruleName": "import-destructing-spacing-rule",
+    "ruleName": "import-destructing-spacing",
     "type": "style",
     "description": "Ensure consistent and tidy imports.",
     "rationale": "Imports are easier for the reader to look at when they're tidy.",
@@ -157,7 +157,7 @@
     "typescriptOnly": true
   },
   {
-    "ruleName": "no-attribute-parameter-decorator-rule",
+    "ruleName": "no-attribute-parameter-decorator",
     "type": "maintainability",
     "description": "Disallow usage of @Attribute decorator",
     "rationale": "@Attribute is considered bad practice. Use @Input instead.",
@@ -175,7 +175,7 @@
     "typescriptOnly": true
   },
   {
-    "ruleName": "no-input-rename-rule",
+    "ruleName": "no-input-rename",
     "type": "maintainability",
     "description": "Disallows renaming directive inputs by providing a string to the decorator.",
     "descriptionDetails": "See more at https://angular.io/styleguide#!#05-13.",
@@ -185,7 +185,7 @@
     "typescriptOnly": true
   },
   {
-    "ruleName": "no-output-rename-rule",
+    "ruleName": "no-output-rename",
     "type": "maintainability",
     "description": "Disallows renaming directive outputs by providing a string to the decorator.",
     "descriptionDetails": "See more at https://angular.io/styleguide#!#05-13.",
@@ -212,7 +212,7 @@
     "typescriptOnly": true
   },
   {
-    "ruleName": "pipe-naming-rule",
+    "ruleName": "pipe-naming",
     "type": "style",
     "description": "Enforce consistent case and prefix for pipes.",
     "rationale": "Consistent conventions make it easy to quickly identify and reference assets of different types.",
@@ -240,7 +240,16 @@
     "typescriptOnly": true
   },
   {
-    "ruleName": "templates-use-public-rule",
+    "ruleName": "templates-no-negated-async",
+    "type": "functionality",
+    "description": "Ensures that strict equality is used when evaluating negations on async pipe outout.",
+    "rationale": "Async pipe evaluate to `null` before the observable or promise emits, which can lead to layout thrashing as components load. Prefer strict `=== false` checks instead.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "templates-use-public",
     "type": "functionality",
     "description": "Ensure that properties and methods accessed from the template are public.",
     "rationale": "When Angular compiles the templates, it has to access these properties from outside the class.",
@@ -249,16 +258,16 @@
     "typescriptOnly": true
   },
   {
-    "ruleName": "templates-use-public-rule",
+    "ruleName": "template-to-ng-template",
     "type": "functionality",
-    "description": "Ensure that properties and methods accessed from the template are public.",
-    "rationale": "When Angular compiles the templates, it has to access these propertes from outside the class.",
+    "description": "Ensure that <ng-template> is used instance of <template>.",
+    "rationale": "Since Angular 4.0,  <template> is deprecated.",
     "options": null,
     "optionsDescription": "Not configurable.",
     "typescriptOnly": true
   },
   {
-    "ruleName": "use-host-property-decorator-rule",
+    "ruleName": "use-host-property-decorator",
     "type": "style",
     "description": "Use @HostProperty decorator rather than the `host` property of `@Component` and `@Directive` metadata.",
     "descriptionDetails": "See more at https://angular.io/styleguide#!#06-03.",
@@ -268,7 +277,7 @@
     "typescriptOnly": true
   },
   {
-    "ruleName": "use-input-property-decorator-rule",
+    "ruleName": "use-input-property-decorator",
     "type": "style",
     "description": "Use `@Input` decorator rather than the `inputs` property of `@Component` and `@Directive` metadata.",
     "descriptionDetails": "See more at https://angular.io/styleguide#!#05-12.",
@@ -288,7 +297,7 @@
     "typescriptOnly": true
   },
   {
-    "ruleName": "use-output-property-decorator-rule",
+    "ruleName": "use-output-property-decorator",
     "type": "style",
     "description": "Use `@Output` decorator rather than the `outputs` property of `@Component` and `@Directive` metadata.",
     "descriptionDetails": "See more at https://angular.io/styleguide#!#05-12.",

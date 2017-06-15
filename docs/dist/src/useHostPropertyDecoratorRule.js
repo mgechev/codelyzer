@@ -23,7 +23,7 @@ var Rule = (function (_super) {
     return Rule;
 }(propertyDecoratorBase_1.UsePropertyDecorator));
 Rule.metadata = {
-    ruleName: 'use-host-property-decorator-rule',
+    ruleName: 'use-host-property-decorator',
     type: 'style',
     description: "Use @HostProperty decorator rather than the `host` property of `@Component` and `@Directive` metadata.",
     descriptionDetails: "See more at https://angular.io/styleguide#!#06-03.",

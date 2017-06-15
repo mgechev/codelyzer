@@ -9,7 +9,7 @@ import {Failure} from './walkerFactory/walkerFactory';
 
 export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'no-attribute-parameter-decorator-rule',
+    ruleName: 'no-attribute-parameter-decorator',
     type: 'maintainability',
     description: `Disallow usage of @Attribute decorator`,
     rationale: `@Attribute is considered bad practice. Use @Input instead.`,
