@@ -21,5 +21,6 @@ export { Rule as UsePipeTransformInterfaceRule } from './usePipeTransformInterfa
 export { Rule as TemplateToNgTemplateRule } from './templateToNgTemplateRule';
 export { Rule as UsePipeDecoratorRule } from './usePipeDecoratorRule';
 export { Rule as UseViewEncapsulationRule } from './useViewEncapsulationRule';
+export { Rule as BananaInBoxRule } from './bananaInBoxRule';
 export * from './angular/config';
 

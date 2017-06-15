@@ -38,9 +38,9 @@ class BananaInBoxTemplateVisitor extends BasicTemplateAstVisitor {
       }
 
       if (error) {
-        const internalStart = expr.indexOf(InvalidSyntaxBoxOpen);
+        const internalStart = expr.indexOf(InvalidSyntaxBoxOpen) + 1;
         const start = prop.sourceSpan.start.offset + internalStart;
-        const absolutePosition = this.getSourcePosition(start);
+        const absolutePosition = this.getSourcePosition(start-1);
 
         this.addFailure(this.createFailure(start, expr.trim().length,
           error, getReplacements(prop, absolutePosition))

@@ -21,7 +21,7 @@ describe('banana-in-box', () => {
       let source = `
       @Component({
         template: \` <input type="text" ([ngModel])="foo" name="foo">  
-                                       ~~~~~~~~~~~~~~~~~
+                                        ~~~~~~~~~~~~~~~~~
         \`
       })
       class Bar {}
@@ -39,7 +39,7 @@ describe('banana-in-box', () => {
       let source = `
       @Component({
         template: \` <input type="text" ([ngModel])="foo" name="foo">  
-                                       ~~~~~~~~~~~~~~~~~
+                                        ~~~~~~~~~~~~~~~~~
         \`
       })
       class Bar {}
@@ -54,7 +54,7 @@ describe('banana-in-box', () => {
       expect(res).to.eq(`
       @Component({
         template: \` <input type="text" [(ngModel)]="foo" name="foo">  
-                                       ~~~~~~~~~~~~~~~~~
+                                        ~~~~~~~~~~~~~~~~~
         \`
       })
       class Bar {}
