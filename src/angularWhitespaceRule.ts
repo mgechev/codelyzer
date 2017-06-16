@@ -41,10 +41,10 @@ class InterpolationWhitespaceVisitor extends BasicTemplateAstVisitor implements 
       let error = null;
       const expr: any = (<any>text.value).source;
       if (InterpolationNoWhitespaceRe.test(expr)) {
-        error = 'Missing whitespace in interpolation; expecting {{ expr }}';
+        error = `Missing whitespace in interpolation; expecting ${InterpolationOpen} expr ${InterpolationClose}`;
       }
       if (InterpolationExtraWhitespaceRe.test(expr)) {
-        error = 'Extra whitespace in interpolation; expecting {{ expr }}';
+        error = `Extra whitespace in interpolation; expecting ${InterpolationOpen} expr ${InterpolationClose}`;
       }
       if (error) {
         const internalStart = expr.indexOf(InterpolationOpen);
@@ -157,7 +157,7 @@ class TemplateExpressionVisitor extends RecursiveAngularExpressionVisitor {
 
 export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'angular-whitespace-rule',
+    ruleName: 'angular-whitespace',
     type: 'style',
     description: `Ensures the proper formatting of Angular expressions.`,
     rationale: `Having whitespace in the right places in an Angular expression makes the template more readable.`,
