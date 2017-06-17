@@ -1,21 +1,13 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import {stringDistance} from './util/utils';
-import {getDeclaredProperties, getDeclaredMethods} from './util/classDeclarationUtils';
 import {NgWalker} from './angular/ngWalker';
-import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAngularExpressionVisitor';
-import * as e from '@angular/compiler/src/expression_parser/ast';
-import { EmbeddedTemplateAst, ElementAst } from '@angular/compiler';
+import { EmbeddedTemplateAst } from '@angular/compiler';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
-import { Fix } from 'tslint';
-import SyntaxKind = require('./util/syntaxKind');
 
 const ErrorMessage = 'You should use <ng-template> instead of <template>';
 const TemplateStart = '<template';
 const TemplateEnd = '</template>';
 const TemplateEndRe = /<\s*\/\s*template\s*>/i;
-
-const set = new Set<EmbeddedTemplateAst>();
 
 class TemplateToNgTemplateVisitor extends BasicTemplateAstVisitor {
   private _prevClosing: number = 0;

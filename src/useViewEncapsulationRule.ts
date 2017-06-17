@@ -1,5 +1,4 @@
 import { getComponentDecorator, getDecoratorPropertyInitializer } from './util/utils';
-import { ComponentMetadata } from './angular/metadata';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 

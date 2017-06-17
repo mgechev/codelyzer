@@ -157,7 +157,6 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
 
   visitDirectiveProperty(prop: ast.BoundDirectivePropertyAst, context: any): any {
     if (ExpTypes.ASTWithSource(prop.value)) {
-      const ast: any = (<e.ASTWithSource>prop.value).ast;
       this.visitNgTemplateAST(prop.value, this.templateStart + getExpressionDisplacement(prop));
     }
   }

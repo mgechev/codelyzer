@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
 import * as compiler from '@angular/compiler';
 
 import { Config, DirectiveDeclaration } from '../config';

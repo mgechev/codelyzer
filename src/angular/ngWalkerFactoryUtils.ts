@@ -1,11 +1,8 @@
-import * as ts from 'typescript';
-import * as Lint from 'tslint';
-import {NgWalker, NgWalkerConfig} from './ngWalker';
+import {NgWalkerConfig} from './ngWalker';
 import {MetadataReader} from './metadataReader';
 import {UrlResolver} from './urlResolvers/urlResolver';
 import {FsFileResolver} from './fileResolver/fsFileResolver';
-import {BasicCssAstVisitor, CssAstVisitorCtrl} from './styles/basicCssAstVisitor';
-import {Config} from './config';
+import {BasicCssAstVisitor} from './styles/basicCssAstVisitor';
 
 import { RecursiveAngularExpressionVisitor } from './templates/recursiveAngularExpressionVisitor';
 import {BasicTemplateAstVisitor} from './templates/basicTemplateAstVisitor';

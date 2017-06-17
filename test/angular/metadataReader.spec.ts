@@ -4,7 +4,7 @@ import chai = require('chai');
 import {DummyFileResolver} from '../../src/angular/fileResolver/dummyFileResolver';
 import {FsFileResolver} from '../../src/angular/fileResolver/fsFileResolver';
 import {MetadataReader} from '../../src/angular/metadataReader';
-import {ComponentMetadata, DirectiveMetadata} from '../../src/angular/metadata';
+import {ComponentMetadata} from '../../src/angular/metadata';
 import {Config} from '../../src/angular/config';
 
 import {join, normalize} from 'path';

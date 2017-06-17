@@ -1,6 +1,6 @@
 import * as ts from 'typescript';
 import {RuleWalker, RuleFailure, IOptions, Fix, Replacement} from 'tslint';
-import {ComponentMetadata, CodeWithSourceMap} from './metadata';
+import {CodeWithSourceMap} from './metadata';
 import {SourceMapConsumer} from 'source-map';
 
 const LineFeed = 0x0A;

@@ -3,7 +3,6 @@ import chai = require('chai');
 
 import {getDecoratorPropertyInitializer} from '../../src/util/utils';
 import {SourceMappingVisitor} from '../../src/angular/sourceMappingVisitor';
-import {join, normalize} from 'path';
 import {renderSync} from 'node-sass';
 
 const getAst = (code: string, file = 'file.ts') => {
