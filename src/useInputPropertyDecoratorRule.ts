@@ -8,7 +8,7 @@ export class Rule extends UsePropertyDecorator {
     ruleName: 'use-input-property-decorator',
     type: 'style',
     description: `Use \`@Input\` decorator rather than the \`inputs\` property of \`@Component\` and \`@Directive\` metadata.`,
-    descriptionDetails: `See more at https://angular.io/styleguide#!#05-12.`,
+    descriptionDetails: `See more at https://angular.io/styleguide#style-05-12.`,
     rationale: Lint.Utils.dedent`
     * It is easier and more readable to identify which properties in a class are inputs.
     * If you ever need to rename the property name associated with \`@Input\`, you can modify it in a single place.

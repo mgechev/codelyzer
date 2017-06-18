@@ -8,7 +8,7 @@ export class Rule extends UsePropertyDecorator {
     ruleName: 'use-output-property-decorator',
     type: 'style',
     description: `Use \`@Output\` decorator rather than the \`outputs\` property of \`@Component\` and \`@Directive\` metadata.`,
-    descriptionDetails: `See more at https://angular.io/styleguide#!#05-12.`,
+    descriptionDetails: `See more at https://angular.io/styleguide#style-05-12.`,
     rationale: Lint.Utils.dedent`
     * It is easier and more readable to identify which properties in a class are events.
     * If you ever need to rename the event name associated with \`@Output\`, you can modify it in a single place.
