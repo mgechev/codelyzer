@@ -8,7 +8,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     ruleName: 'no-output-rename',
     type: 'maintainability',
     description: `Disallows renaming directive outputs by providing a string to the decorator.`,
-    descriptionDetails: `See more at https://angular.io/styleguide#!#05-13.`,
+    descriptionDetails: `See more at https://angular.io/styleguide#style-05-13.`,
     rationale: `Two names for the same property (one private, one public) is inherently confusing.`,
     options: null,
     optionsDescription: `Not configurable.`,
