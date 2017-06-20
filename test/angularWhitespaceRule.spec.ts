@@ -82,6 +82,24 @@ describe('angular-whitespace', () => {
         });
       });
 
+      it('should fail when no space', () => {
+        let source = `
+        @Component({
+          template: \`
+            <div>{{foo }}</div>
+                 ~~~~~~~~
+          \`
+        })
+        class Bar {}
+        `;
+        assertAnnotated({
+          ruleName: 'angular-whitespace',
+          message: 'Missing whitespace in interpolation; expecting {{ expr }}',
+          source,
+          options: ['check-interpolation']
+        });
+      });
+
       describe('replacements', () => {
         it('should fail and apply proper replacements when style is incorrect', () => {
           let source = `
@@ -105,6 +123,33 @@ describe('angular-whitespace', () => {
             template: \`
               <div>  {{ foo }}   </div>
                      ~~~~~~~
+            \`
+          })
+          class Bar {}`);
+        });
+
+        it('should fail and apply proper replacements when style is incorrect', () => {
+          let source = `
+          @Component({
+            template: \`
+              <div>  {{foo }}   </div>
+                     ~~~~~~~~
+            \`
+          })
+          class Bar {}`;
+          const failures =  assertAnnotated({
+            ruleName: 'angular-whitespace',
+            message: 'Missing whitespace in interpolation; expecting {{ expr }}',
+            source,
+            options: ['check-interpolation']
+          });
+
+          const res = Replacement.applyAll(source, failures[0].getFix());
+          expect(res).to.eq(`
+          @Component({
+            template: \`
+              <div>  {{ foo }}   </div>
+                     ~~~~~~~~
             \`
           })
           class Bar {}`);
