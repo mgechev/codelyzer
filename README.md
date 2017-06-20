@@ -62,6 +62,9 @@ Create the following `tslint.json` file like:
 {
   "extends": [ "codelyzer" ],
   "rules":{
+    "angular-whitespace": [true, "check-interpolation", "check-pipe"],
+    "banana-in-box": true,
+    "no-negated-async": true,
     "directive-selector": [true, "attribute", "sg", "camelCase"],
     "component-selector": [true, "element", "sg", "kebab-case"],
     "use-input-property-decorator": true,
