@@ -22,7 +22,7 @@ describe('angular-whitespace', () => {
         let source = `
         @Component({
           template: \`
-	    <input [value]="  {{ foo }}">
+      <input [value]="  {{ foo }}">
           \`
         })
         class Bar {}
@@ -35,16 +35,16 @@ describe('angular-whitespace', () => {
       it('should succeed with proper style', () => {
         let source = `
         @Component({
-	  selector: 'foo',
+          selector: 'foo',
           template: \`
-	    <div>{{ foo | async }}</div>
+            <div>{{ foo | async }}</div>
           \`
         })
-	class Bar {
-	  foo: any;
-	}
-        `;
-	assertSuccess('angular-whitespace', source, ['check-pipe']);
+        class Bar {
+          foo: any;
+        }
+              `;
+        assertSuccess('angular-whitespace', source, ['check-pipe']);
       });
 
       it('should succeed with proper style', () => {
@@ -52,7 +52,7 @@ describe('angular-whitespace', () => {
         @Component({
           selector: 'foo',
           template: \`
-	    <div>{{ foo | async | uppercase }}</div>
+      <div>{{ foo | async | uppercase }}</div>
           \`
         })
         class Bar {
@@ -63,15 +63,15 @@ describe('angular-whitespace', () => {
       });
 
       it('should work with proper style and complex expressions', () => {
-	let source = `
-	@Component({
-	  template: \`
-	    <div>{{ foo + bar | pipe }}</div>
-	  \`
-	})
-	class Bar {}
-	`;
-	assertSuccess('angular-whitespace', source, ['check-interpolation']);
+        let source = `
+        @Component({
+          template: \`
+            <div>{{ foo + bar | pipe }}</div>
+          \`
+        })
+        class Bar {}
+        `;
+        assertSuccess('angular-whitespace', source, ['check-interpolation']);
       });
 
 
