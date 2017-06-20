@@ -1,3 +1,32 @@
+# 3.1.0
+
+### Features
+
+**New rules**:
+
+- `angular-whitespace: [true, 'check-interpolation', 'check-pipe']` - Checks if there's whitespace around an expression surrounded by interpolation characters, and after a pipe symbol.
+- `banana-in-box: true` - Checks for proper banana in a box syntax - `[(ngModel)]` instead of `([ngModel])`.
+- `no-negated-async: true` - Enforces `(foo | async) === false`, rather than `!(foo | async)`, because of the initial falsy value emitted.
+- `use-view-encapsulation: true` - Enforces enabled view encapsulation.
+
+- Align to the template parser API of Angular compiler 4.1.0 [#301](https://github.com/mgechev/codelyzer/issues/301) [0fcdcd1](https://github.com/mgechev/codelyzer/commit/0fcdcd102431690f78b4bc923881d324534b52e3)
+- Align to the changes in the template parser API 4.1.3 [#319](https://github.com/mgechev/codelyzer/issues/319) [b608296](https://github.com/mgechev/codelyzer/commit/b60829663383adcaa8b2570f56242ce34e1d94a1)
+- Rule for enforcing `ViewEncapsulation` [#300](https://github.com/mgechev/codelyzer/issues/300) [509c8d9](https://github.com/mgechev/codelyzer/commit/509c8d953f0e03adb8b68b1ba98fdcfcc374152b). Big thanks to @GregOnNet.
+- Add a no-negated-async rule [#332](https://github.com/mgechev/codelyzer/issues/332) [0f0924d](https://github.com/mgechev/codelyzer/commit/0f0924d499217a61759f4f1b49fe30a32d0ad197). Big thanks to @connor4312.
+- Enforce proper banana in a box syntax [#331](https://github.com/mgechev/codelyzer/issues/331) [f95b2d5](https://github.com/mgechev/codelyzer/pull/322)
+- Ensure whitespace around interpolation [#320](https://github.com/mgechev/codelyzer/issues/320) [335776f](https://github.com/mgechev/codelyzer/commit/335776ff24ecc81a743ff0cc70aaf01442462b8a)
+
+### Fix
+
+- Template micro-syntax closure and 'bind only to public class members' [#220](https://github.com/mgechev/codelyzer/issues/220) [61f9fe9](https://github.com/mgechev/codelyzer/commit/61f9fe9e664ada53518679e8060deba2839793c7)
+- Report warnings when bound to private iterable in `*ngFor` [#306](https://github.com/mgechev/codelyzer/issues/306) [36705fc](https://github.com/mgechev/codelyzer/commit/36705fc3b708146880ea14ac0b918af7e67f1401)
+- 'templates-use-public' throws error when attempting to access a property of a property with the [] syntax [#315](https://github.com/mgechev/codelyzer/issues/315) [6323d2c](https://github.com/mgechev/codelyzer/commit/6323d2cdf3916d7ab8dfa8f694aaa21a5a68edc3)
+- no-access-missing-member doesn't work with external HTML [#311](https://github.com/mgechev/codelyzer/issues/311) [b608296](https://github.com/mgechev/codelyzer/commit/b60829663383adcaa8b2570f56242ce34e1d94a1)
+- rules name in documentation aren't consistent [#325](https://github.com/mgechev/codelyzer/issues/325) [7a67607](https://github.com/mgechev/codelyzer/pull/326). Big thanks to @wKoza.
+- Our links to angular.io are broken [#333](https://github.com/mgechev/codelyzer/issues/333) [5a532b4](https://github.com/mgechev/codelyzer/pull/334). Big thanks to @wKoza.
+- Report errors twice [#336](https://github.com/mgechev/codelyzer/issues/336) [44a9306](https://github.com/mgechev/codelyzer/pull/339)
+
+
 # 3.0.1
 
 ### Fix
