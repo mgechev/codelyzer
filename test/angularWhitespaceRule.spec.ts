@@ -71,7 +71,19 @@ describe('angular-whitespace', () => {
         })
         class Bar {}
         `;
-        assertSuccess('angular-whitespace', source, ['check-interpolation']);
+        assertSuccess('angular-whitespace', source, ['check-pipe']);
+      });
+
+      it('should work with proper style and complex expressions', () => {
+        let source = `
+        @Component({
+          template: \`
+            <div>{{ foo + 1 | pipe }}</div>
+          \`
+        })
+        class Bar {}
+        `;
+        assertSuccess('angular-whitespace', source, ['check-pipe']);
       });
 
 
