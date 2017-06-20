@@ -11,7 +11,7 @@ describe('directive-selector-name', () => {
       class Test {}`;
             assertAnnotated({
                 ruleName: 'directive-selector',
-                message: 'The selector of the directive "Test" should be named camelCase ($$02-06$$)',
+                message: 'The selector of the directive "Test" should be named camelCase (https://angular.io/styleguide#style-02-06)',
                 source,
                 options: ['attribute','sg','camelCase']
             });
@@ -47,7 +47,7 @@ describe('directive-selector-name', () => {
       class Test {}`;
             assertAnnotated({
                 ruleName: 'directive-selector',
-                message: 'The selector of the directive "Test" should be named camelCase ($$02-06$$)',
+                message: 'The selector of the directive "Test" should be named camelCase (https://angular.io/styleguide#style-02-06)',
                 source,
                 options: ['attribute','sg','camelCase']
             });
@@ -65,7 +65,7 @@ describe('directive-selector-prefix', () => {
           class Test {}`;
             assertAnnotated({
                 ruleName: 'directive-selector',
-                message: 'The selector of the directive "Test" should have prefix "sg" ($$02-08$$)',
+                message: 'The selector of the directive "Test" should have prefix "sg" (https://angular.io/styleguide#style-02-08)',
                 source,
                 options: ['attribute','sg','camelCase']
             });
@@ -80,7 +80,7 @@ describe('directive-selector-prefix', () => {
           class Test {}`;
             assertAnnotated({
                 ruleName: 'directive-selector',
-                message: 'The selector of the directive "Test" should have prefix "fo" ($$02-08$$)',
+                message: 'The selector of the directive "Test" should have prefix "fo" (https://angular.io/styleguide#style-02-08)',
                 source,
                 options: ['attribute','fo','camelCase']
             });
@@ -95,7 +95,7 @@ describe('directive-selector-prefix', () => {
           class Test {}`;
             assertAnnotated({
                 ruleName: 'directive-selector',
-                message: 'The selector of the directive "Test" should have one of the prefixes "sg, ng, mg" ($$02-08$$)',
+                message: 'The selector of the directive "Test" should have one of the prefixes "sg, ng, mg" (https://angular.io/styleguide#style-02-08)',
                 source,
                 options: ['attribute',['sg', 'ng', 'mg'],'camelCase']
             });
@@ -109,7 +109,7 @@ describe('directive-selector-prefix', () => {
           class Test {}`;
             assertAnnotated({
                 ruleName: 'directive-selector',
-                message: 'The selector of the directive "Test" should have one of the prefixes "sg, ng, mg" ($$02-08$$)',
+                message: 'The selector of the directive "Test" should have one of the prefixes "sg, ng, mg" (https://angular.io/styleguide#style-02-08)',
                 source,
                 options: ['attribute',['sg', 'ng', 'mg'],'camelCase']
             });
@@ -163,7 +163,7 @@ describe('directive-selector-type', () => {
       class Test {}`;
             assertAnnotated({
                 ruleName: 'directive-selector',
-                message: 'The selector of the directive "Test" should be used as attribute ($$02-06$$)',
+                message: 'The selector of the directive "Test" should be used as attribute (https://angular.io/styleguide#style-02-06)',
                 source,
                 options: ['attribute','sg','camelCase']
             });
@@ -179,7 +179,7 @@ describe('directive-selector-type', () => {
       class Test {}`;
             assertAnnotated({
                 ruleName: 'directive-selector',
-                message: 'The selector of the directive "Test" should be used as attribute ($$02-06$$)',
+                message: 'The selector of the directive "Test" should be used as attribute (https://angular.io/styleguide#style-02-06)',
                 source,
                 options: ['attribute','sg','camelCase']
             });

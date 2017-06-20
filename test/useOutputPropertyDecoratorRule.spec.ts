@@ -14,7 +14,7 @@ describe('use-output-property-decorator', () => {
     `;
     assertAnnotated({
       ruleName: 'use-output-property-decorator',
-      message: 'Use the @Output property decorator instead of the outputs property ($$05-12$$)',
+      message: 'Use the @Output property decorator instead of the outputs property (https://angular.io/styleguide#style-05-12)',
       source
     });
   });
@@ -42,7 +42,7 @@ describe('use-output-property-decorator', () => {
     `;
     assertAnnotated({
       ruleName: 'use-output-property-decorator',
-      message: 'Use the @Output property decorator instead of the outputs property ($$05-12$$)',
+      message: 'Use the @Output property decorator instead of the outputs property (https://angular.io/styleguide#style-05-12)',
       source
     });
   });

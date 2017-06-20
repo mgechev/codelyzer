@@ -14,7 +14,7 @@ describe('use-input-property-decorator', () => {
     `;
     assertAnnotated({
       ruleName: 'use-input-property-decorator',
-      message: 'Use the @Input property decorator instead of the inputs property ($$05-12$$)',
+      message: 'Use the @Input property decorator instead of the inputs property (https://angular.io/styleguide#style-05-12)',
       source
     });
   });
@@ -42,7 +42,7 @@ describe('use-input-property-decorator', () => {
     `;
     assertAnnotated({
       ruleName: 'use-input-property-decorator',
-      message: 'Use the @Input property decorator instead of the inputs property ($$05-12$$)',
+      message: 'Use the @Input property decorator instead of the inputs property (https://angular.io/styleguide#style-05-12)',
       source
     });
   });

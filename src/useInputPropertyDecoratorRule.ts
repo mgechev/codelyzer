@@ -24,7 +24,7 @@ export class Rule extends UsePropertyDecorator {
     super({
       decoratorName: 'Input',
       propertyName: 'inputs',
-      errorMessage: 'Use the @Input property decorator instead of the inputs property ($$05-12$$)'
+      errorMessage: 'Use the @Input property decorator instead of the inputs property (https://angular.io/styleguide#style-05-12)'
     }, options);
   }
 }

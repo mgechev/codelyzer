@@ -14,7 +14,7 @@ describe('use-host-property-decorator', () => {
     `;
     assertAnnotated({
       ruleName: 'use-host-property-decorator',
-      message: 'Use @HostBindings and @HostListeners instead of the host property ($$06-03$$)',
+      message: 'Use @HostBindings and @HostListeners instead of the host property (https://angular.io/styleguide#style-06-03)',
       source
     });
   });
@@ -42,7 +42,7 @@ describe('use-host-property-decorator', () => {
     `;
     assertAnnotated({
       ruleName: 'use-host-property-decorator',
-      message: 'Use @HostBindings and @HostListeners instead of the host property ($$06-03$$)',
+      message: 'Use @HostBindings and @HostListeners instead of the host property (https://angular.io/styleguide#style-06-03)',
       source
     });
   });

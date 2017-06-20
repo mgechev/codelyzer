@@ -30,7 +30,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true,
   };
 
-  static FAILURE: string = 'The name of the class %s should end with the suffix %s ($$02-03$$)';
+  static FAILURE: string = 'The name of the class %s should end with the suffix %s (https://angular.io/styleguide#style-02-03)';
 
   static walkerBuilder: F2<ts.SourceFile, IOptions, NgWalker> =
     all(

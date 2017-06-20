@@ -7,8 +7,8 @@ export class Rule extends SelectorRule {
     ruleName: 'directive-selector',
     type: 'style',
     description: `Directive selectors should follow given naming rules.`,
-    descriptionDetails: `See more at https://angular.io/styleguide#style-02-07, https://angular.io/styleguide#style-05-02, ` +
-    `and https://angular.io/styleguide#style-05-03.`,
+    descriptionDetails: `See more at https://angular.io/styleguide#style-02-06 ` +
+    `and https://angular.io/styleguide#style-02-08.`,
     rationale: Lint.Utils.dedent`
     * Consistent conventions make it easy to quickly identify and reference assets of different types.
     * Makes it easier to promote and share the directive in other apps.
@@ -57,13 +57,13 @@ export class Rule extends SelectorRule {
   };
 
   public handleType = 'Directive';
-  public getTypeFailure(): string { return 'The selector of the directive "%s" should be used as %s ($$02-06$$)'; }
-  public getStyleFailure(): string { return 'The selector of the directive "%s" should be named %s ($$02-06$$)'; }
+  public getTypeFailure(): string { return 'The selector of the directive "%s" should be used as %s (https://angular.io/styleguide#style-02-06)'; }
+  public getStyleFailure(): string { return 'The selector of the directive "%s" should be named %s (https://angular.io/styleguide#style-02-06)'; }
   getPrefixFailure(prefixes: string[]): string {
     if (prefixes.length === 1) {
-      return 'The selector of the directive "%s" should have prefix "%s" ($$02-08$$)';
+      return 'The selector of the directive "%s" should have prefix "%s" (https://angular.io/styleguide#style-02-08)';
     } else {
-      return 'The selector of the directive "%s" should have one of the prefixes "%s" ($$02-08$$)';
+      return 'The selector of the directive "%s" should have one of the prefixes "%s" (https://angular.io/styleguide#style-02-08)';
     }
   }
 

@@ -24,7 +24,7 @@ export class Rule extends UsePropertyDecorator {
     super({
       decoratorName: 'Output',
       propertyName: 'outputs',
-      errorMessage: 'Use the @Output property decorator instead of the outputs property ($$05-12$$)'
+      errorMessage: 'Use the @Output property decorator instead of the outputs property (https://angular.io/styleguide#style-05-12)'
     }, options);
   }
 }

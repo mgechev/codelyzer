@@ -22,7 +22,7 @@ export class Rule extends UsePropertyDecorator {
     super({
       decoratorName: ['HostBindings', 'HostListeners'],
       propertyName: 'host',
-      errorMessage: 'Use @HostBindings and @HostListeners instead of the host property ($$06-03$$)'
+      errorMessage: 'Use @HostBindings and @HostListeners instead of the host property (https://angular.io/styleguide#style-06-03)'
     }, options);
   }
 }

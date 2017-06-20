@@ -12,7 +12,7 @@ describe('directive-class-suffix', () => {
             `;
             assertAnnotated({
                 ruleName: 'directive-class-suffix',
-                message: 'The name of the class Test should end with the suffix Directive ($$02-03$$)',
+                message: 'The name of the class Test should end with the suffix Directive (https://angular.io/styleguide#style-02-03)',
                 source
             });
         });
@@ -97,7 +97,7 @@ describe('directive-class-suffix', () => {
             `;
             assertAnnotated({
                 ruleName: 'directive-class-suffix',
-                message: 'The name of the class TestPage should end with the suffix Directive ($$02-03$$)',
+                message: 'The name of the class TestPage should end with the suffix Directive (https://angular.io/styleguide#style-02-03)',
                 source,
                 options: ['Directive']
             });
@@ -113,7 +113,7 @@ describe('directive-class-suffix', () => {
             `;
             assertAnnotated({
                 ruleName: 'directive-class-suffix',
-                message: 'The name of the class TestDirective should end with the suffix Page ($$02-03$$)',
+                message: 'The name of the class TestDirective should end with the suffix Page (https://angular.io/styleguide#style-02-03)',
                 source,
                 options: ['Page']
             });
