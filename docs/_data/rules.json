@@ -1,9 +1,40 @@
 [
   {
+    "ruleName": "angular-whitespace",
+    "type": "style",
+    "description": "Ensures the proper formatting of Angular expressions.",
+    "rationale": "Having whitespace in the right places in an Angular expression makes the template more readable.",
+    "optionsDescription": "\nOne argument may be optionally provided:\n* `\"check-interpolation\"` checks for whitespace before and after the interpolation characters",
+    "options": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "check-interpolation"
+        ]
+      },
+      "minLength": 0,
+      "maxLength": 1
+    },
+    "optionExamples": [
+      "[true, \"check-interpolation\"]"
+    ],
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "banana-in-box",
+    "type": "functionality",
+    "description": "Ensure that the two-way data binding syntax is correct.",
+    "rationale": "The parens \"()\" should have been inside the brackets \"[]\".",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "typescriptOnly": true
+  },
+  {
     "ruleName": "component-class-suffix",
     "type": "style",
     "description": "Classes decorated with @Component must have suffix \"Component\" (or custom) in their name.",
-    "descriptionDetails": "See more at https://angular.io/styleguide#!#02-03.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#style-02-03.",
     "rationale": "Consistent conventions make it easy to quickly identify and reference assets of different types.",
     "options": {
       "type": "array",
@@ -22,7 +53,7 @@
     "ruleName": "component-selector",
     "type": "style",
     "description": "Component selectors should follow given naming rules.",
-    "descriptionDetails": "See more at https://angular.io/styleguide#!#02-07, https://angular.io/styleguide#!#05-02, and https://angular.io/styleguide#!#05-03.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#style-02-07, https://angular.io/styleguide#style-05-02, and https://angular.io/styleguide#style-05-03.",
     "rationale": "\n* Consistent conventions make it easy to quickly identify and reference assets of different types.\n* Makes it easier to promote and share the component in other apps.\n* Components are easy to identify in the DOM.\n* Keeps the element names consistent with the specification for Custom Elements.\n* Components have templates containing HTML and optional Angular template syntax.\n    * They display content. Developers place components on the page as they would native HTML elements and WebComponents.\n* It is easier to recognize that a symbol is a component by looking at the template's HTML.\n",
     "options": {
       "type": "array",
@@ -68,7 +99,7 @@
     "ruleName": "directive-class-suffix",
     "type": "style",
     "description": "Classes decorated with @Directive must have suffix \"Directive\" (or custom) in their name.",
-    "descriptionDetails": "See more at https://angular.io/styleguide#!#02-03.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#style-02-03.",
     "rationale": "Consistent conventions make it easy to quickly identify and reference assets of different types.",
     "options": {
       "type": "array",
@@ -87,7 +118,7 @@
     "ruleName": "directive-selector",
     "type": "style",
     "description": "Directive selectors should follow given naming rules.",
-    "descriptionDetails": "See more at https://angular.io/styleguide#!#02-07, https://angular.io/styleguide#!#05-02, and https://angular.io/styleguide#!#05-03.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#style-02-06 and https://angular.io/styleguide#style-02-08.",
     "rationale": "\n* Consistent conventions make it easy to quickly identify and reference assets of different types.\n* Makes it easier to promote and share the directive in other apps.\n* Directives are easy to identify in the DOM.\n* It is easier to recognize that a symbol is a directive by looking at the template's HTML.\n",
     "options": {
       "type": "array",
@@ -178,7 +209,7 @@
     "ruleName": "no-input-rename",
     "type": "maintainability",
     "description": "Disallows renaming directive inputs by providing a string to the decorator.",
-    "descriptionDetails": "See more at https://angular.io/styleguide#!#05-13.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#style-05-13.",
     "rationale": "Two names for the same property (one private, one public) is inherently confusing.",
     "options": null,
     "optionsDescription": "Not configurable.",
@@ -188,7 +219,7 @@
     "ruleName": "no-output-rename",
     "type": "maintainability",
     "description": "Disallows renaming directive outputs by providing a string to the decorator.",
-    "descriptionDetails": "See more at https://angular.io/styleguide#!#05-13.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#style-05-13.",
     "rationale": "Two names for the same property (one private, one public) is inherently confusing.",
     "options": null,
     "optionsDescription": "Not configurable.",
@@ -270,7 +301,7 @@
     "ruleName": "use-host-property-decorator",
     "type": "style",
     "description": "Use @HostProperty decorator rather than the `host` property of `@Component` and `@Directive` metadata.",
-    "descriptionDetails": "See more at https://angular.io/styleguide#!#06-03.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#style-06-03.",
     "rationale": "The property associated with `@HostBinding` or the method associated with `@HostListener` can be modified only in a single place: in the directive's class. If you use the `host` metadata property, you must modify both the property declaration inside the controller, and the metadata associated with the directive.",
     "options": null,
     "optionsDescription": "Not configurable.",
@@ -280,7 +311,7 @@
     "ruleName": "use-input-property-decorator",
     "type": "style",
     "description": "Use `@Input` decorator rather than the `inputs` property of `@Component` and `@Directive` metadata.",
-    "descriptionDetails": "See more at https://angular.io/styleguide#!#05-12.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#style-05-12.",
     "rationale": "\n* It is easier and more readable to identify which properties in a class are inputs.\n* If you ever need to rename the property name associated with `@Input`, you can modify it in a single place.\n* The metadata declaration attached to the directive is shorter and thus more readable.\n* Placing the decorator on the same line usually makes for shorter code and still easily identifies the property as an input.",
     "options": null,
     "optionsDescription": "Not configurable.",
@@ -290,7 +321,7 @@
     "ruleName": "use-life-cycle-interface",
     "type": "maintainability",
     "description": "Ensure that components implement life cycle interfaces if they use them.",
-    "descriptionDetails": "See more at https://angular.io/styleguide#!#09-01.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#style-09-01.",
     "rationale": "Interfaces prescribe typed method signatures. Use those signatures to flag spelling and syntax mistakes.",
     "options": null,
     "optionsDescription": "Not configurable.",
@@ -300,7 +331,7 @@
     "ruleName": "use-output-property-decorator",
     "type": "style",
     "description": "Use `@Output` decorator rather than the `outputs` property of `@Component` and `@Directive` metadata.",
-    "descriptionDetails": "See more at https://angular.io/styleguide#!#05-12.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#style-05-12.",
     "rationale": "\n* It is easier and more readable to identify which properties in a class are events.\n* If you ever need to rename the event name associated with `@Output`, you can modify it in a single place.\n* The metadata declaration attached to the directive is shorter and thus more readable.\n* Placing the decorator on the same line usually makes for shorter code and still easily identifies the property as an output.",
     "options": null,
     "optionsDescription": "Not configurable.",
