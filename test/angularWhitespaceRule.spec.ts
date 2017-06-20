@@ -344,46 +344,43 @@ describe('angular-whitespace', () => {
       `);
     });
 
-    it.only('should fail when no space', () => {
+    it('should fail when no space', () => {
       let source = `
-      @Component({
-	selector: 'foo',
-	template: \`
-	  <div>{{ foo + 1|async|bar }}</div>
-			^^^   ~~~
-	\`
-      })
-      class Bar {
-	foo: any;
-      }
+        @Component({
+          selector: 'foo',
+          template: \`
+            <div>{{ foo + 1|async|bar }}</div>
+                          ^^^   ~~~
+          \`
+        })
+        class Bar {
+          foo: any;
+        }
       `;
       const failures = assertMultipleAnnotated({
-	ruleName: 'angular-whitespace',
-	failures: [
-	  { char: '~', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".', },
-	  { char: '^', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".', },
-	],
-	source,
-	options: ['check-pipe']
+        ruleName: 'angular-whitespace',
+        failures: [
+          { char: '~', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".', },
+          { char: '^', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".', },
+        ],
+        source,
+        options: ['check-pipe']
       });
       const fixes = [].concat.apply([], failures.map(f => f.getFix()));
-      console.log(fixes.length);
       const res = Replacement.applyAll(source, fixes);
       expect(res).to.eq(`
-      @Component({
-	selector: 'foo',
-	template: \`
-	  <div>{{ foo + 1 | async | bar }}</div>
-			^^^   ~~~
-	\`
-      })
-      class Bar {
-	foo: any;
-      }
+        @Component({
+          selector: 'foo',
+          template: \`
+            <div>{{ foo + 1 | async | bar }}</div>
+                          ^^^   ~~~
+          \`
+        })
+        class Bar {
+          foo: any;
+        }
       `);
     });
-
-
 
     it('should fail when no space in property binding', () => {
       let source = `

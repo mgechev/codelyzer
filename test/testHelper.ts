@@ -157,7 +157,15 @@ export function assertMultipleAnnotated(configs: AssertMultipleConfigs): Lint.Ru
     const otherCharacters = configs.failures.map(message => message.char).filter(x => x !== failure.char);
     if (failure.msg) {
       const parsed = parseInvalidSource(configs.source, failure.msg, failure.char, otherCharacters);
-      return assertFailure(configs.ruleName, parsed.source, parsed.failure, configs.options, index);
+      return assertFailure(configs.ruleName, parsed.source, parsed.failure, configs.options, index)
+        .filter(f => {
+          const start = f.getStartPosition().getLineAndCharacter();
+          const end = f.getEndPosition().getLineAndCharacter();
+          return start.character === parsed.failure.startPosition.character &&
+            start.line === parsed.failure.endPosition.line &&
+            end.character === parsed.failure.endPosition.character &&
+            end.line === parsed.failure.endPosition.line;
+        });
     } else {
       assertSuccess(configs.ruleName, configs.source, configs.options);
       return null;
