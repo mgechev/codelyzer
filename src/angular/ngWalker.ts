@@ -172,7 +172,7 @@ export class NgWalker extends Lint.RuleWalker {
           sourceFile, this._originalOptions, context, baseStart, this._config.expressionVisitorCtrl);
       compiler.templateVisitAll(referenceVisitor, roots, null);
       visitor._variables = referenceVisitor.variables;
-      compiler.templateVisitAll(visitor, roots, context.controller);
+      roots.forEach(r => visitor.visit(r, context.controller));
       visitor.getFailures().forEach(f => this.addFailure(f));
     }
   }
