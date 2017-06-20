@@ -4,7 +4,7 @@
 
 - `angular-whitespace: [true, 'check-interpolation', 'check-pipe']` - Checks if there's whitespace around an expression surrounded by interpolation characters, and after a pipe symbol.
 - `banana-in-box: true` - Checks for proper banana in a box syntax - `[(ngModel)]` instead of `([ngModel])`.
-- `no-negated-async: true` - Enforces `(foo | async) === false`, rather than `!(foo | async)`, because of the initial falsy value emitted.
+- `templates-no-negated-async: true` - Enforces `(foo | async) === false`, rather than `!(foo | async)`, because of the initial falsy value emitted.
 - `use-view-encapsulation: true` - Enforces enabled view encapsulation.
 
 **Special thanks to [@wKoza](https://github.com/wKoza), [@GregOnNet](https://github.com/GregOnNet) and [@connor4312](https://github.com/connor4312) for their contributions.**
