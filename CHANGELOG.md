@@ -1,13 +1,15 @@
 # 3.1.0
 
-### Features
-
 **New rules**:
 
 - `angular-whitespace: [true, 'check-interpolation', 'check-pipe']` - Checks if there's whitespace around an expression surrounded by interpolation characters, and after a pipe symbol.
 - `banana-in-box: true` - Checks for proper banana in a box syntax - `[(ngModel)]` instead of `([ngModel])`.
 - `no-negated-async: true` - Enforces `(foo | async) === false`, rather than `!(foo | async)`, because of the initial falsy value emitted.
 - `use-view-encapsulation: true` - Enforces enabled view encapsulation.
+
+**Special thanks to @wKoza, @GregOnNet and @connor4312 for their contributions.**
+
+### Features
 
 - Align to the template parser API of Angular compiler 4.1.0 [#301](https://github.com/mgechev/codelyzer/issues/301) [0fcdcd1](https://github.com/mgechev/codelyzer/commit/0fcdcd102431690f78b4bc923881d324534b52e3)
 - Align to the changes in the template parser API 4.1.3 [#319](https://github.com/mgechev/codelyzer/issues/319) [b608296](https://github.com/mgechev/codelyzer/commit/b60829663383adcaa8b2570f56242ce34e1d94a1)
