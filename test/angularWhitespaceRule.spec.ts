@@ -1,4 +1,4 @@
-import { assertSuccess, assertAnnotated } from './testHelper';
+import { assertSuccess, assertAnnotated, assertMultipleAnnotated } from './testHelper';
 import { Replacement } from 'tslint';
 import { expect } from 'chai';
 
@@ -18,23 +18,11 @@ describe('angular-whitespace', () => {
         assertSuccess('angular-whitespace', source, ['check-interpolation']);
       });
 
-      it('should work with proper style and complex expressions', () => {
-        let source = `
-        @Component({
-          template: \`
-            <div>{{ foo + bar | pipe }}</div>
-          \`
-        })
-        class Bar {}
-        `;
-        assertSuccess('angular-whitespace', source, ['check-interpolation']);
-      });
-
       it('should work with properties', () => {
         let source = `
         @Component({
           template: \`
-            <input [value]="  {{ foo }}">
+	    <input [value]="  {{ foo }}">
           \`
         })
         class Bar {}
@@ -47,9 +35,24 @@ describe('angular-whitespace', () => {
       it('should succeed with proper style', () => {
         let source = `
         @Component({
+	  selector: 'foo',
+          template: \`
+	    <div>{{ foo | async }}</div>
+          \`
+        })
+	class Bar {
+	  foo: any;
+	}
+        `;
+	assertSuccess('angular-whitespace', source, ['check-pipe']);
+      });
+
+      it('should succeed with proper style', () => {
+        let source = `
+        @Component({
           selector: 'foo',
           template: \`
-            <div>{{ foo | async }}</div>
+	    <div>{{ foo | async | uppercase }}</div>
           \`
         })
         class Bar {
@@ -58,6 +61,20 @@ describe('angular-whitespace', () => {
         `;
         assertSuccess('angular-whitespace', source, ['check-pipe']);
       });
+
+      it('should work with proper style and complex expressions', () => {
+	let source = `
+	@Component({
+	  template: \`
+	    <div>{{ foo + bar | pipe }}</div>
+	  \`
+	})
+	class Bar {}
+	`;
+	assertSuccess('angular-whitespace', source, ['check-interpolation']);
+      });
+
+
     });
   });
 
@@ -326,6 +343,47 @@ describe('angular-whitespace', () => {
       }
       `);
     });
+
+    it.only('should fail when no space', () => {
+      let source = `
+      @Component({
+	selector: 'foo',
+	template: \`
+	  <div>{{ foo + 1|async|bar }}</div>
+			^^^   ~~~
+	\`
+      })
+      class Bar {
+	foo: any;
+      }
+      `;
+      const failures = assertMultipleAnnotated({
+	ruleName: 'angular-whitespace',
+	failures: [
+	  { char: '~', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".', },
+	  { char: '^', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".', },
+	],
+	source,
+	options: ['check-pipe']
+      });
+      const fixes = [].concat.apply([], failures.map(f => f.getFix()));
+      console.log(fixes.length);
+      const res = Replacement.applyAll(source, fixes);
+      expect(res).to.eq(`
+      @Component({
+	selector: 'foo',
+	template: \`
+	  <div>{{ foo + 1 | async | bar }}</div>
+			^^^   ~~~
+	\`
+      })
+      class Bar {
+	foo: any;
+      }
+      `);
+    });
+
+
 
     it('should fail when no space in property binding', () => {
       let source = `

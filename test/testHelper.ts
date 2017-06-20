@@ -152,16 +152,17 @@ export function assertAnnotated(config: AssertConfig) {
  * Helper function which asserts multiple annotated failures.
  * @param configs
  */
-export function assertMultipleAnnotated(configs: AssertMultipleConfigs): void {
-  configs.failures.forEach((failure, index) => {
+export function assertMultipleAnnotated(configs: AssertMultipleConfigs): Lint.RuleFailure[] {
+  return [].concat.apply([], configs.failures.map((failure, index) => {
     const otherCharacters = configs.failures.map(message => message.char).filter(x => x !== failure.char);
     if (failure.msg) {
       const parsed = parseInvalidSource(configs.source, failure.msg, failure.char, otherCharacters);
-      assertFailure(configs.ruleName, parsed.source, parsed.failure, configs.options, index);
+      return assertFailure(configs.ruleName, parsed.source, parsed.failure, configs.options, index);
     } else {
       assertSuccess(configs.ruleName, configs.source, configs.options);
+      return null;
     }
-  });
+  }).filter(r => r !== null));
 }
 
 /**
