@@ -1,6 +1,15 @@
 import { assertSuccess, assertAnnotated, assertMultipleAnnotated } from './testHelper';
 import { Replacement } from 'tslint';
 import { expect } from 'chai';
+import { FsFileResolver } from '../src/angular/fileResolver/fsFileResolver';
+import { MetadataReader } from '../src/angular/metadataReader';
+import * as ts from 'typescript';
+import { ComponentMetadata } from '../src/angular/metadata';
+import chai = require('chai');
+
+const getAst = (code: string, file = 'file.ts') => {
+  return ts.createSourceFile(file, code, ts.ScriptTarget.ES5, true);
+};
 
 describe('angular-whitespace', () => {
   describe('success', () => {
@@ -86,7 +95,19 @@ describe('angular-whitespace', () => {
         assertSuccess('angular-whitespace', source, ['check-pipe']);
       });
 
-
+      it('should work with external templates', () => {
+        const code = `
+        @Component({
+          selector: 'foo',
+          moduleId: module.id,
+          templateUrl: 'valid.html',
+        })
+        class Bar {}
+        `;
+        const reader = new MetadataReader(new FsFileResolver());
+        const ast = getAst(code, __dirname + '/../../test/fixtures/angularWhitespace/component.ts');
+        assertSuccess('angular-whitespace', ast, ['check-pipe']);
+      });
     });
   });
 

@@ -1,6 +1,12 @@
 import * as tslint from 'tslint';
 import * as Lint from 'tslint';
 import chai = require('chai');
+import * as ts from 'typescript';
+import { IOptions } from 'tslint';
+import { loadRules, convertRuleOptions } from './utils';
+
+const fs = require('fs');
+const path = require('path');
 
 interface ISourcePosition {
   line: number;
@@ -26,7 +32,7 @@ export interface IExpectedFailure {
  * @param options additional options for the lint rule
  * @returns {LintResult} the result of linting
  */
-function lint(ruleName: string, source: string, options: any): tslint.LintResult {
+function lint(ruleName: string, source: string | ts.SourceFile, options: any): tslint.LintResult {
   let configuration = {
     extends: [],
     rules: new Map<string, Partial<tslint.IOptions>>(),
@@ -46,7 +52,21 @@ function lint(ruleName: string, source: string, options: any): tslint.LintResult
   };
 
   let linter = new tslint.Linter(linterOptions, undefined);
-  linter.lint('file.ts', source, configuration);
+  if (typeof source === 'string') {
+    linter.lint('file.ts', source, configuration);
+  } else {
+    const rules = loadRules(convertRuleOptions(configuration.rules), linterOptions.rulesDirectory, false);
+    const res = [].concat.apply([], rules.map(r => r.apply(source))) as tslint.RuleFailure[];
+    const errCount = res.filter(r => !r.getRuleSeverity || r.getRuleSeverity() === 'error').length;
+    return {
+      errorCount: errCount,
+      warningCount: res.length - errCount,
+      output: '',
+      format: null,
+      fixes: [].concat.apply(res.map(r => r.getFix())),
+      failures: res
+    };
+  }
   return linter.getResult();
 }
 
@@ -235,7 +255,7 @@ export function assertFailures(ruleName: string, source: string, fails: IExpecte
  * @param source
  * @param options
  */
-export function assertSuccess(ruleName: string, source: string, options = null) {
+export function assertSuccess(ruleName: string, source: string | ts.SourceFile, options = null) {
   const result = lint(ruleName, source, options);
   chai.assert.isTrue(result && result.failures.length === 0);
 }

@@ -193,7 +193,13 @@ export class NgWalker extends Lint.RuleWalker {
     if (!path) {
       return current;
     }
-    return ts.createSourceFile(path, `\`${content}\``, ts.ScriptTarget.ES5);
+    const sf = ts.createSourceFile(path, `\`${content}\``, ts.ScriptTarget.ES5);
+    const original = sf.getFullText;
+    sf.getFullText = function () {
+      const text = original.apply(sf);
+      return text.substring(1, text.length - 1);
+    }.bind(sf);
+    return sf;
   }
 }
 
