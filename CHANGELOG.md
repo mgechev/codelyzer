@@ -1,3 +1,10 @@
+# 3.1.1
+
+### Fix
+
+- Incorrect rule name in documentation [#344](https://github.com/mgechev/codelyzer/issues/344) [6656b81](https://github.com/mgechev/codelyzer/commit/6656b81dfd6466e090776d0bdb9f225169b6b7f0)
+- Proper displacement in the reports for non-TypeScript files [#343](https://github.com/mgechev/codelyzer/issues/343) [c503510](https://github.com/mgechev/codelyzer/commit/c5035101957fe1223915968272c42feb47a7c6fa)
+
 # 3.1.0
 
 ### New rules
