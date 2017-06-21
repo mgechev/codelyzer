@@ -108,6 +108,21 @@ describe('angular-whitespace', () => {
         const ast = getAst(code, __dirname + '/../../test/fixtures/angularWhitespace/component.ts');
         assertSuccess('angular-whitespace', ast, ['check-pipe']);
       });
+
+      it('should succeed with ngFor', () => {
+        let source = `
+        @Component({
+          selector: 'foo',
+          template: \`
+            <div *ngFor="let pony of ponies | slice:0:1">{{ pony }}</div>
+          \`
+        })
+        class Bar {
+          ponies = [];
+        }
+        `;
+        assertSuccess('angular-whitespace', source, ['check-pipe']);
+      });
     });
   });
 
