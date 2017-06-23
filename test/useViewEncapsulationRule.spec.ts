@@ -1,4 +1,4 @@
-import { assertAnnotated, assertSuccess } from './testHelper';
+import {assertAnnotated, assertSuccess} from './testHelper';
 
 describe('use-view-encapsulation', () => {
   describe('invalid view encapsulation', () => {
@@ -55,5 +55,16 @@ describe('use-view-encapsulation', () => {
 
       assertSuccess('use-view-encapsulation', source);
     });
+
+    it('should succeed if a class is not a component', () => {
+      const source = `
+        @NgModule({
+          bootstrap: [Foo]
+        })
+        export class TestModule { }
+      `;
+      assertSuccess('use-view-encapsulation', source);
+    });
+
   });
 });
