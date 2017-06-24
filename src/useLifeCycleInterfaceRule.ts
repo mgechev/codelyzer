@@ -22,7 +22,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true,
   };
 
-  static FAILURE:string = 'Implement lifecycle hook interface %s for method %s in class %s (https://angular.io/styleguide#style-09-01)';
+  static FAILURE = 'Implement lifecycle hook interface %s for method %s in class %s (https://angular.io/styleguide#style-09-01)';
 
   static HOOKS_PREFIX = 'ng';
 

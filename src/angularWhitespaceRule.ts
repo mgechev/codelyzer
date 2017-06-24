@@ -177,8 +177,6 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true,
   };
 
-  static FAILURE: string = 'The %s "%s" that you\'re trying to access does not exist in the class declaration.';
-
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
         new NgWalker(sourceFile,
