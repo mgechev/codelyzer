@@ -140,7 +140,7 @@ class ElementFilterVisitor extends BasicTemplateAstVisitor {
 
 export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'no-unused-css-rule',
+    ruleName: 'no-unused-css',
     type: 'maintainability',
     description: `Disallows having an unused CSS rule in the component's stylesheet.`,
     options: null,
