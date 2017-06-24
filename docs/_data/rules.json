@@ -226,7 +226,7 @@
     "typescriptOnly": true
   },
   {
-    "ruleName": "no-unused-css-rule",
+    "ruleName": "no-unused-css",
     "type": "maintainability",
     "description": "Disallows having an unused CSS rule in the component's stylesheet.",
     "options": null,

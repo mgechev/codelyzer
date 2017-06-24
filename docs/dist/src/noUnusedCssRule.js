@@ -149,7 +149,7 @@ var Rule = (function (_super) {
     return Rule;
 }(Lint.Rules.AbstractRule));
 Rule.metadata = {
-    ruleName: 'no-unused-css-rule',
+    ruleName: 'no-unused-css',
     type: 'maintainability',
     description: "Disallows having an unused CSS rule in the component's stylesheet.",
     options: null,
