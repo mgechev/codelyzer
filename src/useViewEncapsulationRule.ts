@@ -1,8 +1,8 @@
-import { getComponentDecorator, getDecoratorPropertyInitializer } from './util/utils';
+import {getComponentDecorator, getDecoratorPropertyInitializer} from './util/utils';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 
-import { NgWalker } from './angular/ngWalker';
+import {NgWalker} from './angular/ngWalker';
 
 export class Rule extends Lint.Rules.AbstractRule {
 
@@ -28,10 +28,14 @@ class ViewEncapsulationWalker extends NgWalker {
 
   visitClassDeclaration(node: ts.ClassDeclaration) {
     const decorator = getComponentDecorator(node);
+
+    if (!decorator) {
+      return;
+    }
     const encapsulation = getDecoratorPropertyInitializer(decorator, 'encapsulation');
 
-    if(!encapsulation ||
-        encapsulation.name.text !== 'None') {
+    if (!encapsulation ||
+      encapsulation.name.text !== 'None') {
       return;
     }
 
