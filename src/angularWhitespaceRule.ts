@@ -12,6 +12,8 @@ const InterpolationClose = Config.interpolation[1];
 const InterpolationNoWhitespaceRe =new RegExp(`${InterpolationOpen}\\S(.*?)\\S${InterpolationClose}|${InterpolationOpen}\\s(.*?)\\S${InterpolationClose}|${InterpolationOpen}\\S(.*?)\\s${InterpolationClose}`);
 const InterpolationExtraWhitespaceRe =
   new RegExp(`${InterpolationOpen}\\s\\s(.*?)\\s${InterpolationClose}|${InterpolationOpen}\\s(.*?)\\s\\s${InterpolationClose}`);
+const SemicolonNoWhitespaceRe =new RegExp(/;\S(.*)/);
+
 
 const getReplacements = (text: ast.BoundTextAst, absolutePosition: number) => {
   const expr: string = (text.value as any).source;
@@ -26,7 +28,16 @@ const getReplacements = (text: ast.BoundTextAst, absolutePosition: number) => {
   ];
 };
 
-type Option = 'check-interpolation' | 'check-pipe';
+
+const getSemicolonReplacements = (text: ast.BoundDirectivePropertyAst, absolutePosition: number) => {
+
+  return [
+    new Lint.Replacement(absolutePosition, 1, "; ")
+  ];
+
+};
+
+type Option = 'check-interpolation' | 'check-pipe' | 'check-semicolon';
 
 interface ConfigurableVisitor {
   getOption(): Option;
@@ -65,9 +76,42 @@ class InterpolationWhitespaceVisitor extends BasicTemplateAstVisitor implements 
   }
 }
 
+class SemicolonTempalteVisitor extends BasicTemplateAstVisitor implements ConfigurableVisitor {
+
+  visitDirectiveProperty(prop: ast.BoundDirectivePropertyAst, context: BasicTemplateAstVisitor): any {
+
+    if (prop.sourceSpan) {
+      const directive = (<any>prop.sourceSpan).toString();
+      let expr = directive.split("=")[1].trim();
+      expr = expr.substring(1,expr.length-1).trim();
+
+      // Note that will not be reliable for different interpolation symbols
+      let error = null;
+
+      if (SemicolonNoWhitespaceRe.test(expr)) {
+        error = 'Missing whitespace after semicolon; expecting \'; expr\'';
+        const internalStart = expr.search(SemicolonNoWhitespaceRe)+1;
+        const start = prop.sourceSpan.start.offset + internalStart + directive.length - directive.split("=")[1].trim().length +1;
+        const absolutePosition = context.getSourcePosition(start-1);
+        return context.addFailure(context.createFailure(start, 2,
+          error, getSemicolonReplacements(prop, absolutePosition))
+        );
+      }
+    }
+
+  }
+
+  getOption(): Option {
+    return 'check-semicolon';
+  }
+
+}
+
+
 class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
   private visitors: (BasicTemplateAstVisitor & ConfigurableVisitor)[] = [
-    new InterpolationWhitespaceVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart)
+    new InterpolationWhitespaceVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart),
+    new SemicolonTempalteVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart)
   ];
 
   visitBoundText(text: ast.BoundTextAst, context: any): any {
@@ -79,7 +123,20 @@ class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
       .forEach(f => this.addFailure(f));
     super.visitBoundText(text, context);
   }
+
+  visitDirectiveProperty(prop: ast.BoundDirectivePropertyAst, context: any): any {
+    const options = this.getOptions();
+    this.visitors
+      .filter(v => options.indexOf(v.getOption()) >= 0)
+      .map(v => v.visitDirectiveProperty(prop, this))
+      .filter(f => !!f)
+      .forEach(f => this.addFailure(f));
+    super.visitDirectiveProperty(prop, context);
+  }
+
+
 }
+
 
 /* Expression visitors */
 
@@ -122,8 +179,8 @@ class PipeWhitespaceVisitor extends RecursiveAngularExpressionVisitor implements
     if (replacements.length) {
       context.addFailure(
         context.createFailure(ast.exp.span.end - 1, 3,
-        'The pipe operator should be surrounded by one space on each side, i.e. " | ".',
-        replacements)
+          'The pipe operator should be surrounded by one space on each side, i.e. " | ".',
+          replacements)
       );
     }
     super.visitPipe(ast, context);
@@ -162,16 +219,19 @@ export class Rule extends Lint.Rules.AbstractRule {
     description: `Ensures the proper formatting of Angular expressions.`,
     rationale: `Having whitespace in the right places in an Angular expression makes the template more readable.`,
     optionsDescription: Lint.Utils.dedent`
-      One argument may be optionally provided:
-      * \`"check-interpolation"\` checks for whitespace before and after the interpolation characters`,
+      Arguments may be optionally provided:
+      * \`"check-interpolation"\` checks for whitespace before and after the interpolation characters
+      * \`"check-pipe"\` checks for whitespace before and after a pipe
+      * \`"check-semicolon"\` checks for whitespace after semicolon`,
+
     options: {
       type: 'array',
       items: {
         type: 'string',
-        enum: ['check-interpolation'],
+        enum: ['check-interpolation', 'check-pipe', 'check-semicolon'],
       },
       minLength: 0,
-      maxLength: 1,
+      maxLength: 3,
     },
     optionExamples: ['[true, "check-interpolation"]'],
     typescriptOnly: true,
@@ -179,10 +239,10 @@ export class Rule extends Lint.Rules.AbstractRule {
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
-        new NgWalker(sourceFile,
-            this.getOptions(), {
-              templateVisitorCtrl: WhitespaceTemplateVisitor,
-              expressionVisitorCtrl: TemplateExpressionVisitor
-            }));
+      new NgWalker(sourceFile,
+        this.getOptions(), {
+          templateVisitorCtrl: WhitespaceTemplateVisitor,
+          expressionVisitorCtrl: TemplateExpressionVisitor,
+        }));
   }
 }

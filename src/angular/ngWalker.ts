@@ -47,12 +47,6 @@ export class NgWalker extends Lint.RuleWalker {
       cssVisitorCtrl: BasicCssAstVisitor
     }, this._config || {});
 
-    this._config = Object.assign({
-      templateVisitorCtrl: BasicTemplateAstVisitor,
-      expressionVisitorCtrl: RecursiveAngularExpressionVisitor,
-      cssVisitorCtrl: BasicCssAstVisitor
-    }, this._config || {});
-    // this._config = ngWalkerFactoryUtils.normalizeConfig(this._config);
   }
 
   visitClassDeclaration(declaration: ts.ClassDeclaration) {
