@@ -46,7 +46,7 @@ export class Rule extends Lint.Rules.AbstractRule {
                                 // We only care about 1 since we highlight the whole 'parameter'
                                 return decoratorsFailed.fmap(() =>
                                     new Failure(p, sprintf(Rule.FAILURE_STRING,
-                                        parentName, (<any> p.name).text, (<any> p.name).text)));
+                                        parentName, (<any>p.name).text, (<any>p.name).text)));
                             })
                     );
                     return listToMaybe(failures);

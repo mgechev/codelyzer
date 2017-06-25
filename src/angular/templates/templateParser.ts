@@ -51,7 +51,7 @@ let defaultDirectives = [];
 export const parseTemplate = (template: string, directives: DirectiveDeclaration[] = []) => {
   defaultDirectives = directives.map(d => dummyMetadataFactory(d));
 
-  const TemplateParser = <any> compiler.TemplateParser;
+  const TemplateParser = <any>compiler.TemplateParser;
   const expressionParser = new compiler.Parser(new compiler.Lexer());
   const elementSchemaRegistry = new compiler.DomElementSchemaRegistry();
   const ngConsole = new Console();

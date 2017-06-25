@@ -8,7 +8,7 @@ import * as spies from 'chai-spies';
 
 chai.use(spies);
 
-const chaiSpy = (<any> chai).spy;
+const chaiSpy = (<any>chai).spy;
 
 describe('basicCssAstVisitor', () => {
 
@@ -29,10 +29,10 @@ describe('basicCssAstVisitor', () => {
     };
     let sf = ts.createSourceFile('foo', source, null);
     let walker = new NgWalker(sf, ruleArgs);
-    (<any> chai).expect(() => {
+    (<any>chai).expect(() => {
       let templateSpy = chaiSpy.on(BasicCssAstVisitor.prototype, 'visitCssStyleSheet');
       walker.walk(sf);
-      (<any> chai.expect(templateSpy).to.have.been).called();
+      (<any>chai.expect(templateSpy).to.have.been).called();
     }).not.to.throw();
   });
 
@@ -56,12 +56,12 @@ describe('basicCssAstVisitor', () => {
     };
     let sf = ts.createSourceFile('foo', source, null);
     let walker = new NgWalker(sf, ruleArgs);
-    (<any> chai).expect(() => {
+    (<any>chai).expect(() => {
       let selectorSpy = chaiSpy.on(BasicCssAstVisitor.prototype, 'visitCssSelector');
       let pseudoSelectorSpy = chaiSpy.on(BasicCssAstVisitor.prototype, 'visitCssPseudoSelector');
       walker.walk(sf);
-      (<any> chai.expect(selectorSpy).to.have.been).called();
-      (<any> chai.expect(pseudoSelectorSpy).to.have.been).called();
+      (<any>chai.expect(selectorSpy).to.have.been).called();
+      (<any>chai.expect(pseudoSelectorSpy).to.have.been).called();
     }).not.to.throw();
   });
 

@@ -96,13 +96,13 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
   }
 
   visitClassDeclaration(node: ts.ClassDeclaration) {
-    (<ts.Decorator[]> node.decorators || [])
+    (<ts.Decorator[]>node.decorators || [])
       .forEach(this.validateDecorator.bind(this, node.name.text));
     super.visitClassDeclaration(node);
   }
 
   private validateDecorator(className: string, decorator: ts.Decorator) {
-    let baseExpr = <any> decorator.expression || {};
+    let baseExpr = <any>decorator.expression || {};
     let expr = baseExpr.expression || {};
     let name = expr.text;
     let args = baseExpr.arguments || [];
@@ -115,8 +115,8 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
 
   private validateSelector(className: string, arg: ts.Node) {
     if (arg.kind === SyntaxKind.current().ObjectLiteralExpression) {
-      (<ts.ObjectLiteralExpression> arg).properties.filter(prop => this.validateProperty(prop))
-        .map(prop => (<any> prop).initializer)
+      (<ts.ObjectLiteralExpression>arg).properties.filter(prop => this.validateProperty(prop))
+        .map(prop => (<any>prop).initializer)
         .forEach(i => {
           const selectors: compiler.CssSelector[] = this.extractMainSelector(i);
           if (!this.rule.validateType(selectors)) {
@@ -138,7 +138,7 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
   }
 
   private validateProperty(p: any) {
-    return (<any> p.name).text === 'selector' && p.initializer && this.isSupportedKind(p.initializer.kind);
+    return (<any>p.name).text === 'selector' && p.initializer && this.isSupportedKind(p.initializer.kind);
   }
 
   private isSupportedKind(kind: number): boolean {

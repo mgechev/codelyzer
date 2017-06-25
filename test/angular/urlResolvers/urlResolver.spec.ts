@@ -34,7 +34,7 @@ describe('urlResolver', () => {
       const ast = getAst(source);
       const resolver = new DummyResolver();
       const template = resolver.getTemplate(ast.statements.pop().decorators[0]);
-      (<any> chai).expect(template).eq('./foo/bar');
+      (<any>chai).expect(template).eq('./foo/bar');
     });
 
     it('should be able to resolve templateUrls set with template string', () => {
@@ -47,7 +47,7 @@ describe('urlResolver', () => {
       const ast = getAst(source);
       const resolver = new DummyResolver();
       const template = resolver.getTemplate(ast.statements.pop().decorators[0]);
-      (<any> chai).expect(template).eq('./foo/bar');
+      (<any>chai).expect(template).eq('./foo/bar');
     });
 
 
@@ -61,7 +61,7 @@ describe('urlResolver', () => {
       const ast = getAst(source);
       const resolver = new DummyResolver();
       const template = resolver.getTemplate(ast.statements.pop().decorators[0]);
-      (<any> chai).expect(template).eq(null);
+      (<any>chai).expect(template).eq(null);
     });
 
     it('should not be able to resolve missing templateUrl', () => {
@@ -74,7 +74,7 @@ describe('urlResolver', () => {
       const ast = getAst(source);
       const resolver = new DummyResolver();
       const template = resolver.getTemplate(ast.statements.pop().decorators[0]);
-      (<any> chai).expect(template).eq(null);
+      (<any>chai).expect(template).eq(null);
     });
 
 
@@ -86,7 +86,7 @@ describe('urlResolver', () => {
       const ast = getAst(source);
       const resolver = new DummyResolver();
       const template = resolver.getTemplate(ast.statements.pop().decorators[0]);
-      (<any> chai).expect(template).eq(null);
+      (<any>chai).expect(template).eq(null);
     });
 
 
@@ -98,7 +98,7 @@ describe('urlResolver', () => {
       const ast = getAst(source);
       const resolver = new DummyResolver();
       const template = resolver.getTemplate(ast.statements.pop().decorators[0]);
-      (<any> chai).expect(template).eq(null);
+      (<any>chai).expect(template).eq(null);
     });
   });
 

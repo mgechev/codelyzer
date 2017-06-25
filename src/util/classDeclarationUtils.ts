@@ -9,7 +9,7 @@ export const getDeclaredProperties = (declaration: ts.ClassDeclaration) => {
   const ctr = m.filter((m: any) => m.kind === SyntaxKind.Constructor).pop();
   let params: any = [];
   if (ctr) {
-    params = (((<ts.ConstructorDeclaration> ctr).parameters || []) as any)
+    params = (((<ts.ConstructorDeclaration>ctr).parameters || []) as any)
       .filter((p: any) => p.kind === SyntaxKind.Parameter);
   }
   return m.filter((m: any) => m.kind === SyntaxKind.PropertyDeclaration ||
@@ -31,7 +31,7 @@ export const getDeclaredMethods = (declaration: ts.ClassDeclaration) => {
 
 export const getDeclaredMethodNames = (declaration: ts.ClassDeclaration) => {
   return getDeclaredMethods(declaration)
-    .map((d: any) => (<ts.Identifier> d.name).text)
+    .map((d: any) => (<ts.Identifier>d.name).text)
     .reduce((accum: FlatSymbolTable, m: string) => {
       accum[m] = true;
       return accum;

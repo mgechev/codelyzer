@@ -29,8 +29,8 @@ export class Rule extends Lint.Rules.AbstractRule {
 
 export class OutputMetadataWalker extends NgWalker {
   visitNgOutput(property: ts.PropertyDeclaration, output: ts.Decorator, args: string[]) {
-    let className = (<any> property).parent.name.text;
-    let memberName = (<any> property.name).text;
+    let className = (<any>property).parent.name.text;
+    let memberName = (<any>property.name).text;
     if (args.length !== 0 && memberName !== args[0]) {
       let failureConfig: string[] = [className, memberName, memberName];
       failureConfig.unshift(Rule.FAILURE_STRING);

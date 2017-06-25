@@ -19,7 +19,7 @@ const getExpressionDisplacement = (binding: any) => {
     // the binding type. For event it is 0. (+1 because of the ".")
     let subBindingLen = 0;
     if (binding instanceof ast.BoundElementPropertyAst) {
-      let prop: ast.BoundElementPropertyAst = <ast.BoundElementPropertyAst> binding;
+      let prop: ast.BoundElementPropertyAst = <ast.BoundElementPropertyAst>binding;
       // The length of the binding type
       switch (prop.type) {
         case ast.PropertyBindingType.Animation:
@@ -122,8 +122,8 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
   }
 
   visitElementProperty(prop: ast.BoundElementPropertyAst, context: any): any {
-    const ast: any = (<e.ASTWithSource> prop.value).ast;
-    ast.interpolateExpression = (<any> prop.value).source;
+    const ast: any = (<e.ASTWithSource>prop.value).ast;
+    ast.interpolateExpression = (<any>prop.value).source;
     this.visitNgTemplateAST(prop.value, this.templateStart + getExpressionDisplacement(prop));
   }
 
@@ -132,8 +132,8 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
   visitBoundText(text: ast.BoundTextAst, context: any): any {
     if (ExpTypes.ASTWithSource(text.value)) {
       // Note that will not be reliable for different interpolation symbols
-      const ast: any = (<e.ASTWithSource> text.value).ast;
-      ast.interpolateExpression = (<any> text.value).source;
+      const ast: any = (<e.ASTWithSource>text.value).ast;
+      ast.interpolateExpression = (<any>text.value).source;
       this.visitNgTemplateAST(ast,
           this.templateStart + getExpressionDisplacement(text));
     }

@@ -18,7 +18,7 @@ export abstract class AbstractResolver {
       return null;
     }
     const prop = arg.properties.filter((p: ts.PropertyAssignment) => {
-      if ((<any> p.name).text === 'templateUrl' && isSimpleTemplateString(p.initializer)) {
+      if ((<any>p.name).text === 'templateUrl' && isSimpleTemplateString(p.initializer)) {
         return true;
       }
       return false;
@@ -26,7 +26,7 @@ export abstract class AbstractResolver {
     if (prop) {
       // We know that it's has an initializer because it's either
       // a template string or a string literal.
-      return (<any> (<ts.PropertyAssignment> prop).initializer).text;
+      return (<any>(<ts.PropertyAssignment>prop).initializer).text;
     } else {
       return null;
     }
@@ -38,13 +38,13 @@ export abstract class AbstractResolver {
       return [];
     }
     const prop = arg.properties.filter((p: ts.PropertyAssignment) => {
-      if ((<any> p.name).text === 'styleUrls' && p.initializer.kind === kinds.ArrayLiteralExpression) {
+      if ((<any>p.name).text === 'styleUrls' && p.initializer.kind === kinds.ArrayLiteralExpression) {
         return true;
       }
       return false;
     }).pop();
     if (prop) {
-      return (<ts.ArrayLiteralExpression> (<ts.PropertyAssignment> prop).initializer).elements.filter((e: any) => {
+      return (<ts.ArrayLiteralExpression>(<ts.PropertyAssignment>prop).initializer).elements.filter((e: any) => {
         return isSimpleTemplateString(e);
       }).map((e: any) => {
         return e.text;
@@ -55,9 +55,9 @@ export abstract class AbstractResolver {
   }
 
   protected getDecoratorArgument(decorator: ts.Decorator): ts.ObjectLiteralExpression {
-    const expr = <ts.CallExpression> decorator.expression;
+    const expr = <ts.CallExpression>decorator.expression;
     if (expr && expr.arguments && expr.arguments.length) {
-      const arg = <ts.ObjectLiteralExpression> expr.arguments[0];
+      const arg = <ts.ObjectLiteralExpression>expr.arguments[0];
       if (arg.kind === kinds.ObjectLiteralExpression && arg.properties) {
         return arg;
       }

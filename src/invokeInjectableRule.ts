@@ -26,7 +26,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 
 export class ValidateInjectableWalker extends NgWalker {
   visitClassDeclaration(declaration: ts.ClassDeclaration) {
-    (<ts.Decorator[]> declaration.decorators || [])
+    (<ts.Decorator[]>declaration.decorators || [])
       .forEach((d: any) => {
         // This means that "Injectable" is used as Identifier,
         // not as a call expression.

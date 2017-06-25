@@ -91,7 +91,7 @@ class ElementVisitor extends BasicTemplateAstVisitor {
     fn(ast);
     ast.children.forEach(c => {
       if (c instanceof ElementAst) {
-        (<any> c).parentNode = ast;
+        (<any>c).parentNode = ast;
       }
       this.visit(c, fn);
     });
@@ -132,9 +132,9 @@ class ElementFilterVisitor extends BasicTemplateAstVisitor {
       const strategy = strategies[s];
       return !selectorTypes[s] || !strategy(ast);
     }) && (ast.children || [])
-      .every(c => ast instanceof ElementAst && this.shouldVisit(<ElementAst> c, strategies, selectorTypes)
+      .every(c => ast instanceof ElementAst && this.shouldVisit(<ElementAst>c, strategies, selectorTypes)
                   || ast instanceof EmbeddedTemplateAst &&
-                  (ast.children || []).every(c => this.shouldVisit(<ElementAst> c, strategies, selectorTypes)));
+                  (ast.children || []).every(c => this.shouldVisit(<ElementAst>c, strategies, selectorTypes)));
   }
 }
 
@@ -210,7 +210,7 @@ class UnusedCssVisitor extends BasicCssAstVisitor {
       a[key] = hasSelector(tokenized, key);
       return a;
     }, {});
-    if (!elementFilterVisitor.shouldVisit(<ElementAst> this.templateAst, dynamicFilters, selectorTypesCache)) {
+    if (!elementFilterVisitor.shouldVisit(<ElementAst>this.templateAst, dynamicFilters, selectorTypesCache)) {
       return true;
     }
     let matchFound = false;
@@ -234,7 +234,7 @@ export class UnusedCssNgVisitor extends NgWalker {
   visitClassDeclaration(declaration: ts.ClassDeclaration) {
     const d = getComponentDecorator(declaration);
     if (d) {
-      const meta: ComponentMetadata = <ComponentMetadata> this._metadataReader.read(declaration);
+      const meta: ComponentMetadata = <ComponentMetadata>this._metadataReader.read(declaration);
       this.visitNgComponent(meta);
       if (meta.template && meta.template.template) {
         try {

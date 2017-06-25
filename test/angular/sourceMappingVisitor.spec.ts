@@ -28,10 +28,10 @@ describe('SourceMappingVisitor', () => {
 
   it('should map to correct position', () => {
     const ast = getAst(fixture1);
-    const classDeclaration = <ts.ClassDeclaration> ast.statements.pop();
+    const classDeclaration = <ts.ClassDeclaration>ast.statements.pop();
     const styles = getDecoratorPropertyInitializer(classDeclaration.decorators.pop(), 'styles');
-    const styleNode = <ts.Node> styles.elements[0];
-    const scss = (<any> styleNode).text;
+    const styleNode = <ts.Node>styles.elements[0];
+    const scss = (<any>styleNode).text;
     const result = renderSync({ outFile: '/tmp/bar', data: scss, sourceMap: true });
     const visitor = new SourceMappingVisitor(ast, {
         disabledIntervals: null, ruleName: 'foo', ruleArguments: [], ruleSeverity: 'warning'
