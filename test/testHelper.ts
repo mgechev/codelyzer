@@ -44,7 +44,7 @@ function lint(ruleName: string, source: string | ts.SourceFile, options: any): t
   }
   const ops: Partial<tslint.IOptions> = { ruleName, ruleArguments: options, disabledIntervals: [] };
   configuration.rules.set(ruleName, ops);
-  var linterOptions: tslint.ILinterOptions = {
+  const linterOptions: tslint.ILinterOptions = {
     formatter: 'json',
     rulesDirectory: './dist/src',
     formattersDirectory: null,
