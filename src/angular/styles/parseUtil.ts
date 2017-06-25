@@ -40,7 +40,7 @@ export abstract class ParseError {
       if (ctxStart > source.length - 1) {
         ctxStart = source.length - 1;
       }
-      const ctxEnd = ctxStart;
+      let ctxEnd = ctxStart;
       let ctxLen = 0;
       let ctxLines = 0;
 
