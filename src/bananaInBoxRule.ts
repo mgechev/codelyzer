@@ -50,8 +50,6 @@ class BananaInBoxTemplateVisitor extends BasicTemplateAstVisitor {
   }
 }
 
-
-
 export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'banana-in-box',

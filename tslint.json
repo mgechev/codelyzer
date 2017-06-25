@@ -23,6 +23,7 @@
       "private-instance-method"
     ]}],
     "no-arg": true,
+    "no-consecutive-blank-lines": [true, 2],
     "no-construct": true,
     "no-duplicate-variable": true,
     "no-eval": true,
