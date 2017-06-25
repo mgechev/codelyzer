@@ -12,7 +12,7 @@ const InterpolationClose = Config.interpolation[1];
 const InterpolationNoWhitespaceRe =new RegExp(`${InterpolationOpen}\\S(.*?)\\S${InterpolationClose}|${InterpolationOpen}\\s(.*?)\\S${InterpolationClose}|${InterpolationOpen}\\S(.*?)\\s${InterpolationClose}`);
 const InterpolationExtraWhitespaceRe =
   new RegExp(`${InterpolationOpen}\\s\\s(.*?)\\s${InterpolationClose}|${InterpolationOpen}\\s(.*?)\\s\\s${InterpolationClose}`);
-const SemicolonNoWhitespaceRe =new RegExp(/;\S(.*)/);
+const SemicolonNoWhitespaceRe = new RegExp(/;\S(.*)/);
 
 
 const getReplacements = (text: ast.BoundTextAst, absolutePosition: number) => {
@@ -32,7 +32,7 @@ const getReplacements = (text: ast.BoundTextAst, absolutePosition: number) => {
 const getSemicolonReplacements = (text: ast.BoundDirectivePropertyAst, absolutePosition: number) => {
 
   return [
-    new Lint.Replacement(absolutePosition, 1, "; ")
+    new Lint.Replacement(absolutePosition, 1, '; ')
   ];
 
 };
@@ -82,17 +82,17 @@ class SemicolonTempalteVisitor extends BasicTemplateAstVisitor implements Config
 
     if (prop.sourceSpan) {
       const directive = (<any>prop.sourceSpan).toString();
-      let expr = directive.split("=")[1].trim();
-      expr = expr.substring(1,expr.length-1).trim();
+      let expr = directive.split('=')[1].trim();
+      expr = expr.substring(1,expr.length - 1).trim();
 
       // Note that will not be reliable for different interpolation symbols
       let error = null;
 
       if (SemicolonNoWhitespaceRe.test(expr)) {
         error = 'Missing whitespace after semicolon; expecting \'; expr\'';
-        const internalStart = expr.search(SemicolonNoWhitespaceRe)+1;
-        const start = prop.sourceSpan.start.offset + internalStart + directive.length - directive.split("=")[1].trim().length +1;
-        const absolutePosition = context.getSourcePosition(start-1);
+        const internalStart = expr.search(SemicolonNoWhitespaceRe) + 1;
+        const start = prop.sourceSpan.start.offset + internalStart + directive.length - directive.split('=')[1].trim().length + 1;
+        const absolutePosition = context.getSourcePosition(start - 1);
         return context.addFailure(context.createFailure(start, 2,
           error, getSemicolonReplacements(prop, absolutePosition))
         );
