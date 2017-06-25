@@ -25,7 +25,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   static FAILURE: string = 'The %s class implements the PipeTransform interface, so it should use the @Pipe decorator';
   static PIPE_INTERFACE_NAME = 'PipeTransform';
 
-  public apply(sourceFile:ts.SourceFile):Lint.RuleFailure[] {
+  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
       new ClassMetadataWalker(sourceFile,
         this.getOptions()));
@@ -34,13 +34,13 @@ export class Rule extends Lint.Rules.AbstractRule {
 
 export class ClassMetadataWalker extends Lint.RuleWalker {
 
-  visitClassDeclaration(node:ts.ClassDeclaration) {
+  visitClassDeclaration(node: ts.ClassDeclaration) {
     if (this.hasIPipeTransform(node)) {
         let decorators =  <any[]>node.decorators || [];
-        let className:string = node.name.text;
-        let pipes:Array<string> = decorators.map(d =>
+        let className: string = node.name.text;
+        let pipes: Array<string> = decorators.map(d =>
         (<any>d.expression).text ||
-        ((<any>d.expression).expression || {}).text).filter( t=> t === 'Pipe');
+        ((<any>d.expression).expression || {}).text).filter( t => t === 'Pipe');
         if (pipes.length === 0) {
          this.addFailure(
                     this.createFailure(

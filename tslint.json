@@ -25,6 +25,16 @@
     "quotemark": [true, "single"],
     "semicolon": true,
     "triple-equals": true,
-    "variable-name": false
+    "variable-name": false,
+    "whitespace": [
+      true,
+      "check-branch",
+      "check-decl",
+      "check-module",
+      "check-operator",
+      "check-preblock",
+      "check-separator",
+      "check-type"
+    ]
   }
 }

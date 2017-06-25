@@ -17,7 +17,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 
   static FAILURE_STRING: string = 'You have to invoke @Injectable()';
 
-  public apply(sourceFile:ts.SourceFile):Lint.RuleFailure[] {
+  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
       new ValidateInjectableWalker(sourceFile,
         this.getOptions()));

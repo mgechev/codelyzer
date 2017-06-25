@@ -9,7 +9,7 @@ import { RecursiveAngularExpressionVisitor } from './angular/templates/recursive
 
 const InterpolationOpen = Config.interpolation[0];
 const InterpolationClose = Config.interpolation[1];
-const InterpolationNoWhitespaceRe =new RegExp(`${InterpolationOpen}\\S(.*?)\\S${InterpolationClose}|${InterpolationOpen}` +
+const InterpolationNoWhitespaceRe = new RegExp(`${InterpolationOpen}\\S(.*?)\\S${InterpolationClose}|${InterpolationOpen}` +
   `\\s(.*?)\\S${InterpolationClose}|${InterpolationOpen}\\S(.*?)\\s${InterpolationClose}`);
 const InterpolationExtraWhitespaceRe =
   new RegExp(`${InterpolationOpen}\\s\\s(.*?)\\s${InterpolationClose}|${InterpolationOpen}\\s(.*?)\\s\\s${InterpolationClose}`);

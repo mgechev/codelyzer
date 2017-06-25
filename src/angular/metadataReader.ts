@@ -12,7 +12,7 @@ import {
   DirectiveMetadata, ComponentMetadata, CodeWithSourceMap, TemplateMetadata, StylesMetadata,
   StyleMetadata
 } from './metadata';
-import {Maybe, unwrapFirst, ifTrue, listToMaybe,} from '../util/function';
+import {Maybe, unwrapFirst, ifTrue, listToMaybe} from '../util/function';
 import {
   callExpression, withIdentifier, hasProperties,
   isSimpleTemplateString, getStringInitializerFromProperty, decoratorArgument
