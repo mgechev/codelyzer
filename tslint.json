@@ -38,6 +38,7 @@
     "semicolon": true,
     "triple-equals": true,
     "variable-name": false,
+    "space-before-function-paren": [true, "never"],
     "whitespace": [
       true,
       "check-branch",

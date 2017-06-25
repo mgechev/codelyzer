@@ -88,7 +88,7 @@ describe('component-class-suffix', () => {
             assertSuccess('component-class-suffix', source, ['Page', 'View']);
         });
 
-        it('should fail when different list of suffix is set and doesnt match', function () {
+        it('should fail when different list of suffix is set and doesnt match', function() {
             let source = `
             @Component({
                 selector: 'sgBarFoo'
