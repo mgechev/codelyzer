@@ -34,7 +34,8 @@
       "check-operator",
       "check-preblock",
       "check-separator",
-      "check-type"
+      "check-type",
+      "check-typecast"
     ]
   }
 }

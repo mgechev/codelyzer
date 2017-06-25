@@ -14,7 +14,7 @@ export class UsePropertyDecorator extends Lint.Rules.AbstractRule {
   public static formatFailureString(config: IUsePropertyDecoratorConfig, decoratorName: string, className: string) {
     let decorators = config.decoratorName;
     if (decorators instanceof Array) {
-      decorators = (<string[]>decorators).map(d => `"@${d}"`).join(', ');
+      decorators = (<string[]> decorators).map(d => `"@${d}"`).join(', ');
     } else {
       decorators = `"@${decorators}"`;
     }
@@ -38,13 +38,13 @@ class DirectiveMetadataWalker extends Lint.RuleWalker {
   }
 
   visitClassDeclaration(node: ts.ClassDeclaration) {
-    (<ts.Decorator[]>node.decorators || [])
+    (<ts.Decorator[]> node.decorators || [])
       .forEach(this.validateDecorator.bind(this, node.name.text));
     super.visitClassDeclaration(node);
   }
 
   private validateDecorator(className: string, decorator: ts.Decorator) {
-    let baseExpr = <any>decorator.expression || {};
+    let baseExpr = <any> decorator.expression || {};
     let expr = baseExpr.expression || {};
     let name = expr.text;
     let args = baseExpr.arguments || [];
@@ -56,11 +56,11 @@ class DirectiveMetadataWalker extends Lint.RuleWalker {
 
   private validateProperty(className: string, decoratorName: string, arg: ts.ObjectLiteralExpression) {
     if (arg.kind === SyntaxKind.current().ObjectLiteralExpression) {
-      (<ts.ObjectLiteralExpression>arg)
+      (<ts.ObjectLiteralExpression> arg)
         .properties
-        .filter(prop => (<any>prop.name).text === this.config.propertyName)
+        .filter(prop => (<any> prop.name).text === this.config.propertyName)
         .forEach(prop => {
-          let p = <any>prop;
+          let p = <any> prop;
           this.addFailure(
             this.createFailure(
               p.getStart(),

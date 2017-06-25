@@ -95,7 +95,7 @@ export class ClassMetadataWalker extends NgWalker {
   }
 
   private extractArgument(pipe: any) {
-    let baseExpr = <any>pipe.expression || {};
+    let baseExpr = <any> pipe.expression || {};
     let args = baseExpr.arguments || [];
     return args[0];
   }

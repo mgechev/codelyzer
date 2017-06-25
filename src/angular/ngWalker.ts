@@ -21,7 +21,7 @@ import {logger} from '../util/logger';
 import {getDecoratorName} from '../util/utils';
 
 const getDecoratorStringArgs = (decorator: ts.Decorator) => {
-  let baseExpr = <any>decorator.expression || {};
+  let baseExpr = <any> decorator.expression || {};
   let args = baseExpr.arguments || [];
   return args.map(a => (a.kind === ts.SyntaxKind.StringLiteral) ? a.text : null);
 };
@@ -62,24 +62,24 @@ export class NgWalker extends Lint.RuleWalker {
     } else if (metadata instanceof DirectiveMetadata) {
       this.visitNgDirective(metadata);
     }
-    (<ts.Decorator[]>declaration.decorators || []).forEach(this.visitClassDecorator.bind(this));
+    (<ts.Decorator[]> declaration.decorators || []).forEach(this.visitClassDecorator.bind(this));
     super.visitClassDeclaration(declaration);
   }
 
   visitMethodDeclaration(method: ts.MethodDeclaration) {
-    (<ts.Decorator[]>method.decorators || []).forEach(this.visitMethodDecorator.bind(this));
+    (<ts.Decorator[]> method.decorators || []).forEach(this.visitMethodDecorator.bind(this));
     super.visitMethodDeclaration(method);
   }
 
   visitPropertyDeclaration(prop: ts.PropertyDeclaration) {
-    (<ts.Decorator[]>prop.decorators || []).forEach(this.visitPropertyDecorator.bind(this));
+    (<ts.Decorator[]> prop.decorators || []).forEach(this.visitPropertyDecorator.bind(this));
     super.visitPropertyDeclaration(prop);
   }
 
   protected visitMethodDecorator(decorator: ts.Decorator) {
     let name = getDecoratorName(decorator);
     if (name === 'HostListener') {
-      this.visitNgHostListener(<ts.MethodDeclaration>decorator.parent,
+      this.visitNgHostListener(<ts.MethodDeclaration> decorator.parent,
           decorator, getDecoratorStringArgs(decorator));
     }
   }
@@ -88,15 +88,15 @@ export class NgWalker extends Lint.RuleWalker {
     let name = getDecoratorName(decorator);
     switch (name) {
       case 'Input':
-      this.visitNgInput(<ts.PropertyDeclaration>decorator.parent,
+      this.visitNgInput(<ts.PropertyDeclaration> decorator.parent,
           decorator, getDecoratorStringArgs(decorator));
       break;
       case 'Output':
-      this.visitNgOutput(<ts.PropertyDeclaration>decorator.parent,
+      this.visitNgOutput(<ts.PropertyDeclaration> decorator.parent,
           decorator, getDecoratorStringArgs(decorator));
       break;
       case 'HostBinding':
-      this.visitNgHostBinding(<ts.PropertyDeclaration>decorator.parent,
+      this.visitNgHostBinding(<ts.PropertyDeclaration> decorator.parent,
           decorator, getDecoratorStringArgs(decorator));
       break;
     }
@@ -105,14 +105,14 @@ export class NgWalker extends Lint.RuleWalker {
   protected visitClassDecorator(decorator: ts.Decorator) {
     let name = getDecoratorName(decorator);
     // Not invoked @Component or @Pipe, or @Directive
-    if (!(<ts.CallExpression>decorator.expression).arguments ||
-        !(<ts.CallExpression>decorator.expression).arguments.length ||
-        !(<ts.ObjectLiteralExpression>(<ts.CallExpression>decorator.expression).arguments[0]).properties) {
+    if (!(<ts.CallExpression> decorator.expression).arguments ||
+        !(<ts.CallExpression> decorator.expression).arguments.length ||
+        !(<ts.ObjectLiteralExpression> (<ts.CallExpression> decorator.expression).arguments[0]).properties) {
       return;
     }
 
     if (name === 'Pipe') {
-      this.visitNgPipe(<ts.ClassDeclaration>decorator.parent, decorator);
+      this.visitNgPipe(<ts.ClassDeclaration> decorator.parent, decorator);
     }
   }
 
@@ -133,7 +133,7 @@ export class NgWalker extends Lint.RuleWalker {
         const templateAst = parseTemplate(template.template.code, Config.predefinedDirectives);
         this.visitNgTemplateHelper(templateAst, metadata, getPosition(template.node));
       } catch (e) {
-        logger.error('Cannot parse the template of', ((<any>metadata.controller || {}).name || {}).text, e);
+        logger.error('Cannot parse the template of', ((<any> metadata.controller || {}).name || {}).text, e);
       }
     }
     const styles = metadata.styles;
@@ -143,7 +143,7 @@ export class NgWalker extends Lint.RuleWalker {
         try {
           this.visitNgStyleHelper(parseCss(style.style.code), metadata, style, getPosition(style.node));
         } catch (e) {
-          logger.error('Cannot parse the styles of', ((<any>metadata.controller || {}).name || {}).text, e);
+          logger.error('Cannot parse the styles of', ((<any> metadata.controller || {}).name || {}).text, e);
         }
       }
     }

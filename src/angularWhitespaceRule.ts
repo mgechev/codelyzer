@@ -40,7 +40,7 @@ class InterpolationWhitespaceVisitor extends BasicTemplateAstVisitor implements 
     if (ExpTypes.ASTWithSource(text.value)) {
       // Note that will not be reliable for different interpolation symbols
       let error = null;
-      const expr: any = (<any>text.value).source;
+      const expr: any = (<any> text.value).source;
       if (InterpolationNoWhitespaceRe.test(expr)) {
         error = `Missing whitespace in interpolation; expecting ${InterpolationOpen} expr ${InterpolationClose}`;
       }

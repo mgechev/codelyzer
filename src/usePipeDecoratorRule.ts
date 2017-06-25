@@ -36,11 +36,11 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
 
   visitClassDeclaration(node: ts.ClassDeclaration) {
     if (this.hasIPipeTransform(node)) {
-        let decorators =  <any[]>node.decorators || [];
+        let decorators =  <any[]> node.decorators || [];
         let className: string = node.name.text;
         let pipes: Array<string> = decorators.map(d =>
-        (<any>d.expression).text ||
-        ((<any>d.expression).expression || {}).text).filter( t => t === 'Pipe');
+        (<any> d.expression).text ||
+        ((<any> d.expression).expression || {}).text).filter( t => t === 'Pipe');
         if (pipes.length === 0) {
          this.addFailure(
                     this.createFailure(

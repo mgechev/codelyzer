@@ -32,7 +32,7 @@ class BananaInBoxTemplateVisitor extends BasicTemplateAstVisitor {
     if (prop.sourceSpan) {
       // Note that will not be reliable for different interpolation symbols
       let error = null;
-      const expr: any = (<any>prop.sourceSpan).toString();
+      const expr: any = (<any> prop.sourceSpan).toString();
         if (InvalidSyntaxBoxRe.test(expr)) {
         error = 'Invalid binding syntax. Use [(expr)] instead';
       }

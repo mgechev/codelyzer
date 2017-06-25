@@ -68,7 +68,7 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
 
     private validateMethods( methods: any[], interfaces: string[], className: string) {
         methods.forEach( m => {
-            let n = (<any>m.name).text;
+            let n = (<any> m.name).text;
             if (n && this.isMethodValidHook(m, interfaces)) {
                 let hookName = n.substr(2, n.lenght);
                 this.addFailure(
@@ -81,7 +81,7 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
     }
 
     private isMethodValidHook(m: any, interfaces: string[]): boolean {
-        let n = (<any>m.name).text;
+        let n = (<any> m.name).text;
         let isNg: boolean = n.substr(0, 2) === Rule.HOOKS_PREFIX;
         let hookName = n.substr(2, n.lenght);
         let isHook = Rule.LIFE_CYCLE_HOOKS_NAMES.indexOf(hookName) !== -1;

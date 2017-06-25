@@ -37,8 +37,8 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
     let decorators = node.decorators;
     if (decorators) {
       let pipes: Array<string> = decorators.map(d =>
-          (<any>d.expression).text ||
-          ((<any>d.expression).expression || {}).text).filter(t => t === 'Pipe');
+          (<any> d.expression).text ||
+          ((<any> d.expression).expression || {}).text).filter(t => t === 'Pipe');
       if (pipes.length !== 0) {
         let className: string = node.name.text;
         if (!this.hasIPipeTransform(node)) {
