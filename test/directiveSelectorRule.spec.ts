@@ -95,7 +95,8 @@ describe('directive-selector-prefix', () => {
           class Test {}`;
             assertAnnotated({
                 ruleName: 'directive-selector',
-                message: 'The selector of the directive "Test" should have one of the prefixes "sg, ng, mg" (https://angular.io/styleguide#style-02-08)',
+                message: 'The selector of the directive "Test" should have one of the prefixes "sg, ng, mg"' +
+                  ' (https://angular.io/styleguide#style-02-08)',
                 source,
                 options: ['attribute',['sg', 'ng', 'mg'],'camelCase']
             });
@@ -109,7 +110,8 @@ describe('directive-selector-prefix', () => {
           class Test {}`;
             assertAnnotated({
                 ruleName: 'directive-selector',
-                message: 'The selector of the directive "Test" should have one of the prefixes "sg, ng, mg" (https://angular.io/styleguide#style-02-08)',
+                message: 'The selector of the directive "Test" should have one of the prefixes "sg, ng, mg"' +
+                  ' (https://angular.io/styleguide#style-02-08)',
                 source,
                 options: ['attribute',['sg', 'ng', 'mg'],'camelCase']
             });

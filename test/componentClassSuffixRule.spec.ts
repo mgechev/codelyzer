@@ -98,7 +98,8 @@ describe('component-class-suffix', () => {
             `;
             assertAnnotated({
                 ruleName: 'component-class-suffix',
-                message:  'The name of the class TestPage should end with the suffix Component,View (https://angular.io/styleguide#style-02-03)',
+                message:  'The name of the class TestPage should end with the suffix Component,View' +
+                  ' (https://angular.io/styleguide#style-02-03)',
                 source,
                 options: ['Component', 'View']
             });

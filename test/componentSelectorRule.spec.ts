@@ -26,7 +26,8 @@ describe('component-selector-prefix', () => {
       class Test {}`;
             assertAnnotated({
                 ruleName: 'component-selector',
-                message:  'The selector of the component "Test" should have one of the prefixes "sg, mg, ng" (https://angular.io/styleguide#style-02-07)',
+                message:  'The selector of the component "Test" should have one of the prefixes "sg, mg, ng"' +
+                  ' (https://angular.io/styleguide#style-02-07)',
                 source,
                 options: ['element', ['sg','mg','ng'], 'kebab-case']
             });
@@ -40,7 +41,8 @@ describe('component-selector-prefix', () => {
       class Test {}`;
             assertAnnotated({
                 ruleName: 'component-selector',
-                message:  'The selector of the component "Test" should have one of the prefixes "sg, mg, ng" (https://angular.io/styleguide#style-02-07)',
+                message:  'The selector of the component "Test" should have one of the prefixes "sg, mg, ng"' +
+                  ' (https://angular.io/styleguide#style-02-07)',
                 source,
                 options: ['element', ['sg','mg','ng'], 'kebab-case']
             });
@@ -57,8 +59,16 @@ describe('component-selector-prefix', () => {
             assertMultipleAnnotated({
                 ruleName: 'component-selector',
                 failures: [
-                  { char: '~', msg: 'The selector of the component "TestOne" should have one of the prefixes "fo, mg, ng" (https://angular.io/styleguide#style-02-07)'},
-                  { char: '^', msg: 'The selector of the component "TestTwo" should have one of the prefixes "fo, mg, ng" (https://angular.io/styleguide#style-02-07)'},
+                  {
+                    char: '~',
+                    msg: 'The selector of the component "TestOne" should have one of the prefixes "fo, mg, ng"' +
+                      ' (https://angular.io/styleguide#style-02-07)'
+                  },
+                  {
+                    char: '^',
+                    msg: 'The selector of the component "TestTwo" should have one of the prefixes "fo, mg, ng"' +
+                      ' (https://angular.io/styleguide#style-02-07)'
+                  },
                 ],
                 source,
                 options: ['element', ['fo','mg','ng'], 'kebab-case']
@@ -201,7 +211,8 @@ describe('component-selector-name', () => {
       class Test {}`;
             assertAnnotated({
                 ruleName: 'component-selector',
-                message:  'The selector of the component "Test" should be named kebab-case and include dash (https://angular.io/styleguide#style-05-02)',
+                message:  'The selector of the component "Test" should be named kebab-case and include dash ' +
+                  '(https://angular.io/styleguide#style-05-02)',
                 source,
                 options: ['element','sg','kebab-case']
             });
@@ -216,7 +227,8 @@ describe('component-selector-name', () => {
       class Test {}`;
             assertAnnotated({
                 ruleName: 'component-selector',
-                message:  'The selector of the component "Test" should be named kebab-case and include dash (https://angular.io/styleguide#style-05-02)',
+                message:  'The selector of the component "Test" should be named kebab-case and include dash ' +
+                  '(https://angular.io/styleguide#style-05-02)',
                 source,
                 options: ['element','sg','kebab-case']
             });
