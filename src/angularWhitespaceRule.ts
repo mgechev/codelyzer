@@ -131,12 +131,12 @@ class PipeWhitespaceVisitor extends RecursiveAngularExpressionVisitor implements
     return null;
   }
 
-  protected isAsyncBinding(expr: any) {
-    return expr instanceof ast.BindingPipe && expr.name === 'async';
-  }
-
   getOption(): Option {
     return 'check-pipe';
+  }
+
+  protected isAsyncBinding(expr: any) {
+    return expr instanceof ast.BindingPipe && expr.name === 'async';
   }
 }
 

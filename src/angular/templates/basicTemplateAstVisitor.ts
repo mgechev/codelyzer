@@ -84,14 +84,6 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
       super(sourceFile, _originalOptions, context.template.template, templateStart);
     }
 
-  protected visitNgTemplateAST(ast: e.AST, templateStart: number) {
-    const templateVisitor =
-      new this.expressionVisitorCtrl(this.getSourceFile(), this._originalOptions, this.context, templateStart);
-    templateVisitor.preDefinedVariables = this._variables;
-    templateVisitor.visit(ast);
-    templateVisitor.getFailures().forEach(f => this.addFailure(f));
-  }
-
   visit?(node: ast.TemplateAst, context: any): any {
     node.visit(this, context);
   }
@@ -159,5 +151,13 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
     if (ExpTypes.ASTWithSource(prop.value)) {
       this.visitNgTemplateAST(prop.value, this.templateStart + getExpressionDisplacement(prop));
     }
+  }
+
+  protected visitNgTemplateAST(ast: e.AST, templateStart: number) {
+    const templateVisitor =
+      new this.expressionVisitorCtrl(this.getSourceFile(), this._originalOptions, this.context, templateStart);
+    templateVisitor.preDefinedVariables = this._variables;
+    templateVisitor.visit(ast);
+    templateVisitor.getFailures().forEach(f => this.addFailure(f));
   }
 }
