@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "docs": "ts-node build/buildDocs.ts",
-    "lint": "tslint -c tslint.json src/**/*.ts test/**/*.ts",
+    "lint": "tslint -c tslint.json \"src/**/*.ts\" \"test/**/*.ts\"",
     "release": "npm run build && rimraf dist && tsc -p tsconfig-release.json && npm run copy:common && npm run prepare:package && BUILD_TYPE=prod npm run set:vars && npm run build:links",
     "build": "rimraf dist && tsc && npm run lint && npm t",
     "copy:common": "cp README.md dist",
