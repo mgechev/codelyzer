@@ -3,7 +3,7 @@ import * as Lint from 'tslint';
 
 export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'import-destructing-spacing',
+    ruleName: 'import-destructuring-spacing',
     type: 'style',
     description: `Ensure consistent and tidy imports.`,
     rationale: `Imports are easier for the reader to look at when they're tidy.`,
