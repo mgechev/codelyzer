@@ -12,7 +12,8 @@ const InterpolationClose = Config.interpolation[1];
 const InterpolationNoWhitespaceRe =new RegExp(`${InterpolationOpen}\\S(.*?)\\S${InterpolationClose}|${InterpolationOpen}\\s(.*?)\\S${InterpolationClose}|${InterpolationOpen}\\S(.*?)\\s${InterpolationClose}`);
 const InterpolationExtraWhitespaceRe =
   new RegExp(`${InterpolationOpen}\\s\\s(.*?)\\s${InterpolationClose}|${InterpolationOpen}\\s(.*?)\\s\\s${InterpolationClose}`);
-const SemicolonNoWhitespaceRe = new RegExp(/;\S(.*)/);
+const SemicolonNoWhitespaceNotInSimpleQuoteRe = new RegExp(/;\S(?![^']*')/);
+const SemicolonNoWhitespaceNotInDoubleQuoteRe = new RegExp(/;\S(?![^"]*")/);
 
 
 const getReplacements = (text: ast.BoundTextAst, absolutePosition: number) => {
@@ -76,21 +77,32 @@ class InterpolationWhitespaceVisitor extends BasicTemplateAstVisitor implements 
   }
 }
 
-class SemicolonTempalteVisitor extends BasicTemplateAstVisitor implements ConfigurableVisitor {
+class SemicolonTemplateVisitor extends BasicTemplateAstVisitor implements ConfigurableVisitor {
 
   visitDirectiveProperty(prop: ast.BoundDirectivePropertyAst, context: BasicTemplateAstVisitor): any {
 
+
     if (prop.sourceSpan) {
       const directive = (<any>prop.sourceSpan).toString();
-      let expr = directive.split('=')[1].trim();
-      expr = expr.substring(1,expr.length - 1).trim();
+      const rawExpression = directive.split('=')[1].trim();
+      const expr = rawExpression.substring(1,rawExpression.length - 1).trim();
+
+      const doubleQuote=rawExpression.substring(0,1).indexOf('\"') === 0;
 
       // Note that will not be reliable for different interpolation symbols
       let error = null;
 
-      if (SemicolonNoWhitespaceRe.test(expr)) {
+       if (doubleQuote && SemicolonNoWhitespaceNotInSimpleQuoteRe.test(expr)) {
         error = 'Missing whitespace after semicolon; expecting \'; expr\'';
-        const internalStart = expr.search(SemicolonNoWhitespaceRe) + 1;
+        const internalStart = expr.search(SemicolonNoWhitespaceNotInSimpleQuoteRe) + 1;
+        const start = prop.sourceSpan.start.offset + internalStart + directive.length - directive.split('=')[1].trim().length + 1;
+        const absolutePosition = context.getSourcePosition(start - 1);
+        return context.addFailure(context.createFailure(start, 2,
+          error, getSemicolonReplacements(prop, absolutePosition))
+        );
+      } else if(!doubleQuote && SemicolonNoWhitespaceNotInDoubleQuoteRe.test(expr)) {
+        error = 'Missing whitespace after semicolon; expecting \'; expr\'';
+        const internalStart = expr.search(SemicolonNoWhitespaceNotInDoubleQuoteRe) + 1;
         const start = prop.sourceSpan.start.offset + internalStart + directive.length - directive.split('=')[1].trim().length + 1;
         const absolutePosition = context.getSourcePosition(start - 1);
         return context.addFailure(context.createFailure(start, 2,
@@ -98,7 +110,6 @@ class SemicolonTempalteVisitor extends BasicTemplateAstVisitor implements Config
         );
       }
     }
-
   }
 
   getOption(): Option {
@@ -111,7 +122,7 @@ class SemicolonTempalteVisitor extends BasicTemplateAstVisitor implements Config
 class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
   private visitors: (BasicTemplateAstVisitor & ConfigurableVisitor)[] = [
     new InterpolationWhitespaceVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart),
-    new SemicolonTempalteVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart)
+    new SemicolonTemplateVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart)
   ];
 
   visitBoundText(text: ast.BoundTextAst, context: any): any {

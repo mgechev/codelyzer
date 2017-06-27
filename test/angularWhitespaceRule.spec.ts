@@ -131,6 +131,16 @@ describe('angular-whitespace', () => {
         assertSuccess('angular-whitespace', source, ['check-semicolon']);
       });
 
+      it('should work with proper style also', () => {
+        let source = `
+      @Component({
+        template: \` <div *ngIf="date | date:'mm;ss'; fails"></div> \`
+      })
+      class Bar {}
+      `;
+        assertSuccess('angular-whitespace', source, ['check-semicolon']);
+      });
+
     });
 
   });
@@ -280,6 +290,40 @@ describe('failure', () => {
       });
     });
 
+    it('should fail when no space after semicolon', () => {
+      let source = `
+      @Component({
+        template: \`  <div *ngIf="date | date:'mm;ss';fails"></div>  
+                                                     ~~
+        \`
+      })
+      class Bar {}
+      `;
+      assertAnnotated({
+        ruleName: 'angular-whitespace',
+        message: 'Missing whitespace after semicolon; expecting \'; expr\'',
+        source,
+        options: ['check-semicolon']
+      });
+    });
+
+
+    it('should fail when no space after semicolon', () => {
+      let source = `
+      @Component({
+        template: \`  <div *ngIf='date | date:"mm;ss";fails'></div>  
+                                                     ~~
+        \`
+      })
+      class Bar {}
+      `;
+      assertAnnotated({
+        ruleName: 'angular-whitespace',
+        message: 'Missing whitespace after semicolon; expecting \'; expr\'',
+        source,
+        options: ['check-semicolon']
+      });
+    });
 
     describe('replacements', () => {
       it('should fail when no space after semicolon', () => {
@@ -308,6 +352,34 @@ describe('failure', () => {
       class Bar {}
       `);
       });
+
+      it('should fail when no space after semicolon', () => {
+        let source = `
+      @Component({
+        template: \` <div *ngIf="date | date:'mm;ss';fails"></div>   
+                                                    ~~
+        \`
+      })
+      class Bar {}
+      `;
+        const failures =  assertAnnotated({
+          ruleName: 'angular-whitespace',
+          message: 'Missing whitespace after semicolon; expecting \'; expr\'',
+          source,
+          options: ['check-semicolon']
+        });
+
+        const res = Replacement.applyAll(source, failures[0].getFix());
+        expect(res).to.eq(`
+      @Component({
+        template: \` <div *ngIf="date | date:'mm;ss'; fails"></div>   
+                                                    ~~
+        \`
+      })
+      class Bar {}
+      `);
+      });
+
     });
   });
 });
