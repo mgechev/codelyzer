@@ -276,7 +276,7 @@ describe('failure', () => {
     it('should fail when no space after semicolon', () => {
       let source = `
       @Component({
-        template: \` <div *ngIf="codelyzer; is;awesome;"></div>  
+        template: \` <div *ngIf="codelyzer; is;awesome;"></div>
                                               ~~
         \`
       })
@@ -293,7 +293,7 @@ describe('failure', () => {
     it('should fail when no space after semicolon', () => {
       let source = `
       @Component({
-        template: \`  <div *ngIf="date | date:'mm;ss';fails"></div>  
+        template: \`  <div *ngIf="date | date:'mm;ss';fails"></div>
                                                      ~~
         \`
       })
@@ -311,7 +311,7 @@ describe('failure', () => {
     it('should fail when no space after semicolon', () => {
       let source = `
       @Component({
-        template: \`  <div *ngIf='date | date:"mm;ss";fails'></div>  
+        template: \`  <div *ngIf='date | date:"mm;ss";fails'></div>
                                                      ~~
         \`
       })
@@ -329,7 +329,7 @@ describe('failure', () => {
       it('should fail when no space after semicolon', () => {
         let source = `
       @Component({
-        template: \` <div *ngIf="codelyzer; is;awesome;"></div>   
+        template: \` <div *ngIf="codelyzer; is;awesome;"></div>
                                               ~~
         \`
       })
@@ -345,7 +345,7 @@ describe('failure', () => {
         const res = Replacement.applyAll(source, failures[0].getFix());
         expect(res).to.eq(`
       @Component({
-        template: \` <div *ngIf="codelyzer; is; awesome;"></div>   
+        template: \` <div *ngIf="codelyzer; is; awesome;"></div>
                                               ~~
         \`
       })
@@ -356,7 +356,7 @@ describe('failure', () => {
       it('should fail when no space after semicolon', () => {
         let source = `
       @Component({
-        template: \` <div *ngIf="date | date:'mm;ss';fails"></div>   
+        template: \` <div *ngIf="date | date:'mm;ss';fails"></div>
                                                     ~~
         \`
       })
@@ -372,7 +372,7 @@ describe('failure', () => {
         const res = Replacement.applyAll(source, failures[0].getFix());
         expect(res).to.eq(`
       @Component({
-        template: \` <div *ngIf="date | date:'mm;ss'; fails"></div>   
+        template: \` <div *ngIf="date | date:'mm;ss'; fails"></div>
                                                     ~~
         \`
       })
@@ -541,8 +541,8 @@ describe('pipes', () => {
     const failures = assertMultipleAnnotated({
       ruleName: 'angular-whitespace',
       failures: [
-        {char: '~', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".',},
-        {char: '^', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".',},
+        {char: '~', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".', },
+        {char: '^', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".', },
       ],
       source,
       options: ['check-pipe']
