@@ -58,5 +58,3 @@ export class Rule extends Lint.Rules.AbstractRule {
       );
     }
 }
-
-

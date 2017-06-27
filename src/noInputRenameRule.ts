@@ -15,11 +15,11 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true,
   };
 
-  static FAILURE_STRING:string = 'In the class "%s", the directive ' +
+  static FAILURE_STRING: string = 'In the class "%s", the directive ' +
     'input property "%s" should not be renamed.' +
     'Please, consider the following use "@Input() %s: string"';
 
-  public apply(sourceFile:ts.SourceFile):Lint.RuleFailure[] {
+  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
       new InputMetadataWalker(sourceFile,
         this.getOptions()));
@@ -27,11 +27,11 @@ export class Rule extends Lint.Rules.AbstractRule {
 }
 
 export class InputMetadataWalker extends NgWalker {
-  visitNgInput(property:ts.PropertyDeclaration, input:ts.Decorator, args:string[]) {
+  visitNgInput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
     let className = (<any>property).parent.name.text;
     let memberName = (<any>property.name).text;
     if (args.length !== 0 && memberName !== args[0]) {
-      let failureConfig:string[] = [className, memberName, memberName];
+      let failureConfig: string[] = [className, memberName, memberName];
       failureConfig.unshift(Rule.FAILURE_STRING);
       this.addFailure(
         this.createFailure(

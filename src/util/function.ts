@@ -30,6 +30,9 @@ export class Maybe<T> {
     return t0.bind(_t0 => t1.fmap(_t1 => [_t0, _t1] as [T0, T1]));
   }
 
+  private constructor(private t: T | undefined) {
+  }
+
   bind<R>(fn: F1<T, Maybe<R>>): Maybe<R> {
     if (!nullOrUndef(this.t)) {
       return fn(this.t);
@@ -58,9 +61,6 @@ export class Maybe<T> {
 
   unwrap(): T | undefined {
     return this.t;
-  }
-
-  private constructor(private t: T | undefined) {
   }
 }
 

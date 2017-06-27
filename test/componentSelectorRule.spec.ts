@@ -26,9 +26,10 @@ describe('component-selector-prefix', () => {
       class Test {}`;
             assertAnnotated({
                 ruleName: 'component-selector',
-                message:  'The selector of the component "Test" should have one of the prefixes "sg, mg, ng" (https://angular.io/styleguide#style-02-07)',
+                message:  'The selector of the component "Test" should have one of the prefixes "sg, mg, ng"' +
+                  ' (https://angular.io/styleguide#style-02-07)',
                 source,
-                options: ['element', ['sg','mg','ng'], 'kebab-case']
+                options: ['element', ['sg', 'mg', 'ng'], 'kebab-case']
             });
         });
         it('should fail when component used without prefix applying multiple prefixes and selectors', () => {
@@ -40,9 +41,10 @@ describe('component-selector-prefix', () => {
       class Test {}`;
             assertAnnotated({
                 ruleName: 'component-selector',
-                message:  'The selector of the component "Test" should have one of the prefixes "sg, mg, ng" (https://angular.io/styleguide#style-02-07)',
+                message:  'The selector of the component "Test" should have one of the prefixes "sg, mg, ng"' +
+                  ' (https://angular.io/styleguide#style-02-07)',
                 source,
-                options: ['element', ['sg','mg','ng'], 'kebab-case']
+                options: ['element', ['sg', 'mg', 'ng'], 'kebab-case']
             });
         });
 
@@ -57,11 +59,19 @@ describe('component-selector-prefix', () => {
             assertMultipleAnnotated({
                 ruleName: 'component-selector',
                 failures: [
-                  { char: '~', msg: 'The selector of the component "TestOne" should have one of the prefixes "fo, mg, ng" (https://angular.io/styleguide#style-02-07)'},
-                  { char: '^', msg: 'The selector of the component "TestTwo" should have one of the prefixes "fo, mg, ng" (https://angular.io/styleguide#style-02-07)'},
+                  {
+                    char: '~',
+                    msg: 'The selector of the component "TestOne" should have one of the prefixes "fo, mg, ng"' +
+                      ' (https://angular.io/styleguide#style-02-07)'
+                  },
+                  {
+                    char: '^',
+                    msg: 'The selector of the component "TestTwo" should have one of the prefixes "fo, mg, ng"' +
+                      ' (https://angular.io/styleguide#style-02-07)'
+                  },
                 ],
                 source,
-                options: ['element', ['fo','mg','ng'], 'kebab-case']
+                options: ['element', ['fo', 'mg', 'ng'], 'kebab-case']
             });
         });
     });
@@ -82,7 +92,7 @@ describe('component-selector-prefix', () => {
         selector: 'sg-bar-foo'
       })
       class Test {}`;
-            assertSuccess('component-selector', source, ['element', ['sg','ng','mg'], 'kebab-case']);
+            assertSuccess('component-selector', source, ['element', ['sg', 'ng', 'mg'], 'kebab-case']);
         });
 
         it('should succeed when set valid selector in @Component using multiple prefixes and some prefixes are substring of others', () => {
@@ -91,7 +101,7 @@ describe('component-selector-prefix', () => {
         selector: 'abc-bar-foo'
       })
       class Test {}`;
-            assertSuccess('component-selector', source, ['element', ['ab','abc','mg'], 'kebab-case']);
+            assertSuccess('component-selector', source, ['element', ['ab', 'abc', 'mg'], 'kebab-case']);
         });
 
         it('should succeed without prefix', () => {
@@ -118,7 +128,7 @@ describe('component-selector-prefix', () => {
         selector: '[sg-bar-foo]'
       })
       class Test {}`;
-            assertSuccess('component-selector', source, ['attribute', ['sg','ng','mg'], 'kebab-case']);
+            assertSuccess('component-selector', source, ['attribute', ['sg', 'ng', 'mg'], 'kebab-case']);
         });
     });
 });
@@ -135,7 +145,7 @@ describe('component-selector-type', () => {
                 ruleName: 'component-selector',
                 message:  'The selector of the component "Test" should be used as element (https://angular.io/styleguide#style-05-03)',
                 source,
-                options: ['element', ['sg','ng'], 'kebab-case']
+                options: ['element', ['sg', 'ng'], 'kebab-case']
             });
         });
         it( `should properly handle es6 template literals`, () => {
@@ -149,7 +159,7 @@ describe('component-selector-type', () => {
                 ruleName: 'component-selector',
                 message:  'The selector of the component "Test" should be used as element (https://angular.io/styleguide#style-05-03)',
                 source,
-                options: ['element', ['sg','ng'], 'kebab-case']
+                options: ['element', ['sg', 'ng'], 'kebab-case']
             });
         });
 
@@ -159,7 +169,7 @@ describe('component-selector-type', () => {
             selector: \`[fooBar]\`
           })
           class Test {}`;
-          assertSuccess('component-selector', source, [['element', 'attribute'], ['foo','ng'], 'camelCase']);
+          assertSuccess('component-selector', source, [['element', 'attribute'], ['foo', 'ng'], 'camelCase']);
         });
     });
 
@@ -170,7 +180,7 @@ describe('component-selector-type', () => {
         selector: 'sg-bar-foo'
       })
       class Test {}`;
-            assertSuccess('component-selector', source, ['element', ['sg','ng'], 'kebab-case']);
+            assertSuccess('component-selector', source, ['element', ['sg', 'ng'], 'kebab-case']);
         });
         it('should succeed when set valid selector in @Component with multiple selectors', () => {
             let source = `
@@ -178,7 +188,7 @@ describe('component-selector-type', () => {
         selector: 'sg-bar-foo[baz].bar'
       })
       class Test {}`;
-            assertSuccess('component-selector', source, ['element', ['sg','ng'], 'kebab-case']);
+            assertSuccess('component-selector', source, ['element', ['sg', 'ng'], 'kebab-case']);
         });
         it('should succeed when set valid selector in @Component with multiple selectors and attribute type', () => {
             let source = `
@@ -186,7 +196,7 @@ describe('component-selector-type', () => {
         selector: 'baz[sg-bar-foo][foe].bar'
       })
       class Test {}`;
-            assertSuccess('component-selector', source, ['attribute', ['sg','ng'], 'kebab-case']);
+            assertSuccess('component-selector', source, ['attribute', ['sg', 'ng'], 'kebab-case']);
         });
     });
 });
@@ -201,9 +211,10 @@ describe('component-selector-name', () => {
       class Test {}`;
             assertAnnotated({
                 ruleName: 'component-selector',
-                message:  'The selector of the component "Test" should be named kebab-case and include dash (https://angular.io/styleguide#style-05-02)',
+                message:  'The selector of the component "Test" should be named kebab-case and include dash ' +
+                  '(https://angular.io/styleguide#style-05-02)',
                 source,
-                options: ['element','sg','kebab-case']
+                options: ['element', 'sg', 'kebab-case']
             });
         });
 
@@ -216,9 +227,10 @@ describe('component-selector-name', () => {
       class Test {}`;
             assertAnnotated({
                 ruleName: 'component-selector',
-                message:  'The selector of the component "Test" should be named kebab-case and include dash (https://angular.io/styleguide#style-05-02)',
+                message:  'The selector of the component "Test" should be named kebab-case and include dash ' +
+                  '(https://angular.io/styleguide#style-05-02)',
                 source,
-                options: ['element','sg','kebab-case']
+                options: ['element', 'sg', 'kebab-case']
             });
         });
     });
@@ -230,12 +242,12 @@ describe('component-selector-name', () => {
         selector: 'sg-bar-foo'
       })
       class Test {}`;
-            assertSuccess('component-selector', source, ['element','sg','kebab-case']);
+            assertSuccess('component-selector', source, ['element', 'sg', 'kebab-case']);
         });
 
         it('should succeed with empty file', () => {
             let source = ``;
-            assertSuccess('component-selector', source, ['element','sg','kebab-case']);
+            assertSuccess('component-selector', source, ['element', 'sg', 'kebab-case']);
         });
         it('should ignore the selector when it\'s not literal', () => {
             let source = `
@@ -244,7 +256,7 @@ describe('component-selector-name', () => {
         selector: selectorName
       })
       class Test {}`;
-            assertSuccess('component-selector', source, ['element','sg','kebab-case']);
+            assertSuccess('component-selector', source, ['element', 'sg', 'kebab-case']);
         });
 
         it('should succeed when set valid selector in @Component with multi selectors, attribute type and camelCase', () => {
@@ -253,7 +265,7 @@ describe('component-selector-name', () => {
         selector: 'baz[sgBarFoo][baz].baz'
       })
       class Test {}`;
-            assertSuccess('component-selector', source, ['attribute','sg','camelCase']);
+            assertSuccess('component-selector', source, ['attribute', 'sg', 'camelCase']);
         });
     });
 });
