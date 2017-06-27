@@ -89,7 +89,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true,
   };
 
-  public apply(sourceFile:ts.SourceFile): Lint.RuleFailure[] {
+  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
         new NgWalker(sourceFile,
             this.getOptions(), {

@@ -253,7 +253,7 @@ describe('no-unused-css', () => {
           bar: number;
         }`;
        assertAnnotated({
-         ruleName:'no-unused-css',
+         ruleName: 'no-unused-css',
          message: 'Unused styles',
          source
        });
@@ -287,7 +287,7 @@ describe('no-unused-css', () => {
           bar: number;
         }`;
       assertAnnotated({
-        ruleName:'no-unused-css',
+        ruleName: 'no-unused-css',
         message: 'Unused styles',
         source
       });
@@ -316,7 +316,7 @@ describe('no-unused-css', () => {
           bar: number;
         }`;
      assertAnnotated({
-       ruleName:'no-unused-css',
+       ruleName: 'no-unused-css',
        message: 'Unused styles',
        source
      });
@@ -345,7 +345,7 @@ describe('no-unused-css', () => {
             bar: number;
           }`;
         assertAnnotated({
-          ruleName:'no-unused-css',
+          ruleName: 'no-unused-css',
           message: 'Unused styles',
           source
         });
@@ -376,7 +376,7 @@ describe('no-unused-css', () => {
             bar: number;
           }`;
         assertAnnotated({
-          ruleName:'no-unused-css',
+          ruleName: 'no-unused-css',
           message: 'Unused styles',
           source
         });
@@ -432,7 +432,7 @@ describe('no-unused-css', () => {
           bar: number;
         }`;
       assertAnnotated({
-        ruleName:'no-unused-css',
+        ruleName: 'no-unused-css',
         message: 'Unused styles',
         source
       });
@@ -486,7 +486,7 @@ describe('no-unused-css', () => {
           bar: number;
         }`;
       assertAnnotated({
-        ruleName:'no-unused-css',
+        ruleName: 'no-unused-css',
         message: 'Unused styles',
         source
       });
@@ -538,7 +538,7 @@ describe('no-unused-css', () => {
           bar: number;
         }`;
       assertAnnotated({
-        ruleName:'no-unused-css',
+        ruleName: 'no-unused-css',
         message: 'Unused styles',
         source
       });
@@ -593,7 +593,7 @@ describe('no-unused-css', () => {
           bar: number;
         }`;
       assertAnnotated({
-        ruleName:'no-unused-css',
+        ruleName: 'no-unused-css',
         message: 'Unused styles',
         source
       });
@@ -655,7 +655,7 @@ describe('no-unused-css', () => {
         })
         class Test {}`;
       assertAnnotated({
-        ruleName:'no-unused-css',
+        ruleName: 'no-unused-css',
         message: 'Unused styles',
         source
       });
@@ -679,7 +679,7 @@ describe('no-unused-css', () => {
         })
         class Test {}`;
       assertAnnotated({
-        ruleName:'no-unused-css',
+        ruleName: 'no-unused-css',
         message: 'Unused styles',
         source
       });
@@ -703,7 +703,7 @@ describe('no-unused-css', () => {
         })
         class Test {}`;
       assertAnnotated({
-        ruleName:'no-unused-css',
+        ruleName: 'no-unused-css',
         message: 'Unused styles',
         source
       });
@@ -747,7 +747,7 @@ describe('no-unused-css', () => {
       private hero: Hero;
     }`;
     assertAnnotated({
-      ruleName:'no-unused-css',
+      ruleName: 'no-unused-css',
       message: 'Unused styles',
       source
     });

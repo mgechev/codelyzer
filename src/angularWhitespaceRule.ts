@@ -9,7 +9,8 @@ import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAn
 
 const InterpolationOpen = Config.interpolation[0];
 const InterpolationClose = Config.interpolation[1];
-const InterpolationNoWhitespaceRe = new RegExp(`${InterpolationOpen}\\S(.*?)\\S${InterpolationClose}|${InterpolationOpen}\\s(.*?)\\S${InterpolationClose}|${InterpolationOpen}\\S(.*?)\\s${InterpolationClose}`);
+const InterpolationNoWhitespaceRe = new RegExp(`${InterpolationOpen}\\S(.*?)\\S${InterpolationClose}|${InterpolationOpen}` +
+  `\\s(.*?)\\S${InterpolationClose}|${InterpolationOpen}\\S(.*?)\\s${InterpolationClose}`);
 const InterpolationExtraWhitespaceRe =
   new RegExp(`${InterpolationOpen}\\s\\s(.*?)\\s${InterpolationClose}|${InterpolationOpen}\\s(.*?)\\s\\s${InterpolationClose}`);
 const SemicolonNoWhitespaceNotInSimpleQuoteRe = new RegExp(/;\S(?![^']*')/);
@@ -198,12 +199,12 @@ class PipeWhitespaceVisitor extends RecursiveAngularExpressionVisitor implements
     return null;
   }
 
-  protected isAsyncBinding(expr: any) {
-    return expr instanceof ast.BindingPipe && expr.name === 'async';
-  }
-
   getOption(): Option {
     return 'check-pipe';
+  }
+
+  protected isAsyncBinding(expr: any) {
+    return expr instanceof ast.BindingPipe && expr.name === 'async';
   }
 }
 

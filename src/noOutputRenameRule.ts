@@ -15,11 +15,11 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true,
   };
 
-  static FAILURE_STRING:string = 'In the class "%s", the directive output ' +
+  static FAILURE_STRING: string = 'In the class "%s", the directive output ' +
     'property "%s" should not be renamed.' +
     'Please, consider the following use "@Output() %s = new EventEmitter();"';
 
-  public apply(sourceFile:ts.SourceFile):Lint.RuleFailure[] {
+  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
       new OutputMetadataWalker(sourceFile,
         this.getOptions()));
@@ -28,11 +28,11 @@ export class Rule extends Lint.Rules.AbstractRule {
 
 
 export class OutputMetadataWalker extends NgWalker {
-  visitNgOutput(property:ts.PropertyDeclaration, output:ts.Decorator, args:string[]) {
+  visitNgOutput(property: ts.PropertyDeclaration, output: ts.Decorator, args: string[]) {
     let className = (<any>property).parent.name.text;
     let memberName = (<any>property.name).text;
     if (args.length !== 0 && memberName !== args[0]) {
-      let failureConfig:string[] = [className, memberName, memberName];
+      let failureConfig: string[] = [className, memberName, memberName];
       failureConfig.unshift(Rule.FAILURE_STRING);
       this.addFailure(
         this.createFailure(

@@ -23,7 +23,7 @@ export interface WalkerBuilder<T extends Walkable> {
 class NgComponentWalkerBuilder implements WalkerBuilder<'NgComponent'> {
     private _where: F1<ComponentMetadata, Maybe<Failure>>;
 
-    where(validate: F1<ComponentMetadata, Maybe<Failure>>):NgComponentWalkerBuilder {
+    where(validate: F1<ComponentMetadata, Maybe<Failure>>): NgComponentWalkerBuilder {
         this._where = validate;
         return this;
     }

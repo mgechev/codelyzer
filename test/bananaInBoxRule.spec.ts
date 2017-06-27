@@ -20,7 +20,7 @@ describe('banana-in-box', () => {
     it('should fail when the box is in the banana', () => {
       let source = `
       @Component({
-        template: \` <input type="text" ([ngModel])="foo" name="foo">  
+        template: \` <input type="text" ([ngModel])="foo" name="foo">
                                         ~~~~~~~~~~~~~~~~~
         \`
       })
@@ -38,7 +38,7 @@ describe('banana-in-box', () => {
     it('should fail when the box is in the banana', () => {
       let source = `
       @Component({
-        template: \` <input type="text" ([ngModel])="foo" name="foo">  
+        template: \` <input type="text" ([ngModel])="foo" name="foo">
                                         ~~~~~~~~~~~~~~~~~
         \`
       })
@@ -53,7 +53,7 @@ describe('banana-in-box', () => {
       const res = Replacement.applyAll(source, failures[0].getFix());
       expect(res).to.eq(`
       @Component({
-        template: \` <input type="text" [(ngModel)]="foo" name="foo">  
+        template: \` <input type="text" [(ngModel)]="foo" name="foo">
                                         ~~~~~~~~~~~~~~~~~
         \`
       })

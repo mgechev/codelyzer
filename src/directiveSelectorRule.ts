@@ -57,8 +57,12 @@ export class Rule extends SelectorRule {
   };
 
   public handleType = 'Directive';
-  public getTypeFailure(): string { return 'The selector of the directive "%s" should be used as %s (https://angular.io/styleguide#style-02-06)'; }
-  public getStyleFailure(): string { return 'The selector of the directive "%s" should be named %s (https://angular.io/styleguide#style-02-06)'; }
+  public getTypeFailure(): string {
+    return 'The selector of the directive "%s" should be used as %s (https://angular.io/styleguide#style-02-06)';
+  }
+  public getStyleFailure(): string {
+    return 'The selector of the directive "%s" should be named %s (https://angular.io/styleguide#style-02-06)';
+  }
   getPrefixFailure(prefixes: string[]): string {
     if (prefixes.length === 1) {
       return 'The selector of the directive "%s" should have prefix "%s" (https://angular.io/styleguide#style-02-08)';

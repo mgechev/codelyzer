@@ -30,7 +30,7 @@ describe('pipe-naming', () => {
                 message:  'The name of the Pipe decorator of class Test should be named camelCase' +
                 ' with prefix ng,mg,sg, however its value is "foo-bar".',
                 source,
-                options:  ['camelCase', 'ng','mg','sg']
+                options:  ['camelCase', 'ng', 'mg', 'sg']
             });
         });
 
@@ -46,7 +46,7 @@ describe('pipe-naming', () => {
                 message:  'The name of the Pipe decorator of class Test should be named camelCase ' +
                 'with prefix fo,mg,sg, however its value is "fooBar".',
                 source,
-                options:  ['camelCase', 'fo','mg','sg']
+                options:  ['camelCase', 'fo', 'mg', 'sg']
             });
         });
 
@@ -92,7 +92,7 @@ describe('pipe-naming', () => {
                       name: 'ngBarFoo'
                     })
                     class Test {}`;
-            assertSuccess('pipe-naming', source, ['camelCase', 'ng','sg','mg']);
+            assertSuccess('pipe-naming', source, ['camelCase', 'ng', 'sg', 'mg']);
         });
 
         it('should succeed when set valid name in @Pipe', () => {

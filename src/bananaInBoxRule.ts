@@ -40,7 +40,7 @@ class BananaInBoxTemplateVisitor extends BasicTemplateAstVisitor {
       if (error) {
         const internalStart = expr.indexOf(InvalidSyntaxBoxOpen) + 1;
         const start = prop.sourceSpan.start.offset + internalStart;
-        const absolutePosition = this.getSourcePosition(start-1);
+        const absolutePosition = this.getSourcePosition(start - 1);
 
         this.addFailure(this.createFailure(start, expr.trim().length,
           error, getReplacements(prop, absolutePosition))
@@ -49,8 +49,6 @@ class BananaInBoxTemplateVisitor extends BasicTemplateAstVisitor {
     }
   }
 }
-
-
 
 export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
@@ -63,7 +61,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true,
   };
 
-  public apply(sourceFile:ts.SourceFile): Lint.RuleFailure[] {
+  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
 
     return this.applyWithWalker(
       new NgWalker(sourceFile,
