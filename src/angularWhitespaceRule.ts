@@ -2,14 +2,14 @@ import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import {NgWalker} from './angular/ngWalker';
 import * as ast from '@angular/compiler';
-import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
-import { ExpTypes } from './angular/expressionTypes';
-import { Config } from './angular/config';
-import { RecursiveAngularExpressionVisitor } from './angular/templates/recursiveAngularExpressionVisitor';
+import {BasicTemplateAstVisitor} from './angular/templates/basicTemplateAstVisitor';
+import {ExpTypes} from './angular/expressionTypes';
+import {Config} from './angular/config';
+import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAngularExpressionVisitor';
 
 const InterpolationOpen = Config.interpolation[0];
 const InterpolationClose = Config.interpolation[1];
-const InterpolationNoWhitespaceRe =new RegExp(`${InterpolationOpen}\\S(.*?)\\S${InterpolationClose}|${InterpolationOpen}\\s(.*?)\\S${InterpolationClose}|${InterpolationOpen}\\S(.*?)\\s${InterpolationClose}`);
+const InterpolationNoWhitespaceRe = new RegExp(`${InterpolationOpen}\\S(.*?)\\S${InterpolationClose}|${InterpolationOpen}\\s(.*?)\\S${InterpolationClose}|${InterpolationOpen}\\S(.*?)\\s${InterpolationClose}`);
 const InterpolationExtraWhitespaceRe =
   new RegExp(`${InterpolationOpen}\\s\\s(.*?)\\s${InterpolationClose}|${InterpolationOpen}\\s(.*?)\\s\\s${InterpolationClose}`);
 const SemicolonNoWhitespaceNotInSimpleQuoteRe = new RegExp(/;\S(?![^']*')/);
@@ -85,14 +85,14 @@ class SemicolonTemplateVisitor extends BasicTemplateAstVisitor implements Config
     if (prop.sourceSpan) {
       const directive = (<any>prop.sourceSpan).toString();
       const rawExpression = directive.split('=')[1].trim();
-      const expr = rawExpression.substring(1,rawExpression.length - 1).trim();
+      const expr = rawExpression.substring(1, rawExpression.length - 1).trim();
 
-      const doubleQuote=rawExpression.substring(0,1).indexOf('\"') === 0;
+      const doubleQuote = rawExpression.substring(0, 1).indexOf('\"') === 0;
 
       // Note that will not be reliable for different interpolation symbols
       let error = null;
 
-       if (doubleQuote && SemicolonNoWhitespaceNotInSimpleQuoteRe.test(expr)) {
+      if (doubleQuote && SemicolonNoWhitespaceNotInSimpleQuoteRe.test(expr)) {
         error = 'Missing whitespace after semicolon; expecting \'; expr\'';
         const internalStart = expr.search(SemicolonNoWhitespaceNotInSimpleQuoteRe) + 1;
         const start = prop.sourceSpan.start.offset + internalStart + directive.length - directive.split('=')[1].trim().length + 1;
@@ -100,7 +100,7 @@ class SemicolonTemplateVisitor extends BasicTemplateAstVisitor implements Config
         return context.addFailure(context.createFailure(start, 2,
           error, getSemicolonReplacements(prop, absolutePosition))
         );
-      } else if(!doubleQuote && SemicolonNoWhitespaceNotInDoubleQuoteRe.test(expr)) {
+      } else if (!doubleQuote && SemicolonNoWhitespaceNotInDoubleQuoteRe.test(expr)) {
         error = 'Missing whitespace after semicolon; expecting \'; expr\'';
         const internalStart = expr.search(SemicolonNoWhitespaceNotInDoubleQuoteRe) + 1;
         const start = prop.sourceSpan.start.offset + internalStart + directive.length - directive.split('=')[1].trim().length + 1;

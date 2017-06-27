@@ -335,7 +335,7 @@ describe('failure', () => {
       })
       class Bar {}
       `;
-        const failures =  assertAnnotated({
+        const failures = assertAnnotated({
           ruleName: 'angular-whitespace',
           message: 'Missing whitespace after semicolon; expecting \'; expr\'',
           source,
@@ -362,7 +362,7 @@ describe('failure', () => {
       })
       class Bar {}
       `;
-        const failures =  assertAnnotated({
+        const failures = assertAnnotated({
           ruleName: 'angular-whitespace',
           message: 'Missing whitespace after semicolon; expecting \'; expr\'',
           source,
