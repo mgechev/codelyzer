@@ -29,11 +29,11 @@ export class Rule extends Lint.Rules.AbstractRule {
 
   static FAILURE: string = 'The name of the class %s should end with the suffix %s (https://angular.io/styleguide#style-02-03)';
 
-  static validate(className: string, suffix: string):boolean {
+  static validate(className: string, suffix: string): boolean {
     return className.endsWith(suffix);
   }
 
-  public apply(sourceFile:ts.SourceFile):Lint.RuleFailure[] {
+  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
       new ClassMetadataWalker(sourceFile,
         this.getOptions()));
@@ -43,7 +43,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 export class ClassMetadataWalker extends NgWalker {
   visitNgDirective(meta: DirectiveMetadata) {
     let name = meta.controller.name;
-    let className:string = name.text;
+    let className: string = name.text;
     const suffix = this.getOptions()[0] || 'Directive';
     if (!Rule.validate(className, suffix)) {
       this.addFailure(

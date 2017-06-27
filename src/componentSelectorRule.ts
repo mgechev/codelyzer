@@ -60,8 +60,12 @@ export class Rule extends SelectorRule {
   };
 
   public handleType = 'Component';
-  public getTypeFailure(): any { return 'The selector of the component "%s" should be used as %s (https://angular.io/styleguide#style-05-03)'; }
-  public getStyleFailure(): any { return 'The selector of the component "%s" should be named %s (https://angular.io/styleguide#style-05-02)'; }
+  public getTypeFailure(): any {
+    return 'The selector of the component "%s" should be used as %s (https://angular.io/styleguide#style-05-03)';
+  }
+  public getStyleFailure(): any {
+    return 'The selector of the component "%s" should be named %s (https://angular.io/styleguide#style-05-02)';
+  }
   getPrefixFailure(prefixes: string[]): any {
     if (prefixes.length === 1) {
       return 'The selector of the component "%s" should have prefix "%s" (https://angular.io/styleguide#style-02-07)';

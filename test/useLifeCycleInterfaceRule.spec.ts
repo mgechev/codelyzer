@@ -11,7 +11,8 @@ describe('use-life-cycle-interface', () => {
             }`;
             assertAnnotated({
                 ruleName: 'use-life-cycle-interface',
-                message: 'Implement lifecycle hook interface OnInit for method ngOnInit in class App (https://angular.io/styleguide#style-09-01)',
+                message: 'Implement lifecycle hook interface OnInit for method ngOnInit in class App' +
+                  ' (https://angular.io/styleguide#style-09-01)',
                 source
             });
         });
@@ -24,7 +25,8 @@ describe('use-life-cycle-interface', () => {
                 }
             }`;
             assertFailures('use-life-cycle-interface', source, [{
-                message: 'Implement lifecycle hook interface OnInit for method ngOnInit in class App (https://angular.io/styleguide#style-09-01)',
+                message: 'Implement lifecycle hook interface OnInit for method ngOnInit in class App' +
+                  ' (https://angular.io/styleguide#style-09-01)',
                 startPosition: {
                     line: 2,
                     character: 16
@@ -34,7 +36,8 @@ describe('use-life-cycle-interface', () => {
                     character: 24
                 }
             }, {
-                message: 'Implement lifecycle hook interface OnDestroy for method ngOnDestroy in class App (https://angular.io/styleguide#style-09-01)',
+                message: 'Implement lifecycle hook interface OnDestroy for method ngOnDestroy in class App' +
+                  ' (https://angular.io/styleguide#style-09-01)',
                 startPosition: {
                     line: 4,
                     character: 16
@@ -57,7 +60,8 @@ describe('use-life-cycle-interface', () => {
             }`;
             assertAnnotated({
                 ruleName: 'use-life-cycle-interface',
-                message: 'Implement lifecycle hook interface OnDestroy for method ngOnDestroy in class App (https://angular.io/styleguide#style-09-01)',
+                message: 'Implement lifecycle hook interface OnDestroy for method ngOnDestroy in class App' +
+                  ' (https://angular.io/styleguide#style-09-01)',
                 source
             });
         });
@@ -74,7 +78,8 @@ describe('use-life-cycle-interface', () => {
             }`;
             assertAnnotated({
                 ruleName: 'use-life-cycle-interface',
-                message: 'Implement lifecycle hook interface OnDestroy for method ngOnDestroy in class App (https://angular.io/styleguide#style-09-01)',
+                message: 'Implement lifecycle hook interface OnDestroy for method ngOnDestroy in class App' +
+                  ' (https://angular.io/styleguide#style-09-01)',
                 source
             });
         });

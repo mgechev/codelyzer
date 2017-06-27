@@ -61,23 +61,23 @@ export class Rule extends Lint.Rules.AbstractRule {
     }
   }
 
-  public apply(sourceFile:ts.SourceFile):Lint.RuleFailure[] {
+  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
       new ClassMetadataWalker(sourceFile, this));
   }
 
-  public validateName(name:string):boolean {
+  public validateName(name: string): boolean {
     return this.validator(name);
   }
 
-  public validatePrefix(prefix:string):boolean {
+  public validatePrefix(prefix: string): boolean {
     return this.prefixChecker(prefix);
   }
 }
 
 export class ClassMetadataWalker extends NgWalker {
 
-  constructor(sourceFile:ts.SourceFile, private rule:Rule) {
+  constructor(sourceFile: ts.SourceFile, private rule: Rule) {
     super(sourceFile, rule.getOptions());
   }
 
@@ -86,7 +86,7 @@ export class ClassMetadataWalker extends NgWalker {
     this.validateProperties(className, decorator);
   }
 
-  private validateProperties(className:string, pipe:any) {
+  private validateProperties(className: string, pipe: any) {
     let argument = this.extractArgument(pipe);
     if (argument.kind === SyntaxKind.current().ObjectLiteralExpression) {
       argument.properties.filter(n => n.name.text === 'name')
@@ -94,16 +94,16 @@ export class ClassMetadataWalker extends NgWalker {
     }
   }
 
-  private extractArgument(pipe:any) {
+  private extractArgument(pipe: any) {
     let baseExpr = <any>pipe.expression || {};
     let args = baseExpr.arguments || [];
     return args[0];
   }
 
-  private validateProperty(className:string, property:any) {
-    let propName:string = property.initializer.text;
-    let isValidName:boolean = this.rule.validateName(propName);
-    let isValidPrefix:boolean = (this.rule.hasPrefix?this.rule.validatePrefix(propName):true);
+  private validateProperty(className: string, property: any) {
+    let propName: string = property.initializer.text;
+    let isValidName: boolean = this.rule.validateName(propName);
+    let isValidPrefix: boolean = (this.rule.hasPrefix ? this.rule.validatePrefix(propName) : true);
     if (!isValidName || !isValidPrefix) {
       this.addFailure(
         this.createFailure(
@@ -113,7 +113,7 @@ export class ClassMetadataWalker extends NgWalker {
     }
   }
 
-  private createFailureArray(className:string, pipeName:string):Array<string> {
+  private createFailureArray(className: string, pipeName: string): Array<string> {
     if (this.rule.hasPrefix) {
       return [Rule.FAILURE_WITH_PREFIX, className, this.rule.prefix, pipeName];
     }

@@ -13,7 +13,7 @@ describe('directive-selector-name', () => {
                 ruleName: 'directive-selector',
                 message: 'The selector of the directive "Test" should be named camelCase (https://angular.io/styleguide#style-02-06)',
                 source,
-                options: ['attribute','sg','camelCase']
+                options: ['attribute', 'sg', 'camelCase']
             });
         });
     });
@@ -24,7 +24,7 @@ describe('directive-selector-name', () => {
         selector: 'test[sgBarFoo].test:not(p)'
       })
       class Test {}`;
-            assertSuccess('directive-selector', source, ['attribute','sg','camelCase']);
+            assertSuccess('directive-selector', source, ['attribute', 'sg', 'camelCase']);
         });
     });
     describe('valid directive selector, using multiple selectors, element type and kebap-case', () => {
@@ -34,7 +34,7 @@ describe('directive-selector-name', () => {
         selector: 'sg-bar-foo[test].test:not(p)'
       })
       class Test {}`;
-            assertSuccess('directive-selector', source, ['element','sg','kebab-case']);
+            assertSuccess('directive-selector', source, ['element', 'sg', 'kebab-case']);
         });
     });
     describe('invalid directive selector, using multiple selectors', () => {
@@ -49,7 +49,7 @@ describe('directive-selector-name', () => {
                 ruleName: 'directive-selector',
                 message: 'The selector of the directive "Test" should be named camelCase (https://angular.io/styleguide#style-02-06)',
                 source,
-                options: ['attribute','sg','camelCase']
+                options: ['attribute', 'sg', 'camelCase']
             });
         });
     });
@@ -67,7 +67,7 @@ describe('directive-selector-prefix', () => {
                 ruleName: 'directive-selector',
                 message: 'The selector of the directive "Test" should have prefix "sg" (https://angular.io/styleguide#style-02-08)',
                 source,
-                options: ['attribute','sg','camelCase']
+                options: ['attribute', 'sg', 'camelCase']
             });
         });
 
@@ -82,7 +82,7 @@ describe('directive-selector-prefix', () => {
                 ruleName: 'directive-selector',
                 message: 'The selector of the directive "Test" should have prefix "fo" (https://angular.io/styleguide#style-02-08)',
                 source,
-                options: ['attribute','fo','camelCase']
+                options: ['attribute', 'fo', 'camelCase']
             });
         });
 
@@ -95,9 +95,10 @@ describe('directive-selector-prefix', () => {
           class Test {}`;
             assertAnnotated({
                 ruleName: 'directive-selector',
-                message: 'The selector of the directive "Test" should have one of the prefixes "sg, ng, mg" (https://angular.io/styleguide#style-02-08)',
+                message: 'The selector of the directive "Test" should have one of the prefixes "sg, ng, mg"' +
+                  ' (https://angular.io/styleguide#style-02-08)',
                 source,
-                options: ['attribute',['sg', 'ng', 'mg'],'camelCase']
+                options: ['attribute', ['sg', 'ng', 'mg'], 'camelCase']
             });
         });
         it('should fail when directive used without prefix applying multiple prefixes and selectors', () => {
@@ -109,9 +110,10 @@ describe('directive-selector-prefix', () => {
           class Test {}`;
             assertAnnotated({
                 ruleName: 'directive-selector',
-                message: 'The selector of the directive "Test" should have one of the prefixes "sg, ng, mg" (https://angular.io/styleguide#style-02-08)',
+                message: 'The selector of the directive "Test" should have one of the prefixes "sg, ng, mg"' +
+                  ' (https://angular.io/styleguide#style-02-08)',
                 source,
-                options: ['attribute',['sg', 'ng', 'mg'],'camelCase']
+                options: ['attribute', ['sg', 'ng', 'mg'], 'camelCase']
             });
         });
     });
@@ -122,7 +124,7 @@ describe('directive-selector-prefix', () => {
         selector: '[sgBarFoo]'
       })
       class Test {}`;
-            assertSuccess('directive-selector', source, ['attribute','sg','camelCase']);
+            assertSuccess('directive-selector', source, ['attribute', 'sg', 'camelCase']);
         });
 
         it('should succeed when set valid selector in @Directive', () => {
@@ -131,7 +133,7 @@ describe('directive-selector-prefix', () => {
         selector: 'sgBarFoo'
       })
       class Test {}`;
-            assertSuccess('directive-selector', source, [['attribute', 'element'],'sg','camelCase']);
+            assertSuccess('directive-selector', source, [['attribute', 'element'], 'sg', 'camelCase']);
         });
 
         it('should succeed when set valid selector in @Directive using multiple prefixes', () => {
@@ -140,7 +142,7 @@ describe('directive-selector-prefix', () => {
         selector: '[ngBarFoo]'
       })
       class Test {}`;
-            assertSuccess('directive-selector', source, ['attribute',['ng','sg','mg'],'camelCase']);
+            assertSuccess('directive-selector', source, ['attribute', ['ng', 'sg', 'mg'], 'camelCase']);
         });
         it('should succeed when set valid selector in @Directive using multiple prefixes and selectors', () => {
             let source = `
@@ -148,7 +150,7 @@ describe('directive-selector-prefix', () => {
         selector: 'bar[ngBarFoo].baz'
       })
       class Test {}`;
-            assertSuccess('directive-selector', source, ['attribute',['ng','sg','mg'],'camelCase']);
+            assertSuccess('directive-selector', source, ['attribute', ['ng', 'sg', 'mg'], 'camelCase']);
         });
     });
 });
@@ -165,7 +167,7 @@ describe('directive-selector-type', () => {
                 ruleName: 'directive-selector',
                 message: 'The selector of the directive "Test" should be used as attribute (https://angular.io/styleguide#style-02-06)',
                 source,
-                options: ['attribute','sg','camelCase']
+                options: ['attribute', 'sg', 'camelCase']
             });
         });
     });
@@ -181,7 +183,7 @@ describe('directive-selector-type', () => {
                 ruleName: 'directive-selector',
                 message: 'The selector of the directive "Test" should be used as attribute (https://angular.io/styleguide#style-02-06)',
                 source,
-                options: ['attribute','sg','camelCase']
+                options: ['attribute', 'sg', 'camelCase']
             });
         });
     });
@@ -192,7 +194,7 @@ describe('directive-selector-type', () => {
         selector: '[sgBarFoo]'
       })
       class Test {}`;
-            assertSuccess('directive-selector', source, ['attribute','sg','camelCase']);
+            assertSuccess('directive-selector', source, ['attribute', 'sg', 'camelCase']);
         });
         it('should not validate @Component', () => {
             let source = `
@@ -200,7 +202,7 @@ describe('directive-selector-type', () => {
         selector: 'sg-bar-foo'
       })
       class Test {}`;
-            assertSuccess('directive-selector', source, ['attribute','sg','camelCase']);
+            assertSuccess('directive-selector', source, ['attribute', 'sg', 'camelCase']);
         });
         it('should succeed when set valid selector using multiple selectors in @Directive', () => {
             let source = `
@@ -208,7 +210,7 @@ describe('directive-selector-type', () => {
         selector: 'baz[sgBarFoo].bai'
       })
       class Test {}`;
-            assertSuccess('directive-selector', source, ['attribute','sg','camelCase']);
+            assertSuccess('directive-selector', source, ['attribute', 'sg', 'camelCase']);
         });
 
         it('should succeed when set valid selector using multiple selectors in @Directive', () => {
@@ -223,7 +225,7 @@ describe('directive-selector-type', () => {
               host: {'[attr.date]': 'date? "" : null'},
             })
             class Test {}`;
-            assertSuccess('directive-selector', source, ['attribute', 'ng','camelCase']);
+            assertSuccess('directive-selector', source, ['attribute', 'ng', 'camelCase']);
         });
     });
 });

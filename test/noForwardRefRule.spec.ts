@@ -1,7 +1,7 @@
 import {assertAnnotated, assertSuccess} from './testHelper';
 
 describe('no-forward-ref', () => {
-  describe('invalid function call', ()=> {
+  describe('invalid function call', () => {
     it('should fail when we are calling forwardRef in constructor', () => {
       let source = `
       class Test {
@@ -57,7 +57,7 @@ describe('no-forward-ref', () => {
       source
     });
   });
-  describe('valid function call', ()=> {
+  describe('valid function call', () => {
     it('should succeed, when we are not calling forwardRef', () => {
       let source = `
       class Test {

@@ -18,7 +18,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 
   static FAILURE: string = 'Warning: impure pipe declared in class %s.';
 
-  public apply(sourceFile:ts.SourceFile):Lint.RuleFailure[] {
+  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
       new ClassMetadataWalker(sourceFile, this));
   }
@@ -34,7 +34,7 @@ export class ClassMetadataWalker extends NgWalker {
     this.validateProperties(controller.name.text, decorator);
   }
 
-  private validateProperties(className:string, pipe:any) {
+  private validateProperties(className: string, pipe: any) {
     let argument = this.extractArgument(pipe);
     if (argument.kind === SyntaxKind.current().ObjectLiteralExpression) {
       argument.properties.filter(n => n.name.text === 'pure')
@@ -42,14 +42,14 @@ export class ClassMetadataWalker extends NgWalker {
     }
   }
 
-  private extractArgument(pipe:any) {
+  private extractArgument(pipe: any) {
     let baseExpr = <any>pipe.expression || {};
     let args = baseExpr.arguments || [];
     return args[0];
   }
 
-  private validateProperty(className:string, property:any) {
-    let propValue:string = property.initializer.getText();
+  private validateProperty(className: string, property: any) {
+    let propValue: string = property.initializer.getText();
     if (propValue === 'false') {
       this.addFailure(
         this.createFailure(
@@ -59,7 +59,7 @@ export class ClassMetadataWalker extends NgWalker {
     }
   }
 
-  private createFailureArray(className:string):Array<string> {
+  private createFailureArray(className: string): Array<string> {
     return [Rule.FAILURE, className];
   }
 }
