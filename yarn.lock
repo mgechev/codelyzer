@@ -1202,9 +1202,9 @@ rimraf@2, rimraf@^2.5.2:
   dependencies:
     glob "^7.0.5"
 
-rxjs@5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.0.1.tgz#3a69bdf9f0ca0a986303370d4708f72bdfac8356"
+rxjs@5.4.1:
+  version "5.4.1"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.4.1.tgz#b62f757f279445d265a18a58fb0a70dc90e91626"
   dependencies:
     symbol-observable "^1.0.1"
 
@@ -1423,7 +1423,7 @@ type-detect@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/type-detect/-/type-detect-1.0.0.tgz#762217cc06db258ec48908a1298e8b95121e8ea2"
 
-typescript@^2.4.0:
+typescript@2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.4.0.tgz#aef5a8d404beba36ad339abf079ddddfffba86dd"
 
