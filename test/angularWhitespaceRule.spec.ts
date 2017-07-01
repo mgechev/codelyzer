@@ -55,6 +55,21 @@ describe('angular-whitespace', () => {
         assertSuccess('angular-whitespace', source, ['check-pipe']);
       });
 
+      it.only('should succeed with in structural directives with proper style', () => {
+        let source = `
+        @Component({
+          selector: 'foo',
+          template: \`
+            <div *ngIf="foo | async"></div>
+          \`
+        })
+        class Bar {
+          foo: any;
+        }
+              `;
+        assertSuccess('angular-whitespace', source, ['check-pipe']);
+      });
+
       it('should succeed with proper style', () => {
         let source = `
         @Component({

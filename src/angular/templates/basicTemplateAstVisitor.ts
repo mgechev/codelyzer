@@ -14,7 +14,9 @@ const getExpressionDisplacement = (binding: any) => {
   let valLen = 0;
   let totalLength = 0;
   let result = 0;
-  if (binding instanceof ast.BoundEventAst || binding instanceof ast.BoundElementPropertyAst) {
+  if (binding instanceof ast.BoundEventAst ||
+      binding instanceof ast.BoundElementPropertyAst ||
+      binding instanceof ast.BoundDirectivePropertyAst) {
     // subBindingLen is for [class.foo], [style.foo], the length of
     // the binding type. For event it is 0. (+1 because of the ".")
     let subBindingLen = 0;
@@ -40,7 +42,9 @@ const getExpressionDisplacement = (binding: any) => {
     // - Add the name of the binding (binding.name.length).
     // - 4 characters because of []=" (we already have the "." from above).
     // - subBindingLen is from above and applies only for elements.
-    attrLen = binding.name.length + 4 + subBindingLen;
+    if (!(binding instanceof ast.BoundDirectivePropertyAst)) {
+      attrLen = binding.name.length + 4 + subBindingLen;
+    }
     // Total length of the attribute value
     if (binding instanceof ast.BoundEventAst) {
       valLen = binding.handler.span.end;
