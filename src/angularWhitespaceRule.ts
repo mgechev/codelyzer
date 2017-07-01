@@ -159,7 +159,6 @@ class PipeWhitespaceVisitor extends RecursiveAngularExpressionVisitor implements
     const exprEnd = context.getSourcePosition(ast.exp.span.end);
     const sf = context.getSourceFile().getFullText();
     const exprText = sf.substring(exprStart, exprEnd);
-
     const replacements = [];
     // Handling the right side of the pipe
     let leftBeginning = exprEnd + 1; // exprEnd === '|'

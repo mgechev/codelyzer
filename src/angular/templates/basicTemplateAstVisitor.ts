@@ -45,21 +45,32 @@ const getExpressionDisplacement = (binding: any) => {
     if (!(binding instanceof ast.BoundDirectivePropertyAst)) {
       attrLen = binding.name.length + 4 + subBindingLen;
     }
+
     // Total length of the attribute value
     if (binding instanceof ast.BoundEventAst) {
       valLen = binding.handler.span.end;
+    } else if (binding instanceof ast.BoundDirectivePropertyAst && binding.templateName === 'ngForOf') {
+      // Handling everything except [ngForOf] differently
+      // [ngForOf] requires different logic because it gets desugered from *ngFor
+      const content = binding.sourceSpan.end.file.content;
+      const ngForSubstr = content.substring(binding.sourceSpan.start.offset, binding.sourceSpan.end.offset);
+      result = ngForSubstr.lastIndexOf((binding.value as any).source) + '*ngFor'.length;
     } else {
       valLen = binding.value.span.end;
     }
-    // Total length of the entire part of the template AST corresponding to this AST.
-    totalLength = binding.sourceSpan.end.offset - binding.sourceSpan.start.offset;
-    // The whitespace are possible only in:
-    // `[foo.bar]          =         "...."`,
-    // and they are everything except the attrLen and the valLen (-1 because of the close quote).
-    let whitespace = totalLength - (attrLen + valLen) - 1;
-    // The resulted displacement is the length of the attribute + the whitespaces which
-    // can be located ONLY before the value (the binding).
-    result = whitespace + attrLen + binding.sourceSpan.start.offset;
+
+    // Handling everything except [ngForOf]
+    if (!(binding instanceof ast.BoundDirectivePropertyAst) || binding.templateName !== 'ngForOf') {
+      // Total length of the entire part of the template AST corresponding to this AST.
+      totalLength = binding.sourceSpan.end.offset - binding.sourceSpan.start.offset;
+      // The whitespace are possible only in:
+      // `[foo.bar]          =         "...."`,
+      // and they are everything except the attrLen and the valLen (-1 because of the close quote).
+      let whitespace = totalLength - (attrLen + valLen) - 1;
+      // The resulted displacement is the length of the attribute + the whitespaces which
+      // can be located ONLY before the value (the binding).
+      result = whitespace + attrLen + binding.sourceSpan.start.offset;
+    }
   } else if (binding instanceof ast.BoundTextAst) {
     result = binding.sourceSpan.start.offset;
   }

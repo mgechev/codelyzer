@@ -55,7 +55,7 @@ describe('angular-whitespace', () => {
         assertSuccess('angular-whitespace', source, ['check-pipe']);
       });
 
-      it.only('should succeed with in structural directives with proper style', () => {
+      it('should succeed with in structural directives with proper style', () => {
         let source = `
         @Component({
           selector: 'foo',
@@ -128,7 +128,7 @@ describe('angular-whitespace', () => {
         @Component({
           selector: 'foo',
           template: \`
-            <div *ngFor="let pony of ponies | slice:0:1">{{ pony }}</div>
+            <div *ngFor="let pony of ponies | slice:0:1    ">{{ pony }}</div>
           \`
         })
         class Bar {

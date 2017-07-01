@@ -657,7 +657,7 @@ describe('no-access-missing-member', () => {
       let source = `
         @Component({
           template: \`<div *ngIf="context"></div>
-                     ~~~~~~~
+                                 ~~~~~~~
           \`
         })
         class Test {
@@ -674,7 +674,7 @@ describe('no-access-missing-member', () => {
       let source = `
         @Component({
           template: \`<div *ngSwitch="context">
-                     ~~~~~~~
+                                     ~~~~~~~
               <span *ngSwitchCase="bar"></span>
             </div>\`
         })

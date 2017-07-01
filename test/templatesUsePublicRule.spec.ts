@@ -215,7 +215,7 @@ describe('templates-use-public', () => {
           selector: 'foobar',
           template: \`
             <div *ngFor="let smile of smile2">
-            ~~~~~~
+                                       ~~~~~~
               <smile-cmp [smile]="smile"></smile-cmp>
             </div>
           \`
@@ -237,7 +237,7 @@ describe('templates-use-public', () => {
           selector: 'foobar',
           template: \`
             <div *ngFor="let smile of smile">
-            ~~~~~
+                                       ~~~~~
               <smile-cmp [smile]="smile"></smile-cmp>
             </div>
           \`
