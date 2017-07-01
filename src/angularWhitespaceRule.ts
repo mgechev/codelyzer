@@ -10,25 +10,11 @@ import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAn
 const InterpolationOpen = Config.interpolation[0];
 const InterpolationClose = Config.interpolation[1];
 const InterpolationNoWhitespaceRe = new RegExp(`${InterpolationOpen}\\S(.*?)\\S${InterpolationClose}|${InterpolationOpen}` +
-  `\\s(.*?)\\S${InterpolationClose}|${InterpolationOpen}\\S(.*?)\\s${InterpolationClose}`);
+  `\\s(.*?)\\S${InterpolationClose}|${InterpolationOpen}\\S(.*?)\\s${InterpolationClose}`, 'g');
 const InterpolationExtraWhitespaceRe =
-  new RegExp(`${InterpolationOpen}\\s\\s(.*?)\\s${InterpolationClose}|${InterpolationOpen}\\s(.*?)\\s\\s${InterpolationClose}`);
+  new RegExp(`${InterpolationOpen}\\s\\s(.*?)\\s${InterpolationClose}|${InterpolationOpen}\\s(.*?)\\s\\s${InterpolationClose}`, 'g');
 const SemicolonNoWhitespaceNotInSimpleQuoteRe = new RegExp(/;\S(?![^']*')/);
 const SemicolonNoWhitespaceNotInDoubleQuoteRe = new RegExp(/;\S(?![^"]*")/);
-
-
-const getReplacements = (text: ast.BoundTextAst, absolutePosition: number) => {
-  const expr: string = (text.value as any).source;
-  const internalStart = expr.indexOf(InterpolationOpen);
-  const internalEnd = expr.lastIndexOf(InterpolationClose);
-  const len = expr.trim().length - InterpolationOpen.length - InterpolationClose.length;
-  const trimmed = expr.substr(internalStart + InterpolationOpen.length, len).trim();
-  return [
-    new Lint.Replacement(absolutePosition,
-      internalEnd - internalStart + InterpolationClose.length,
-      `${InterpolationOpen} ${trimmed} ${InterpolationClose}`)
-  ];
-};
 
 
 const getSemicolonReplacements = (text: ast.BoundDirectivePropertyAst, absolutePosition: number) => {
@@ -45,7 +31,7 @@ interface ConfigurableVisitor {
   getOption(): Option;
 }
 
-/* Inrerpolation visitors */
+/* Interpolation visitors */
 
 class InterpolationWhitespaceVisitor extends BasicTemplateAstVisitor implements ConfigurableVisitor {
   visitBoundText(text: ast.BoundTextAst, context: BasicTemplateAstVisitor): any {
@@ -53,21 +39,33 @@ class InterpolationWhitespaceVisitor extends BasicTemplateAstVisitor implements 
       // Note that will not be reliable for different interpolation symbols
       let error = null;
       const expr: any = (<any>text.value).source;
-      if (InterpolationNoWhitespaceRe.test(expr)) {
-        error = `Missing whitespace in interpolation; expecting ${InterpolationOpen} expr ${InterpolationClose}`;
-      }
-      if (InterpolationExtraWhitespaceRe.test(expr)) {
-        error = `Extra whitespace in interpolation; expecting ${InterpolationOpen} expr ${InterpolationClose}`;
-      }
-      if (error) {
-        const internalStart = expr.indexOf(InterpolationOpen);
-        const start = text.sourceSpan.start.offset + internalStart;
-        const absolutePosition = context.getSourcePosition(start);
-        return context.addFailure(
-          context.createFailure(start,
-            expr.trim().length,
-            error, getReplacements(text, absolutePosition)));
-      }
+      const applyRegex = (regex: RegExp, failure: string) => {
+        let match: RegExpExecArray | null;
+        while (match = regex.exec(expr)) {
+          const start = text.sourceSpan.start.offset + match.index;
+          const absolutePosition = context.getSourcePosition(start);
+          const length = match[0].length;
+          context.addFailure(
+            context.createFailure(
+            start, length, failure, [
+            new Lint.Replacement(
+              absolutePosition,
+              length,
+              `${InterpolationOpen} ${match[0].replace(InterpolationOpen, '').replace(InterpolationClose, '').trim()} ${InterpolationClose}`
+            )
+          ]));
+        }
+      };
+      InterpolationNoWhitespaceRe.lastIndex = 0;
+      applyRegex(
+        InterpolationNoWhitespaceRe,
+        `Missing whitespace in interpolation; expecting ${InterpolationOpen} expr ${InterpolationClose}`
+      );
+      InterpolationExtraWhitespaceRe.lastIndex = 0;
+      applyRegex(
+        InterpolationExtraWhitespaceRe,
+        `Extra whitespace in interpolation; expecting ${InterpolationOpen} expr ${InterpolationClose}`
+      );
     }
     super.visitBoundText(text, context);
     return null;
