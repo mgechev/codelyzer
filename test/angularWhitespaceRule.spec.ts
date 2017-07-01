@@ -137,6 +137,19 @@ describe('angular-whitespace', () => {
         `;
         assertSuccess('angular-whitespace', source, ['check-pipe']);
       });
+
+      it('should succeed with i18n and description', () => {
+        let source = `
+        @Component({
+          selector: 'foo',
+          template: \`
+            <h1 i18n="site header|An introduction header for this sample">Hello i18n!</h1>
+          \`
+        })
+        class Bar {}
+        `;
+        assertSuccess('angular-whitespace', source, ['check-pipe']);
+      });
     });
 
     describe('check-semicolon', () => {
