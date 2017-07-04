@@ -4,6 +4,8 @@
 
 - Ensure whitespaces after semicolon in structural dir [#330](https://github.com/mgechev/codelyzer/issues/330) [25667f9](https://github.com/mgechev/codelyzer/commit/25667f9741ba497a70f94e65b7677f0121fda9bc)
 
+Thanks to [@wKoza](https://github.com/wKoza) for code reviews and implementation of `"check-semicolon"`.
+
 `angular-whitespace: [true, "check-semicolon", "check-interpolation", "check-pipe"]` - Checks if there's whitespace after semicolon, around an expression surrounded by interpolation characters, and after a pipe symbol.
 
 ### Fix
