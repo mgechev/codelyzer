@@ -8,7 +8,7 @@ Thanks to [@wKoza](https://github.com/wKoza) for code reviews and implementation
 
 `angular-whitespace: [true, "check-semicolon", "check-interpolation", "check-pipe"]` - Checks if there's whitespace after semicolon, around an expression surrounded by interpolation characters, and after a pipe symbol.
 
-### Fix
+### Bug Fixes
 
 - Auto fix for check-interpolation part of angularWhitespace is broken [#345](https://github.com/mgechev/codelyzer/issues/345) [0be8563](https://github.com/mgechev/codelyzer/pull/362)
 - check-pipe should ignore i18n meaning and description | separator [#359](https://github.com/mgechev/codelyzer/issues/359) [5aad7f3](https://github.com/mgechev/codelyzer/commit/5aad7f37b967265f831a4b486d73586dc8885a7e)
@@ -16,7 +16,7 @@ Thanks to [@wKoza](https://github.com/wKoza) for code reviews and implementation
 
 # 3.1.1
 
-### Fix
+### Bug Fixes
 
 - Incorrect rule name in documentation [#344](https://github.com/mgechev/codelyzer/issues/344) [6656b81](https://github.com/mgechev/codelyzer/commit/6656b81dfd6466e090776d0bdb9f225169b6b7f0)
 - Proper displacement in the reports for non-TypeScript files [#343](https://github.com/mgechev/codelyzer/issues/343) [c503510](https://github.com/mgechev/codelyzer/commit/c5035101957fe1223915968272c42feb47a7c6fa)
@@ -41,7 +41,7 @@ Thanks to [@wKoza](https://github.com/wKoza) for code reviews and implementation
 - Enforce proper banana in a box syntax [#331](https://github.com/mgechev/codelyzer/issues/331) [f95b2d5](https://github.com/mgechev/codelyzer/pull/322)
 - Ensure whitespace around interpolation [#320](https://github.com/mgechev/codelyzer/issues/320) [335776f](https://github.com/mgechev/codelyzer/commit/335776ff24ecc81a743ff0cc70aaf01442462b8a)
 
-### Fix
+### Bug Fixes
 
 - Template micro-syntax closure and 'bind only to public class members' [#220](https://github.com/mgechev/codelyzer/issues/220) [61f9fe9](https://github.com/mgechev/codelyzer/commit/61f9fe9e664ada53518679e8060deba2839793c7)
 - Report warnings when bound to private iterable in `*ngFor` [#306](https://github.com/mgechev/codelyzer/issues/306) [36705fc](https://github.com/mgechev/codelyzer/commit/36705fc3b708146880ea14ac0b918af7e67f1401)
@@ -54,7 +54,7 @@ Thanks to [@wKoza](https://github.com/wKoza) for code reviews and implementation
 
 # 3.0.1
 
-### Fix
+### Bug Fixes
 
 - Export `usePipeDecoratorRule` [#299](https://github.com/mgechev/codelyzer/issues/299) [c5869e0](https://github.com/mgechev/codelyzer/commit/c5869e04cdfedb1c58fac9c0f6bef027a745badf).
 
@@ -79,7 +79,7 @@ Major release required because of the breaking changes introduced by tslint@5. T
 
 # 2.1.1
 
-### Fix
+### Bug Fixes
 
 - Breaking change in the TypeScript AST regarding `importDestructuringSpacingRule` [#282](https://github.com/mgechev/codelyzer/issues/282) [eebf10a](https://github.com/mgechev/codelyzer/commit/eebf10adc3bd67101a06abfb19d35729a2210d46)
 
