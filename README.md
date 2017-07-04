@@ -62,7 +62,7 @@ Create the following `tslint.json` file like:
 {
   "extends": [ "codelyzer" ],
   "rules":{
-    "angular-whitespace": [true, "check-interpolation", "check-pipe"],
+    "angular-whitespace": [true, "check-interpolation", "check-pipe", "check-semicolon"],
     "banana-in-box": true,
     "templates-no-negated-async": true,
     "directive-selector": [true, "attribute", "sg", "camelCase"],

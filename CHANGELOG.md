@@ -1,3 +1,17 @@
+# 3.1.2
+
+### Features
+
+- Ensure whitespaces after semicolon in structural dir [#330](https://github.com/mgechev/codelyzer/issues/330) [25667f9](https://github.com/mgechev/codelyzer/commit/25667f9741ba497a70f94e65b7677f0121fda9bc)
+
+`angular-whitespace: [true, "check-semicolon", "check-interpolation", "check-pipe"]` - Checks if there's whitespace after semicolon, around an expression surrounded by interpolation characters, and after a pipe symbol.
+
+### Fix
+
+- Auto fix for check-interpolation part of angularWhitespace is broken [#345](https://github.com/mgechev/codelyzer/issues/345) [0be8563](https://github.com/mgechev/codelyzer/pull/362)
+- check-pipe should ignore i18n meaning and description | separator [#359](https://github.com/mgechev/codelyzer/issues/359) [5aad7f3](https://github.com/mgechev/codelyzer/commit/5aad7f37b967265f831a4b486d73586dc8885a7e)
+- check-pipe breaks with ngFor [#346](https://github.com/mgechev/codelyzer/issues/346) [fa08a3b](https://github.com/mgechev/codelyzer/commit/fa08a3be4bf8588336c07c579e6fbfc7d75ae8dd)
+
 # 3.1.1
 
 ### Fix
@@ -9,7 +23,7 @@
 
 ### New rules
 
-- `angular-whitespace: [true, 'check-interpolation', 'check-pipe']` - Checks if there's whitespace around an expression surrounded by interpolation characters, and after a pipe symbol.
+- `angular-whitespace: [true, "check-interpolation", "check-pipe"]` - Checks if there's whitespace around an expression surrounded by interpolation characters, and after a pipe symbol.
 - `banana-in-box: true` - Checks for proper banana in a box syntax - `[(ngModel)]` instead of `([ngModel])`.
 - `templates-no-negated-async: true` - Enforces `(foo | async) === false`, rather than `!(foo | async)`, because of the initial falsy value emitted.
 - `use-view-encapsulation: true` - Enforces enabled view encapsulation.
