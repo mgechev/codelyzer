@@ -138,6 +138,22 @@ describe('angular-whitespace', () => {
         assertSuccess('angular-whitespace', source, ['check-pipe']);
       });
 
+      it('should work with external templates with ngFor', () => {
+        const code = `
+        @Component({
+          selector: 'foo',
+          moduleId: module.id,
+          templateUrl: 'ngFor.html',
+        })
+        class Bar {
+          ponies = []
+        }
+        `;
+        const reader = new MetadataReader(new FsFileResolver());
+        const ast = getAst(code, __dirname + '/../../test/fixtures/angularWhitespace/component.ts');
+        assertSuccess('angular-whitespace', ast, ['check-pipe']);
+      });
+
       it('should succeed with i18n and description', () => {
         let source = `
         @Component({
@@ -716,4 +732,3 @@ describe('pipes', () => {
       `);
   });
 });
-
