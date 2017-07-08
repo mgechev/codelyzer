@@ -98,6 +98,12 @@ export class NgWalker extends Lint.RuleWalker {
 
   protected visitClassDecorator(decorator: ts.Decorator) {
     let name = getDecoratorName(decorator);
+
+    if (name === 'Injectable') {
+      console.log('test');
+      this.visitNgInjectable(<ts.ClassDeclaration>decorator.parent, decorator);
+    }
+
     // Not invoked @Component or @Pipe, or @Directive
     if (!(<ts.CallExpression>decorator.expression).arguments ||
         !(<ts.CallExpression>decorator.expression).arguments.length ||
@@ -146,6 +152,8 @@ export class NgWalker extends Lint.RuleWalker {
   protected visitNgDirective(metadata: DirectiveMetadata) {}
 
   protected visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {}
+
+  protected visitNgInjectable(controller: ts.ClassDeclaration, decorator: ts.Decorator) {}
 
   protected visitNgInput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {}
 
