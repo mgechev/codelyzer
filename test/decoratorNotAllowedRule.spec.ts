@@ -1,89 +1,168 @@
-import {assertAnnotated, assertMultipleAnnotated, assertSuccess} from './testHelper';
+import {assertAnnotated, assertFailures, assertSuccess} from './testHelper';
 
 describe('decorator-not-allowed', () => {
 
-  describe('not allowed input property', () => {
-    it(`should fail, when the class have an @Injectable decorator`, () => {
-      let source = `
+  describe('success', () => {
+
+
+    describe('valid directive class', () => {
+      it('should succeed when is used @Injectable decorator', () => {
+        let source = `
+            @Directive()
+            class TestDirective {
+            @Input() label:string
+            }`;
+        assertSuccess('decorator-not-allowed', source);
+      });
+    });
+
+    describe('valid directive class', () => {
+      it('should succeed when is used @Injectable decorator', () => {
+        let source = `
+            @Directive()
+            class TestDirective {
+            @Output('change') change = new EventEmitter<any>();
+            }`;
+        assertSuccess('decorator-not-allowed', source);
+      });
+    });
+
+    describe('valid directive class', () => {
+      it('should succeed when is used @Injectable decorator', () => {
+        let source = `
+            @Directive()
+            class TestDirective {
+              @HostBinding('style.backgroundColor') color = "red";
+              @HostListener('mouseenter') onEnter() {
+                this.color= "blue" ;
+              }
+            }`;
+        assertSuccess('decorator-not-allowed', source);
+      });
+    });
+
+    describe('valid directive class', () => {
+      it('should succeed when is used @Injectable decorator', () => {
+        let source = `
+            @Directive()
+            class TestDirective {
+            @ViewChild(ChildDirective) child: ChildDirective;
+            @ViewChildren(ChildDirective) viewChildren: QueryList<ChildDirective>;
+            }`;
+        assertSuccess('decorator-not-allowed', source);
+      });
+    });
+
+    describe('valid service class', () => {
+      it('should succeed when is used @Injectable decorator', () => {
+        let source = `
+            @Directive()
+            class TestDirective {
+            @ContentChildren(Pane) topLevelPanes: QueryList<Pane>;
+            @ContentChild(ChildDirective) contentChild: ChildDirective;
+            }`;
+        assertSuccess('decorator-not-allowed', source);
+      });
+    });
+
+
+  });
+
+  describe('failure', () => {
+
+    describe('not allowed input property', () => {
+      it(`should fail, when the class have an @Injectable decorator`, () => {
+        let source = `
       @Injectable()
       class MyService {
         @Input('attribute') label: string;
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       }`;
-      assertAnnotated({
-        ruleName: 'decorator-not-allowed',
-        message: 'In the class "MyService" which have the "@Injectable" decorator, the ' +
-        '"@Input" decorator not allowed. ' +
-        'Please, drop it.',
-        source
+        assertAnnotated({
+          ruleName: 'decorator-not-allowed',
+          message: 'In the class "MyService" which have the "@Injectable" decorator, the ' +
+          '"@Input" decorator is not allowed. ' +
+          'Please, drop it.',
+          source
+        });
       });
     });
-  });
 
-  describe('not allowed output property', () => {
-    it(`should fail, when the class have an @Injectable decorator`, () => {
-      let source = `
+    describe('not allowed output property', () => {
+      it(`should fail, when the class have an @Injectable decorator`, () => {
+        let source = `
       @Injectable()
       class MyService {
         @Output('change') change = new EventEmitter<any>();
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       }`;
-      assertAnnotated({
-        ruleName: 'decorator-not-allowed',
-        message: 'In the class "MyService" which have the "@Injectable" decorator, the ' +
-        '"@Output" decorator not allowed. ' +
-        'Please, drop it.',
-        source
+        assertAnnotated({
+          ruleName: 'decorator-not-allowed',
+          message: 'In the class "MyService" which have the "@Injectable" decorator, the ' +
+          '"@Output" decorator is not allowed. ' +
+          'Please, drop it.',
+          source
+        });
       });
     });
-  });
 
- /* describe('not allowed input and output properties', () => {
-    it(`should fail, when the class have an @Injectable decorator`, () => {
-      let source = `
-      @Injectable()
-      class MyService {
-        @Input('attribute') label: string;
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        @Output('change') change = new EventEmitter<any>();
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      }`;
-      assertMultipleAnnotated({
-        ruleName: 'decorator-not-allowed',
-        failures: [
-          {char: '~', msg: 'In the class "MyService" which have the "@Injectable" decorator, the ' +
-          '"@Input" decorator not allowed. ' +
-          'Please, drop it.'},
-          {char: '^', msg: 'In the class "MyService" which have the "@Injectable" decorator, the ' +
-          '"@Output" decorator not allowed. ' +
-          'Please, drop it.'}
-        ],
-        source,
-        options: []
+    describe('not allowed input and output properties', () => {
+      it(`should fail, when the class have an @Injectable decorator`, () => {
+        let source = `
+     @Injectable()
+     class MyService {
+     @Input('attribute') label: string;
+     @Output('change') change = new EventEmitter<any>();
+     }`;
+        assertFailures('decorator-not-allowed', source, [{
+          message: 'In the class "MyService" which have the "@Injectable" decorator, the ' +
+          '"@Input" decorator is not allowed. ' +
+          'Please, drop it.',
+          startPosition: {
+            line: 3,
+            character: 5
+          },
+          endPosition: {
+            line: 3,
+            character: 39
+          }
+        }, {
+          message: 'In the class "MyService" which have the "@Injectable" decorator, the ' +
+          '"@Output" decorator is not allowed. ' +
+          'Please, drop it.',
+          startPosition: {
+            line: 4,
+            character: 5
+          },
+          endPosition: {
+            line: 4,
+            character: 56
+          }
+        }
+        ]);
       });
     });
-  }); */
 
 
-  describe('not allowed @HostListener property', () => {
-    it(`should fail, when the class have an @Injectable decorator`, () => {
-      let source = `
+    describe('not allowed @HostBinding property', () => {
+      it(`should fail, when the class have an @Injectable decorator`, () => {
+        let source = `
       @Injectable()
       class MyService {
-        @HostBinding('style.backgroundColor') color = "red"; 
+        @HostBinding('style.backgroundColor') color = "red";
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       }`;
-      assertAnnotated({
-        ruleName: 'decorator-not-allowed',
-        message: 'In the class "MyService" which have the "@Injectable" decorator, the ' +
-        '"@HostBinding" decorator not allowed. ' +
-        'Please, drop it.',
-        source
+        assertAnnotated({
+          ruleName: 'decorator-not-allowed',
+          message: 'In the class "MyService" which have the "@Injectable" decorator, the ' +
+          '"@HostBinding" decorator is not allowed. ' +
+          'Please, drop it.',
+          source
+        });
       });
     });
-  });
 
-    describe('not allowed output property', () => {
+    describe('not allowed @HostListener property', () => {
       it(`should fail, when the class have an @Injectable decorator`, () => {
         let source = `
       @Injectable()
@@ -97,49 +176,89 @@ describe('decorator-not-allowed', () => {
         assertAnnotated({
           ruleName: 'decorator-not-allowed',
           message: 'In the class "MyService" which have the "@Injectable" decorator, the ' +
-          '"@HostListener" decorator not allowed. ' +
+          '"@HostListener" decorator is not allowed. ' +
           'Please, drop it.',
           source
         });
       });
     });
 
-  describe('valid service class', () => {
-    it('should succeed when is used @Injectable decorator', () => {
-      let source = `
-            @Directive()
-            class TestDirective {
-            @Input() label: string
-            }`;
-      assertSuccess('decorator-not-allowed', source);
+    describe('not allowed @ViewChild and @ViewChildren properties', () => {
+      it(`should fail, when the class have an @Injectable decorator`, () => {
+        let source = `
+     @Injectable()
+     class MyService {
+     @ViewChild(ChildDirective) child: ChildDirective;
+     @ViewChildren(ChildDirective) viewChildren: QueryList<ChildDirective>;
+     }`;
+        assertFailures('decorator-not-allowed', source, [{
+          message: 'In the class "MyService" which have the "@Injectable" decorator, the ' +
+          '"@ViewChild" decorator is not allowed. ' +
+          'Please, drop it.',
+          startPosition: {
+            line: 3,
+            character: 5
+          },
+          endPosition: {
+            line: 3,
+            character: 54
+          }
+        }, {
+          message: 'In the class "MyService" which have the "@Injectable" decorator, the ' +
+          '"@ViewChildren" decorator is not allowed. ' +
+          'Please, drop it.',
+          startPosition: {
+            line: 4,
+            character: 5
+          },
+          endPosition: {
+            line: 4,
+            character: 75
+          }
+        }
+        ]);
+      });
     });
-  });
 
-  describe('valid service class', () => {
-    it('should succeed when is used @Injectable decorator', () => {
-      let source = `
-            @Directive()
-            class TestDirective {
-            @Output('change') change = new EventEmitter<any>();
-            }`;
-      assertSuccess('decorator-not-allowed', source);
+
+    describe('not allowed @ContentChild and @ContentChildren properties', () => {
+      it(`should fail, when the class have an @Injectable decorator`, () => {
+        let source = `
+     @Injectable()
+     class MyService {
+     @ContentChild(ChildDirective) contentChild: ChildDirective;
+     @ContentChildren(Pane) topLevelPanes: QueryList<Pane>;
+     }`;
+        assertFailures('decorator-not-allowed', source, [{
+          message: 'In the class "MyService" which have the "@Injectable" decorator, the ' +
+          '"@ContentChild" decorator is not allowed. ' +
+          'Please, drop it.',
+          startPosition: {
+            line: 3,
+            character: 5
+          },
+          endPosition: {
+            line: 3,
+            character: 64
+          }
+        }, {
+          message: 'In the class "MyService" which have the "@Injectable" decorator, the ' +
+          '"@ContentChildren" decorator is not allowed. ' +
+          'Please, drop it.',
+          startPosition: {
+            line: 4,
+            character: 5
+          },
+          endPosition: {
+            line: 4,
+            character: 59
+          }
+        }
+        ]);
+      });
     });
+
+
   });
-
-  describe('valid service class', () => {
-    it('should succeed when is used @Injectable decorator', () => {
-      let source = `
-            @Directive()
-            class TestDirective {
-              @HostBinding('style.backgroundColor') color = "red"; 
-              @HostListener('mouseenter') onEnter() {
-                this.color= "blue" ;
-              }
-            }`;
-      assertSuccess('decorator-not-allowed', source);
-    });
-  });
-
-
 
 });
