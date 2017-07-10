@@ -24,5 +24,6 @@ export { Rule as UseViewEncapsulationRule } from './useViewEncapsulationRule';
 export { Rule as BananaInBoxRule } from './bananaInBoxRule';
 export { Rule as AngularWhitespaceRule } from './angularWhitespaceRule';
 export { Rule as TemplatesNoNegatedAsync } from './templatesNoNegatedAsyncRule';
+export { Rule as DecoratorNotAllowedRule } from './decoratorNotAllowedRule';
 export * from './angular/config';
 

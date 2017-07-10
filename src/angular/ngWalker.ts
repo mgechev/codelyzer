@@ -1,13 +1,17 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import * as compiler from '@angular/compiler';
-import { parseTemplate } from './templates/templateParser';
+import {parseTemplate} from './templates/templateParser';
 
 import {parseCss} from './styles/parseCss';
 import {CssAst} from './styles/cssAst';
 import {BasicCssAstVisitor, CssAstVisitorCtrl} from './styles/basicCssAstVisitor';
 
-import {RecursiveAngularExpressionVisitorCtr, BasicTemplateAstVisitor, TemplateAstVisitorCtr} from './templates/basicTemplateAstVisitor';
+import {
+  RecursiveAngularExpressionVisitorCtr,
+  BasicTemplateAstVisitor,
+  TemplateAstVisitorCtr
+} from './templates/basicTemplateAstVisitor';
 import {RecursiveAngularExpressionVisitor} from './templates/recursiveAngularExpressionVisitor';
 import {ReferenceCollectorVisitor} from './templates/referenceCollectorVisitor';
 
@@ -34,9 +38,9 @@ export interface NgWalkerConfig {
 
 export class NgWalker extends Lint.RuleWalker {
   constructor(sourceFile: ts.SourceFile,
-    protected _originalOptions: Lint.IOptions,
-    private _config?: NgWalkerConfig,
-    protected _metadataReader?: MetadataReader) {
+              protected _originalOptions: Lint.IOptions,
+              private _config?: NgWalkerConfig,
+              protected _metadataReader?: MetadataReader) {
 
     super(sourceFile, _originalOptions);
 
@@ -74,7 +78,7 @@ export class NgWalker extends Lint.RuleWalker {
     let name = getDecoratorName(decorator);
     if (name === 'HostListener') {
       this.visitNgHostListener(<ts.MethodDeclaration>decorator.parent,
-          decorator, getDecoratorStringArgs(decorator));
+        decorator, getDecoratorStringArgs(decorator));
     }
   }
 
@@ -82,26 +86,47 @@ export class NgWalker extends Lint.RuleWalker {
     let name = getDecoratorName(decorator);
     switch (name) {
       case 'Input':
-      this.visitNgInput(<ts.PropertyDeclaration>decorator.parent,
+        this.visitNgInput(<ts.PropertyDeclaration>decorator.parent,
           decorator, getDecoratorStringArgs(decorator));
-      break;
+        break;
       case 'Output':
-      this.visitNgOutput(<ts.PropertyDeclaration>decorator.parent,
+        this.visitNgOutput(<ts.PropertyDeclaration>decorator.parent,
           decorator, getDecoratorStringArgs(decorator));
-      break;
+        break;
       case 'HostBinding':
-      this.visitNgHostBinding(<ts.PropertyDeclaration>decorator.parent,
+        this.visitNgHostBinding(<ts.PropertyDeclaration>decorator.parent,
           decorator, getDecoratorStringArgs(decorator));
-      break;
+        break;
+      case 'ContentChild':
+        this.visitNgContentChild(<ts.PropertyDeclaration>decorator.parent,
+          decorator, getDecoratorStringArgs(decorator));
+        break;
+      case 'ContentChildren':
+        this.visitNgContentChildren(<ts.PropertyDeclaration>decorator.parent,
+          decorator, getDecoratorStringArgs(decorator));
+        break;
+      case 'ViewChild':
+        this.visitNgViewChild(<ts.PropertyDeclaration>decorator.parent,
+          decorator, getDecoratorStringArgs(decorator));
+        break;
+      case 'ViewChildren':
+        this.visitNgViewChildren(<ts.PropertyDeclaration>decorator.parent,
+          decorator, getDecoratorStringArgs(decorator));
+        break;
     }
   }
 
   protected visitClassDecorator(decorator: ts.Decorator) {
     let name = getDecoratorName(decorator);
+
+    if (name === 'Injectable') {
+      this.visitNgInjectable(<ts.ClassDeclaration>decorator.parent, decorator);
+    }
+
     // Not invoked @Component or @Pipe, or @Directive
     if (!(<ts.CallExpression>decorator.expression).arguments ||
-        !(<ts.CallExpression>decorator.expression).arguments.length ||
-        !(<ts.ObjectLiteralExpression>(<ts.CallExpression>decorator.expression).arguments[0]).properties) {
+      !(<ts.CallExpression>decorator.expression).arguments.length ||
+      !(<ts.ObjectLiteralExpression>(<ts.CallExpression>decorator.expression).arguments[0]).properties) {
       return;
     }
 
@@ -118,7 +143,8 @@ export class NgWalker extends Lint.RuleWalker {
         pos = node.pos + 1;
         try {
           pos = node.getStart() + 1;
-        } catch (e) {}
+        } catch (e) {
+        }
       }
       return pos;
     };
@@ -143,17 +169,38 @@ export class NgWalker extends Lint.RuleWalker {
     }
   }
 
-  protected visitNgDirective(metadata: DirectiveMetadata) {}
+  protected visitNgDirective(metadata: DirectiveMetadata) {
+  }
 
-  protected visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {}
+  protected visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
+  }
 
-  protected visitNgInput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {}
+  protected visitNgInjectable(classDeclaration: ts.ClassDeclaration, decorator: ts.Decorator) {
+  }
 
-  protected visitNgOutput(property: ts.PropertyDeclaration, output: ts.Decorator, args: string[]) {}
+  protected visitNgInput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
+  }
 
-  protected visitNgHostBinding(property: ts.PropertyDeclaration, decorator: ts.Decorator, args: string[]) {}
+  protected visitNgOutput(property: ts.PropertyDeclaration, output: ts.Decorator, args: string[]) {
+  }
 
-  protected visitNgHostListener(method: ts.MethodDeclaration, decorator: ts.Decorator, args: string[]) {}
+  protected visitNgHostBinding(property: ts.PropertyDeclaration, decorator: ts.Decorator, args: string[]) {
+  }
+
+  protected visitNgHostListener(method: ts.MethodDeclaration, decorator: ts.Decorator, args: string[]) {
+  }
+
+  protected visitNgContentChild(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
+  }
+
+  protected visitNgContentChildren(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
+  }
+
+  protected visitNgViewChild(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
+  }
+
+  protected visitNgViewChildren(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
+  }
 
   protected visitNgTemplateHelper(roots: compiler.TemplateAst[], context: ComponentMetadata, baseStart: number) {
     if (!roots || !roots.length) {

@@ -67,7 +67,7 @@ export class MetadataReader {
     });
   }
 
-  protected readComponentMetadata(d: ts.ClassDeclaration, dec: ts.Decorator) {
+  protected readComponentMetadata(d: ts.ClassDeclaration, dec: ts.Decorator): ComponentMetadata {
     const expr = this.getDecoratorArgument(dec);
     const directiveMetadata = this.readDirectiveMetadata(d, dec);
 
