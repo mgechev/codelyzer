@@ -39,8 +39,8 @@ export class ClassMetadataWalker extends NgWalker {
     super(sourceFile, rule.getOptions());
   }
 
-  visitNgInjectable(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
-    this.className = controller.name.text;
+  visitNgInjectable(classDeclaration: ts.ClassDeclaration, decorator: ts.Decorator) {
+    this.className = classDeclaration.name.text;
     this.isInjectable = true;
   }
 

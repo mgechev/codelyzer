@@ -175,7 +175,7 @@ export class NgWalker extends Lint.RuleWalker {
   protected visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
   }
 
-  protected visitNgInjectable(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
+  protected visitNgInjectable(classDeclaration: ts.ClassDeclaration, decorator: ts.Decorator) {
   }
 
   protected visitNgInput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
