@@ -16,6 +16,19 @@ describe('banana-in-box', () => {
 
   });
 
+  describe('success', () => {
+    it('should work with proper style', () => {
+      let source = `
+      @Component({
+        template: \`  <a (click)="navigate(['/resources'])"> \`
+      })
+      class Bar {}
+      `;
+      assertSuccess('banana-in-box', source);
+    });
+  });
+
+
   describe('failure', () => {
     it('should fail when the box is in the banana', () => {
       let source = `
