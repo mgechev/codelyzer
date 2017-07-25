@@ -39,11 +39,14 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
     if (this.preDefinedVariables[ast.name]) {
       return;
     }
+    const allowProtected = this.getOptions().includes('protected');
     const allMembers = getDeclaredMethods(this.context.controller).concat(getDeclaredProperties(this.context.controller));
     const member = allMembers.filter((m: any) => m.name && m.name.text === ast.name).pop();
     if (member) {
       let isPublic = !member.modifiers || !member.modifiers
-        .some(m => m.kind === SyntaxKind.current().PrivateKeyword || m.kind === SyntaxKind.current().ProtectedKeyword);
+        .some(allowProtected ?
+          m => m.kind === SyntaxKind.current().PrivateKeyword :
+          m => m.kind === SyntaxKind.current().PrivateKeyword || m.kind === SyntaxKind.current().ProtectedKeyword);
       const width = ast.name.length;
       if (!isPublic) {
         const failureString = `You can bind only to public class members. "${member.name.getText()}" is not a public class member.`;
@@ -84,8 +87,13 @@ export class Rule extends Lint.Rules.AbstractRule {
     type: 'functionality',
     description: `Ensure that properties and methods accessed from the template are public.`,
     rationale: `When Angular compiles the templates, it has to access these properties from outside the class.`,
-    options: null,
-    optionsDescription: `Not configurable.`,
+    options: {
+      type: 'array',
+      items: {
+        enum: ['protected'],
+      }
+    },
+    optionsDescription: `protected can also be allowed with the protected option`,
     typescriptOnly: true,
   };
 
