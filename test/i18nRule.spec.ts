@@ -105,12 +105,50 @@ describe('i18n', () => {
       assertSuccess('i18n', source, ['check-text']);
     });
 
+    it('should work with multiple valid elements', () => {
+      let source = `
+      @Component({
+        template: \`
+          <div>{{text}}</div>
+          <div i18n>
+            Text
+            <span i18n>foo</span>
+          </div>
+        \`
+      })
+      class Bar {}
+      `;
+      assertSuccess('i18n', source, ['check-text']);
+    });
+
     it('should fail with missing id string', () => {
       let source = `
       @Component({
         template: \`
           <div>Text</div>
                ~~~~
+        \`
+      })
+      class Bar {}
+      `;
+      assertAnnotated({
+        ruleName: 'i18n',
+        options: ['check-text'],
+        source,
+        message:
+          'Each element containing text node should has an i18n attribute'
+      });
+    });
+
+    it('should fail with missing id string in nested elements', () => {
+      let source = `
+      @Component({
+        template: \`
+          <div>
+            <span i18n>foo</div>
+            <div>Text</div>
+                 ~~~~
+          </div>
         \`
       })
       class Bar {}
