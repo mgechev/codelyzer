@@ -45,9 +45,11 @@ class I18NAttrVisitor extends BasicTemplateAstVisitor
 
 class I18NTextVisitor extends BasicTemplateAstVisitor
   implements ConfigurableVisitor {
+  static Error = 'Each element containing text node should has an i18n attribute';
+
   private hasI18n = false;
   private nestedElements = [];
-  private visited = new Set<ast.TextAst>();
+  private visited = new Set<ast.TextAst | ast.BoundTextAst>();
 
   visitText(text: ast.TextAst, context: BasicTemplateAstVisitor) {
     if (!this.visited.has(text)) {
@@ -62,12 +64,35 @@ class I18NTextVisitor extends BasicTemplateAstVisitor
           context.createFailure(
             span.start.offset,
             span.end.offset - span.start.offset,
-            'Each element containing text node should has an i18n attribute'
+            I18NTextVisitor.Error
           )
         );
       }
     }
     super.visitText(text, context);
+  }
+
+  visitBoundText(text: ast.BoundTextAst, context: BasicTemplateAstVisitor) {
+    if (!this.visited.has(text)) {
+      this.visited.add(text);
+      const val = text.value;
+      if (
+        val instanceof ast.ASTWithSource &&
+        val.ast instanceof ast.Interpolation
+      ) {
+        const textNonEmpty = val.ast.strings.some(s => /\w+/.test(s));
+        if (textNonEmpty) {
+          const span = text.sourceSpan;
+          context.addFailure(
+            context.createFailure(
+              span.start.offset,
+              span.end.offset - span.start.offset,
+              I18NTextVisitor.Error
+            )
+          );
+        }
+      }
+    }
   }
 
   visitElement(element: ast.ElementAst, context: BasicTemplateAstVisitor) {
@@ -131,6 +156,16 @@ class I18NTemplateVisitor extends BasicTemplateAstVisitor {
       .filter(f => !!f)
       .forEach(f => this.addFailure(f));
     super.visitText(text, context);
+  }
+
+  visitBoundText(text: ast.BoundTextAst, context: any): any {
+    const options = this.getOptions();
+    this.visitors
+      .filter(v => options.indexOf(v.getOption()) >= 0)
+      .map(v => v.visitBoundText(text, this))
+      .filter(f => !!f)
+      .forEach(f => this.addFailure(f));
+    super.visitBoundText(text, context);
   }
 }
 
