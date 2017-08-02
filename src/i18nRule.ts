@@ -20,8 +20,6 @@ interface ConfigurableVisitor {
   getOption(): Option;
 }
 
-/* Interpolation visitors */
-
 class I18NAttrVisitor extends BasicTemplateAstVisitor
   implements ConfigurableVisitor {
   visitAttr(attr: ast.AttrAst, context: BasicTemplateAstVisitor) {
