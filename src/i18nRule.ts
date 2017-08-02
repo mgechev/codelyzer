@@ -14,7 +14,7 @@ const getSemicolonReplacements = (
   return [new Lint.Replacement(absolutePosition, 1, '; ')];
 };
 
-type Option = 'check-id' | 'check-i18n';
+type Option = 'check-id' | 'check-text';
 
 interface ConfigurableVisitor {
   getOption(): Option;
@@ -47,24 +47,41 @@ class I18NAttrVisitor extends BasicTemplateAstVisitor
 
 class I18NTextVisitor extends BasicTemplateAstVisitor
   implements ConfigurableVisitor {
-  visitAttr(attr: ast.AttrAst, context: BasicTemplateAstVisitor) {
-    if (attr.name === 'i18n' && attr.value) {
-      const parts = attr.value.split('@@');
-      if (parts.length <= 1 || parts[1].length === 0) {
-	const span = attr.sourceSpan;
+  private hasI18n = false;
+  private nestedElements = [];
+  private visited = new Set<ast.TextAst>();
+
+  visitText(text: ast.TextAst, context: BasicTemplateAstVisitor) {
+    if (!this.visited.has(text)) {
+      this.visited.add(text);
+      const textNonEmpty = text.value.trim().length > 0;
+      if (
+	(!this.hasI18n && textNonEmpty && this.nestedElements.length) ||
+	(textNonEmpty && !this.nestedElements.length)
+      ) {
+	const span = text.sourceSpan;
 	context.addFailure(
 	  context.createFailure(
 	    span.start.offset,
 	    span.end.offset - span.start.offset,
-	    'Missing custom message identifier. For more information visit https://angular.io/guide/i18n'
+	    'Each element containing text node should has an i18n attribute'
 	  )
 	);
       }
     }
-    super.visitAttr(attr, context);
+    super.visitText(text, context);
   }
+
+  visitElement(element: ast.ElementAst, context: BasicTemplateAstVisitor) {
+    this.hasI18n = element.attrs.some(e => e.name === 'i18n');
+    this.nestedElements.push(element.name);
+    super.visitElement(element, context);
+    this.nestedElements.pop();
+    this.hasI18n = false;
+  }
+
   getOption(): Option {
-    return 'check-id';
+    return 'check-text';
   }
 }
 
@@ -96,6 +113,26 @@ class I18NTemplateVisitor extends BasicTemplateAstVisitor {
       .filter(f => !!f)
       .forEach(f => this.addFailure(f));
     super.visitAttr(attr, context);
+  }
+
+  visitElement(element: ast.ElementAst, context: any): any {
+    const options = this.getOptions();
+    this.visitors
+      .filter(v => options.indexOf(v.getOption()) >= 0)
+      .map(v => v.visitElement(element, this))
+      .filter(f => !!f)
+      .forEach(f => this.addFailure(f));
+    super.visitElement(element, context);
+  }
+
+  visitText(text: ast.TextAst, context: any): any {
+    const options = this.getOptions();
+    this.visitors
+      .filter(v => options.indexOf(v.getOption()) >= 0)
+      .map(v => v.visitText(text, this))
+      .filter(f => !!f)
+      .forEach(f => this.addFailure(f));
+    super.visitText(text, context);
   }
 }
 
