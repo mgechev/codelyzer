@@ -152,5 +152,53 @@ describe('i18n', () => {
 	['check-text']
       );
     });
+
+    it('should fail with missing id string', () => {
+      let source = `
+      @Component({
+	template: \`
+	  <div>Text {{ foo }}</div>
+	       ~~~~~~~~~~~~~~
+	\`
+      })
+      class Bar {}
+      `;
+      assertAnnotated({
+	ruleName: 'i18n',
+	options: ['check-text'],
+	source,
+	message:
+	  'Each element containing text node should has an i18n attribute'
+      });
+    });
+
+    it('should fail with text outside element with i18n attribute', () => {
+      let source = `
+      @Component({
+	template: \`
+	  <div i18n>Text</div>
+	  {{foo}} text
+	\`
+      })
+      class Bar {}
+      `;
+      assertFailure(
+	'i18n',
+	source,
+	{
+	  message:
+	    'Each element containing text node should has an i18n attribute',
+	  startPosition: {
+	    line: 3,
+	    character: 30
+	  },
+	  endPosition: {
+	    line: 5,
+	    character: 8
+	  }
+	},
+	['check-text']
+      );
+    });
   });
 });
