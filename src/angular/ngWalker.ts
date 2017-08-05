@@ -1,28 +1,28 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import * as compiler from '@angular/compiler';
-import {parseTemplate} from './templates/templateParser';
+import { parseTemplate } from './templates/templateParser';
 
-import {parseCss} from './styles/parseCss';
-import {CssAst} from './styles/cssAst';
-import {BasicCssAstVisitor, CssAstVisitorCtrl} from './styles/basicCssAstVisitor';
+import { parseCss } from './styles/parseCss';
+import { CssAst } from './styles/cssAst';
+import { BasicCssAstVisitor, CssAstVisitorCtrl } from './styles/basicCssAstVisitor';
 
 import {
   RecursiveAngularExpressionVisitorCtr,
   BasicTemplateAstVisitor,
   TemplateAstVisitorCtr
 } from './templates/basicTemplateAstVisitor';
-import {RecursiveAngularExpressionVisitor} from './templates/recursiveAngularExpressionVisitor';
-import {ReferenceCollectorVisitor} from './templates/referenceCollectorVisitor';
+import { RecursiveAngularExpressionVisitor } from './templates/recursiveAngularExpressionVisitor';
+import { ReferenceCollectorVisitor } from './templates/referenceCollectorVisitor';
 
-import {MetadataReader} from './metadataReader';
-import {ComponentMetadata, DirectiveMetadata, StyleMetadata} from './metadata';
-import {ngWalkerFactoryUtils} from './ngWalkerFactoryUtils';
+import { MetadataReader } from './metadataReader';
+import { ComponentMetadata, DirectiveMetadata, StyleMetadata } from './metadata';
+import { ngWalkerFactoryUtils } from './ngWalkerFactoryUtils';
 
-import {Config} from './config';
+import { Config } from './config';
 
-import {logger} from '../util/logger';
-import {getDecoratorName} from '../util/utils';
+import { logger } from '../util/logger';
+import { getDecoratorName } from '../util/utils';
 
 const getDecoratorStringArgs = (decorator: ts.Decorator) => {
   let baseExpr = <any>decorator.expression || {};
@@ -123,6 +123,11 @@ export class NgWalker extends Lint.RuleWalker {
       this.visitNgInjectable(<ts.ClassDeclaration>decorator.parent, decorator);
     }
 
+
+    if (name === 'Pipe') {
+      this.visitNgPipe(<ts.ClassDeclaration>decorator.parent, decorator);
+    }
+
     // Not invoked @Component or @Pipe, or @Directive
     if (!(<ts.CallExpression>decorator.expression).arguments ||
       !(<ts.CallExpression>decorator.expression).arguments.length ||
@@ -130,9 +135,6 @@ export class NgWalker extends Lint.RuleWalker {
       return;
     }
 
-    if (name === 'Pipe') {
-      this.visitNgPipe(<ts.ClassDeclaration>decorator.parent, decorator);
-    }
   }
 
   protected visitNgComponent(metadata: ComponentMetadata) {
