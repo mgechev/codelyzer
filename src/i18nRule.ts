@@ -3,16 +3,6 @@ import * as ts from 'typescript';
 import { NgWalker } from './angular/ngWalker';
 import * as ast from '@angular/compiler';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
-import { ExpTypes } from './angular/expressionTypes';
-import { Config } from './angular/config';
-import { RecursiveAngularExpressionVisitor } from './angular/templates/recursiveAngularExpressionVisitor';
-
-const getSemicolonReplacements = (
-  text: ast.BoundDirectivePropertyAst,
-  absolutePosition: number
-) => {
-  return [new Lint.Replacement(absolutePosition, 1, '; ')];
-};
 
 type Option = 'check-id' | 'check-text';
 
@@ -23,8 +13,8 @@ interface ConfigurableVisitor {
 class I18NAttrVisitor extends BasicTemplateAstVisitor
   implements ConfigurableVisitor {
   visitAttr(attr: ast.AttrAst, context: BasicTemplateAstVisitor) {
-    if (attr.name === 'i18n' && attr.value) {
-      const parts = attr.value.split('@@');
+    if (attr.name === 'i18n') {
+      const parts = (attr.value || '').split('@@');
       if (parts.length <= 1 || parts[1].length === 0) {
 	const span = attr.sourceSpan;
 	context.addFailure(
@@ -45,7 +35,7 @@ class I18NAttrVisitor extends BasicTemplateAstVisitor
 
 class I18NTextVisitor extends BasicTemplateAstVisitor
   implements ConfigurableVisitor {
-  static Error = 'Each element containing text node should has an i18n attribute';
+  static Error = 'Each element containing text node should have an i18n attribute';
 
   private hasI18n = false;
   private nestedElements = [];
@@ -178,13 +168,14 @@ export class Rule extends Lint.Rules.AbstractRule {
     optionsDescription: Lint.Utils.dedent`
       Arguments may be optionally provided:
       * \`"check-id"\` Makes sure i18n attributes have ID specified
+      * \`"check-text"\` Makes sure there are no elements with text content but no i18n attribute
     `,
 
     options: {
       type: 'array',
       items: {
 	type: 'string',
-	enum: ['check-id']
+	enum: ['check-id', 'check-text']
       },
       minLength: 0,
       maxLength: 3
