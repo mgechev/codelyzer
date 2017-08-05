@@ -1,7 +1,7 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import {NgWalker} from './angular/ngWalker';
-import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAngularExpressionVisitor';
+import { NgWalker } from './angular/ngWalker';
+import { RecursiveAngularExpressionVisitor } from './angular/templates/recursiveAngularExpressionVisitor';
 import * as e from '@angular/compiler/src/expression_parser/ast';
 import * as ast from '@angular/compiler';
 

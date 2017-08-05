@@ -1,9 +1,9 @@
 import * as ts from 'typescript';
 import chai = require('chai');
 
-import {getDecoratorPropertyInitializer} from '../../src/util/utils';
-import {SourceMappingVisitor} from '../../src/angular/sourceMappingVisitor';
-import {renderSync} from 'node-sass';
+import { getDecoratorPropertyInitializer } from '../../src/util/utils';
+import { SourceMappingVisitor } from '../../src/angular/sourceMappingVisitor';
+import { renderSync } from 'node-sass';
 
 const getAst = (code: string, file = 'file.ts') => {
   return ts.createSourceFile(file, code, ts.ScriptTarget.ES2015, true);

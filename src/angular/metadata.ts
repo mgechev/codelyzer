@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import {RawSourceMap} from 'source-map';
+import { RawSourceMap } from 'source-map';
 
 export interface CodeWithSourceMap {
   code: string;

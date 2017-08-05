@@ -1,10 +1,10 @@
-import {expect} from 'chai';
-import {Decorator} from 'typescript';
+import { expect } from 'chai';
+import { Decorator } from 'typescript';
 
 import * as sass from 'node-sass';
 
-import {assertFailure, assertSuccess, assertAnnotated} from './testHelper';
-import {Config} from '../src/angular/config';
+import { assertFailure, assertSuccess, assertAnnotated } from './testHelper';
+import { Config } from '../src/angular/config';
 import { Replacement } from 'tslint';
 
 describe('no-unused-css', () => {

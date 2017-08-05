@@ -1,23 +1,23 @@
 import * as ts from 'typescript';
-import {FileResolver} from './fileResolver/fileResolver';
-import {AbstractResolver, MetadataUrls} from './urlResolvers/abstractResolver';
-import {UrlResolver} from './urlResolvers/urlResolver';
-import {PathResolver} from './urlResolvers/pathResolver';
+import { FileResolver } from './fileResolver/fileResolver';
+import { AbstractResolver, MetadataUrls } from './urlResolvers/abstractResolver';
+import { UrlResolver } from './urlResolvers/urlResolver';
+import { PathResolver } from './urlResolvers/pathResolver';
 
-import {logger} from '../util/logger';
+import { logger } from '../util/logger';
 
-import {Config} from './config';
+import { Config } from './config';
 
 import {
   DirectiveMetadata, ComponentMetadata, CodeWithSourceMap, TemplateMetadata, StylesMetadata,
   StyleMetadata
 } from './metadata';
-import {Maybe, unwrapFirst, ifTrue, listToMaybe} from '../util/function';
+import { Maybe, unwrapFirst, ifTrue, listToMaybe } from '../util/function';
 import {
   callExpression, withIdentifier, hasProperties,
   isSimpleTemplateString, getStringInitializerFromProperty, decoratorArgument
 } from '../util/astQuery';
-import {getTemplate, getInlineStyle} from '../util/ngQuery';
+import { getTemplate, getInlineStyle } from '../util/ngQuery';
 
 const normalizeTransformed = (t: CodeWithSourceMap) => {
   if (!t.map) {

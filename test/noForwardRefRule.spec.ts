@@ -1,4 +1,4 @@
-import {assertAnnotated, assertSuccess} from './testHelper';
+import { assertAnnotated, assertSuccess } from './testHelper';
 
 describe('no-forward-ref', () => {
   describe('invalid function call', () => {

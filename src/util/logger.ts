@@ -1,4 +1,4 @@
-import {Config, LogLevel} from '../angular/config';
+import { Config, LogLevel } from '../angular/config';
 
 export class Logger {
   constructor(private level: number) {}

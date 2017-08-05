@@ -1,6 +1,6 @@
 import * as Lint from 'tslint';
 
-import {UsePropertyDecorator} from './propertyDecoratorBase';
+import { UsePropertyDecorator } from './propertyDecoratorBase';
 import { IOptions } from 'tslint';
 
 export class Rule extends UsePropertyDecorator {

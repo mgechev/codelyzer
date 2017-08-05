@@ -1,8 +1,8 @@
 import { assertSuccess, assertAnnotated, assertMultipleAnnotated } from './testHelper';
-import {Replacement} from 'tslint';
-import {expect} from 'chai';
-import {FsFileResolver} from '../src/angular/fileResolver/fsFileResolver';
-import {MetadataReader} from '../src/angular/metadataReader';
+import { Replacement } from 'tslint';
+import { expect } from 'chai';
+import { FsFileResolver } from '../src/angular/fileResolver/fsFileResolver';
+import { MetadataReader } from '../src/angular/metadataReader';
 import * as ts from 'typescript';
 import chai = require('chai');
 

@@ -1,8 +1,8 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import {sprintf} from 'sprintf-js';
+import { sprintf } from 'sprintf-js';
 import SyntaxKind = require('./util/syntaxKind');
-import {NgWalker} from './angular/ngWalker';
+import { NgWalker } from './angular/ngWalker';
 
 
 export class Rule extends Lint.Rules.AbstractRule {

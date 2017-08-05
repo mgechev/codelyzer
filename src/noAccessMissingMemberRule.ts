@@ -1,14 +1,14 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import {sprintf} from 'sprintf-js';
-import {stringDistance} from './util/utils';
-import {NgWalker} from './angular/ngWalker';
+import { sprintf } from 'sprintf-js';
+import { stringDistance } from './util/utils';
+import { NgWalker } from './angular/ngWalker';
 import { RecursiveAngularExpressionVisitor, FlatSymbolTable } from './angular/templates/recursiveAngularExpressionVisitor';
-import {ExpTypes} from './angular/expressionTypes';
-import {getDeclaredMethodNames, getDeclaredPropertyNames} from './util/classDeclarationUtils';
+import { ExpTypes } from './angular/expressionTypes';
+import { getDeclaredMethodNames, getDeclaredPropertyNames } from './util/classDeclarationUtils';
 import * as e from '@angular/compiler/src/expression_parser/ast';
 
-import {Config} from './angular/config';
+import { Config } from './angular/config';
 
 enum DeclarationType {
   Property,

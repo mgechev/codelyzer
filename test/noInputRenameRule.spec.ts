@@ -1,4 +1,4 @@
-import { assertSuccess, assertAnnotated} from './testHelper';
+import { assertSuccess, assertAnnotated } from './testHelper';
 
 describe('no-input-rename', () => {
   describe('invalid directive input property', () => {
