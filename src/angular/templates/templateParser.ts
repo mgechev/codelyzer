@@ -74,23 +74,23 @@ export const parseTemplate = (
   })
     .elseIf.lt('4.1.0', () => {
       tmplParser = new TemplateParser(
-	expressionParser,
-	elementSchemaRegistry,
-	htmlParser,
-	ngConsole,
-	[]
+        expressionParser,
+        elementSchemaRegistry,
+        htmlParser,
+        ngConsole,
+        []
       );
     })
     .else(() => {
       const config = new compiler.CompilerConfig({});
       tmplParser = new TemplateParser(
-	config,
-	new compiler.JitReflector(),
-	expressionParser,
-	elementSchemaRegistry,
-	htmlParser,
-	ngConsole,
-	[]
+        config,
+        new compiler.JitReflector(),
+        expressionParser,
+        elementSchemaRegistry,
+        htmlParser,
+        ngConsole,
+        []
       );
     });
 
@@ -138,74 +138,74 @@ export const parseTemplate = (
   try {
     SemVerDSL.lt('4.1.0', () => {
       result = tmplParser.tryParse(
-	(compiler.CompileDirectiveMetadata as any).create({
-	  type,
-	  template: templateMetadata
-	}),
-	template,
-	defaultDirectives,
-	[],
-	[NO_ERRORS_SCHEMA],
-	''
+        (compiler.CompileDirectiveMetadata as any).create({
+          type,
+          template: templateMetadata
+        }),
+        template,
+        defaultDirectives,
+        [],
+        [NO_ERRORS_SCHEMA],
+        ''
       ).templateAst;
     })
       .elseIf.lt('4.1.3', () => {
-	result = tmplParser.tryParse(
-	  compiler.CompileDirectiveMetadata.create({
-	    type,
-	    template: templateMetadata,
-	    isHost: true,
-	    isComponent: true,
-	    selector: '',
-	    exportAs: '',
-	    changeDetection: ChangeDetectionStrategy.Default,
-	    inputs: [],
-	    outputs: [],
-	    host: {},
-	    providers: [],
-	    viewProviders: [],
-	    queries: [],
-	    viewQueries: [],
-	    entryComponents: [],
-	    componentViewType: null,
-	    rendererType: null,
-	    componentFactory: null
-	  }),
-	  template,
-	  defaultDirectives,
-	  [],
-	  [NO_ERRORS_SCHEMA],
-	  ''
-	).templateAst;
+        result = tmplParser.tryParse(
+          compiler.CompileDirectiveMetadata.create({
+            type,
+            template: templateMetadata,
+            isHost: true,
+            isComponent: true,
+            selector: '',
+            exportAs: '',
+            changeDetection: ChangeDetectionStrategy.Default,
+            inputs: [],
+            outputs: [],
+            host: {},
+            providers: [],
+            viewProviders: [],
+            queries: [],
+            viewQueries: [],
+            entryComponents: [],
+            componentViewType: null,
+            rendererType: null,
+            componentFactory: null
+          }),
+          template,
+          defaultDirectives,
+          [],
+          [NO_ERRORS_SCHEMA],
+          ''
+        ).templateAst;
       })
       .else(() => {
-	result = tmplParser.tryParse(
-	  compiler.CompileDirectiveMetadata.create({
-	    type,
-	    template: templateMetadata,
-	    isHost: true,
-	    isComponent: true,
-	    selector: '',
-	    exportAs: '',
-	    changeDetection: ChangeDetectionStrategy.Default,
-	    inputs: [],
-	    outputs: [],
-	    host: {},
-	    providers: [],
-	    viewProviders: [],
-	    queries: [],
-	    viewQueries: [],
-	    entryComponents: [],
-	    componentViewType: null,
-	    rendererType: null,
-	    componentFactory: null
-	  }),
-	  template,
-	  defaultDirectives,
-	  [],
-	  [NO_ERRORS_SCHEMA],
-	  ''
-	).templateAst;
+        result = tmplParser.tryParse(
+          compiler.CompileDirectiveMetadata.create({
+            type,
+            template: templateMetadata,
+            isHost: true,
+            isComponent: true,
+            selector: '',
+            exportAs: '',
+            changeDetection: ChangeDetectionStrategy.Default,
+            inputs: [],
+            outputs: [],
+            host: {},
+            providers: [],
+            viewProviders: [],
+            queries: [],
+            viewQueries: [],
+            entryComponents: [],
+            componentViewType: null,
+            rendererType: null,
+            componentFactory: null
+          }),
+          template,
+          defaultDirectives,
+          [],
+          [NO_ERRORS_SCHEMA],
+          ''
+        ).templateAst;
       });
   } catch (e) {
     console.log(e);

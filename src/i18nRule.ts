@@ -16,14 +16,14 @@ class I18NAttrVisitor extends BasicTemplateAstVisitor
     if (attr.name === 'i18n') {
       const parts = (attr.value || '').split('@@');
       if (parts.length <= 1 || parts[1].length === 0) {
-	const span = attr.sourceSpan;
-	context.addFailure(
-	  context.createFailure(
-	    span.start.offset,
-	    span.end.offset - span.start.offset,
-	    'Missing custom message identifier. For more information visit https://angular.io/guide/i18n'
-	  )
-	);
+        const span = attr.sourceSpan;
+        context.addFailure(
+          context.createFailure(
+            span.start.offset,
+            span.end.offset - span.start.offset,
+            'Missing custom message identifier. For more information visit https://angular.io/guide/i18n'
+          )
+        );
       }
     }
     super.visitAttr(attr, context);
@@ -46,17 +46,17 @@ class I18NTextVisitor extends BasicTemplateAstVisitor
       this.visited.add(text);
       const textNonEmpty = text.value.trim().length > 0;
       if (
-	(!this.hasI18n && textNonEmpty && this.nestedElements.length) ||
-	(textNonEmpty && !this.nestedElements.length)
+        (!this.hasI18n && textNonEmpty && this.nestedElements.length) ||
+        (textNonEmpty && !this.nestedElements.length)
       ) {
-	const span = text.sourceSpan;
-	context.addFailure(
-	  context.createFailure(
-	    span.start.offset,
-	    span.end.offset - span.start.offset,
-	    I18NTextVisitor.Error
-	  )
-	);
+        const span = text.sourceSpan;
+        context.addFailure(
+          context.createFailure(
+            span.start.offset,
+            span.end.offset - span.start.offset,
+            I18NTextVisitor.Error
+          )
+        );
       }
     }
     super.visitText(text, context);
@@ -67,20 +67,20 @@ class I18NTextVisitor extends BasicTemplateAstVisitor
       this.visited.add(text);
       const val = text.value;
       if (
-	val instanceof ast.ASTWithSource &&
-	val.ast instanceof ast.Interpolation
+        val instanceof ast.ASTWithSource &&
+        val.ast instanceof ast.Interpolation
       ) {
-	const textNonEmpty = val.ast.strings.some(s => /\w+/.test(s));
-	if (textNonEmpty) {
-	  const span = text.sourceSpan;
-	  context.addFailure(
-	    context.createFailure(
-	      span.start.offset,
-	      span.end.offset - span.start.offset,
-	      I18NTextVisitor.Error
-	    )
-	  );
-	}
+        const textNonEmpty = val.ast.strings.some(s => /\w+/.test(s));
+        if (textNonEmpty) {
+          const span = text.sourceSpan;
+          context.addFailure(
+            context.createFailure(
+              span.start.offset,
+              span.end.offset - span.start.offset,
+              I18NTextVisitor.Error
+            )
+          );
+        }
       }
     }
   }
@@ -174,8 +174,8 @@ export class Rule extends Lint.Rules.AbstractRule {
     options: {
       type: 'array',
       items: {
-	type: 'string',
-	enum: ['check-id', 'check-text']
+        type: 'string',
+        enum: ['check-id', 'check-text']
       },
       minLength: 0,
       maxLength: 3
@@ -187,7 +187,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
       new NgWalker(sourceFile, this.getOptions(), {
-	templateVisitorCtrl: I18NTemplateVisitor
+        templateVisitorCtrl: I18NTemplateVisitor
       })
     );
   }
