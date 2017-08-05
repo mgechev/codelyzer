@@ -33,6 +33,18 @@ describe('i18n', () => {
       let source = `
       @Component({
         template: \`
+          <div i18n="meaning|description@@foo">Text</div>
+        \`
+      })
+      class Bar {}
+      `;
+      assertSuccess('i18n', source, ['check-id']);
+    });
+
+    it('should work with proper id', () => {
+      let source = `
+      @Component({
+        template: \`
           <div i18n="@@foo">Text</div>
         \`
       })
@@ -78,9 +90,28 @@ describe('i18n', () => {
           'Missing custom message identifier. For more information visit https://angular.io/guide/i18n'
       });
     });
+
+    it('should fail with missing id', () => {
+      let source = `
+      @Component({
+        template: \`
+          <div i18n>Text</div>
+               ~~~~
+        \`
+      })
+      class Bar {}
+      `;
+      assertAnnotated({
+        ruleName: 'i18n',
+        options: ['check-id'],
+        source,
+        message:
+          'Missing custom message identifier. For more information visit https://angular.io/guide/i18n'
+      });
+    });
   });
 
-  describe('check-id', () => {
+  describe('check-text', () => {
     it('should work with i18n attribute', () => {
       let source = `
       @Component({
@@ -136,7 +167,7 @@ describe('i18n', () => {
         options: ['check-text'],
         source,
         message:
-          'Each element containing text node should has an i18n attribute'
+          'Each element containing text node should have an i18n attribute'
       });
     });
 
@@ -158,7 +189,7 @@ describe('i18n', () => {
         options: ['check-text'],
         source,
         message:
-          'Each element containing text node should has an i18n attribute'
+          'Each element containing text node should have an i18n attribute'
       });
     });
 
@@ -177,7 +208,7 @@ describe('i18n', () => {
         source,
         {
           message:
-            'Each element containing text node should has an i18n attribute',
+            'Each element containing text node should have an i18n attribute',
           startPosition: {
             line: 3,
             character: 30
@@ -206,7 +237,26 @@ describe('i18n', () => {
         options: ['check-text'],
         source,
         message:
-          'Each element containing text node should has an i18n attribute'
+          'Each element containing text node should have an i18n attribute'
+      });
+    });
+
+    it('should fail with missing id string', () => {
+      let source = `
+      @Component({
+        template: \`
+          <div>{{ foo }} text</div>
+               ~~~~~~~~~~~~~~
+        \`
+      })
+      class Bar {}
+      `;
+      assertAnnotated({
+        ruleName: 'i18n',
+        options: ['check-text'],
+        source,
+        message:
+          'Each element containing text node should have an i18n attribute'
       });
     });
 
@@ -225,7 +275,7 @@ describe('i18n', () => {
         source,
         {
           message:
-            'Each element containing text node should has an i18n attribute',
+            'Each element containing text node should have an i18n attribute',
           startPosition: {
             line: 3,
             character: 30
