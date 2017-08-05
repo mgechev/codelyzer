@@ -1,8 +1,8 @@
 import * as ts from 'typescript';
-import {NgWalker} from '../angular/ngWalker';
-import {IOptions} from 'tslint';
-import {ComponentMetadata} from '../angular/metadata';
-import {F1, Maybe} from '../util/function';
+import { NgWalker } from '../angular/ngWalker';
+import { IOptions } from 'tslint';
+import { ComponentMetadata } from '../angular/metadata';
+import { F1, Maybe } from '../util/function';
 
 // Walkable types
 export type Walkable = 'NgComponent';

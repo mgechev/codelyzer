@@ -1,8 +1,8 @@
-import {getComponentDecorator, getDecoratorPropertyInitializer} from './util/utils';
+import { getComponentDecorator, getDecoratorPropertyInitializer } from './util/utils';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 
-import {NgWalker} from './angular/ngWalker';
+import { NgWalker } from './angular/ngWalker';
 
 export class Rule extends Lint.Rules.AbstractRule {
 

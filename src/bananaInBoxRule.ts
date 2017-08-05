@@ -1,8 +1,8 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import * as ast from '@angular/compiler';
-import {BasicTemplateAstVisitor} from './angular/templates/basicTemplateAstVisitor';
-import {NgWalker} from './angular/ngWalker';
+import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
+import { NgWalker } from './angular/ngWalker';
 
 
 const InvalidSyntaxBoxOpen = '([';

@@ -6,7 +6,7 @@ import * as e from '@angular/compiler/src/expression_parser/ast';
 import { ExpTypes } from '../expressionTypes';
 import { ComponentMetadata } from '../metadata';
 import { RecursiveAngularExpressionVisitor } from './recursiveAngularExpressionVisitor';
-import {SourceMappingVisitor} from '../sourceMappingVisitor';
+import { SourceMappingVisitor } from '../sourceMappingVisitor';
 
 
 const getExpressionDisplacement = (binding: any) => {

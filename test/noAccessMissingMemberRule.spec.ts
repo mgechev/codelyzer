@@ -1,5 +1,5 @@
-import { assertSuccess, assertAnnotated} from './testHelper';
-import {Config} from '../src/angular/config';
+import { assertSuccess, assertAnnotated } from './testHelper';
+import { Config } from '../src/angular/config';
 
 describe('no-access-missing-member', () => {
   describe('invalid expressions', () => {

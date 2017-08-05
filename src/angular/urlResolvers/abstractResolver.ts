@@ -1,6 +1,6 @@
 import * as ts from 'typescript';
-import {current} from '../../util/syntaxKind';
-import {isSimpleTemplateString} from '../../util/utils';
+import { current } from '../../util/syntaxKind';
+import { isSimpleTemplateString } from '../../util/utils';
 
 const kinds = current();
 

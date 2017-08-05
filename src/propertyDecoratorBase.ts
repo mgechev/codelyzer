@@ -1,6 +1,6 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import {sprintf} from 'sprintf-js';
+import { sprintf } from 'sprintf-js';
 import { IOptions } from 'tslint';
 import SyntaxKind = require('./util/syntaxKind');
 
