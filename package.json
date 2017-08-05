@@ -21,7 +21,8 @@
   },
   "contributors": [
     "Minko Gechev <mgechev@gmail.com>",
-    "Preslav Semov <preslavsemov@gmail.com>"
+    "Preslav Semov <preslavsemov@gmail.com>",
+    "William Koza <william.koza@gmail.com>"
   ],
   "repository": {
     "type": "git",
@@ -46,8 +47,8 @@
   },
   "homepage": "https://github.com/mgechev/codelyzer#readme",
   "devDependencies": {
-    "@angular/compiler": "^4.2.3",
-    "@angular/core": "^4.2.3",
+    "@angular/compiler": "^4.3.3",
+    "@angular/core": "^4.3.3",
     "@types/chai": "^3.4.33",
     "@types/less": "0.0.31",
     "@types/mocha": "^2.2.32",
