@@ -14,9 +14,6 @@ describe('banana-in-box', () => {
       assertSuccess('banana-in-box', source);
     });
 
-  });
-
-  describe('success', () => {
     it('should work with proper style', () => {
       let source = `
       @Component({
@@ -26,6 +23,7 @@ describe('banana-in-box', () => {
       `;
       assertSuccess('banana-in-box', source);
     });
+
   });
 
 
@@ -35,6 +33,22 @@ describe('banana-in-box', () => {
       @Component({
         template: \` <input type="text" ([ngModel])="foo" name="foo">
                                         ~~~~~~~~~~~~~~~~~
+        \`
+      })
+      class Bar {}
+      `;
+      assertAnnotated({
+        ruleName: 'banana-in-box',
+        message: 'Invalid binding syntax. Use [(expr)] instead',
+        source
+      });
+    });
+
+    it('should fail when the box is in the banana', () => {
+      let source = `
+      @Component({
+        template: \` <comp ([bar])="foo" name="foo"></comp>
+                           ~~~~~~~~~~~~~
         \`
       })
       class Bar {}
