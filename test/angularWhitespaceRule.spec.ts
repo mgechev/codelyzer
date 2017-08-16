@@ -128,7 +128,7 @@ describe('angular-whitespace', () => {
         @Component({
           selector: 'foo',
           template: \`
-            <div *ngFor="let pony of ponies | slice:0:1    ">{{ pony }}</div>
+            <div *ngFor="let ponyy of ponies | slice:0:1    ">{{ ponyy }}</div>
           \`
         })
         class Bar {
