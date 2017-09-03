@@ -10,7 +10,6 @@ import { SourceMappingVisitor } from '../sourceMappingVisitor';
 import { NgWalker } from '../ngWalker';
 
 
-
 const getExpressionDisplacement = (binding: any) => {
   let attrLen = 0;
   let valLen = 0;

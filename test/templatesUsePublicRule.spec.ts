@@ -235,7 +235,7 @@ describe('templates-use-public', () => {
         @Component({
           selector: 'foobar',
           template: \`
-            <div *ngFor="let smile of smile"><smile-cmp [smile]="smile"></smile-cmp></div>   
+            <div *ngFor="let smile of smile"><smile-cmp [smile]="smile"></smile-cmp></div>dummy
                                                                                        ~~~~~
           \`
         })
