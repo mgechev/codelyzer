@@ -152,11 +152,21 @@ class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
 
 class PipeWhitespaceVisitor extends RecursiveAngularExpressionVisitor implements ConfigurableVisitor {
   visitPipe(ast: ast.BindingPipe, context: RecursiveAngularExpressionVisitor): any {
-    const start = ast.span.start;
-    const exprStart = context.getSourcePosition(ast.exp.span.start);
-    const exprEnd = context.getSourcePosition(ast.exp.span.end);
-    const sf = context.getSourceFile().getFullText();
-    const exprText = sf.substring(exprStart, exprEnd);
+
+    let exprStart, exprEnd, exprText, sf;
+    if(NgWalker.prop && ( NgWalker.prop.templateName === 'ngForOf' || NgWalker.prop.templateName === 'ngIf')) {
+      exprStart = context.getSourcePosition(ast.exp.span.start) - (ast.span.start); // t pony of ponies |
+      exprEnd = context.getSourcePosition(ast.exp.span.end) - (ast.span.start); // - (ast.span.end - ast.span.start);
+      sf = context.getSourceFile().getFullText();
+      exprText = sf.substring(exprStart, exprEnd);
+      NgWalker.prop = null;
+    } else {
+       exprStart = context.getSourcePosition(ast.exp.span.start);
+       exprEnd = context.getSourcePosition(ast.exp.span.end);
+       sf = context.getSourceFile().getFullText();
+       exprText = sf.substring(exprStart, exprEnd);
+    }
+
     const replacements = [];
     // Handling the right side of the pipe
     let leftBeginning = exprEnd + 1; // exprEnd === '|'

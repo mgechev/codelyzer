@@ -37,6 +37,9 @@ export interface NgWalkerConfig {
 }
 
 export class NgWalker extends Lint.RuleWalker {
+
+  static prop: any;
+
   constructor(sourceFile: ts.SourceFile,
               protected _originalOptions: Lint.IOptions,
               private _config?: NgWalkerConfig,

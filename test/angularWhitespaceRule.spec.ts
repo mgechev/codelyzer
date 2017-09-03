@@ -1,4 +1,4 @@
-import { assertSuccess, assertAnnotated, assertMultipleAnnotated } from './testHelper';
+import {assertSuccess, assertAnnotated, assertMultipleAnnotated} from './testHelper';
 import {Replacement} from 'tslint';
 import {expect} from 'chai';
 import {FsFileResolver} from '../src/angular/fileResolver/fsFileResolver';
@@ -55,7 +55,7 @@ describe('angular-whitespace', () => {
         assertSuccess('angular-whitespace', source, ['check-pipe']);
       });
 
-      it('should succeed with in structural directives with proper style', () => {
+      it('should succeed with in structural directives', () => {
         let source = `
         @Component({
           selector: 'foo',
@@ -128,7 +128,7 @@ describe('angular-whitespace', () => {
         @Component({
           selector: 'foo',
           template: \`
-            <div *ngFor="let pony of ponies | slice:0:1    ">{{ pony }}</div>
+            <span *ngFor="let pony of ponies | slice:0:1">{{ pony }}</span>
           \`
         })
         class Bar {
@@ -137,6 +137,43 @@ describe('angular-whitespace', () => {
         `;
         assertSuccess('angular-whitespace', source, ['check-pipe']);
       });
+
+      it('should also work with ngFor', () => {
+        const source = `
+         @Component({
+           selector: 'foo',
+           moduleId: module.id,
+           template: \`
+           <div *ngFor="let pony of ponies | slice:0:4">
+             <h2>{{ pony.name }}</h2>
+           </div>
+          \`
+         })
+         class Bar {
+           ponies = []
+         }
+         `;
+        assertSuccess('angular-whitespace', source, ['check-pipe']);
+      });
+
+      it('should work with ngIf else', () => {
+        const source = `
+         @Component({
+           selector: 'foo',
+           moduleId: module.id,
+           template: \`
+           <div *ngIf="isOnline | async; else offline">
+             <h2>hello</h2>
+           </div>
+          \`
+         })
+         class Bar {
+           ponies = []
+         }
+         `;
+        assertSuccess('angular-whitespace', source, ['check-pipe']);
+      });
+
 
       it('should succeed with i18n and description', () => {
         let source = `
@@ -157,22 +194,13 @@ describe('angular-whitespace', () => {
       it('should work with proper style', () => {
         let source = `
       @Component({
-        template: \` <div *ngIf="codelyzer; is awesome;"></div> \`
+        template: \` <div *ngIf="codelyzer|async; else awesome;"></div> \`
       })
       class Bar {}
       `;
         assertSuccess('angular-whitespace', source, ['check-semicolon']);
       });
 
-      it('should work with proper style also', () => {
-        let source = `
-      @Component({
-        template: \` <div *ngIf="codelyzer; is; awesome;"></div> \`
-      })
-      class Bar {}
-      `;
-        assertSuccess('angular-whitespace', source, ['check-semicolon']);
-      });
 
       it('should work with proper style also', () => {
         let source = `
@@ -309,8 +337,8 @@ describe('failure', () => {
         const failures = assertMultipleAnnotated({
           ruleName: 'angular-whitespace',
           failures: [
-            {char: '~', msg: 'Missing whitespace in interpolation; expecting {{ expr }}', },
-            {char: '^', msg: 'Extra whitespace in interpolation; expecting {{ expr }}', },
+            {char: '~', msg: 'Missing whitespace in interpolation; expecting {{ expr }}',},
+            {char: '^', msg: 'Extra whitespace in interpolation; expecting {{ expr }}',},
           ],
           source,
           options: ['check-interpolation']
@@ -394,8 +422,8 @@ describe('failure', () => {
     it('should fail when no space after semicolon', () => {
       let source = `
       @Component({
-        template: \` <div *ngIf="codelyzer; is;awesome;"></div>
-                                              ~~
+        template: \` <div *ngIf="codelyzer;awesome"></div>
+                                          ~~
         \`
       })
       class Bar {}
@@ -407,6 +435,24 @@ describe('failure', () => {
         options: ['check-semicolon']
       });
     });
+
+    it('should fail when no space after semicolon', () => {
+      let source = `
+      @Component({
+        template: \` <md-icon *ngIf="isOnline | async;else offline">cloud_off</md-icon>
+                                                     ~~
+        \`
+      })
+      class Bar {}
+      `;
+      assertAnnotated({
+        ruleName: 'angular-whitespace',
+        message: 'Missing whitespace after semicolon; expecting \'; expr\'',
+        source,
+        options: ['check-semicolon']
+      });
+    });
+
 
     it('should fail when no space after semicolon', () => {
       let source = `
@@ -447,8 +493,8 @@ describe('failure', () => {
       it('should fail when no space after semicolon', () => {
         let source = `
       @Component({
-        template: \` <div *ngIf="codelyzer; is;awesome;"></div>
-                                              ~~
+        template: \` <div *ngIf="codelyzer;awesome"></div>
+                                          ~~
         \`
       })
       class Bar {}
@@ -463,8 +509,8 @@ describe('failure', () => {
         const res = Replacement.applyAll(source, failures[0].getFix());
         expect(res).to.eq(`
       @Component({
-        template: \` <div *ngIf="codelyzer; is; awesome;"></div>
-                                              ~~
+        template: \` <div *ngIf="codelyzer; awesome"></div>
+                                          ~~
         \`
       })
       class Bar {}
@@ -537,6 +583,7 @@ describe('pipes', () => {
       }
       `);
   });
+
 
   it('should fail when extra space on both sides', () => {
     let source = `
@@ -659,8 +706,8 @@ describe('pipes', () => {
     const failures = assertMultipleAnnotated({
       ruleName: 'angular-whitespace',
       failures: [
-        {char: '~', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".', },
-        {char: '^', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".', },
+        {char: '~', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".',},
+        {char: '^', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".',},
       ],
       source,
       options: ['check-pipe']

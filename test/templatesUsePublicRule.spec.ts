@@ -12,11 +12,11 @@ describe('templates-use-public', () => {
         class Test {
           constructor(private foo: number) {}
         }`;
-        assertAnnotated({
-          ruleName: 'templates-use-public',
-          message: 'You can bind only to public class members. "foo" is not a public class member.',
-          source
-        });
+      assertAnnotated({
+        ruleName: 'templates-use-public',
+        message: 'You can bind only to public class members. "foo" is not a public class member.',
+        source
+      });
     });
 
     it('should fail when interpolating private property', () => {
@@ -117,7 +117,7 @@ describe('templates-use-public', () => {
         class Test {
           constructor(public foo: number) {}
         }`;
-        assertSuccess('templates-use-public', source);
+      assertSuccess('templates-use-public', source);
     });
 
     it('should succeed with public property', () => {
@@ -129,7 +129,7 @@ describe('templates-use-public', () => {
         class Test {
           foo: number;
         }`;
-        assertSuccess('templates-use-public', source);
+      assertSuccess('templates-use-public', source);
     });
 
     it('should succeed with non-existing property', () => {
@@ -140,7 +140,7 @@ describe('templates-use-public', () => {
         })
         class Test {
         }`;
-        assertSuccess('templates-use-public', source);
+      assertSuccess('templates-use-public', source);
     });
 
     it('should succeed on public method', () => {
@@ -152,7 +152,7 @@ describe('templates-use-public', () => {
         class Test {
           public foo() {}
         }`;
-        assertSuccess('templates-use-public', source);
+      assertSuccess('templates-use-public', source);
     });
 
     it('should succeed on public nested props', () => {
@@ -164,7 +164,7 @@ describe('templates-use-public', () => {
         class Test {
           foo = {};
         }`;
-        assertSuccess('templates-use-public', source);
+      assertSuccess('templates-use-public', source);
     });
 
 
@@ -177,7 +177,7 @@ describe('templates-use-public', () => {
         class Test {
           foo: any;
         }`;
-        assertSuccess('templates-use-public', source);
+      assertSuccess('templates-use-public', source);
     });
 
     it('should succeed on public nested props', () => {
@@ -189,7 +189,7 @@ describe('templates-use-public', () => {
         class Test {
           readonly foo: any;
         }`;
-        assertSuccess('templates-use-public', source);
+      assertSuccess('templates-use-public', source);
     });
 
     it('should succeed shadowed variable', () => {
