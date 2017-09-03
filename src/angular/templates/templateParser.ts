@@ -45,34 +45,53 @@ class Console {
   warn(message: string) {}
 }
 
-
 let defaultDirectives = [];
 
-export const parseTemplate = (template: string, directives: DirectiveDeclaration[] = []) => {
+export const parseTemplate = (
+  template: string,
+  directives: DirectiveDeclaration[] = []
+) => {
   defaultDirectives = directives.map(d => dummyMetadataFactory(d));
 
   const TemplateParser = <any>compiler.TemplateParser;
   const expressionParser = new compiler.Parser(new compiler.Lexer());
   const elementSchemaRegistry = new compiler.DomElementSchemaRegistry();
   const ngConsole = new Console();
-  const htmlParser =
-      new compiler.I18NHtmlParser(new compiler.HtmlParser());
+  const htmlParser = new compiler.HtmlParser();
 
   let tmplParser: any;
 
-  SemVerDSL
-    .gte('4.0.0-beta.8', () => {
-      const config = new compiler.CompilerConfig({});
-      tmplParser =
-        new TemplateParser(config, expressionParser, elementSchemaRegistry, htmlParser, ngConsole, []);
-    })
+  SemVerDSL.gte('4.0.0-beta.8', () => {
+    const config = new compiler.CompilerConfig({});
+    tmplParser = new TemplateParser(
+      config,
+      expressionParser,
+      elementSchemaRegistry,
+      htmlParser,
+      ngConsole,
+      []
+    );
+  })
     .elseIf.lt('4.1.0', () => {
-      tmplParser =
-        new TemplateParser(expressionParser, elementSchemaRegistry, htmlParser, ngConsole, []);
-    }).else(() => {
+      tmplParser = new TemplateParser(
+        expressionParser,
+        elementSchemaRegistry,
+        htmlParser,
+        ngConsole,
+        []
+      );
+    })
+    .else(() => {
       const config = new compiler.CompilerConfig({});
-      tmplParser =
-        new TemplateParser(config, new compiler.JitReflector(), expressionParser, elementSchemaRegistry, htmlParser, ngConsole, []);
+      tmplParser = new TemplateParser(
+        config,
+        new compiler.JitReflector(),
+        expressionParser,
+        elementSchemaRegistry,
+        htmlParser,
+        ngConsole,
+        []
+      );
     });
 
   const interpolation = Config.interpolation;
@@ -117,60 +136,77 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
   };
   let result = null;
   try {
-  SemVerDSL.lt('4.1.0', () => {
-    result = tmplParser.tryParse(
-      (compiler.CompileDirectiveMetadata as any).create({
-        type,
-        template: templateMetadata
-      }),
-    template, defaultDirectives, [], [NO_ERRORS_SCHEMA], '').templateAst;
-  }).elseIf.lt('4.1.3', () => {
-    result = tmplParser.tryParse(
-      compiler.CompileDirectiveMetadata.create({
-        type,
-        template: templateMetadata,
-        isHost: true,
-        isComponent: true,
-        selector: '',
-        exportAs: '',
-        changeDetection: ChangeDetectionStrategy.Default,
-        inputs: [],
-        outputs: [],
-        host: {},
-        providers: [],
-        viewProviders: [],
-        queries: [],
-        viewQueries: [],
-        entryComponents: [],
-        componentViewType: null,
-        rendererType: null,
-        componentFactory: null
-      }),
-      template, defaultDirectives, [], [NO_ERRORS_SCHEMA], '').templateAst;
-  }).else(() => {
-    result = tmplParser.tryParse(
-      compiler.CompileDirectiveMetadata.create({
-        type,
-        template: templateMetadata,
-        isHost: true,
-        isComponent: true,
-        selector: '',
-        exportAs: '',
-        changeDetection: ChangeDetectionStrategy.Default,
-        inputs: [],
-        outputs: [],
-        host: {},
-        providers: [],
-        viewProviders: [],
-        queries: [],
-        viewQueries: [],
-        entryComponents: [],
-        componentViewType: null,
-        rendererType: null,
-        componentFactory: null
-      }),
-      template, defaultDirectives, [], [NO_ERRORS_SCHEMA], '').templateAst;
-  });
+    SemVerDSL.lt('4.1.0', () => {
+      result = tmplParser.tryParse(
+        (compiler.CompileDirectiveMetadata as any).create({
+          type,
+          template: templateMetadata
+        }),
+        template,
+        defaultDirectives,
+        [],
+        [NO_ERRORS_SCHEMA],
+        ''
+      ).templateAst;
+    })
+      .elseIf.lt('4.1.3', () => {
+        result = tmplParser.tryParse(
+          compiler.CompileDirectiveMetadata.create({
+            type,
+            template: templateMetadata,
+            isHost: true,
+            isComponent: true,
+            selector: '',
+            exportAs: '',
+            changeDetection: ChangeDetectionStrategy.Default,
+            inputs: [],
+            outputs: [],
+            host: {},
+            providers: [],
+            viewProviders: [],
+            queries: [],
+            viewQueries: [],
+            entryComponents: [],
+            componentViewType: null,
+            rendererType: null,
+            componentFactory: null
+          }),
+          template,
+          defaultDirectives,
+          [],
+          [NO_ERRORS_SCHEMA],
+          ''
+        ).templateAst;
+      })
+      .else(() => {
+        result = tmplParser.tryParse(
+          compiler.CompileDirectiveMetadata.create({
+            type,
+            template: templateMetadata,
+            isHost: true,
+            isComponent: true,
+            selector: '',
+            exportAs: '',
+            changeDetection: ChangeDetectionStrategy.Default,
+            inputs: [],
+            outputs: [],
+            host: {},
+            providers: [],
+            viewProviders: [],
+            queries: [],
+            viewQueries: [],
+            entryComponents: [],
+            componentViewType: null,
+            rendererType: null,
+            componentFactory: null
+          }),
+          template,
+          defaultDirectives,
+          [],
+          [NO_ERRORS_SCHEMA],
+          ''
+        ).templateAst;
+      });
   } catch (e) {
     console.log(e);
   }

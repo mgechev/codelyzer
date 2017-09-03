@@ -126,6 +126,11 @@ export class NgWalker extends Lint.RuleWalker {
       this.visitNgInjectable(<ts.ClassDeclaration>decorator.parent, decorator);
     }
 
+
+    if (name === 'Pipe') {
+      this.visitNgPipe(<ts.ClassDeclaration>decorator.parent, decorator);
+    }
+
     // Not invoked @Component or @Pipe, or @Directive
     if (!(<ts.CallExpression>decorator.expression).arguments ||
       !(<ts.CallExpression>decorator.expression).arguments.length ||
@@ -133,9 +138,6 @@ export class NgWalker extends Lint.RuleWalker {
       return;
     }
 
-    if (name === 'Pipe') {
-      this.visitNgPipe(<ts.ClassDeclaration>decorator.parent, decorator);
-    }
   }
 
   protected visitNgComponent(metadata: ComponentMetadata) {
