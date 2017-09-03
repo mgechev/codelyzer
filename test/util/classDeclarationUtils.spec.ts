@@ -1,8 +1,8 @@
 import * as ts from 'typescript';
 import * as tslint from 'tslint';
 
-import {NgWalker} from '../../src/angular/ngWalker';
-import {getDeclaredMethodNames, getDeclaredPropertyNames} from '../../src/util/classDeclarationUtils';
+import { NgWalker } from '../../src/angular/ngWalker';
+import { getDeclaredMethodNames, getDeclaredPropertyNames } from '../../src/util/classDeclarationUtils';
 import { FlatSymbolTable } from '../../src/angular/templates/recursiveAngularExpressionVisitor';
 import chai = require('chai');
 

@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import {CodeWithSourceMap} from './metadata';
+import { CodeWithSourceMap } from './metadata';
 
 export interface UrlResolver {
   (url: string, d: ts.Decorator): string;
@@ -63,7 +63,7 @@ export const Config: Config = {
   },
 
   predefinedDirectives: [
-    { selector: 'form', exportAs: 'ngForm' },
+    { selector: 'form:not([ngNoForm]):not([formGroup]), ngForm, [ngForm]', exportAs: 'ngForm' },
     { selector: '[routerLinkActive]', exportAs: 'routerLinkActive' },
     { selector: '[ngModel]:not([formControlName]):not([formControl])', exportAs: 'ngModel' },
     { selector: '[md-menu-item], [mat-menu-item]', exportAs: 'mdMenuItem' },

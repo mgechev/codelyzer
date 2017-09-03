@@ -1,13 +1,13 @@
-import {NgWalkerConfig} from './ngWalker';
-import {MetadataReader} from './metadataReader';
-import {UrlResolver} from './urlResolvers/urlResolver';
-import {FsFileResolver} from './fileResolver/fsFileResolver';
-import {BasicCssAstVisitor} from './styles/basicCssAstVisitor';
+import { NgWalkerConfig } from './ngWalker';
+import { MetadataReader } from './metadataReader';
+import { UrlResolver } from './urlResolvers/urlResolver';
+import { FsFileResolver } from './fileResolver/fsFileResolver';
+import { BasicCssAstVisitor } from './styles/basicCssAstVisitor';
 
 import { RecursiveAngularExpressionVisitor } from './templates/recursiveAngularExpressionVisitor';
-import {BasicTemplateAstVisitor} from './templates/basicTemplateAstVisitor';
+import { BasicTemplateAstVisitor } from './templates/basicTemplateAstVisitor';
 
-import {PathResolver} from './urlResolvers/pathResolver';
+import { PathResolver } from './urlResolvers/pathResolver';
 
 export const ngWalkerFactoryUtils = {
   defaultConfig() {

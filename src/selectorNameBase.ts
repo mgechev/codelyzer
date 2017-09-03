@@ -1,7 +1,7 @@
 import * as Lint from 'tslint';
 import { SelectorValidator } from './util/selectorValidator';
 import * as ts from 'typescript';
-import {sprintf} from 'sprintf-js';
+import { sprintf } from 'sprintf-js';
 import * as compiler from '@angular/compiler';
 import { IOptions } from 'tslint';
 import SyntaxKind = require('./util/syntaxKind');

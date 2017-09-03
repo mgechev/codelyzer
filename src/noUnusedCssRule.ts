@@ -1,23 +1,23 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import {NgWalker} from './angular/ngWalker';
-import {getComponentDecorator, isSimpleTemplateString, getDecoratorPropertyInitializer} from './util/utils';
-import {BasicCssAstVisitor} from './angular/styles/basicCssAstVisitor';
-import {BasicTemplateAstVisitor} from './angular/templates/basicTemplateAstVisitor';
-import {VERSION} from '@angular/core';
+import { NgWalker } from './angular/ngWalker';
+import { getComponentDecorator, isSimpleTemplateString, getDecoratorPropertyInitializer } from './util/utils';
+import { BasicCssAstVisitor } from './angular/styles/basicCssAstVisitor';
+import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
+import { VERSION } from '@angular/core';
 import {
   TemplateAst,
   ElementAst,
   EmbeddedTemplateAst,
   PropertyBindingType
 } from '@angular/compiler';
-import {parseTemplate} from './angular/templates/templateParser';
+import { parseTemplate } from './angular/templates/templateParser';
 import { CssAst, CssSelectorRuleAst, CssSelectorAst, CssBlockAst } from './angular/styles/cssAst';
 
-import {ComponentMetadata, StyleMetadata} from './angular/metadata';
-import {ngWalkerFactoryUtils} from './angular/ngWalkerFactoryUtils';
-import {logger} from './util/logger';
-import {SemVerDSL} from './util/ngVersion';
+import { ComponentMetadata, StyleMetadata } from './angular/metadata';
+import { ngWalkerFactoryUtils } from './angular/ngWalkerFactoryUtils';
+import { logger } from './util/logger';
+import { SemVerDSL } from './util/ngVersion';
 
 const CssSelectorTokenizer = require('css-selector-tokenizer');
 

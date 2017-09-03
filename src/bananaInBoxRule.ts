@@ -1,15 +1,15 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import * as ast from '@angular/compiler';
-import {BasicTemplateAstVisitor} from './angular/templates/basicTemplateAstVisitor';
-import {NgWalker} from './angular/ngWalker';
+import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
+import { NgWalker } from './angular/ngWalker';
 
 
 const InvalidSyntaxBoxOpen = '([';
 const InvalidSyntaxBoxClose = '])';
 const ValidSyntaxOpen = '[(';
 const ValidSyntaxClose = ')]';
-const InvalidSyntaxBoxRe = new RegExp('\\(\\[(.*?)\\]\\)(.*?)');
+const InvalidSyntaxBoxRe = new RegExp('\\[(.*?)\\]');
 
 const getReplacements = (text: ast.BoundEventAst, absolutePosition: number) => {
   const expr: string = (text.sourceSpan as any).toString();
@@ -29,15 +29,14 @@ class BananaInBoxTemplateVisitor extends BasicTemplateAstVisitor {
 
   visitEvent(prop: ast.BoundEventAst, context: any): any {
 
-    if (prop.sourceSpan) {
-      // Note that will not be reliable for different interpolation symbols
+    if (prop.name) {
       let error = null;
-      const expr: any = (<any>prop.sourceSpan).toString();
-        if (InvalidSyntaxBoxRe.test(expr)) {
+      if (InvalidSyntaxBoxRe.test(prop.name)) {
         error = 'Invalid binding syntax. Use [(expr)] instead';
       }
 
       if (error) {
+        const expr: any = (<any>prop.sourceSpan).toString();
         const internalStart = expr.indexOf(InvalidSyntaxBoxOpen) + 1;
         const start = prop.sourceSpan.start.offset + internalStart;
         const absolutePosition = this.getSourcePosition(start - 1);

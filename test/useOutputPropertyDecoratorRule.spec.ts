@@ -1,4 +1,4 @@
-import { assertSuccess, assertAnnotated} from './testHelper';
+import { assertSuccess, assertAnnotated } from './testHelper';
 
 describe('use-output-property-decorator', () => {
   it('should fail when "outputs" is used in @Component', () => {

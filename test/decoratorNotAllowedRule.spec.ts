@@ -1,4 +1,4 @@
-import {assertAnnotated, assertFailures, assertSuccess} from './testHelper';
+import { assertAnnotated, assertFailures, assertSuccess } from './testHelper';
 
 describe('decorator-not-allowed', () => {
 

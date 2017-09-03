@@ -1,13 +1,13 @@
 import * as ts from 'typescript';
 import chai = require('chai');
 
-import {DummyFileResolver} from '../../src/angular/fileResolver/dummyFileResolver';
-import {FsFileResolver} from '../../src/angular/fileResolver/fsFileResolver';
-import {MetadataReader} from '../../src/angular/metadataReader';
-import {ComponentMetadata} from '../../src/angular/metadata';
-import {Config} from '../../src/angular/config';
+import { DummyFileResolver } from '../../src/angular/fileResolver/dummyFileResolver';
+import { FsFileResolver } from '../../src/angular/fileResolver/fsFileResolver';
+import { MetadataReader } from '../../src/angular/metadataReader';
+import { ComponentMetadata } from '../../src/angular/metadata';
+import { Config } from '../../src/angular/config';
 
-import {join, normalize} from 'path';
+import { join, normalize } from 'path';
 
 const getAst = (code: string, file = 'file.ts') => {
   return ts.createSourceFile(file, code, ts.ScriptTarget.ES2015, true);

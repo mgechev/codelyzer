@@ -1,4 +1,4 @@
-import {SelectorRule} from './selectorNameBase';
+import { SelectorRule } from './selectorNameBase';
 import * as Lint from 'tslint';
 
 export class Rule extends SelectorRule {

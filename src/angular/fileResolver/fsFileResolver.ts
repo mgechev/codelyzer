@@ -1,6 +1,6 @@
-import {readFileSync} from 'fs';
+import { readFileSync } from 'fs';
 
-import {FileResolver} from './fileResolver';
+import { FileResolver } from './fileResolver';
 
 export class FsFileResolver extends FileResolver {
   resolve(path: string) {

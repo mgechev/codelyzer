@@ -1,4 +1,4 @@
-import {assertSuccess, assertAnnotated} from './testHelper';
+import { assertSuccess, assertAnnotated } from './testHelper';
 
 describe('use-input-property-decorator', () => {
   it('should fail when "inputs" is used in @Component', () => {

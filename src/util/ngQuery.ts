@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import {Maybe} from './function';
+import { Maybe } from './function';
 import {
     decoratorArgument, getInitializer, isProperty, isArrayLiteralExpression,
     WithStringInitializer, getStringInitializerFromProperty

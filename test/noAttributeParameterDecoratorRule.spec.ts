@@ -1,4 +1,4 @@
-import {assertAnnotated, assertSuccess} from './testHelper';
+import { assertAnnotated, assertSuccess } from './testHelper';
 
 describe('no-attribute-parameter-decorator', () => {
     describe('invalid class constructor', () => {

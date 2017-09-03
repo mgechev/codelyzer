@@ -1,11 +1,11 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import {NgWalker} from './angular/ngWalker';
+import { NgWalker } from './angular/ngWalker';
 import * as ast from '@angular/compiler';
-import {BasicTemplateAstVisitor} from './angular/templates/basicTemplateAstVisitor';
-import {ExpTypes} from './angular/expressionTypes';
-import {Config} from './angular/config';
-import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAngularExpressionVisitor';
+import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
+import { ExpTypes } from './angular/expressionTypes';
+import { Config } from './angular/config';
+import { RecursiveAngularExpressionVisitor } from './angular/templates/recursiveAngularExpressionVisitor';
 
 const InterpolationOpen = Config.interpolation[0];
 const InterpolationClose = Config.interpolation[1];
