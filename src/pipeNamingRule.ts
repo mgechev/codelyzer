@@ -1,9 +1,9 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import {sprintf} from 'sprintf-js';
+import { sprintf } from 'sprintf-js';
 import SyntaxKind = require('./util/syntaxKind');
-import {NgWalker} from './angular/ngWalker';
-import {SelectorValidator} from './util/selectorValidator';
+import { NgWalker } from './angular/ngWalker';
+import { SelectorValidator } from './util/selectorValidator';
 import { IOptions } from 'tslint';
 
 export class Rule extends Lint.Rules.AbstractRule {

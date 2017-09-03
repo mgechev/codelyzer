@@ -1,11 +1,11 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import {NgWalker} from './angular/ngWalker';
+import { NgWalker } from './angular/ngWalker';
 import * as ast from '@angular/compiler';
-import {BasicTemplateAstVisitor} from './angular/templates/basicTemplateAstVisitor';
-import {ExpTypes} from './angular/expressionTypes';
-import {Config} from './angular/config';
-import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAngularExpressionVisitor';
+import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
+import { ExpTypes } from './angular/expressionTypes';
+import { Config } from './angular/config';
+import { RecursiveAngularExpressionVisitor } from './angular/templates/recursiveAngularExpressionVisitor';
 
 const InterpolationOpen = Config.interpolation[0];
 const InterpolationClose = Config.interpolation[1];
@@ -154,7 +154,7 @@ class PipeWhitespaceVisitor extends RecursiveAngularExpressionVisitor implements
   visitPipe(ast: ast.BindingPipe, context: RecursiveAngularExpressionVisitor): any {
 
     let exprStart, exprEnd, exprText, sf;
-    if(NgWalker.prop && ( NgWalker.prop.templateName === 'ngForOf' || NgWalker.prop.templateName === 'ngIf')) {
+    if (NgWalker.prop && ( NgWalker.prop.templateName === 'ngForOf' || NgWalker.prop.templateName === 'ngIf')) {
       exprStart = context.getSourcePosition(ast.exp.span.start) - (ast.span.start); // t pony of ponies |
       exprEnd = context.getSourcePosition(ast.exp.span.end) - (ast.span.start); // - (ast.span.end - ast.span.start);
       sf = context.getSourceFile().getFullText();

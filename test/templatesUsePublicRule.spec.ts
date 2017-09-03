@@ -1,4 +1,4 @@
-import { assertSuccess, assertAnnotated} from '../test/testHelper';
+import { assertSuccess, assertAnnotated } from '../test/testHelper';
 
 describe('templates-use-public', () => {
   describe('invalid expressions', () => {
@@ -215,8 +215,8 @@ describe('templates-use-public', () => {
           selector: 'foobar',
           template: \`
             <div *ngFor="let smile of smile2"><smile-cmp [smile]="smile"></smile-cmp></div>
-                                                   ~~~~~~            
-            
+                                                   ~~~~~~
+
           \`
         })
         class Test {
@@ -235,7 +235,7 @@ describe('templates-use-public', () => {
         @Component({
           selector: 'foobar',
           template: \`
-            <div *ngFor="let smile of smile"><smile-cmp [smile]="smile"></smile-cmp></div>    
+            <div *ngFor="let smile of smile"><smile-cmp [smile]="smile"></smile-cmp></div>
                                                                                        ~~~~~
           \`
         })

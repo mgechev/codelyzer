@@ -1,8 +1,8 @@
 import * as ts from 'typescript';
 import * as tslint from 'tslint';
 
-import {NgWalker} from '../../src/angular/ngWalker';
-import {BasicCssAstVisitor} from '../../src/angular/styles/basicCssAstVisitor';
+import { NgWalker } from '../../src/angular/ngWalker';
+import { BasicCssAstVisitor } from '../../src/angular/styles/basicCssAstVisitor';
 import chai = require('chai');
 import * as spies from 'chai-spies';
 

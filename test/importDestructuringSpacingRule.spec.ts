@@ -1,4 +1,4 @@
-import {assertAnnotated, assertSuccess} from './testHelper';
+import { assertAnnotated, assertSuccess } from './testHelper';
 
 describe('import-destructuring-spacing', () => {
   describe('invalid import spacing', () => {

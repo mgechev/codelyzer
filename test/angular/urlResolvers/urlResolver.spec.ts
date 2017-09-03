@@ -1,7 +1,7 @@
 import * as ts from 'typescript';
 import chai = require('chai');
 
-import {AbstractResolver} from '../../../src/angular/urlResolvers/abstractResolver';
+import { AbstractResolver } from '../../../src/angular/urlResolvers/abstractResolver';
 
 const getAst = (code: string) => {
   return ts.createSourceFile('file.ts', code, ts.ScriptTarget.ES2015, true);

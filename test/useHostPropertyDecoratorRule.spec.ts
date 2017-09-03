@@ -1,4 +1,4 @@
-import { assertSuccess, assertAnnotated} from './testHelper';
+import { assertSuccess, assertAnnotated } from './testHelper';
 
 describe('use-host-property-decorator', () => {
   it('should fail when "host" is used in @Component', () => {

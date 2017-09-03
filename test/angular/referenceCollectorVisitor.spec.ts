@@ -1,7 +1,7 @@
-import {parseTemplate} from '../../src/angular/templates/templateParser';
-import {ReferenceCollectorVisitor} from '../../src/angular/templates/referenceCollectorVisitor';
-import {templateVisitAll} from '@angular/compiler';
-import {expect} from 'chai';
+import { parseTemplate } from '../../src/angular/templates/templateParser';
+import { ReferenceCollectorVisitor } from '../../src/angular/templates/referenceCollectorVisitor';
+import { templateVisitAll } from '@angular/compiler';
+import { expect } from 'chai';
 
 describe('ReferenceCollectorVisitor', () => {
   it('should work with empty templates', () => {

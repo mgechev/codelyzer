@@ -1,7 +1,7 @@
 import * as ts from 'typescript';
-import {RuleWalker, RuleFailure, IOptions, Fix, Replacement} from 'tslint';
-import {CodeWithSourceMap} from './metadata';
-import {SourceMapConsumer} from 'source-map';
+import { RuleWalker, RuleFailure, IOptions, Fix, Replacement } from 'tslint';
+import { CodeWithSourceMap } from './metadata';
+import { SourceMapConsumer } from 'source-map';
 
 const LineFeed = 0x0A;
 const CarriageReturn = 0x0D;

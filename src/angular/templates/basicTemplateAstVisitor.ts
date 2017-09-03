@@ -6,8 +6,8 @@ import * as e from '@angular/compiler/src/expression_parser/ast';
 import { ExpTypes } from '../expressionTypes';
 import { ComponentMetadata } from '../metadata';
 import { RecursiveAngularExpressionVisitor } from './recursiveAngularExpressionVisitor';
-import {SourceMappingVisitor} from '../sourceMappingVisitor';
-import {NgWalker} from '../ngWalker';
+import { SourceMappingVisitor } from '../sourceMappingVisitor';
+import { NgWalker } from '../ngWalker';
 
 
 const getExpressionDisplacement = (binding: any) => {
@@ -50,7 +50,8 @@ const getExpressionDisplacement = (binding: any) => {
     // Total length of the attribute value
     if (binding instanceof ast.BoundEventAst) {
       valLen = binding.handler.span.end;
-    } else if (binding instanceof ast.BoundDirectivePropertyAst && ( binding.templateName === 'ngForOf' || binding.templateName === 'ngIf')) {
+    } else if (binding instanceof ast.BoundDirectivePropertyAst &&
+      ( binding.templateName === 'ngForOf' || binding.templateName === 'ngIf')) {
       // Handling everything except [ngForOf] differently
       // [ngForOf] and [ngIf] require different logic because it gets desugered
       const content = binding.sourceSpan.end.file.content;
@@ -60,7 +61,8 @@ const getExpressionDisplacement = (binding: any) => {
     }
 
     // Handling everything except [ngForOf]
-    if (!(binding instanceof ast.BoundDirectivePropertyAst) || ( binding.templateName !== 'ngForOf' && binding.templateName !== 'ngIf')) {
+    if (!(binding instanceof ast.BoundDirectivePropertyAst) ||
+      ( binding.templateName !== 'ngForOf' && binding.templateName !== 'ngIf')) {
       // Total length of the entire part of the template AST corresponding to this AST.
       totalLength = binding.sourceSpan.end.offset - binding.sourceSpan.start.offset;
       // The whitespace are possible only in:

@@ -1,6 +1,6 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import {NgWalker} from './angular/ngWalker';
+import { NgWalker } from './angular/ngWalker';
 import { EmbeddedTemplateAst } from '@angular/compiler';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 

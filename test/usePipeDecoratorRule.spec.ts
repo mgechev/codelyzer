@@ -1,4 +1,4 @@
-import {assertSuccess, assertAnnotated} from './testHelper';
+import { assertSuccess, assertAnnotated } from './testHelper';
 
 describe('use-pipe-decorator', () => {
   describe('invalid use of pipe transform interface', () => {

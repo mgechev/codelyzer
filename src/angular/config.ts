@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import {CodeWithSourceMap} from './metadata';
+import { CodeWithSourceMap } from './metadata';
 
 export interface UrlResolver {
   (url: string, d: ts.Decorator): string;

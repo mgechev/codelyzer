@@ -1,4 +1,4 @@
-import { assertAnnotated, assertSuccess} from './testHelper';
+import { assertAnnotated, assertSuccess } from './testHelper';
 
 describe('directive-selector-name', () => {
     describe('invalid directive selectors', () => {

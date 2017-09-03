@@ -1,6 +1,6 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import {sprintf} from 'sprintf-js';
+import { sprintf } from 'sprintf-js';
 import SyntaxKind = require('./util/syntaxKind');
 
 const getInterfaceName = (t: any) => {

@@ -1,11 +1,11 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import {sprintf} from 'sprintf-js';
+import { sprintf } from 'sprintf-js';
 import SyntaxKind = require('./util/syntaxKind');
-import {validate, all} from './walkerFactory/walkerFn';
-import {Maybe, listToMaybe} from './util/function';
-import {isDecorator, withIdentifier, callExpression} from './util/astQuery';
-import {Failure} from './walkerFactory/walkerFactory';
+import { validate, all } from './walkerFactory/walkerFn';
+import { Maybe, listToMaybe } from './util/function';
+import { isDecorator, withIdentifier, callExpression } from './util/astQuery';
+import { Failure } from './walkerFactory/walkerFactory';
 
 export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {

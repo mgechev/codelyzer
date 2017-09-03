@@ -1,6 +1,6 @@
 import * as ts from 'typescript';
-import {current} from './syntaxKind';
-import {Maybe, ifTrue} from './function';
+import { current } from './syntaxKind';
+import { Maybe, ifTrue } from './function';
 const kinds = current();
 
 export function isCallExpression(expr: ts.LeftHandSideExpression): expr is ts.CallExpression {

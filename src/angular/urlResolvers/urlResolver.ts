@@ -1,10 +1,10 @@
 import * as ts from 'typescript';
 
-import {Config} from '../config';
-import {AbstractResolver, MetadataUrls} from './abstractResolver';
-import {dirname} from 'path';
-import {current} from '../../util/syntaxKind';
-import {PathResolver} from './pathResolver';
+import { Config } from '../config';
+import { AbstractResolver, MetadataUrls } from './abstractResolver';
+import { dirname } from 'path';
+import { current } from '../../util/syntaxKind';
+import { PathResolver } from './pathResolver';
 
 const kinds = current();
 

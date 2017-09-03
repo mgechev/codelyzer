@@ -1,9 +1,9 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import {stringDistance} from './util/utils';
-import {getDeclaredProperties, getDeclaredMethods} from './util/classDeclarationUtils';
-import {NgWalker} from './angular/ngWalker';
-import {RecursiveAngularExpressionVisitor} from './angular/templates/recursiveAngularExpressionVisitor';
+import { stringDistance } from './util/utils';
+import { getDeclaredProperties, getDeclaredMethods } from './util/classDeclarationUtils';
+import { NgWalker } from './angular/ngWalker';
+import { RecursiveAngularExpressionVisitor } from './angular/templates/recursiveAngularExpressionVisitor';
 import * as e from '@angular/compiler/src/expression_parser/ast';
 import SyntaxKind = require('./util/syntaxKind');
 

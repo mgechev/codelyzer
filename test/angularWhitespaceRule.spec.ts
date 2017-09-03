@@ -1,8 +1,8 @@
-import {assertSuccess, assertAnnotated, assertMultipleAnnotated} from './testHelper';
-import {Replacement} from 'tslint';
-import {expect} from 'chai';
-import {FsFileResolver} from '../src/angular/fileResolver/fsFileResolver';
-import {MetadataReader} from '../src/angular/metadataReader';
+import { assertSuccess, assertAnnotated, assertMultipleAnnotated } from './testHelper';
+import { Replacement } from 'tslint';
+import { expect } from 'chai';
+import { FsFileResolver } from '../src/angular/fileResolver/fsFileResolver';
+import { MetadataReader } from '../src/angular/metadataReader';
 import * as ts from 'typescript';
 import chai = require('chai');
 
@@ -337,8 +337,8 @@ describe('failure', () => {
         const failures = assertMultipleAnnotated({
           ruleName: 'angular-whitespace',
           failures: [
-            {char: '~', msg: 'Missing whitespace in interpolation; expecting {{ expr }}',},
-            {char: '^', msg: 'Extra whitespace in interpolation; expecting {{ expr }}',},
+            {char: '~', msg: 'Missing whitespace in interpolation; expecting {{ expr }}', },
+            {char: '^', msg: 'Extra whitespace in interpolation; expecting {{ expr }}', },
           ],
           source,
           options: ['check-interpolation']
@@ -706,8 +706,8 @@ describe('pipes', () => {
     const failures = assertMultipleAnnotated({
       ruleName: 'angular-whitespace',
       failures: [
-        {char: '~', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".',},
-        {char: '^', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".',},
+        {char: '~', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".', },
+        {char: '^', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".', },
       ],
       source,
       options: ['check-pipe']

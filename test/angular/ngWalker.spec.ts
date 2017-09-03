@@ -1,10 +1,10 @@
 import * as ts from 'typescript';
 import * as tslint from 'tslint';
 
-import {NgWalker} from '../../src/angular/ngWalker';
-import {RecursiveAngularExpressionVisitor} from '../../src/angular/templates/recursiveAngularExpressionVisitor';
-import {BasicTemplateAstVisitor} from '../../src/angular/templates/basicTemplateAstVisitor';
-import {BasicCssAstVisitor} from '../../src/angular/styles/basicCssAstVisitor';
+import { NgWalker } from '../../src/angular/ngWalker';
+import { RecursiveAngularExpressionVisitor } from '../../src/angular/templates/recursiveAngularExpressionVisitor';
+import { BasicTemplateAstVisitor } from '../../src/angular/templates/basicTemplateAstVisitor';
+import { BasicCssAstVisitor } from '../../src/angular/styles/basicCssAstVisitor';
 import chai = require('chai');
 import * as spies from 'chai-spies';
 

@@ -1,4 +1,4 @@
-import { assertSuccess, assertFailures, assertAnnotated} from './testHelper';
+import { assertSuccess, assertFailures, assertAnnotated } from './testHelper';
 
 describe('use-life-cycle-interface', () => {
     describe('invalid declaration of life hook', () => {

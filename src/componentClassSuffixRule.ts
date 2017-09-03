@@ -1,12 +1,12 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import {sprintf} from 'sprintf-js';
-import {ComponentMetadata} from './angular/metadata';
-import {Failure} from './walkerFactory/walkerFactory';
-import {all, validateComponent} from './walkerFactory/walkerFn';
-import {Maybe, F2} from './util/function';
-import {IOptions} from 'tslint';
-import {NgWalker} from './angular/ngWalker';
+import { sprintf } from 'sprintf-js';
+import { ComponentMetadata } from './angular/metadata';
+import { Failure } from './walkerFactory/walkerFactory';
+import { all, validateComponent } from './walkerFactory/walkerFn';
+import { Maybe, F2 } from './util/function';
+import { IOptions } from 'tslint';
+import { NgWalker } from './angular/ngWalker';
 
 export class Rule extends Lint.Rules.AbstractRule {
 

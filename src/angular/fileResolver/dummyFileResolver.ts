@@ -1,4 +1,4 @@
-import {FileResolver} from './fileResolver';
+import { FileResolver } from './fileResolver';
 
 export class DummyFileResolver extends FileResolver {
   resolve(path: string) {

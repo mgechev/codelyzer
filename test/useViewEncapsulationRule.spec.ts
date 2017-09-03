@@ -1,4 +1,4 @@
-import {assertAnnotated, assertSuccess} from './testHelper';
+import { assertAnnotated, assertSuccess } from './testHelper';
 
 describe('use-view-encapsulation', () => {
   describe('invalid view encapsulation', () => {

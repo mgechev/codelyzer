@@ -1,9 +1,9 @@
 import * as ts from 'typescript';
-import {NgWalker} from '../angular/ngWalker';
-import {IOptions} from 'tslint';
-import {ComponentMetadata} from '../angular/metadata';
-import {F1, F2, Maybe} from '../util/function';
-import {Failure} from './walkerFactory';
+import { NgWalker } from '../angular/ngWalker';
+import { IOptions } from 'tslint';
+import { ComponentMetadata } from '../angular/metadata';
+import { F1, F2, Maybe } from '../util/function';
+import { Failure } from './walkerFactory';
 
 export type Validator = NodeValidator | ComponentValidator;
 export type ValidateFn<T> = F2<T, IOptions, Maybe<Failure[]>>;
