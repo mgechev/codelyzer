@@ -156,6 +156,23 @@ describe('angular-whitespace', () => {
         assertSuccess('angular-whitespace', source, ['check-pipe']);
       });
 
+      it('should work with external templates with ngFor', () => {
+        const code = `
+        @Component({
+          selector: 'foo',
+          moduleId: module.id,
+          templateUrl: 'ngFor.html',
+        })
+        class Bar {
+          ponies = []
+        }
+        `;
+        const reader = new MetadataReader(new FsFileResolver());
+        const ast = getAst(code, __dirname + '/../../test/fixtures/angularWhitespace/component.ts');
+        assertSuccess('angular-whitespace', ast, ['check-pipe']);
+      });
+
+
       it('should work with ngIf else', () => {
         const source = `
          @Component({
@@ -762,5 +779,45 @@ describe('pipes', () => {
       }
       `);
   });
+
+  it('should fail when no space on one side', () => {
+    let source = `
+      @Component({
+        selector: 'foo',
+        template: \`
+           <div *ngFor="let pony of ponies |slice:0:4">dummy
+                                                      ~~~
+             <h2>{{ pony.name }}</h2>
+           </div>
+        \`
+      })
+      class Bar {
+        foo: any;
+      }
+      `;
+    const failures = assertAnnotated({
+      ruleName: 'angular-whitespace',
+      message: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".',
+      source,
+      options: ['check-pipe']
+    });
+
+    const res = Replacement.applyAll(source, failures[0].getFix());
+    expect(res).to.eq(`
+      @Component({
+        selector: 'foo',
+        template: \`
+           <div *ngFor="let pony of ponies | slice:0:4">dummy
+                                                      ~~~
+             <h2>{{ pony.name }}</h2>
+           </div>
+        \`
+      })
+      class Bar {
+        foo: any;
+      }
+      `);
+  });
+
 });
 
