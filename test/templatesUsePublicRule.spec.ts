@@ -215,7 +215,7 @@ describe('templates-use-public', () => {
           selector: 'foobar',
           template: \`
             <div *ngFor="let smile of smile2"><smile-cmp [smile]="smile"></smile-cmp></div>
-                                                   ~~~~~~
+                                      ~~~~~~
 
           \`
         })
@@ -230,13 +230,13 @@ describe('templates-use-public', () => {
     });
 
     // Angular doesn't provide the correct source span of the property.
-    it('should fail when private property used in *ngFor', () => {
+    it('should fail when private property used in *ngFor 2', () => {
       let source = `
         @Component({
           selector: 'foobar',
           template: \`
-            <div *ngFor="let smile of smile"><smile-cmp [smile]="smile"></smile-cmp></div>dummy
-                                                                                       ~~~~~
+            <div *ngFor="let smile of smile"><smile-cmp [smile]="smile"></smile-cmp></div>
+                                                                          ~~~~~
           \`
         })
         class Test {

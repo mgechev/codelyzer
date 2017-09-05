@@ -154,18 +154,12 @@ class PipeWhitespaceVisitor extends RecursiveAngularExpressionVisitor implements
   visitPipe(ast: ast.BindingPipe, context: RecursiveAngularExpressionVisitor): any {
 
     let exprStart, exprEnd, exprText, sf;
-    if (NgWalker.prop && ( NgWalker.prop.templateName === 'ngForOf' || NgWalker.prop.templateName === 'ngIf')) {
-      exprStart = context.getSourcePosition(ast.exp.span.start) - (ast.span.start); // t pony of ponies |
-      exprEnd = context.getSourcePosition(ast.exp.span.end) - (ast.span.start); // - (ast.span.end - ast.span.start);
-      sf = context.getSourceFile().getFullText();
-      exprText = sf.substring(exprStart, exprEnd);
-      NgWalker.prop = null;
-    } else {
-       exprStart = context.getSourcePosition(ast.exp.span.start);
-       exprEnd = context.getSourcePosition(ast.exp.span.end);
-       sf = context.getSourceFile().getFullText();
-       exprText = sf.substring(exprStart, exprEnd);
-    }
+
+    exprStart = context.getSourcePosition(ast.exp.span.start);
+    exprEnd = context.getSourcePosition(ast.exp.span.end);
+    sf = context.getSourceFile().getFullText();
+    exprText = sf.substring(exprStart, exprEnd);
+
 
     const replacements = [];
     // Handling the right side of the pipe
@@ -224,6 +218,7 @@ class TemplateExpressionVisitor extends RecursiveAngularExpressionVisitor {
   visitPipe(expr: ast.BindingPipe, context: any): any {
     const options = this.getOptions();
     this.visitors
+      .map(v => v.addParentAST(this.parentAST))
       .filter(v => options.indexOf(v.getOption()) >= 0)
       .map(v => v.visitPipe(expr, this))
       .filter(f => !!f)

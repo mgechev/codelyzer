@@ -174,7 +174,7 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
     const templateVisitor =
       new this.expressionVisitorCtrl(this.getSourceFile(), this._originalOptions, this.context, templateStart);
     templateVisitor.preDefinedVariables = this._variables;
-    NgWalker.prop = prop;
+    templateVisitor.parentAST = prop;
     templateVisitor.visit(ast);
     templateVisitor.getFailures().forEach(f => this.addFailure(f));
   }

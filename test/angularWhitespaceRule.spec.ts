@@ -785,8 +785,8 @@ describe('pipes', () => {
       @Component({
         selector: 'foo',
         template: \`
-           <div *ngFor="let pony of ponies |slice:0:4">dummy
-                                                      ~~~
+           <div *ngFor="let pony of ponies |slice:0:4">
+                                          ~~~
              <h2>{{ pony.name }}</h2>
            </div>
         \`
@@ -807,8 +807,8 @@ describe('pipes', () => {
       @Component({
         selector: 'foo',
         template: \`
-           <div *ngFor="let pony of ponies | slice:0:4">dummy
-                                                      ~~~
+           <div *ngFor="let pony of ponies | slice:0:4">
+                                          ~~~
              <h2>{{ pony.name }}</h2>
            </div>
         \`
