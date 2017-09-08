@@ -15,8 +15,8 @@ export class Rule extends Lint.Rules.AbstractRule {
     options: {
       'type': 'array',
       'items': [
-        {'enum': ['kebab-case', 'attribute']},
-        {'type': 'string'}
+        { 'enum': ['kebab-case', 'attribute'] },
+        { 'type': 'string' }
       ],
       'minItems': 1
     },
@@ -32,11 +32,11 @@ export class Rule extends Lint.Rules.AbstractRule {
   };
 
 
-  static  FAILURE_WITHOUT_PREFIX: string = 'The name of the Pipe decorator of class %s should' +
-    ' be named camelCase, however its value is "%s".';
+  static FAILURE_WITHOUT_PREFIX: string = 'The name of the Pipe decorator of class %s should' +
+  ' be named camelCase, however its value is "%s".';
 
-  static  FAILURE_WITH_PREFIX: string = 'The name of the Pipe decorator of class %s should' +
-    ' be named camelCase with prefix %s, however its value is "%s".';
+  static FAILURE_WITH_PREFIX: string = 'The name of the Pipe decorator of class %s should' +
+  ' be named camelCase with prefix %s, however its value is "%s".';
 
   public prefix: string;
   public hasPrefix: boolean;
@@ -86,30 +86,37 @@ export class ClassMetadataWalker extends NgWalker {
     this.validateProperties(className, decorator);
   }
 
-  private validateProperties(className: string, pipe: any) {
+  private validateProperties(className: string, pipe: ts.Decorator) {
     let argument = this.extractArgument(pipe);
-    if (argument.kind === SyntaxKind.current().ObjectLiteralExpression) {
-      argument.properties.filter(n => n.name.text === 'name')
+    if (argument && argument.kind === SyntaxKind.current().ObjectLiteralExpression) {
+      (<ts.ObjectLiteralExpression>argument).properties
+        .filter(n => n.name && (<ts.StringLiteral>n.name).text === 'name')
         .forEach(this.validateProperty.bind(this, className));
     }
   }
 
-  private extractArgument(pipe: any) {
-    let baseExpr = <any>pipe.expression || {};
-    let args = baseExpr.arguments || [];
-    return args[0];
+  private extractArgument(pipe: ts.Decorator): ts.Expression | undefined {
+    const baseExpr = <ts.CallExpression>pipe.expression;
+    if (baseExpr.arguments) {
+      const args = baseExpr.arguments;
+      return args[0];
+    }
+    return undefined;
   }
 
-  private validateProperty(className: string, property: any) {
-    let propName: string = property.initializer.text;
-    let isValidName: boolean = this.rule.validateName(propName);
-    let isValidPrefix: boolean = (this.rule.hasPrefix ? this.rule.validatePrefix(propName) : true);
-    if (!isValidName || !isValidPrefix) {
-      this.addFailure(
-        this.createFailure(
-          property.getStart(),
-          property.getWidth(),
-          sprintf.apply(this, this.createFailureArray(className, propName))));
+  private validateProperty(className: string, property: ts.Node) {
+    const init = (<ts.PropertyAssignment>property).initializer;
+    if (init && (<ts.StringLiteral>init).text) {
+      let propName: string = (<ts.StringLiteral>init).text;
+      let isValidName: boolean = this.rule.validateName(propName);
+      let isValidPrefix: boolean = (this.rule.hasPrefix ? this.rule.validatePrefix(propName) : true);
+      if (!isValidName || !isValidPrefix) {
+        this.addFailure(
+          this.createFailure(
+            property.getStart(),
+            property.getWidth(),
+            sprintf.apply(this, this.createFailureArray(className, propName))));
+      }
     }
   }
 
