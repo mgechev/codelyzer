@@ -7,6 +7,7 @@ import { ExpTypes } from '../expressionTypes';
 import { ComponentMetadata } from '../metadata';
 import { RecursiveAngularExpressionVisitor } from './recursiveAngularExpressionVisitor';
 import { SourceMappingVisitor } from '../sourceMappingVisitor';
+import { NgWalker } from '../ngWalker';
 
 
 const getExpressionDisplacement = (binding: any) => {
@@ -49,18 +50,19 @@ const getExpressionDisplacement = (binding: any) => {
     // Total length of the attribute value
     if (binding instanceof ast.BoundEventAst) {
       valLen = binding.handler.span.end;
-    } else if (binding instanceof ast.BoundDirectivePropertyAst && binding.templateName === 'ngForOf') {
+    } else if (binding instanceof ast.BoundDirectivePropertyAst &&
+      ( binding.templateName === 'ngForOf' || binding.templateName === 'ngIf')) {
       // Handling everything except [ngForOf] differently
-      // [ngForOf] requires different logic because it gets desugered from *ngFor
+      // [ngForOf] and [ngIf] require different logic because it gets desugered
       const content = binding.sourceSpan.end.file.content;
-      const ngForSubstr = content.substring(binding.sourceSpan.start.offset, binding.sourceSpan.end.offset);
-      result = ngForSubstr.lastIndexOf((binding.value as any).source) + '*ngFor'.length;
+      result = binding.sourceSpan.start.file.content.lastIndexOf((binding.value as any).source);
     } else {
       valLen = binding.value.span.end;
     }
 
     // Handling everything except [ngForOf]
-    if (!(binding instanceof ast.BoundDirectivePropertyAst) || binding.templateName !== 'ngForOf') {
+    if (!(binding instanceof ast.BoundDirectivePropertyAst) ||
+      ( binding.templateName !== 'ngForOf' && binding.templateName !== 'ngIf')) {
       // Total length of the entire part of the template AST corresponding to this AST.
       totalLength = binding.sourceSpan.end.offset - binding.sourceSpan.start.offset;
       // The whitespace are possible only in:
@@ -139,7 +141,7 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
   visitElementProperty(prop: ast.BoundElementPropertyAst, context: any): any {
     const ast: any = (<e.ASTWithSource>prop.value).ast;
     ast.interpolateExpression = (<any>prop.value).source;
-    this.visitNgTemplateAST(prop.value, this.templateStart + getExpressionDisplacement(prop));
+    this.visitNgTemplateAST(prop.value, this.templateStart + getExpressionDisplacement(prop), prop);
   }
 
   visitAttr(ast: ast.AttrAst, context: any): any {}
@@ -164,14 +166,15 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
 
   visitDirectiveProperty(prop: ast.BoundDirectivePropertyAst, context: any): any {
     if (ExpTypes.ASTWithSource(prop.value)) {
-      this.visitNgTemplateAST(prop.value, this.templateStart + getExpressionDisplacement(prop));
+      this.visitNgTemplateAST(prop.value, this.templateStart + getExpressionDisplacement(prop), prop);
     }
   }
 
-  protected visitNgTemplateAST(ast: e.AST, templateStart: number) {
+  protected visitNgTemplateAST(ast: e.AST, templateStart: number,  prop?: any) {
     const templateVisitor =
       new this.expressionVisitorCtrl(this.getSourceFile(), this._originalOptions, this.context, templateStart);
     templateVisitor.preDefinedVariables = this._variables;
+    templateVisitor.parentAST = prop;
     templateVisitor.visit(ast);
     templateVisitor.getFailures().forEach(f => this.addFailure(f));
   }

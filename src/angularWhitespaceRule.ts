@@ -152,11 +152,15 @@ class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
 
 class PipeWhitespaceVisitor extends RecursiveAngularExpressionVisitor implements ConfigurableVisitor {
   visitPipe(ast: ast.BindingPipe, context: RecursiveAngularExpressionVisitor): any {
-    const start = ast.span.start;
-    const exprStart = context.getSourcePosition(ast.exp.span.start);
-    const exprEnd = context.getSourcePosition(ast.exp.span.end);
-    const sf = context.getSourceFile().getFullText();
-    const exprText = sf.substring(exprStart, exprEnd);
+
+    let exprStart, exprEnd, exprText, sf;
+
+    exprStart = context.getSourcePosition(ast.exp.span.start);
+    exprEnd = context.getSourcePosition(ast.exp.span.end);
+    sf = context.getSourceFile().getFullText();
+    exprText = sf.substring(exprStart, exprEnd);
+
+
     const replacements = [];
     // Handling the right side of the pipe
     let leftBeginning = exprEnd + 1; // exprEnd === '|'
@@ -214,6 +218,7 @@ class TemplateExpressionVisitor extends RecursiveAngularExpressionVisitor {
   visitPipe(expr: ast.BindingPipe, context: any): any {
     const options = this.getOptions();
     this.visitors
+      .map(v => v.addParentAST(this.parentAST))
       .filter(v => options.indexOf(v.getOption()) >= 0)
       .map(v => v.visitPipe(expr, this))
       .filter(f => !!f)

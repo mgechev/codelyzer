@@ -97,6 +97,8 @@ function computeLineStarts(text: string): number[] {
 }
 
 export class SourceMappingVisitor extends RuleWalker {
+
+  parentAST: any;
   private consumer: SourceMapConsumer;
 
   constructor(sourceFile: ts.SourceFile, options: IOptions, protected codeWithMap: CodeWithSourceMap, protected basePosition: number) {
@@ -127,7 +129,16 @@ export class SourceMappingVisitor extends RuleWalker {
         console.log(e);
       }
     }
+
+    if (this.parentAST && this.parentAST.templateName) {
+      pos = pos - this.parentAST.value.ast.span.start;
+    }
     return pos + this.basePosition;
+  }
+
+  addParentAST(parentAST: any): any {
+    this.parentAST = parentAST;
+    return this;
   }
 
   private getMappedInterval(start: number, length: number) {

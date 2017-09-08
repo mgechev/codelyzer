@@ -1,4 +1,4 @@
-import { assertSuccess, assertAnnotated } from './testHelper';
+import { assertSuccess, assertAnnotated } from '../test/testHelper';
 
 describe('templates-use-public', () => {
   describe('invalid expressions', () => {
@@ -214,10 +214,9 @@ describe('templates-use-public', () => {
         @Component({
           selector: 'foobar',
           template: \`
-            <div *ngFor="let smile of smile2">
-                                       ~~~~~~
-              <smile-cmp [smile]="smile"></smile-cmp>
-            </div>
+            <div *ngFor="let smile of smile2"><smile-cmp [smile]="smile"></smile-cmp></div>
+                                      ~~~~~~
+
           \`
         })
         class Test {
@@ -231,15 +230,13 @@ describe('templates-use-public', () => {
     });
 
     // Angular doesn't provide the correct source span of the property.
-    it('should fail when private property used in *ngFor', () => {
+    it('should fail when private property used in *ngFor 2', () => {
       let source = `
         @Component({
           selector: 'foobar',
           template: \`
-            <div *ngFor="let smile of smile">
-                                       ~~~~~
-              <smile-cmp [smile]="smile"></smile-cmp>
-            </div>
+            <div *ngFor="let smile of smile"><smile-cmp [smile]="smile"></smile-cmp></div>
+                                                                          ~~~~~
           \`
         })
         class Test {

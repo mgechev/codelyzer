@@ -3,15 +3,9 @@ import * as ts from 'typescript';
 import { sprintf } from 'sprintf-js';
 import { stringDistance } from './util/utils';
 import { NgWalker } from './angular/ngWalker';
-import {
-  RecursiveAngularExpressionVisitor,
-  FlatSymbolTable
-} from './angular/templates/recursiveAngularExpressionVisitor';
+import { RecursiveAngularExpressionVisitor, FlatSymbolTable } from './angular/templates/recursiveAngularExpressionVisitor';
 import { ExpTypes } from './angular/expressionTypes';
-import {
-  getDeclaredMethodNames,
-  getDeclaredPropertyNames
-} from './util/classDeclarationUtils';
+import { getDeclaredMethodNames, getDeclaredPropertyNames } from './util/classDeclarationUtils';
 import * as e from '@angular/compiler/src/expression_parser/ast';
 
 import { Config } from './angular/config';
@@ -50,8 +44,7 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
       symbolType = 'property';
     }
 
-    available = Object.assign(
-      {},
+    available = Object.assign({},
       getDeclaredMethodNames(this.context.controller),
       getDeclaredPropertyNames(this.context.controller),
       this.preDefinedVariables
@@ -81,11 +74,7 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
     }
 
     if (ast.name && !available[ast.name]) {
-      let failureString = sprintf.apply(this, [
-        Rule.FAILURE,
-        symbolType,
-        ast.name
-      ]);
+      let failureString = sprintf.apply(this, [Rule.FAILURE, symbolType, ast.name]);
       const top = this.getTopSuggestion(Object.keys(available), ast.name);
       const getSuggestion = (list: string[]) => {
         if (list.length === 1) {
@@ -99,9 +88,7 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
         return result;
       };
       if (top.length && top[0].distance <= 2) {
-        failureString += ` Probably you mean: ${getSuggestion(
-          top.map(s => s.element)
-        )}.`;
+        failureString += ` Probably you mean: ${getSuggestion(top.map(s => s.element))}.`;
       }
       const width = ast.name.length;
       this.addFailure(this.createFailure(ast.span.start, width, failureString));
@@ -111,21 +98,19 @@ class SymbolAccessValidator extends RecursiveAngularExpressionVisitor {
 
   private getTopSuggestion(list: string[], current: string) {
     const result = [];
-    const tmp = list
-      .map(e => {
-        return {
-          element: e,
-          distance: stringDistance(e, current)
-        };
-      })
-      .sort((a, b) => a.distance - b.distance);
+    const tmp = list.map(e => {
+      return {
+        element: e,
+        distance: stringDistance(e, current)
+      };
+    }).sort((a, b) => a.distance - b.distance);
     const first = tmp.shift();
     if (!first) {
       return [];
     } else {
       result.push(first);
       let current: any;
-      while ((current = tmp.shift())) {
+      while (current = tmp.shift()) {
         if (current.distance !== first.distance) {
           return result;
         } else {
@@ -145,16 +130,17 @@ export class Rule extends Lint.Rules.AbstractRule {
     rationale: `Such occurances in code are most likely a result of a typo.`,
     options: null,
     optionsDescription: `Not configurable.`,
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static FAILURE: string = 'The %s "%s" that you\'re trying to access does not exist in the class declaration.';
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
-      new NgWalker(sourceFile, this.getOptions(), {
-        expressionVisitorCtrl: SymbolAccessValidator
-      })
-    );
+        new NgWalker(sourceFile,
+            this.getOptions(), {
+              expressionVisitorCtrl: SymbolAccessValidator
+            }));
   }
 }
+
