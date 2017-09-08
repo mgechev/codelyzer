@@ -204,7 +204,25 @@ describe('angular-whitespace', () => {
         `;
         assertSuccess('angular-whitespace', source, ['check-pipe']);
       });
+
+      it('should succeed with *ngIf and else condition', () => {
+        let source = `
+        @Component({
+          selector: 'foo',
+          template: \`
+            <div *ngIf="countingPoints$ | async as countingPoints; else countingPoinsAreLoading">
+              {{countingPoints}}
+            </div>
+            <ng-template #countingPoinsAreLoading>loading</ng-template>
+          \`
+        })
+        class Bar {}
+        `;
+        assertSuccess('angular-whitespace', source, ['check-pipe']);
+      });
+
     });
+
 
     describe('check-semicolon', () => {
 
