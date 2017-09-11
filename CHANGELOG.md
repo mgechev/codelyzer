@@ -4,6 +4,7 @@
 
 - i18n best practices [#377](https://github.com/mgechev/codelyzer/issues/377) [5ef90aa](https://github.com/mgechev/codelyzer/commit/5ef90aa5955294a640fcf4ca8efa402e27a77fd1)
 - Add a rule which verifies the use of the life cycle methods according to the type of class (Component, Directive, Service,...) [#363](https://github.com/mgechev/codelyzer/issues/363) [6b042f7](https://github.com/mgechev/codelyzer/pull/388)
+- Friendlier checking of validator directive names [#397](https://github.com/mgechev/codelyzer/issues/397) [28ecbdd](https://github.com/mgechev/codelyzer/pull/407)
 
 ### Bug Fixes
 
