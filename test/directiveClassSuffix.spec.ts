@@ -27,7 +27,8 @@ describe('directive-class-suffix', () => {
             `;
       assertAnnotated({
         ruleName: 'directive-class-suffix',
-        message: 'The name of the class Test should end with the suffix Directive, Page, Validator (https://angular.io/styleguide#style-02-03)',
+        message: 'The name of the class Test should end with the suffix ' +
+          'Directive, Page, Validator (https://angular.io/styleguide#style-02-03)',
         source,
         options: ['Directive', 'Page', 'Validator']
       });

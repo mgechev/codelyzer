@@ -6,7 +6,10 @@ import { NgWalker } from './angular/ngWalker';
 import { DirectiveMetadata } from './angular/metadata';
 
 const getInterfaceName = (t: any): string => {
-  if (t.expression && t.expression.name) {
+  if (!t.expression) {
+    return '';
+  }
+  if (t.expression.name) {
     return t.expression.name.text;
   }
   return t.expression.text;
@@ -58,7 +61,10 @@ export class ClassMetadataWalker extends NgWalker {
     const heritageClauses = meta.controller.heritageClauses;
     if (heritageClauses) {
       const i = heritageClauses.filter(h => h.token === ts.SyntaxKind.ImplementsKeyword);
-      if (i.length !== 0 && i[0].types.map(getInterfaceName).some(name => name.endsWith(ValidatorSuffix))) {
+      if (i.length !== 0 &&
+          i[0].types.map(getInterfaceName)
+            .filter(name => !!name)
+            .some(name => name.endsWith(ValidatorSuffix))) {
         suffixes.push(ValidatorSuffix);
       }
     }
