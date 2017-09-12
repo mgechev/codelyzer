@@ -112,10 +112,6 @@ export class ClassMetadataWalker extends NgWalker {
         let failureConfig: string[] = [this.className, '@Pipe', 'ngAfterContentInit()'];
         failureConfig.unshift(Rule.FAILURE_STRING);
         this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
-      } else if (this.isDirective) {
-        let failureConfig: string[] = [this.className, '@Directive', 'ngAfterContentInit()'];
-        failureConfig.unshift(Rule.FAILURE_STRING);
-        this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
       }
     }
 
@@ -126,10 +122,6 @@ export class ClassMetadataWalker extends NgWalker {
         this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
       } else if (this.isPipe) {
         let failureConfig: string[] = [this.className, '@Pipe', 'ngAfterContentChecked()'];
-        failureConfig.unshift(Rule.FAILURE_STRING);
-        this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
-      } else if (this.isDirective) {
-        let failureConfig: string[] = [this.className, '@Directive', 'ngAfterContentChecked()'];
         failureConfig.unshift(Rule.FAILURE_STRING);
         this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
       }
@@ -144,10 +136,6 @@ export class ClassMetadataWalker extends NgWalker {
         let failureConfig: string[] = [this.className, '@Pipe', 'ngAfterViewInit()'];
         failureConfig.unshift(Rule.FAILURE_STRING);
         this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
-      } else if (this.isDirective) {
-        let failureConfig: string[] = [this.className, '@Directive', 'ngAfterViewInit()'];
-        failureConfig.unshift(Rule.FAILURE_STRING);
-        this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
       }
     }
 
@@ -158,10 +146,6 @@ export class ClassMetadataWalker extends NgWalker {
         this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
       } else if (this.isPipe) {
         let failureConfig: string[] = [this.className, '@Pipe', 'ngAfterViewChecked()'];
-        failureConfig.unshift(Rule.FAILURE_STRING);
-        this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
-      } else if (this.isDirective) {
-        let failureConfig: string[] = [this.className, '@Directive', 'ngAfterViewChecked()'];
         failureConfig.unshift(Rule.FAILURE_STRING);
         this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
       }
