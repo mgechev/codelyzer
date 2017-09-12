@@ -118,6 +118,42 @@ describe('contextual-life-cycle', () => {
         assertSuccess('contextual-life-cycle', source);
       });
 
+      it('should succeed when is used ngAfterContentInit() method', () => {
+        let source = `
+            @Directive()
+            class TestDirective {
+              ngAfterContentInit() { this.logger.log('AfterContentInit'); }
+            }`;
+        assertSuccess('contextual-life-cycle', source);
+      });
+
+      it('should succeed when is used ngAfterContentChecked() method', () => {
+        let source = `
+            @Directive()
+            class TestDirective {
+              ngAfterContentChecked() { this.logger.log('AfterContentChecked'); }
+            }`;
+        assertSuccess('contextual-life-cycle', source);
+      });
+
+      it('should succeed when is used ngAfterViewInit() method', () => {
+        let source = `
+            @Directive()
+            class TestDirective {
+              ngAfterViewInit() { this.logger.log('AfterViewInit'); }
+            }`;
+        assertSuccess('contextual-life-cycle', source);
+      });
+
+      it('should succeed when is used ngAfterViewChecked() method', () => {
+        let source = `
+            @Directive()
+            class TestDirective {
+              ngAfterViewChecked() { this.logger.log('AfterViewChecked'); }
+            }`;
+        assertSuccess('contextual-life-cycle', source);
+      });
+
     });
 
 
@@ -150,76 +186,6 @@ describe('contextual-life-cycle', () => {
   });
 
   describe('failure', () => {
-
-    describe('valid directive class', () => {
-
-
-      it('should fail when is used ngAfterContentInit() method', () => {
-        let source = `
-            @Directive()
-            class TestDirective {
-              ngAfterContentInit() { this.logger.log('AfterContentInit'); }
-              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            }`;
-        assertAnnotated({
-          ruleName: 'contextual-life-cycle',
-          message: 'In the class "TestDirective" which have the "@Directive" decorator, the ' +
-          '"ngAfterContentInit()" hook method is not allowed. ' +
-          'Please, drop it.',
-          source
-        });
-      });
-
-      it('should fail when is used ngAfterContentChecked() method', () => {
-        let source = `
-            @Directive()
-            class TestDirective {
-              ngAfterContentChecked() { this.logger.log('AfterContentChecked'); }
-              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            }`;
-        assertAnnotated({
-          ruleName: 'contextual-life-cycle',
-          message: 'In the class "TestDirective" which have the "@Directive" decorator, the ' +
-          '"ngAfterContentChecked()" hook method is not allowed. ' +
-          'Please, drop it.',
-          source
-        });
-      });
-
-      it('should fail when is used ngAfterViewInit() method', () => {
-        let source = `
-            @Directive()
-            class TestDirective {
-              ngAfterViewInit() { this.logger.log('AfterViewInit'); }
-              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            }`;
-        assertAnnotated({
-          ruleName: 'contextual-life-cycle',
-          message: 'In the class "TestDirective" which have the "@Directive" decorator, the ' +
-          '"ngAfterViewInit()" hook method is not allowed. ' +
-          'Please, drop it.',
-          source
-        });
-      });
-
-      it('should fail when is used ngAfterViewChecked() method', () => {
-        let source = `
-            @Directive()
-            class TestDirective {
-              ngAfterViewChecked() { this.logger.log('AfterViewChecked'); }
-              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            }`;
-        assertAnnotated({
-          ruleName: 'contextual-life-cycle',
-          message: 'In the class "TestDirective" which have the "@Directive" decorator, the ' +
-          '"ngAfterViewChecked()" hook method is not allowed. ' +
-          'Please, drop it.',
-          source
-        });
-      });
-
-
-    });
 
 
     describe('valid service class', () => {
