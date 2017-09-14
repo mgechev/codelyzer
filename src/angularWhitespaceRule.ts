@@ -155,47 +155,98 @@ class PipeWhitespaceVisitor extends RecursiveAngularExpressionVisitor implements
 
     let exprStart, exprEnd, exprText, sf;
 
-    exprStart = context.getSourcePosition(ast.exp.span.start);
-    exprEnd = context.getSourcePosition(ast.exp.span.end);
-    sf = context.getSourceFile().getFullText();
-    exprText = sf.substring(exprStart, exprEnd);
+    console.log(JSON.stringify(ast) + ' ' + ast.exp.span.start);
 
 
-    const replacements = [];
-    // Handling the right side of the pipe
-    let leftBeginning = exprEnd + 1; // exprEnd === '|'
-    if (sf[leftBeginning] === ' ') {
-      let ignoreSpace = 1;
-      while (sf[leftBeginning + ignoreSpace] === ' ') {
-        ignoreSpace += 1;
-      }
-      if (ignoreSpace > 1) {
-        replacements.push(new Lint.Replacement(exprEnd + 1, ignoreSpace, ' '));
-      }
+
+    console.log('|--|'+ JSON.stringify(this.parentAST) + '|'); // this.parentAST.sourceSpan.start.file.content
+
+    // Interpolation
+    if(this.parentAST.interpolateExpression) {
+      exprText = this.parentAST.interpolateExpression.substring(ast.exp.span.start, ast.exp.span.end);
+      console.log(' -parentast-> ' + exprText + '///');
+
+     // const exprStart =
+      exprStart = ast.exp.span.start;
+      exprEnd = ast.exp.span.end;
+
+      sf = this.parentAST.interpolateExpression;
+
+
     } else {
-      replacements.push(new Lint.Replacement(exprEnd + 1, 0, ' '));
+
+
+      exprStart = context.getSourcePosition(ast.exp.span.start);
+      exprEnd = context.getSourcePosition(ast.exp.span.end);
+      sf = context.getSourceFile().getFullText();
+      exprText = sf.substring(exprStart, exprEnd);
+
+      console.log('|--|' + JSON.stringify(this.parentAST) + '|'); // this.parentAST.sourceSpan.start.file.content
+      console.log(' -> ' + sf[exprEnd] + '///');
     }
 
-    // Handling the left side of the pipe
-    if (exprText[exprText.length - 1] === ' ') {
-      let ignoreSpace = 1;
-      while (exprText[exprText.length - 1 - ignoreSpace] === ' ') {
-        ignoreSpace += 1;
-      }
-      if (ignoreSpace > 1) {
-        replacements.push(new Lint.Replacement(exprEnd - ignoreSpace, ignoreSpace, ' '));
-      }
-    } else {
-      replacements.push(new Lint.Replacement(exprEnd, 0, ' '));
-    }
 
-    if (replacements.length) {
-      context.addFailure(
-        context.createFailure(ast.exp.span.end - 1, 3,
-          'The pipe operator should be surrounded by one space on each side, i.e. " | ".',
-          replacements)
-      );
-    }
+      const replacements = [];
+      let parentheses = false;
+      let leftBeginning: number;
+      if(sf[exprEnd] === ')') {
+        parentheses = true;
+        leftBeginning = exprEnd + 1 + 2; // exprEnd === '|'
+      } else {
+        leftBeginning = exprEnd + 1; // exprEnd === '|'
+      }
+
+      console.log(' -> ' + sf.substring(exprStart, leftBeginning) + '///');
+
+      // Handling the right side of the pipe
+      // let leftBeginning =
+      if (sf[leftBeginning] === ' ') {
+        let ignoreSpace = 1;
+        while (sf[leftBeginning + ignoreSpace] === ' ') {
+          ignoreSpace += 1;
+        }
+        if (ignoreSpace > 1) {
+
+          console.log('KO 1');
+          replacements.push(new Lint.Replacement(exprEnd + 1, ignoreSpace, ' '));
+        }
+      } else {
+        console.log('KO 2');
+        replacements.push(new Lint.Replacement(exprEnd + 1, 0, ' '));
+      }
+
+      // Handling the left side of the pipe
+      if (exprText[exprText.length - 1] === ' ') {
+        let ignoreSpace = 1;
+        while (exprText[exprText.length - 1 - ignoreSpace] === ' ') {
+          ignoreSpace += 1;
+        }
+        if (ignoreSpace > 1) {
+          console.log('KO 3');
+          replacements.push(new Lint.Replacement(exprEnd - ignoreSpace, ignoreSpace, ' '));
+        }
+      } else {
+        if(!parentheses) {
+          console.log('KO 4 -> ' + exprText[exprText.length - 1] + '///');
+          replacements.push(new Lint.Replacement(exprEnd, 0, ' '));
+        }
+      }
+
+      if (replacements.length) {
+        context.addFailure(
+          context.createFailure(ast.exp.span.end - 1, 3,
+            'The pipe operator should be surrounded by one space on each side, i.e. " | ".',
+            replacements)
+        );
+      }
+
+
+
+
+
+
+    console.log('fin');
+
     super.visitPipe(ast, context);
     return null;
   }

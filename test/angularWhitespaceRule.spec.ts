@@ -204,6 +204,46 @@ describe('angular-whitespace', () => {
         `;
         assertSuccess('angular-whitespace', source, ['check-pipe']);
       });
+
+
+      it('should succeed with expression surrounded by parentheses', () => {
+        let source = `
+        @Component({
+          selector: 'foo',
+          template: \`
+            <p *ngIf="(items | async)" class="mat-caption"></p>
+          \`
+        })
+        class Bar {}
+        `;
+        assertSuccess('angular-whitespace', source, ['check-pipe']);
+      });
+
+      it('should succeed with expression surrounded by lot of parentheses', () => {
+        let source = `
+        @Component({
+          selector: 'foo',
+          template: \`
+            <p *ngIf="(((items) | async) | uppercase)" class="mat-caption"></p>
+          \`
+        })
+        class Bar {}
+        `;
+        assertSuccess('angular-whitespace', source, ['check-pipe']);
+      });
+
+      it('should succeed with html entities', () => {
+        let source = `
+        @Component({
+          selector: 'foo',
+          template: \`&plusmn; {{ product | number }}\`
+        })
+        class Bar {}
+        `;
+        assertSuccess('angular-whitespace', source, ['check-pipe']);
+      });
+
+
     });
 
     describe('check-semicolon', () => {
