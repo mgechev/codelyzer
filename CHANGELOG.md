@@ -1,3 +1,20 @@
+# 3.2.0
+
+### Features
+
+- i18n best practices [#377](https://github.com/mgechev/codelyzer/issues/377) [5ef90aa](https://github.com/mgechev/codelyzer/commit/5ef90aa5955294a640fcf4ca8efa402e27a77fd1)
+- Add a rule which verifies the use of the life cycle methods according to the type of class (Component, Directive, Service,...) [#363](https://github.com/mgechev/codelyzer/issues/363) [6b042f7](https://github.com/mgechev/codelyzer/pull/388)
+- Friendlier checking of validator directive names [#397](https://github.com/mgechev/codelyzer/issues/397) [28ecbdd](https://github.com/mgechev/codelyzer/pull/407)
+
+### Bug Fixes
+
+- Error on validating a pipe with `@Pipe` decorator where we use a shorthand syntax for passing properties [#399](https://github.com/mgechev/codelyzer/issues/399) [8e3fafb](https://github.com/mgechev/codelyzer/commit/8e3fafb9658aec5dd73c7bf4c401457622ad0c99)
+- Broken `check-pipe` option of `angular-whitespace` [#365](https://github.com/mgechev/codelyzer/issues/365) [bef790b](https://github.com/mgechev/codelyzer/pull/405)
+- Some rules report false positives [#379](https://github.com/mgechev/codelyzer/issues/379) [8719674](https://github.com/mgechev/codelyzer/pull/381) [4721aca](https://github.com/mgechev/codelyzer/pull/401) [bef790b](https://github.com/mgechev/codelyzer/pull/405)
+
+
+Thanks to [@wKoza](https://github.com/wKoza) for working on the introduced features, bugfixes and code reviews!
+
 # 3.1.2
 
 ### Features
