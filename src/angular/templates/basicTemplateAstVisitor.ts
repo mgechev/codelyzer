@@ -3,11 +3,11 @@ import * as ts from 'typescript';
 import * as Lint from 'tslint';
 import * as e from '@angular/compiler/src/expression_parser/ast';
 
-import {ExpTypes} from '../expressionTypes';
-import {ComponentMetadata} from '../metadata';
-import {RecursiveAngularExpressionVisitor} from './recursiveAngularExpressionVisitor';
-import {SourceMappingVisitor} from '../sourceMappingVisitor';
-import {NgWalker} from '../ngWalker';
+import { ExpTypes } from '../expressionTypes';
+import { ComponentMetadata } from '../metadata';
+import { RecursiveAngularExpressionVisitor } from './recursiveAngularExpressionVisitor';
+import { SourceMappingVisitor } from '../sourceMappingVisitor';
+import { NgWalker } from '../ngWalker';
 
 
 const getExpressionDisplacement = (binding: any) => {
@@ -15,16 +15,9 @@ const getExpressionDisplacement = (binding: any) => {
   let valLen = 0;
   let totalLength = 0;
   let result = 0;
-
-  console.log(' ====> ' + JSON.stringify(binding));
-
   if (binding instanceof ast.BoundEventAst ||
-    binding instanceof ast.BoundElementPropertyAst ||
-    binding instanceof ast.BoundDirectivePropertyAst) {
-
-
-    console.log('GO1');
-
+      binding instanceof ast.BoundElementPropertyAst ||
+      binding instanceof ast.BoundDirectivePropertyAst) {
     // subBindingLen is for [class.foo], [style.foo], the length of
     // the binding type. For event it is 0. (+1 because of the ".")
     let subBindingLen = 0;
@@ -33,17 +26,17 @@ const getExpressionDisplacement = (binding: any) => {
       // The length of the binding type
       switch (prop.type) {
         case ast.PropertyBindingType.Animation:
-          subBindingLen = 'animate'.length + 1;
-          break;
+        subBindingLen = 'animate'.length + 1;
+        break;
         case ast.PropertyBindingType.Attribute:
-          subBindingLen = 'attr'.length + 1;
-          break;
+        subBindingLen = 'attr'.length + 1;
+        break;
         case ast.PropertyBindingType.Class:
-          subBindingLen = 'class'.length + 1;
-          break;
+        subBindingLen = 'class'.length + 1;
+        break;
         case ast.PropertyBindingType.Style:
-          subBindingLen = 'style'.length + 1;
-          break;
+        subBindingLen = 'style'.length + 1;
+        break;
       }
     }
     // For [class.foo]=":
@@ -61,60 +54,19 @@ const getExpressionDisplacement = (binding: any) => {
       ( binding.templateName === 'ngForOf' || binding.templateName === 'ngIf')) {
       // Handling everything except [ngForOf] differently
       // [ngForOf] and [ngIf] require different logic because it gets desugered
-      const content = binding.sourceSpan.end.file.content;
       result = binding.sourceSpan.start.file.content.lastIndexOf((binding.value as any).source);
 
       if (binding.templateName === 'ngIf') {
         if ((binding.value as any).ast.span.start > 0)
           result = binding.sourceSpan.start.file.content.lastIndexOf((binding.value as any).source) + (binding.value as any).ast.span.start;
       }
-
-      const toto = {
-        "value": {
-          "span": {"start": 0, "end": 24},
-          "ast": {
-            "span": {"start": 0, "end": 24},
-            "strings": ["± ", ""],
-            "expressions": [{
-              "span": {"start": 5, "end": 22},
-              "exp": {"span": {"start": 5, "end": 13}, "receiver": {"span": {"start": 5, "end": 5}}, "name": "product"},
-              "name": "number",
-              "args": []
-            }],
-            "interpolateExpression": "± {{ product | number }}"
-          },
-          "source": "± {{ product | number }}",
-          "location": "@0:0",
-          "errors": []
-        },
-        "ngContentIndex": null,
-        "sourceSpan": {
-          "start": {
-            "file": {"content": "&plusmn; {{ product | number }}", "url": ""},
-            "offset": 0,
-            "line": 0,
-            "col": 0
-          },
-          "end": {
-            "file": {"content": "&plusmn; {{ product | number }}", "url": ""},
-            "offset": 31,
-            "line": 0,
-            "col": 31
-          },
-          "details": null
-        }
-      };
-
-
     } else {
-      console.log('GO2');
       valLen = binding.value.span.end;
     }
-    console.log('GO3');
+
     // Handling everything except [ngForOf]
     if (!(binding instanceof ast.BoundDirectivePropertyAst) ||
       ( binding.templateName !== 'ngForOf' && binding.templateName !== 'ngIf')) {
-      console.log('GO4');
       // Total length of the entire part of the template AST corresponding to this AST.
       totalLength = binding.sourceSpan.end.offset - binding.sourceSpan.start.offset;
       // The whitespace are possible only in:
@@ -126,10 +78,8 @@ const getExpressionDisplacement = (binding: any) => {
       result = whitespace + attrLen + binding.sourceSpan.start.offset;
     }
   } else if (binding instanceof ast.BoundTextAst) {
-    console.log('GO5');
     result = binding.sourceSpan.start.offset;
   }
-  console.log('GO6 -> '+result);
   return result;
 };
 
@@ -141,26 +91,25 @@ export interface RecursiveAngularExpressionVisitorCtr {
 
 export interface TemplateAstVisitorCtr {
   new(sourceFile: ts.SourceFile, options: Lint.IOptions, context: ComponentMetadata,
-      templateStart: number, expressionVisitorCtrl: RecursiveAngularExpressionVisitorCtr);
+    templateStart: number, expressionVisitorCtrl: RecursiveAngularExpressionVisitorCtr);
 }
 
 export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast.TemplateAstVisitor {
   private _variables = {};
 
   constructor(sourceFile: ts.SourceFile,
-              private _originalOptions: Lint.IOptions,
-              protected context: ComponentMetadata,
-              protected templateStart: number,
-              private expressionVisitorCtrl: RecursiveAngularExpressionVisitorCtr = RecursiveAngularExpressionVisitor) {
-    super(sourceFile, _originalOptions, context.template.template, templateStart);
-  }
+    private _originalOptions: Lint.IOptions,
+    protected context: ComponentMetadata,
+    protected templateStart: number,
+    private expressionVisitorCtrl: RecursiveAngularExpressionVisitorCtr = RecursiveAngularExpressionVisitor) {
+      super(sourceFile, _originalOptions, context.template.template, templateStart);
+    }
 
   visit?(node: ast.TemplateAst, context: any): any {
     node.visit(this, context);
   }
 
-  visitNgContent(ast: ast.NgContentAst, context: any): any {
-  }
+  visitNgContent(ast: ast.NgContentAst, context: any): any {}
 
   visitEmbeddedTemplate(ast: ast.EmbeddedTemplateAst, context: any): any {
     ast.directives.forEach(d => this.visit(d, context));
@@ -180,8 +129,7 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
     element.directives.forEach(d => this.visit(d, context));
   }
 
-  visitReference(ast: ast.ReferenceAst, context: any): any {
-  }
+  visitReference(ast: ast.ReferenceAst, context: any): any {}
 
   visitVariable(ast: ast.VariableAst, context: any): any {
     this._variables[ast.name] = true;
@@ -190,7 +138,7 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
   visitEvent(ast: ast.BoundEventAst, context: any): any {
     this._variables['$event'] = true;
     this.visitNgTemplateAST(ast.handler,
-      this.templateStart + getExpressionDisplacement(ast));
+        this.templateStart + getExpressionDisplacement(ast));
     this._variables['$event'] = false;
   }
 
@@ -200,22 +148,19 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
     this.visitNgTemplateAST(prop.value, this.templateStart + getExpressionDisplacement(prop), prop);
   }
 
-  visitAttr(ast: ast.AttrAst, context: any): any {
-  }
+  visitAttr(ast: ast.AttrAst, context: any): any {}
 
   visitBoundText(text: ast.BoundTextAst, context: any): any {
     if (ExpTypes.ASTWithSource(text.value)) {
       // Note that will not be reliable for different interpolation symbols
       const ast: any = (<e.ASTWithSource>text.value).ast;
       ast.interpolateExpression = (<any>text.value).source;
-      console.log('coucou');
       this.visitNgTemplateAST(ast,
-        this.templateStart + getExpressionDisplacement(text), ast);
+          this.templateStart + getExpressionDisplacement(text));
     }
   }
 
-  visitText(text: ast.TextAst, context: any): any {
-  }
+  visitText(text: ast.TextAst, context: any): any {}
 
   visitDirective(ast: ast.DirectiveAst, context: any): any {
     ast.inputs.forEach(o => this.visit(o, context));
@@ -229,7 +174,7 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
     }
   }
 
-  protected visitNgTemplateAST(ast: e.AST, templateStart: number, prop?: any) {
+  protected visitNgTemplateAST(ast: e.AST, templateStart: number,  prop?: any) {
     const templateVisitor =
       new this.expressionVisitorCtrl(this.getSourceFile(), this._originalOptions, this.context, templateStart);
     templateVisitor.preDefinedVariables = this._variables;

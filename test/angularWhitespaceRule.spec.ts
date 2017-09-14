@@ -231,19 +231,6 @@ describe('angular-whitespace', () => {
         `;
         assertSuccess('angular-whitespace', source, ['check-pipe']);
       });
-
-      it('should succeed with html entities', () => {
-        let source = `
-        @Component({
-          selector: 'foo',
-          template: \`&plusmn; {{ product | number }}\`
-        })
-        class Bar {}
-        `;
-        assertSuccess('angular-whitespace', source, ['check-pipe']);
-      });
-
-
     });
 
     describe('check-semicolon', () => {
@@ -640,7 +627,6 @@ describe('pipes', () => {
       }
       `);
   });
-
 
   it('should fail when extra space on both sides', () => {
     let source = `

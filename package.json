@@ -12,7 +12,7 @@
     "copy:common": "cp README.md dist",
     "build:links": "ts-node build/links.ts --src ./dist",
     "prepare:package": "cat package.json | ts-node build/package.ts > dist/package.json",
-    "test": "rimraf dist && tsc && cp -r test/fixtures dist/test && mocha dist/test/angularWhitespaceRule.spec.js --recursive",
+    "test": "rimraf dist && tsc && cp -r test/fixtures dist/test && mocha dist/test --recursive",
     "test:watch": "rimraf dist && tsc && cp -r test/fixtures dist/test && BUILD_TYPE=dev npm run set:vars && mocha dist/test --watch --recursive",
     "set:vars": "ts-node build/vars.ts --src ./dist",
     "tscv": "tsc --version",
