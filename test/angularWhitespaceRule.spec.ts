@@ -230,7 +230,7 @@ describe('angular-whitespace', () => {
         `;
         assertSuccess('angular-whitespace', source, ['check-pipe']);
       });
-      
+
       it('should succeed with *ngIf and else condition', () => {
         let source = `
         @Component({
@@ -246,7 +246,6 @@ describe('angular-whitespace', () => {
         `;
         assertSuccess('angular-whitespace', source, ['check-pipe']);
       });
-      
     });
 
 
