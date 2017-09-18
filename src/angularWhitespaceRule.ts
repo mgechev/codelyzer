@@ -162,8 +162,16 @@ class PipeWhitespaceVisitor extends RecursiveAngularExpressionVisitor implements
 
 
     const replacements = [];
+    let parentheses = false;
+    let leftBeginning: number;
+    if (sf[exprEnd] === ')') {
+      parentheses = true;
+      leftBeginning = exprEnd + 1 + 2; // exprEnd === '|'
+    } else {
+      leftBeginning = exprEnd + 1; // exprEnd === '|'
+    }
+
     // Handling the right side of the pipe
-    let leftBeginning = exprEnd + 1; // exprEnd === '|'
     if (sf[leftBeginning] === ' ') {
       let ignoreSpace = 1;
       while (sf[leftBeginning + ignoreSpace] === ' ') {
@@ -186,7 +194,9 @@ class PipeWhitespaceVisitor extends RecursiveAngularExpressionVisitor implements
         replacements.push(new Lint.Replacement(exprEnd - ignoreSpace, ignoreSpace, ' '));
       }
     } else {
-      replacements.push(new Lint.Replacement(exprEnd, 0, ' '));
+      if (!parentheses) {
+       replacements.push(new Lint.Replacement(exprEnd, 0, ' '));
+      }
     }
 
     if (replacements.length) {
@@ -237,7 +247,6 @@ export class Rule extends Lint.Rules.AbstractRule {
       * \`"check-interpolation"\` checks for whitespace before and after the interpolation characters
       * \`"check-pipe"\` checks for whitespace before and after a pipe
       * \`"check-semicolon"\` checks for whitespace after semicolon`,
-
     options: {
       type: 'array',
       items: {

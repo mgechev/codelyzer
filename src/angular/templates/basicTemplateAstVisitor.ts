@@ -54,8 +54,12 @@ const getExpressionDisplacement = (binding: any) => {
       ( binding.templateName === 'ngForOf' || binding.templateName === 'ngIf')) {
       // Handling everything except [ngForOf] differently
       // [ngForOf] and [ngIf] require different logic because it gets desugered
-      const content = binding.sourceSpan.end.file.content;
       result = binding.sourceSpan.start.file.content.lastIndexOf((binding.value as any).source);
+
+      if (binding.templateName === 'ngIf') {
+        if ((binding.value as any).ast.span.start > 0)
+          result = binding.sourceSpan.start.file.content.lastIndexOf((binding.value as any).source) + (binding.value as any).ast.span.start;
+      }
     } else {
       valLen = binding.value.span.end;
     }

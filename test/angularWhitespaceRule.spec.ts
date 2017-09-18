@@ -205,6 +205,32 @@ describe('angular-whitespace', () => {
         assertSuccess('angular-whitespace', source, ['check-pipe']);
       });
 
+      it('should succeed with expression surrounded by parentheses', () => {
+        let source = `
+        @Component({
+          selector: 'foo',
+          template: \`
+            <p *ngIf="(items | async)" class="mat-caption"></p>
+          \`
+        })
+        class Bar {}
+        `;
+        assertSuccess('angular-whitespace', source, ['check-pipe']);
+      });
+
+      it('should succeed with expression surrounded by lot of parentheses', () => {
+        let source = `
+        @Component({
+          selector: 'foo',
+          template: \`
+            <p *ngIf="(((items) | async) | uppercase)" class="mat-caption"></p>
+          \`
+        })
+        class Bar {}
+        `;
+        assertSuccess('angular-whitespace', source, ['check-pipe']);
+      });
+
       it('should succeed with *ngIf and else condition', () => {
         let source = `
         @Component({
@@ -220,7 +246,6 @@ describe('angular-whitespace', () => {
         `;
         assertSuccess('angular-whitespace', source, ['check-pipe']);
       });
-
     });
 
 
@@ -618,7 +643,6 @@ describe('pipes', () => {
       }
       `);
   });
-
 
   it('should fail when extra space on both sides', () => {
     let source = `
