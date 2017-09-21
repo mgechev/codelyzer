@@ -178,6 +178,35 @@ export const parseTemplate = (
           ''
         ).templateAst;
       })
+      .elseIf.lt('4.4.0', () => {
+      result = tmplParser.tryParse(
+        compiler.CompileDirectiveMetadata.create({
+          type,
+          template: templateMetadata,
+          isHost: true,
+          isComponent: true,
+          selector: '',
+          exportAs: '',
+          changeDetection: ChangeDetectionStrategy.Default,
+          inputs: [],
+          outputs: [],
+          host: {},
+          providers: [],
+          viewProviders: [],
+          queries: [],
+          viewQueries: [],
+          entryComponents: [],
+          componentViewType: null,
+          rendererType: null,
+          componentFactory: null
+        }),
+        template,
+        defaultDirectives,
+        [],
+        [NO_ERRORS_SCHEMA],
+        ''
+      ).templateAst;
+    })
       .else(() => {
         result = tmplParser.tryParse(
           compiler.CompileDirectiveMetadata.create({
@@ -204,7 +233,7 @@ export const parseTemplate = (
           defaultDirectives,
           [],
           [NO_ERRORS_SCHEMA],
-          ''
+          '', true
         ).templateAst;
       });
   } catch (e) {
