@@ -29,9 +29,9 @@ export class Rule extends Lint.Rules.AbstractRule {
             const syntaxKind = SyntaxKind.current();
             return Maybe.lift(node.parent)
                 .fmap(parent => {
-                    if (parent.kind === syntaxKind.ClassExpression) {
+                    if (parent.kind === syntaxKind.ClassExpression && parent.parent.name) {
                         return parent.parent.name.text;
-                    } else if (parent.kind = syntaxKind.ClassDeclaration) {
+                    } else if (parent.kind === syntaxKind.ClassDeclaration) {
                         return parent.name.text;
                     }
                 })
