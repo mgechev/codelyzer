@@ -14,7 +14,7 @@ describe('no-attribute-parameter-decorator', () => {
                     }
               };
           }
-          `
+          `;
           assertSuccess('no-attribute-parameter-decorator', source);
         });
 
