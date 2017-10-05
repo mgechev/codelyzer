@@ -83,7 +83,8 @@ Create the following `tslint.json` file like:
     "templates-use-public": true,
     "no-access-missing-member": true,
     "invoke-injectable": true,
-    "template-to-ng-template": true
+    "template-to-ng-template": true,
+    "pipe-impure": true
   }
 }
 ```
@@ -133,7 +134,8 @@ Now create the following `tslint.json` file where your `node_modules` directory 
     "templates-use-public": true,
     "no-access-missing-member": true,
     "invoke-injectable": true,
-    "template-to-ng-template": true
+    "template-to-ng-template": true,
+    "pipe-impure": true
   }
 }
 ```
