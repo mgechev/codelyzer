@@ -2,7 +2,7 @@
 
 ### Features
 
-- Support for `@angular/compiler@4.1.1` [#416](https://github.com/mgechev/codelyzer/issues/416) [d67f88e](https://github.com/mgechev/codelyzer/pull/418/commits/d67f88eb4005a9b6a300edf0be211990bd65f08f)
+- Support for `@angular/compiler@4.4.1` [#416](https://github.com/mgechev/codelyzer/issues/416) [d67f88e](https://github.com/mgechev/codelyzer/pull/418/commits/d67f88eb4005a9b6a300edf0be211990bd65f08f)
 
 ### Bug Fixes
 
