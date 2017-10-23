@@ -12,7 +12,6 @@ interface ConfigurableVisitor {
 
 class I18NAttrVisitor extends BasicTemplateAstVisitor implements ConfigurableVisitor {
   visitAttr(attr: ast.AttrAst, context: BasicTemplateAstVisitor) {
-    console.log('###########', attr);
     if (attr.name === 'i18n') {
       const parts = (attr.value || '').split('@@');
       console.log(attr.value);
