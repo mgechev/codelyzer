@@ -261,6 +261,70 @@ describe('no-access-missing-member', () => {
         assertSuccess('no-access-missing-member', source);
     });
 
+    it('should not throw when [mat-menu-item] template ref is used in component', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<div mat-menu-item #test="matMenuItem">{{ test }}</div>'
+        })
+        class Test {
+          foo: string;
+        }`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
+    it('should not throw when mat-menu template ref is used in component', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<mat-menu #test="matMenu">{{ test }}</mat-menu>'
+        })
+        class Test {
+          foo: string;
+        }`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
+    it('should not throw when mat-button-toggle-group template ref is used in component', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<mat-button-toggle-group #test="matButtonToggleGroup">{{ test }}</mat-button-toggle-group>'
+        })
+        class Test {}`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
+    it('should not throw when mat-menu-trigger-for template ref is used in component', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<div matMenuTriggerFor #test="matMenuTrigger">{{ test }}</div>'
+        })
+        class Test {}`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
+    it('should not throw when matTooltip template ref is used in component', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<div matTooltip #test="matTooltip">{{ test }}</div>'
+        })
+        class Test {}`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
+    it('should not throw when matSelect template ref is used in component', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<mat-select #test="matSelect">{{ test }}</mat-select>'
+        })
+        class Test {}`;
+        assertSuccess('no-access-missing-member', source);
+    });
+
     it('should not throw when [md-menu-item] template ref is used in component', () => {
       let source = `
         @Component({
