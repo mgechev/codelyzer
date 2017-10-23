@@ -14,7 +14,6 @@ class I18NAttrVisitor extends BasicTemplateAstVisitor implements ConfigurableVis
   visitAttr(attr: ast.AttrAst, context: BasicTemplateAstVisitor) {
     if (attr.name === 'i18n') {
       const parts = (attr.value || '').split('@@');
-      console.log(attr.value);
       if (parts.length <= 1 || parts[1].length === 0) {
         const span = attr.sourceSpan;
         context.addFailure(
