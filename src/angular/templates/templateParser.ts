@@ -85,7 +85,7 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
         new JitReflector(),
         expressionParser,
         elementSchemaRegistry,
-        new compiler.I18NHtmlParser(htmlParser),
+        htmlParser as any,
         ngConsole,
         []
       );

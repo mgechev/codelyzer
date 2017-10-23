@@ -10,11 +10,12 @@ interface ConfigurableVisitor {
   getOption(): Option;
 }
 
-class I18NAttrVisitor extends BasicTemplateAstVisitor
-  implements ConfigurableVisitor {
+class I18NAttrVisitor extends BasicTemplateAstVisitor implements ConfigurableVisitor {
   visitAttr(attr: ast.AttrAst, context: BasicTemplateAstVisitor) {
+    console.log('###########', attr);
     if (attr.name === 'i18n') {
       const parts = (attr.value || '').split('@@');
+      console.log(attr.value);
       if (parts.length <= 1 || parts[1].length === 0) {
         const span = attr.sourceSpan;
         context.addFailure(
@@ -33,8 +34,7 @@ class I18NAttrVisitor extends BasicTemplateAstVisitor
   }
 }
 
-class I18NTextVisitor extends BasicTemplateAstVisitor
-  implements ConfigurableVisitor {
+class I18NTextVisitor extends BasicTemplateAstVisitor implements ConfigurableVisitor {
   static Error = 'Each element containing text node should have an i18n attribute';
 
   private hasI18n = false;
@@ -51,11 +51,7 @@ class I18NTextVisitor extends BasicTemplateAstVisitor
       ) {
         const span = text.sourceSpan;
         context.addFailure(
-          context.createFailure(
-            span.start.offset,
-            span.end.offset - span.start.offset,
-            I18NTextVisitor.Error
-          )
+          context.createFailure(span.start.offset, span.end.offset - span.start.offset, I18NTextVisitor.Error)
         );
       }
     }
@@ -66,19 +62,12 @@ class I18NTextVisitor extends BasicTemplateAstVisitor
     if (!this.visited.has(text)) {
       this.visited.add(text);
       const val = text.value;
-      if (
-        val instanceof ast.ASTWithSource &&
-        val.ast instanceof ast.Interpolation
-      ) {
+      if (val instanceof ast.ASTWithSource && val.ast instanceof ast.Interpolation) {
         const textNonEmpty = val.ast.strings.some(s => /\w+/.test(s));
         if (textNonEmpty) {
           const span = text.sourceSpan;
           context.addFailure(
-            context.createFailure(
-              span.start.offset,
-              span.end.offset - span.start.offset,
-              I18NTextVisitor.Error
-            )
+            context.createFailure(span.start.offset, span.end.offset - span.start.offset, I18NTextVisitor.Error)
           );
         }
       }
@@ -100,18 +89,8 @@ class I18NTextVisitor extends BasicTemplateAstVisitor
 
 class I18NTemplateVisitor extends BasicTemplateAstVisitor {
   private visitors: (BasicTemplateAstVisitor & ConfigurableVisitor)[] = [
-    new I18NAttrVisitor(
-      this.getSourceFile(),
-      this.getOptions(),
-      this.context,
-      this.templateStart
-    ),
-    new I18NTextVisitor(
-      this.getSourceFile(),
-      this.getOptions(),
-      this.context,
-      this.templateStart
-    )
+    new I18NAttrVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart),
+    new I18NTextVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart)
   ];
 
   visit(a: any, context: any) {
