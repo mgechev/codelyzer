@@ -6,6 +6,7 @@ export {Rule as ContextualLifeCycleRule} from './contextualLifeCycleRule';
 export {Rule as DecoratorNotAllowedRule} from './decoratorNotAllowedRule';
 export {Rule as DirectiveClassSuffixRule} from './directiveClassSuffixRule';
 export {Rule as DirectiveSelectorRule} from './directiveSelectorRule';
+export {Rule as I18nRule} from './i18nRule';
 export {Rule as ImportDestructuringSpacingRule} from './importDestructuringSpacingRule';
 export {Rule as InvokeInjectableRule} from './invokeInjectableRule';
 export {Rule as NoAccessMissingMemberRule} from './noAccessMissingMemberRule';
