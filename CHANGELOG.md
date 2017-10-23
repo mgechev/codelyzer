@@ -1,3 +1,15 @@
+# 3.2.2
+
+## Features
+
+- Built-in directive config not compatible with material2 beta.12 [#437](https://github.com/mgechev/codelyzer/issues/437) [9802c50](https://github.com/mgechev/codelyzer/commit/9802c50e4b56e8fadb22c3bac8d118b91833e1e9)
+
+### Bug Fixes
+
+- i18n rule is missing from the npm package [#433](https://github.com/mgechev/codelyzer/issues/433) [1e5de74](https://github.com/mgechev/codelyzer/commit/1e5de7481174efdb798f85ae0e3fc72d542ef8a6)
+
+Thanks to [@reduckted](https://github.com/reduckted) and [@csvn](https://github.com/csvn) for their PRs!
+
 # 3.2.1
 
 ### Features
