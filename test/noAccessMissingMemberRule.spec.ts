@@ -261,6 +261,16 @@ describe('no-access-missing-member', () => {
         assertSuccess('no-access-missing-member', source);
     });
 
+    it('should not throw when mat-autocomplete template ref is used in component', () => {
+      let source = `
+        @Component({
+          selector: 'foobar',
+          template: '<mat-autocomplete #test="matAutocomplete">{{ test }}</mat-autocomplete>'
+        })
+        class Test {}`;
+      assertSuccess('no-access-missing-member', source);
+    });
+
     it('should not throw when [mat-menu-item] template ref is used in component', () => {
       let source = `
         @Component({

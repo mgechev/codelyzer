@@ -71,6 +71,7 @@ export const Config: Config = {
     { selector: '[ngSwitch]', exportAs: 'ngSwitch', inputs: ['ngSwitch'] },
 
     // @angular/material
+    { selector: 'mat-autocomplete', exportAs: 'matAutocomplete' },
     { selector: '[mat-menu-item]', exportAs: 'matMenuItem' },
     { selector: 'mat-menu', exportAs: 'matMenu' },
     { selector: 'mat-button-toggle-group:not([multiple])', exportAs: 'matButtonToggleGroup' },
