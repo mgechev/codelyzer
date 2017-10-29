@@ -3,6 +3,16 @@
 ### Features
 
 - Support for Angular version 5 [#409](https://github.com/mgechev/codelyzer/issues/409) [0217e2d](https://github.com/mgechev/codelyzer/commit/0217e2dba6a93c93329cbf09ae0fca81af9f05ba)
+- Rule for checking the name events without the prefix on https://angular.io/guide/styleguide#dont-prefix-output-properties [#449](https://github.com/mgechev/codelyzer/issues/449) [8f2b4e7](https://github.com/mgechev/codelyzer/commit/8f2b4e765ed0db49d2abf995cd278f09bb35f8c1).
+
+Enable the new rule by adding the following line in your `tslint.json` config file:
+
+```
+"no-on-prefix-output-name": true
+```
+
+Thanks to [@eromano](https://github.com/eromano) for the rule implementation!
+
 
 ### Breaking Changes
 
