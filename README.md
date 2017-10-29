@@ -62,7 +62,7 @@ Create the following `tslint.json` file like:
 {
   "extends": [ "codelyzer" ],
   "rules":{
-    "angular-whitespace": [true, "check-interpolation", "check-pipe", "check-semicolon"],
+    "angular-whitespace": [true, "check-interpolation", "check-semicolon"],
     "banana-in-box": true,
     "templates-no-negated-async": true,
     "directive-selector": [true, "attribute", "sg", "camelCase"],
@@ -80,10 +80,6 @@ Create the following `tslint.json` file like:
     "pipe-naming": [true, "camelCase", "sg"],
     "component-class-suffix": true,
     "directive-class-suffix": true,
-    "templates-use-public": true,
-    "no-access-missing-member": true,
-    "invoke-injectable": true,
-    "template-to-ng-template": true,
     "pipe-impure": true
   }
 }
