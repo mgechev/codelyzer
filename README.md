@@ -208,6 +208,7 @@ Below you can find a recommended configuration which is based on the [Angular St
   "use-host-property-decorator": true,
   "no-attribute-parameter-decorator": true,
   "no-input-rename": true,
+  "no-on-prefix-output-name": true,
   "no-output-rename": true,
   "no-forward-ref": true,
   "use-life-cycle-interface": true,
@@ -292,6 +293,8 @@ module.exports = {
 [<img alt="leosvelperez" src="https://avatars0.githubusercontent.com/u/12051310?v=3&s=117" width="117">](https://github.com/leosvelperez) |[<img alt="rtfpessoa" src="https://avatars3.githubusercontent.com/u/902384?v=3&s=117" width="117">](https://github.com/rtfpessoa) |[<img alt="scttcper" src="https://avatars0.githubusercontent.com/u/1400464?v=3&s=117" width="117">](https://github.com/scttcper) |[<img alt="laco0416" src="https://avatars0.githubusercontent.com/u/1529180?v=3&s=117" width="117">](https://github.com/laco0416) |[<img alt="tmair" src="https://avatars1.githubusercontent.com/u/1596276?v=3&s=117" width="117">](https://github.com/tmair) |[<img alt="cexbrayat" src="https://avatars0.githubusercontent.com/u/411874?v=3&s=117" width="117">](https://github.com/cexbrayat) |
 :---: |:---: |:---: |:---: |:---: |:---: |
 [leosvelperez](https://github.com/leosvelperez) |[rtfpessoa](https://github.com/rtfpessoa) |[scttcper](https://github.com/scttcper) |[laco0416](https://github.com/laco0416) |[tmair](https://github.com/tmair) |[cexbrayat](https://github.com/cexbrayat) |
+[<img alt="eromano" src="https://avatars0.githubusercontent.com/u/1030050?v=3&s=117" width="117">](https://github.com/eromano) | | | | | |
+[eromano](https://github.com/eromano) | | | | ||
 
 ## License
 
