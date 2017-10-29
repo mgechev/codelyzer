@@ -80,10 +80,6 @@ Create the following `tslint.json` file like:
     "pipe-naming": [true, "camelCase", "sg"],
     "component-class-suffix": true,
     "directive-class-suffix": true,
-    "templates-use-public": true,
-    "no-access-missing-member": true,
-    "invoke-injectable": true,
-    "template-to-ng-template": true,
     "pipe-impure": true
   }
 }
@@ -131,10 +127,6 @@ Now create the following `tslint.json` file where your `node_modules` directory 
     "pipe-naming": [true, "camelCase", "sg"],
     "component-class-suffix": true,
     "directive-class-suffix": true,
-    "templates-use-public": true,
-    "no-access-missing-member": true,
-    "invoke-injectable": true,
-    "template-to-ng-template": true,
     "pipe-impure": true
   }
 }
@@ -209,6 +201,8 @@ Below you can find a recommended configuration which is based on the [Angular St
   "directive-selector": [true, "attribute", ["dir-prefix1", "dir-prefix2"], "camelCase"],
   "component-selector": [true, "element", ["cmp-prefix1", "cmp-prefix2"], "kebab-case"],
 
+  "angular-whitespace": [true, "check-interpolation", "check-semicolon"],
+
   "use-input-property-decorator": true,
   "use-output-property-decorator": true,
   "use-host-property-decorator": true,
@@ -222,10 +216,7 @@ Below you can find a recommended configuration which is based on the [Angular St
   // [ENABLED, "SUFFIX"]
   // Where "SUFFIX" is your custom suffix, for instance "Page" for Ionic 2 components.
   "component-class-suffix": [true, "Component"],
-  "directive-class-suffix": [true, "Directive"],
-  "templates-use-public": true,
-  "no-access-missing-member": true,
-  "invoke-injectable": true
+  "directive-class-suffix": [true, "Directive"]
 }
 ```
 
