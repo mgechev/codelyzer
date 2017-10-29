@@ -24,4 +24,4 @@ export { Rule as UsePipeTransformInterfaceRule } from './usePipeTransformInterfa
 export { Rule as UsePipeDecoratorRule } from './usePipeDecoratorRule';
 export { Rule as UseViewEncapsulationRule } from './useViewEncapsulationRule';
 export { Rule as TemplatesNoNegatedAsync } from './templatesNoNegatedAsyncRule';
-export * from './angular/config'
+export * from './angular/config';
