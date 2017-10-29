@@ -1,3 +1,13 @@
+# 4.0.0
+
+### Features
+
+- Support for Angular version 5 [#409](https://github.com/mgechev/codelyzer/issues/409) [0217e2d](https://github.com/mgechev/codelyzer/commit/0217e2dba6a93c93329cbf09ae0fca81af9f05ba)
+
+### Breaking Changes
+
+- The rules `templates-use-public`, `no-access-missing-member`, `invoke-injectable` and `template-to-ng-template` no longer exist. Remove them from your `tslint.json` configuration.
+
 # 3.2.1
 
 ### Features

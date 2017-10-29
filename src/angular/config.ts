@@ -71,6 +71,7 @@ export const Config: Config = {
     { selector: '[ngSwitch]', exportAs: 'ngSwitch', inputs: ['ngSwitch'] },
 
     // @angular/material
+    { selector: 'mat-autocomplete', exportAs: 'matAutocomplete' },
     { selector: '[mat-menu-item]', exportAs: 'matMenuItem' },
     { selector: 'mat-menu', exportAs: 'matMenu' },
     { selector: 'mat-button-toggle-group:not([multiple])', exportAs: 'matButtonToggleGroup' },
@@ -89,10 +90,8 @@ export const Config: Config = {
   logLevel: BUILD_TYPE === 'dev' ? LogLevel.Debug : LogLevel.None
 };
 
-
 try {
   const root = require('app-root-path');
   const newConfig = require(root.path + '/.codelyzer');
   Object.assign(Config, newConfig);
 } catch (e) {}
-
