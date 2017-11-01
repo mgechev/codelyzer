@@ -3,16 +3,16 @@
 [![Gitter Chat](https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667)](https://gitter.im/mgechev/codelyzer)
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/mgechev/codelyzer/master/assets/logo.png" alt="" width="300">
+  <img src="https://raw.githubusercontent.com/mgechev/codelyzer/master/assets/logo.png" alt="" width="200">
 </p>
 
 # Codelyzer
 
-[![](http://s32.postimg.org/vo1xrbgw5/codelyzer.png)](https://youtu.be/bci-Z6nURgE)
-
 A set of tslint rules for static code analysis of Angular TypeScript projects.
 
 You can run the static code analyzer over web apps, NativeScript, Ionic, etc.
+
+[![](http://s32.postimg.org/vo1xrbgw5/codelyzer.png)](https://youtu.be/bci-Z6nURgE)
 
 ## How to use?
 
