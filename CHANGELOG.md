@@ -8,7 +8,7 @@
 Enable the new rule by adding the following line in your `tslint.json` config file:
 
 ```
-"no-on-prefix-output-name": true
+"no-output-on-prefix-name": true
 ```
 
 Thanks to [@eromano](https://github.com/eromano) for the rule implementation!
