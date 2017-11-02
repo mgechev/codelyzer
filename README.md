@@ -208,7 +208,7 @@ Below you can find a recommended configuration which is based on the [Angular St
   "use-host-property-decorator": true,
   "no-attribute-parameter-decorator": true,
   "no-input-rename": true,
-  "no-on-prefix-output-name": true,
+  "no-output-on-prefix-name": true,
   "no-output-rename": true,
   "no-forward-ref": true,
   "use-life-cycle-interface": true,
