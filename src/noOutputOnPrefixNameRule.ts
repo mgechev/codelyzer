@@ -5,7 +5,7 @@ import { NgWalker } from './angular/ngWalker';
 
 export class Rule extends Lint.Rules.AbstractRule {
     public static metadata: Lint.IRuleMetadata = {
-        ruleName: 'no-on-prefix-output-name',
+        ruleName: 'no-output-on-prefix-name',
         type: 'maintainability',
         description: `Name events without the prefix on`,
         descriptionDetails: `See more at https://angular.io/guide/styleguide#dont-prefix-output-properties`,
