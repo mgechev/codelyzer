@@ -34,7 +34,6 @@ class OutputWalker extends NgWalker {
     if (memberName && memberName.startsWith('on')) {
       const failureConfig: string[] = [Rule.FAILURE_STRING, className, memberName];
       const errorMessage = sprintf.apply(null, failureConfig);
-      console.log(errorMessage)
       this.addFailure(
         this.createFailure(
           property.getStart(),
