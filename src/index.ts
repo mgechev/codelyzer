@@ -11,7 +11,7 @@ export { Rule as ImportDestructuringSpacingRule } from './importDestructuringSpa
 export { Rule as NoAttributeParameterDecoratorRule } from './noAttributeParameterDecoratorRule';
 export { Rule as NoForwardRefRule } from './noForwardRefRule';
 export { Rule as NoInputRenameRule } from './noInputRenameRule';
-export { Rule as NoOutputOnPrefixNameRule } from './noOutputOnPrefixNameRule';
+export { Rule as NoOutputOnPrefixRule } from './noOutputOnPrefixRule';
 export { Rule as NoOutputRenameRule } from './noOutputRenameRule';
 export { Rule as NoUnusedCssRule } from './noUnusedCssRule';
 export { Rule as PipeImpureRule } from './pipeImpureRule';

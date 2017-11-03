@@ -1,3 +1,15 @@
+# 4.0.1
+
+### Bug Fixes
+
+- Fix `noOutputOnPrefixRule` and rename it to `no-output-on-prefix`. You can now enable it with:
+
+```
+"no-output-on-prefix": true
+```
+
+- Fix broken tests for `noOutputOnPrefixRule`.
+
 # 4.0.0
 
 ### Features
