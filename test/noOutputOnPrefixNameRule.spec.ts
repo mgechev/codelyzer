@@ -1,6 +1,6 @@
 import { assertSuccess, assertAnnotated } from './testHelper';
 
-describe('no-on-prefix-output-name', () => {
+describe('no-output-on-prefix-name', () => {
   describe('invalid directive output property', () => {
     it(`should fail, when a directive output property is named with on prefix`, () => {
       let source = `
@@ -9,7 +9,7 @@ describe('no-on-prefix-output-name', () => {
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       }`;
       assertAnnotated({
-        ruleName: 'no-on-prefix-output-name',
+        ruleName: 'no-output-on-prefix-name',
         source
       });
     });
@@ -21,7 +21,7 @@ describe('no-on-prefix-output-name', () => {
       class ButtonComponent {
          @Output() change = new EventEmitter<any>();
       }`;
-      assertSuccess('no-on-prefix-output-name', source);
+      assertSuccess('no-output-on-prefix-name', source);
     });
   });
 });
