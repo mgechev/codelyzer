@@ -66,24 +66,32 @@ export const Config: Config = {
     { selector: 'form:not([ngNoForm]):not([formGroup]), ngForm, [ngForm]', exportAs: 'ngForm' },
     { selector: '[routerLinkActive]', exportAs: 'routerLinkActive' },
     { selector: '[ngModel]:not([formControlName]):not([formControl])', exportAs: 'ngModel' },
-    { selector: '[md-menu-item], [mat-menu-item]', exportAs: 'mdMenuItem' },
-    { selector: 'md-menu, mat-menu', exportAs: 'mdMenu' },
-    { selector: 'md-button-toggle-group:not([multiple])', exportAs: 'mdButtonToggleGroup' },
-    { selector: '[md-menu-trigger-for], [mat-menu-trigger-for], [mdMenuTriggerFor]', exportAs: 'mdMenuTrigger' },
-    { selector: '[md-tooltip], [mat-tooltip], [mdTooltip]', exportAs: 'mdTooltip' },
-    { selector: 'md-select, mat-select', exportAs: 'mdSelect' },
     { selector: '[ngIf]', exportAs: 'ngIf', inputs: ['ngIf'] },
     { selector: '[ngFor][ngForOf]', exportAs: 'ngFor', inputs: ['ngForTemplate', 'ngForOf'] },
-    { selector: '[ngSwitch]', exportAs: 'ngSwitch', inputs: ['ngSwitch'] }
+    { selector: '[ngSwitch]', exportAs: 'ngSwitch', inputs: ['ngSwitch'] },
+
+    // @angular/material
+    { selector: 'mat-autocomplete', exportAs: 'matAutocomplete' },
+    { selector: '[mat-menu-item]', exportAs: 'matMenuItem' },
+    { selector: 'mat-menu', exportAs: 'matMenu' },
+    { selector: 'mat-button-toggle-group:not([multiple])', exportAs: 'matButtonToggleGroup' },
+    { selector: '[mat-menu-trigger-for], [matMenuTriggerFor]', exportAs: 'matMenuTrigger' },
+    { selector: '[mat-tooltip], [matTooltip]', exportAs: 'matTooltip' },
+    { selector: 'mat-select', exportAs: 'matSelect' },
+    // The `md-` prefix is deprecated since beta.11, removed since beta.12
+    { selector: '[md-menu-item]', exportAs: 'mdMenuItem' },
+    { selector: 'md-menu', exportAs: 'mdMenu' },
+    { selector: 'md-button-toggle-group:not([multiple])', exportAs: 'mdButtonToggleGroup' },
+    { selector: '[md-menu-trigger-for], [mdMenuTriggerFor]', exportAs: 'mdMenuTrigger' },
+    { selector: '[md-tooltip], [mdTooltip]', exportAs: 'mdTooltip' },
+    { selector: 'md-select', exportAs: 'mdSelect' }
   ],
 
   logLevel: BUILD_TYPE === 'dev' ? LogLevel.Debug : LogLevel.None
 };
-
 
 try {
   const root = require('app-root-path');
   const newConfig = require(root.path + '/.codelyzer');
   Object.assign(Config, newConfig);
 } catch (e) {}
-

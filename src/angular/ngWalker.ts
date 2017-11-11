@@ -27,7 +27,7 @@ import { getDecoratorName } from '../util/utils';
 const getDecoratorStringArgs = (decorator: ts.Decorator) => {
   let baseExpr = <any>decorator.expression || {};
   let args = baseExpr.arguments || [];
-  return args.map(a => (a.kind === ts.SyntaxKind.StringLiteral) ? a.text : null);
+  return args.map(a => (a.kind === ts.SyntaxKind.StringLiteral ? a.text : null));
 };
 
 export interface NgWalkerConfig {
@@ -37,21 +37,23 @@ export interface NgWalkerConfig {
 }
 
 export class NgWalker extends Lint.RuleWalker {
-
-  constructor(sourceFile: ts.SourceFile,
-              protected _originalOptions: Lint.IOptions,
-              private _config?: NgWalkerConfig,
-              protected _metadataReader?: MetadataReader) {
-
+  constructor(
+    sourceFile: ts.SourceFile,
+    protected _originalOptions: Lint.IOptions,
+    private _config?: NgWalkerConfig,
+    protected _metadataReader?: MetadataReader
+  ) {
     super(sourceFile, _originalOptions);
 
     this._metadataReader = this._metadataReader || ngWalkerFactoryUtils.defaultMetadataReader();
-    this._config = Object.assign({
-      templateVisitorCtrl: BasicTemplateAstVisitor,
-      expressionVisitorCtrl: RecursiveAngularExpressionVisitor,
-      cssVisitorCtrl: BasicCssAstVisitor
-    }, this._config || {});
-
+    this._config = Object.assign(
+      {
+        templateVisitorCtrl: BasicTemplateAstVisitor,
+        expressionVisitorCtrl: RecursiveAngularExpressionVisitor,
+        cssVisitorCtrl: BasicCssAstVisitor
+      },
+      this._config || {}
+    );
   }
 
   visitClassDeclaration(declaration: ts.ClassDeclaration) {
@@ -78,8 +80,7 @@ export class NgWalker extends Lint.RuleWalker {
   protected visitMethodDecorator(decorator: ts.Decorator) {
     let name = getDecoratorName(decorator);
     if (name === 'HostListener') {
-      this.visitNgHostListener(<ts.MethodDeclaration>decorator.parent,
-        decorator, getDecoratorStringArgs(decorator));
+      this.visitNgHostListener(<ts.MethodDeclaration>decorator.parent, decorator, getDecoratorStringArgs(decorator));
     }
   }
 
@@ -87,32 +88,37 @@ export class NgWalker extends Lint.RuleWalker {
     let name = getDecoratorName(decorator);
     switch (name) {
       case 'Input':
-        this.visitNgInput(<ts.PropertyDeclaration>decorator.parent,
-          decorator, getDecoratorStringArgs(decorator));
+        this.visitNgInput(<ts.PropertyDeclaration>decorator.parent, decorator, getDecoratorStringArgs(decorator));
         break;
       case 'Output':
-        this.visitNgOutput(<ts.PropertyDeclaration>decorator.parent,
-          decorator, getDecoratorStringArgs(decorator));
+        this.visitNgOutput(<ts.PropertyDeclaration>decorator.parent, decorator, getDecoratorStringArgs(decorator));
         break;
       case 'HostBinding':
-        this.visitNgHostBinding(<ts.PropertyDeclaration>decorator.parent,
-          decorator, getDecoratorStringArgs(decorator));
+        this.visitNgHostBinding(<ts.PropertyDeclaration>decorator.parent, decorator, getDecoratorStringArgs(decorator));
         break;
       case 'ContentChild':
-        this.visitNgContentChild(<ts.PropertyDeclaration>decorator.parent,
-          decorator, getDecoratorStringArgs(decorator));
+        this.visitNgContentChild(
+          <ts.PropertyDeclaration>decorator.parent,
+          decorator,
+          getDecoratorStringArgs(decorator)
+        );
         break;
       case 'ContentChildren':
-        this.visitNgContentChildren(<ts.PropertyDeclaration>decorator.parent,
-          decorator, getDecoratorStringArgs(decorator));
+        this.visitNgContentChildren(
+          <ts.PropertyDeclaration>decorator.parent,
+          decorator,
+          getDecoratorStringArgs(decorator)
+        );
         break;
       case 'ViewChild':
-        this.visitNgViewChild(<ts.PropertyDeclaration>decorator.parent,
-          decorator, getDecoratorStringArgs(decorator));
+        this.visitNgViewChild(<ts.PropertyDeclaration>decorator.parent, decorator, getDecoratorStringArgs(decorator));
         break;
       case 'ViewChildren':
-        this.visitNgViewChildren(<ts.PropertyDeclaration>decorator.parent,
-          decorator, getDecoratorStringArgs(decorator));
+        this.visitNgViewChildren(
+          <ts.PropertyDeclaration>decorator.parent,
+          decorator,
+          getDecoratorStringArgs(decorator)
+        );
         break;
     }
   }
@@ -124,18 +130,18 @@ export class NgWalker extends Lint.RuleWalker {
       this.visitNgInjectable(<ts.ClassDeclaration>decorator.parent, decorator);
     }
 
-
     if (name === 'Pipe') {
       this.visitNgPipe(<ts.ClassDeclaration>decorator.parent, decorator);
     }
 
     // Not invoked @Component or @Pipe, or @Directive
-    if (!(<ts.CallExpression>decorator.expression).arguments ||
+    if (
+      !(<ts.CallExpression>decorator.expression).arguments ||
       !(<ts.CallExpression>decorator.expression).arguments.length ||
-      !(<ts.ObjectLiteralExpression>(<ts.CallExpression>decorator.expression).arguments[0]).properties) {
+      !(<ts.ObjectLiteralExpression>(<ts.CallExpression>decorator.expression).arguments[0]).properties
+    ) {
       return;
     }
-
   }
 
   protected visitNgComponent(metadata: ComponentMetadata) {
@@ -146,8 +152,7 @@ export class NgWalker extends Lint.RuleWalker {
         pos = node.pos + 1;
         try {
           pos = node.getStart() + 1;
-        } catch (e) {
-        }
+        } catch (e) {}
       }
       return pos;
     };
@@ -172,38 +177,27 @@ export class NgWalker extends Lint.RuleWalker {
     }
   }
 
-  protected visitNgDirective(metadata: DirectiveMetadata) {
-  }
+  protected visitNgDirective(metadata: DirectiveMetadata) {}
 
-  protected visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
-  }
+  protected visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {}
 
-  protected visitNgInjectable(classDeclaration: ts.ClassDeclaration, decorator: ts.Decorator) {
-  }
+  protected visitNgInjectable(classDeclaration: ts.ClassDeclaration, decorator: ts.Decorator) {}
 
-  protected visitNgInput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
-  }
+  protected visitNgInput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {}
 
-  protected visitNgOutput(property: ts.PropertyDeclaration, output: ts.Decorator, args: string[]) {
-  }
+  protected visitNgOutput(property: ts.PropertyDeclaration, output: ts.Decorator, args: string[]) {}
 
-  protected visitNgHostBinding(property: ts.PropertyDeclaration, decorator: ts.Decorator, args: string[]) {
-  }
+  protected visitNgHostBinding(property: ts.PropertyDeclaration, decorator: ts.Decorator, args: string[]) {}
 
-  protected visitNgHostListener(method: ts.MethodDeclaration, decorator: ts.Decorator, args: string[]) {
-  }
+  protected visitNgHostListener(method: ts.MethodDeclaration, decorator: ts.Decorator, args: string[]) {}
 
-  protected visitNgContentChild(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
-  }
+  protected visitNgContentChild(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {}
 
-  protected visitNgContentChildren(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
-  }
+  protected visitNgContentChildren(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {}
 
-  protected visitNgViewChild(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
-  }
+  protected visitNgViewChild(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {}
 
-  protected visitNgViewChildren(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
-  }
+  protected visitNgViewChildren(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {}
 
   protected visitNgTemplateHelper(roots: compiler.TemplateAst[], context: ComponentMetadata, baseStart: number) {
     if (!roots || !roots.length) {
@@ -211,9 +205,13 @@ export class NgWalker extends Lint.RuleWalker {
     } else {
       const sourceFile = this.getContextSourceFile(context.template.url, context.template.template.source);
       const referenceVisitor = new ReferenceCollectorVisitor();
-      const visitor =
-        new this._config.templateVisitorCtrl(
-          sourceFile, this._originalOptions, context, baseStart, this._config.expressionVisitorCtrl);
+      const visitor = new this._config.templateVisitorCtrl(
+        sourceFile,
+        this._originalOptions,
+        context,
+        baseStart,
+        this._config.expressionVisitorCtrl
+      );
       compiler.templateVisitAll(referenceVisitor, roots, null);
       visitor._variables = referenceVisitor.variables;
       roots.forEach(r => visitor.visit(r, context.controller));
@@ -221,12 +219,23 @@ export class NgWalker extends Lint.RuleWalker {
     }
   }
 
-  protected visitNgStyleHelper(style: CssAst, context: ComponentMetadata, styleMetadata: StyleMetadata, baseStart: number) {
+  protected visitNgStyleHelper(
+    style: CssAst,
+    context: ComponentMetadata,
+    styleMetadata: StyleMetadata,
+    baseStart: number
+  ) {
     if (!style) {
       return;
     } else {
       const sourceFile = this.getContextSourceFile(styleMetadata.url, styleMetadata.style.source);
-      const visitor = new this._config.cssVisitorCtrl(sourceFile, this._originalOptions, context, styleMetadata, baseStart);
+      const visitor = new this._config.cssVisitorCtrl(
+        sourceFile,
+        this._originalOptions,
+        context,
+        styleMetadata,
+        baseStart
+      );
       style.visit(visitor);
       visitor.getFailures().forEach(f => this.addFailure(f));
     }
@@ -246,4 +255,3 @@ export class NgWalker extends Lint.RuleWalker {
     return sf;
   }
 }
-

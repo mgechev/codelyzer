@@ -1,3 +1,35 @@
+# 4.0.1
+
+### Bug Fixes
+
+- Fix `noOutputOnPrefixRule` and rename it to `no-output-on-prefix`. You can now enable it with:
+
+```
+"no-output-on-prefix": true
+```
+
+- Fix broken tests for `noOutputOnPrefixRule`.
+
+# 4.0.0
+
+### Features
+
+- Support for Angular version 5 [#409](https://github.com/mgechev/codelyzer/issues/409) [0217e2d](https://github.com/mgechev/codelyzer/commit/0217e2dba6a93c93329cbf09ae0fca81af9f05ba)
+- Rule for checking the name events without the prefix on https://angular.io/guide/styleguide#dont-prefix-output-properties [#449](https://github.com/mgechev/codelyzer/issues/449) [8f2b4e7](https://github.com/mgechev/codelyzer/commit/8f2b4e765ed0db49d2abf995cd278f09bb35f8c1).
+
+Enable the new rule by adding the following line in your `tslint.json` config file:
+
+```
+"no-output-on-prefix-name": true
+```
+
+Thanks to [@eromano](https://github.com/eromano) for the rule implementation!
+
+
+### Breaking Changes
+
+- The rules `templates-use-public`, `no-access-missing-member`, `invoke-injectable` and `template-to-ng-template` no longer exist. Remove them from your `tslint.json` configuration.
+
 # 3.2.1
 
 ### Features

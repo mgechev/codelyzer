@@ -1,8 +1,4 @@
-import {
-  assertSuccess,
-  assertAnnotated,
-  assertMultipleAnnotated
-} from './testHelper';
+import { assertSuccess, assertAnnotated, assertMultipleAnnotated } from './testHelper';
 import { Replacement } from 'tslint';
 import { expect } from 'chai';
 import { FsFileResolver } from '../src/angular/fileResolver/fsFileResolver';
@@ -67,8 +63,7 @@ describe('i18n', () => {
         ruleName: 'i18n',
         options: ['check-id'],
         source,
-        message:
-          'Missing custom message identifier. For more information visit https://angular.io/guide/i18n'
+        message: 'Missing custom message identifier. For more information visit https://angular.io/guide/i18n'
       });
     });
 
@@ -86,8 +81,7 @@ describe('i18n', () => {
         ruleName: 'i18n',
         options: ['check-id'],
         source,
-        message:
-          'Missing custom message identifier. For more information visit https://angular.io/guide/i18n'
+        message: 'Missing custom message identifier. For more information visit https://angular.io/guide/i18n'
       });
     });
 
@@ -105,8 +99,7 @@ describe('i18n', () => {
         ruleName: 'i18n',
         options: ['check-id'],
         source,
-        message:
-          'Missing custom message identifier. For more information visit https://angular.io/guide/i18n'
+        message: 'Missing custom message identifier. For more information visit https://angular.io/guide/i18n'
       });
     });
   });
@@ -166,8 +159,7 @@ describe('i18n', () => {
         ruleName: 'i18n',
         options: ['check-text'],
         source,
-        message:
-          'Each element containing text node should have an i18n attribute'
+        message: 'Each element containing text node should have an i18n attribute'
       });
     });
 
@@ -188,8 +180,7 @@ describe('i18n', () => {
         ruleName: 'i18n',
         options: ['check-text'],
         source,
-        message:
-          'Each element containing text node should have an i18n attribute'
+        message: 'Each element containing text node should have an i18n attribute'
       });
     });
 
@@ -207,8 +198,7 @@ describe('i18n', () => {
         'i18n',
         source,
         {
-          message:
-            'Each element containing text node should have an i18n attribute',
+          message: 'Each element containing text node should have an i18n attribute',
           startPosition: {
             line: 3,
             character: 30
@@ -236,8 +226,7 @@ describe('i18n', () => {
         ruleName: 'i18n',
         options: ['check-text'],
         source,
-        message:
-          'Each element containing text node should have an i18n attribute'
+        message: 'Each element containing text node should have an i18n attribute'
       });
     });
 
@@ -255,8 +244,7 @@ describe('i18n', () => {
         ruleName: 'i18n',
         options: ['check-text'],
         source,
-        message:
-          'Each element containing text node should have an i18n attribute'
+        message: 'Each element containing text node should have an i18n attribute'
       });
     });
 
@@ -274,8 +262,7 @@ describe('i18n', () => {
         'i18n',
         source,
         {
-          message:
-            'Each element containing text node should have an i18n attribute',
+          message: 'Each element containing text node should have an i18n attribute',
           startPosition: {
             line: 3,
             character: 30

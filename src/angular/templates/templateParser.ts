@@ -47,10 +47,7 @@ class Console {
 
 let defaultDirectives = [];
 
-export const parseTemplate = (
-  template: string,
-  directives: DirectiveDeclaration[] = []
-) => {
+export const parseTemplate = (template: string, directives: DirectiveDeclaration[] = []) => {
   defaultDirectives = directives.map(d => dummyMetadataFactory(d));
 
   const TemplateParser = <any>compiler.TemplateParser;
@@ -63,17 +60,16 @@ export const parseTemplate = (
 
   SemVerDSL.gte('4.0.0-beta.8', () => {
     const config = new compiler.CompilerConfig({});
-    tmplParser = new TemplateParser(
-      config,
-      expressionParser,
-      elementSchemaRegistry,
-      htmlParser,
-      ngConsole,
-      []
-    );
+    tmplParser = new TemplateParser(config, expressionParser, elementSchemaRegistry, htmlParser, ngConsole, []);
   })
     .elseIf.lt('4.1.0', () => {
+      tmplParser = new TemplateParser(expressionParser, elementSchemaRegistry, htmlParser, ngConsole, []);
+    })
+    .elseIf.lt('5.0.0-rc.0', () => {
+      const config = new compiler.CompilerConfig({});
       tmplParser = new TemplateParser(
+        config,
+        new (compiler as any).JitReflector(),
         expressionParser,
         elementSchemaRegistry,
         htmlParser,
@@ -82,13 +78,14 @@ export const parseTemplate = (
       );
     })
     .else(() => {
+      const JitReflector = require('./jitReflector').JitReflector;
       const config = new compiler.CompilerConfig({});
-      tmplParser = new TemplateParser(
+      tmplParser = new compiler.TemplateParser(
         config,
-        new compiler.JitReflector(),
+        new JitReflector(),
         expressionParser,
         elementSchemaRegistry,
-        htmlParser,
+        htmlParser as any,
         ngConsole,
         []
       );
@@ -178,35 +175,35 @@ export const parseTemplate = (
           ''
         ).templateAst;
       })
-      .elseIf.lt('4.4.0', () => {
-      result = tmplParser.tryParse(
-        compiler.CompileDirectiveMetadata.create({
-          type,
-          template: templateMetadata,
-          isHost: true,
-          isComponent: true,
-          selector: '',
-          exportAs: '',
-          changeDetection: ChangeDetectionStrategy.Default,
-          inputs: [],
-          outputs: [],
-          host: {},
-          providers: [],
-          viewProviders: [],
-          queries: [],
-          viewQueries: [],
-          entryComponents: [],
-          componentViewType: null,
-          rendererType: null,
-          componentFactory: null
-        }),
-        template,
-        defaultDirectives,
-        [],
-        [NO_ERRORS_SCHEMA],
-        ''
-      ).templateAst;
-    })
+      .elseIf.lt('5.0.0-rc.0', () => {
+        result = tmplParser.tryParse(
+          compiler.CompileDirectiveMetadata.create({
+            type,
+            template: templateMetadata,
+            isHost: true,
+            isComponent: true,
+            selector: '',
+            exportAs: '',
+            changeDetection: ChangeDetectionStrategy.Default,
+            inputs: [],
+            outputs: [],
+            host: {},
+            providers: [],
+            viewProviders: [],
+            queries: [],
+            viewQueries: [],
+            entryComponents: [],
+            componentViewType: null,
+            rendererType: null,
+            componentFactory: null
+          }),
+          template,
+          defaultDirectives,
+          [],
+          [NO_ERRORS_SCHEMA],
+          ''
+        ).templateAst;
+      })
       .else(() => {
         result = tmplParser.tryParse(
           compiler.CompileDirectiveMetadata.create({
@@ -233,7 +230,8 @@ export const parseTemplate = (
           defaultDirectives,
           [],
           [NO_ERRORS_SCHEMA],
-          '', true
+          '',
+          true
         ).templateAst;
       });
   } catch (e) {
