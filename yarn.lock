@@ -2,15 +2,15 @@
 # yarn lockfile v1
 
 
-"@angular/compiler@^4.2.3":
-  version "4.2.3"
-  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-4.2.3.tgz#e9cded47994cf4adb7522d778c46b1f7c5263302"
+"@angular/compiler@^4.4.0":
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-4.4.4.tgz#326eb0029d9a3541aaca124def9adc51c36f2b41"
   dependencies:
     tslib "^1.7.1"
 
-"@angular/core@^4.2.3":
-  version "4.2.3"
-  resolved "https://registry.yarnpkg.com/@angular/core/-/core-4.2.3.tgz#ab7329c18d4fd305872b82718ffae3e76e4d4549"
+"@angular/core@^4.4.0":
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/@angular/core/-/core-4.4.4.tgz#bd37ecf54158f97489996c9386bd222f80a32f5c"
   dependencies:
     tslib "^1.7.1"
 

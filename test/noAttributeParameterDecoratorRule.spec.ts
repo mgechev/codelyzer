@@ -2,7 +2,23 @@ import { assertAnnotated, assertSuccess } from './testHelper';
 
 describe('no-attribute-parameter-decorator', () => {
     describe('invalid class constructor', () => {
-        it(`should fail, when it's used attribute decorator`, () => {
+        it('should work with anonymous classes', () => {
+          const source = `
+          type Constructor<T> = new (...args: any[]) => T;
+
+          export function MyUtils<T extends Constructor<{}>>(Base: T) {
+              return class extends Base {
+                    constructor() {}
+                    public myMethod(a, b): boolean {
+
+                    }
+              };
+          }
+          `;
+          assertSuccess('no-attribute-parameter-decorator', source);
+        });
+
+        it('should fail, when it\'s used attribute decorator', () => {
             let source = `
                class ButtonComponent {
                 label: string;

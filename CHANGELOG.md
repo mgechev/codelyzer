@@ -1,3 +1,13 @@
+# 3.2.1
+
+### Features
+
+- Support for `@angular/compiler@4.4.1` [#416](https://github.com/mgechev/codelyzer/issues/416) [d67f88e](https://github.com/mgechev/codelyzer/pull/418/commits/d67f88eb4005a9b6a300edf0be211990bd65f08f)
+
+### Bug Fixes
+
+- Error while parsing TS file with mixin [#422](https://github.com/mgechev/codelyzer/issues/422) [61d11db](https://github.com/mgechev/codelyzer/commit/61d11dbafb5e1e34ef291de76dbe69c835364882)
+
 # 3.2.0
 
 ### Features
@@ -13,7 +23,7 @@
 - Some rules report false positives [#379](https://github.com/mgechev/codelyzer/issues/379) [8719674](https://github.com/mgechev/codelyzer/pull/381) [4721aca](https://github.com/mgechev/codelyzer/pull/401) [bef790b](https://github.com/mgechev/codelyzer/pull/405)
 
 
-Thanks to [@wKoza](https://github.com/wKoza) for working on the introduced features, bugfixes and code reviews!
+Thanks to [@wKoza](https://github.com/wKoza) for working on the introduced features, bug fixes and code reviews!
 
 # 3.1.2
 
