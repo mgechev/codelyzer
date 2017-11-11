@@ -1,3 +1,45 @@
+# 4.0.1
+
+### Bug Fixes
+
+- Fix `noOutputOnPrefixRule` and rename it to `no-output-on-prefix`. You can now enable it with:
+
+```
+"no-output-on-prefix": true
+```
+
+- Fix broken tests for `noOutputOnPrefixRule`.
+
+# 4.0.0
+
+### Features
+
+- Support for Angular version 5 [#409](https://github.com/mgechev/codelyzer/issues/409) [0217e2d](https://github.com/mgechev/codelyzer/commit/0217e2dba6a93c93329cbf09ae0fca81af9f05ba)
+- Rule for checking the name events without the prefix on https://angular.io/guide/styleguide#dont-prefix-output-properties [#449](https://github.com/mgechev/codelyzer/issues/449) [8f2b4e7](https://github.com/mgechev/codelyzer/commit/8f2b4e765ed0db49d2abf995cd278f09bb35f8c1).
+
+Enable the new rule by adding the following line in your `tslint.json` config file:
+
+```
+"no-output-on-prefix-name": true
+```
+
+Thanks to [@eromano](https://github.com/eromano) for the rule implementation!
+
+
+### Breaking Changes
+
+- The rules `templates-use-public`, `no-access-missing-member`, `invoke-injectable` and `template-to-ng-template` no longer exist. Remove them from your `tslint.json` configuration.
+
+# 3.2.1
+
+### Features
+
+- Support for `@angular/compiler@4.4.1` [#416](https://github.com/mgechev/codelyzer/issues/416) [d67f88e](https://github.com/mgechev/codelyzer/pull/418/commits/d67f88eb4005a9b6a300edf0be211990bd65f08f)
+
+### Bug Fixes
+
+- Error while parsing TS file with mixin [#422](https://github.com/mgechev/codelyzer/issues/422) [61d11db](https://github.com/mgechev/codelyzer/commit/61d11dbafb5e1e34ef291de76dbe69c835364882)
+
 # 3.2.0
 
 ### Features
@@ -13,7 +55,7 @@
 - Some rules report false positives [#379](https://github.com/mgechev/codelyzer/issues/379) [8719674](https://github.com/mgechev/codelyzer/pull/381) [4721aca](https://github.com/mgechev/codelyzer/pull/401) [bef790b](https://github.com/mgechev/codelyzer/pull/405)
 
 
-Thanks to [@wKoza](https://github.com/wKoza) for working on the introduced features, bugfixes and code reviews!
+Thanks to [@wKoza](https://github.com/wKoza) for working on the introduced features, bug fixes and code reviews!
 
 # 3.1.2
 

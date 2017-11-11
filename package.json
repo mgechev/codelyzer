@@ -1,19 +1,20 @@
 {
   "name": "codelyzer",
-  "version": "3.2.0",
+  "version": "4.0.1",
   "description": "Linting for Angular applications, following angular.io/styleguide.",
   "main": "index.js",
   "scripts": {
     "docs": "ts-node build/buildDocs.ts",
     "lint": "tslint -c tslint.json \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint:fix": "npm run lint -- --fix",
-    "release": "npm run build && rimraf dist && tsc -p tsconfig-release.json && npm run copy:common && npm run prepare:package && BUILD_TYPE=prod npm run set:vars && npm run build:links",
+    "release":
+      "npm run build && rimraf dist && tsc -p tsconfig-release.json && npm run copy:common && npm run prepare:package && BUILD_TYPE=prod npm run set:vars",
     "build": "rimraf dist && tsc && npm run lint && npm t",
     "copy:common": "cp README.md dist",
-    "build:links": "ts-node build/links.ts --src ./dist",
     "prepare:package": "cat package.json | ts-node build/package.ts > dist/package.json",
     "test": "rimraf dist && tsc && cp -r test/fixtures dist/test && mocha dist/test --recursive",
-    "test:watch": "rimraf dist && tsc && cp -r test/fixtures dist/test && BUILD_TYPE=dev npm run set:vars && mocha dist/test --watch --recursive",
+    "test:watch":
+      "rimraf dist && tsc && cp -r test/fixtures dist/test && BUILD_TYPE=dev npm run set:vars && mocha dist/test --watch --recursive",
     "set:vars": "ts-node build/vars.ts --src ./dist",
     "tscv": "tsc --version",
     "tsc": "tsc",
@@ -22,21 +23,14 @@
   "contributors": [
     "Minko Gechev <mgechev@gmail.com>",
     "Preslav Semov <preslavsemov@gmail.com>",
-    "William Koza <william.koza@gmail.com>"
+    "William Koza <william.koza@gmail.com>",
+    "Eugenio Romano <eugenioromanodeveloper@gmail.com>"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mgechev/codelyzer.git"
   },
-  "keywords": [
-    "Angular",
-    "style guide",
-    "styleguide",
-    "nglint",
-    "codelyzer",
-    "lint",
-    "tslint"
-  ],
+  "keywords": ["Angular", "style guide", "styleguide", "nglint", "codelyzer", "lint", "tslint"],
   "author": {
     "name": "Minko Gechev",
     "email": "mgechev@gmail.com"
@@ -47,8 +41,11 @@
   },
   "homepage": "https://github.com/mgechev/codelyzer#readme",
   "devDependencies": {
-    "@angular/compiler": "^4.3.3",
-    "@angular/core": "^4.3.3",
+    "@angular/compiler": "^5.0.0",
+    "@angular/core": "^5.0.0",
+    "@angular/platform-browser-dynamic": "^5.0.0",
+    "@angular/common": "^5.0.0",
+    "@angular/platform-browser": "^5.0.0",
     "@types/chai": "^3.4.33",
     "@types/less": "0.0.31",
     "@types/mocha": "^2.2.32",
@@ -62,7 +59,7 @@
     "mocha": "3.0.2",
     "node-sass": "^3.13.0",
     "rimraf": "^2.5.2",
-    "rxjs": "5.4.1",
+    "rxjs": "^5.5.0",
     "ts-node": "1.2.2",
     "tslint": "^5.0.0",
     "typescript": "2.4.0",
@@ -72,8 +69,11 @@
     "@types/js-yaml": "^3.5.31"
   },
   "peerDependencies": {
-    "@angular/compiler": "^2.3.1 || >=4.0.0-beta <5.0.0",
-    "@angular/core": "^2.3.1 || >=4.0.0-beta <5.0.0",
+    "@angular/compiler": "^2.3.1 || >=4.0.0-beta <6.0.0",
+    "@angular/core": "^2.3.1 || >=4.0.0-beta <6.0.0",
+    "@angular/platform-browser-dynamic": "^2.3.1 || >=4.0.0-beta <6.0.0",
+    "@angular/platform-browser": "^2.3.1 || >=4.0.0-beta <6.0.0",
+    "@angular/common": "^2.3.1 || >=4.0.0-beta <6.0.0",
     "tslint": "^5.0.0"
   },
   "dependencies": {

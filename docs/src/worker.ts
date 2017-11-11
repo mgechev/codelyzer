@@ -10,6 +10,7 @@ const rulesConfig = {
   'use-host-property-decorator': true,
   'no-input-rename': true,
   'no-output-rename': true,
+  'no-output-on-prefix': true,
   'use-life-cycle-interface': true,
   'use-pipe-transform-interface': true,
   'component-class-suffix': true,
