@@ -24,7 +24,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   }
 }
 
-const noTrackByRe = new RegExp('trackBy:');
+const trackByRe = new RegExp(/trackBy\s*:/);
 
 class TrackByNgForTemplateVisitor extends BasicTemplateAstVisitor {
 
@@ -37,7 +37,7 @@ class TrackByNgForTemplateVisitor extends BasicTemplateAstVisitor {
       const rawExpression = directive.split('=')[1].trim();
       const expr = rawExpression.substring(1, rawExpression.length - 1).trim();
 
-      if (directive.startsWith('*ngFor') && !noTrackByRe.test(expr)) {
+      if (directive.startsWith('*ngFor') && !trackByRe.test(expr)) {
         const span = prop.sourceSpan;
         context.addFailure(
           context.createFailure(
