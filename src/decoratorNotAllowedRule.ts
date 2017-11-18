@@ -3,6 +3,7 @@ import * as ts from 'typescript';
 import { sprintf } from 'sprintf-js';
 import SyntaxKind = require('./util/syntaxKind');
 import { NgWalker } from './angular/ngWalker';
+import { ComponentMetadata, DirectiveMetadata } from './angular/metadata';
 
 
 export class Rule extends Lint.Rules.AbstractRule {
@@ -42,6 +43,22 @@ export class ClassMetadataWalker extends NgWalker {
   visitNgInjectable(classDeclaration: ts.ClassDeclaration, decorator: ts.Decorator) {
     this.className = classDeclaration.name.text;
     this.isInjectable = true;
+    super.visitNgInjectable(classDeclaration, decorator);
+  }
+
+  protected visitNgDirective(metadata: DirectiveMetadata) {
+    this.isInjectable = false;
+    super.visitNgDirective(metadata);
+  }
+
+  protected visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
+    this.isInjectable = false;
+    super.visitNgPipe(controller, decorator);
+  }
+
+  protected visitNgComponent(metadata: ComponentMetadata) {
+    this.isInjectable = false;
+    super.visitNgComponent(metadata);
   }
 
   protected visitNgInput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
@@ -50,7 +67,6 @@ export class ClassMetadataWalker extends NgWalker {
       failureConfig.unshift(Rule.INJECTABLE_FAILURE_STRING);
       this.generateFailure(property.getStart(), property.getWidth(), failureConfig);
     }
-
   }
 
   protected visitNgOutput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
@@ -59,7 +75,6 @@ export class ClassMetadataWalker extends NgWalker {
       failureConfig.unshift(Rule.INJECTABLE_FAILURE_STRING);
       this.generateFailure(property.getStart(), property.getWidth(), failureConfig);
     }
-
   }
 
   protected visitNgHostBinding(property: ts.PropertyDeclaration, decorator: ts.Decorator, args: string[]) {
