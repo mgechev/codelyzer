@@ -12,7 +12,7 @@ chai.use(spies);
 
 const chaiSpy = (<any>chai).spy;
 describe('ngWalker', () => {
-  it('should visit components and directives', () => {
+  it('should visit components, directives, pipes, injectables, and modules', () => {
     let source = `
       @Component({
         selector: 'foo',
@@ -23,6 +23,14 @@ describe('ngWalker', () => {
         selector: '[baz]'
       })
       class Foobar {}
+      @Pipe({
+        name: 'foo'
+      })
+      class FooPipe {}
+      @NgModule({})
+      class BarModule {}
+      @Injectable()
+      class FooService {}
     `;
     let ruleArgs: tslint.IOptions = {
       ruleName: 'foo',
@@ -34,9 +42,15 @@ describe('ngWalker', () => {
     let walker = new NgWalker(sf, ruleArgs);
     let cmpSpy = chaiSpy.on(walker, 'visitNgComponent');
     let dirSpy = chaiSpy.on(walker, 'visitNgDirective');
+    let pipeSpy = chaiSpy.on(walker, 'visitNgPipe');
+    let modSpy = chaiSpy.on(walker, 'visitNgModule');
+    let injSpy = chaiSpy.on(walker, 'visitNgInjectable');
     walker.walk(sf);
     (<any>chai.expect(cmpSpy).to.have.been).called();
     (<any>chai.expect(dirSpy).to.have.been).called();
+    (<any>chai.expect(pipeSpy).to.have.been).called();
+    (<any>chai.expect(modSpy).to.have.been).called();
+    (<any>chai.expect(injSpy).to.have.been).called();
   });
 
   it('should visit inputs and outputs with args', () => {

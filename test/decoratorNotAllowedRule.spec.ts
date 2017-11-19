@@ -65,7 +65,33 @@ describe('decorator-not-allowed', () => {
       });
     });
 
+    describe('valid directive class', () => {
+      it('should succeed when is used @Injectable decorator', () => {
+        let source = `
+            @Directive()
+            class TestDirective {
+              @HostBinding('style.backgroundColor') color = "red";
+              @HostListener('mouseenter') onEnter() {
+                this.color= "blue" ;
+              }
+            }`;
+        assertSuccess('decorator-not-allowed', source);
+      });
+    });
 
+    describe('valid directive class', () => {
+      it('should succeed when we have an @Injectable than an @Component decorator with an @Input', () => {
+        let source = `
+            @Injectable()
+            class MyService {
+            }
+            @Component({})
+            class MyComponent {
+              @Input('attribute') label: string;
+            }`;
+            assertSuccess('decorator-not-allowed', source);
+      });
+    });
   });
 
   describe('failure', () => {
