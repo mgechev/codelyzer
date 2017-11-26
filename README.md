@@ -51,7 +51,7 @@ You can easily use codelyzer with your custom setup:
 #### Installation
 
 ```shell
-npm i codelyzer@~3.1.0 tslint@^5.0.0 typescript@^2.1.4 @angular/core@4.2.1 @angular/compiler@4.2.1 rxjs@5.0.1 zone.js@0.8.4
+npm i codelyzer@~4.0.0 tslint@^5.0.0 typescript@2.4.0 @angular/core@~5.0.1 @angular/compiler@~5.0.1 rxjs@5.5.0 zone.js@~0.8.4
 ```
 
 A. Using codelyzer package in PATH
@@ -74,8 +74,11 @@ Create the following `tslint.json` file like:
     "no-attribute-parameter-decorator": true,
     "no-input-rename": true,
     "no-output-rename": true,
+    "no-output-on-prefix": true,
     "no-forward-ref": true,
     "use-life-cycle-interface": true,
+    "contextual-life-cycle": true,
+    "trackBy-function": true,
     "use-pipe-transform-interface": true,
     "pipe-naming": [true, "camelCase", "sg"],
     "component-class-suffix": true,
@@ -109,7 +112,7 @@ Now create the following `tslint.json` file where your `node_modules` directory 
     "node_modules/codelyzer"
   ],
   "rules":{
-    "angular-whitespace": [true, "check-interpolation", "check-pipe"],
+    "angular-whitespace": [true, "check-interpolation", "check-semicolon"],
     "banana-in-box": true,
     "templates-no-negated-async": true,
     "directive-selector": [true, "attribute", "sg", "camelCase"],
@@ -120,12 +123,12 @@ Now create the following `tslint.json` file where your `node_modules` directory 
     "no-attribute-parameter-decorator": true,
     "no-input-rename": true,
     "no-output-rename": true,
-    "no-output-on-prefix": "true,
+    "no-output-on-prefix": true,
     "no-forward-ref": true,
     "use-view-encapsulation": true,
     "use-life-cycle-interface": true,
     "contextual-life-cycle": true,
-    "trackBy-function", true,
+    "trackBy-function": true,
     "use-pipe-transform-interface": true,
     "pipe-naming": [true, "camelCase", "sg"],
     "component-class-suffix": true,
