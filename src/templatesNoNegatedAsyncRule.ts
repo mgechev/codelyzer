@@ -71,6 +71,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     options: null,
     optionsDescription: `Not configurable.`,
     typescriptOnly: true,
+    hasFix: true
   };
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {

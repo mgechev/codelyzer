@@ -146,6 +146,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     options: null,
     optionsDescription: `Not configurable.`,
     typescriptOnly: true,
+    hasFix: true
   };
 
 

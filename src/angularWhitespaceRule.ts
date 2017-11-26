@@ -258,6 +258,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     },
     optionExamples: ['[true, "check-interpolation"]'],
     typescriptOnly: true,
+    hasFix: true
   };
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
