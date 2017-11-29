@@ -5,16 +5,20 @@ description: Ensures the proper formatting of Angular expressions.
 rationale: Having whitespace in the right places in an Angular expression makes the template more readable.
 optionsDescription: |-
 
-  One argument may be optionally provided:
+  Arguments may be optionally provided:
   * `"check-interpolation"` checks for whitespace before and after the interpolation characters
+  * `"check-pipe"` checks for whitespace before and after a pipe
+  * `"check-semicolon"` checks for whitespace after semicolon
 options:
   type: array
   items:
     type: string
     enum:
       - check-interpolation
+      - check-pipe
+      - check-semicolon
   minLength: 0
-  maxLength: 1
+  maxLength: 3
 optionExamples:
   - '[true, "check-interpolation"]'
 typescriptOnly: true
@@ -26,10 +30,12 @@ optionsJSON: |-
     "items": {
       "type": "string",
       "enum": [
-        "check-interpolation"
+        "check-interpolation",
+        "check-pipe",
+        "check-semicolon"
       ]
     },
     "minLength": 0,
-    "maxLength": 1
+    "maxLength": 3
   }
 ---

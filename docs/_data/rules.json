@@ -4,17 +4,19 @@
     "type": "style",
     "description": "Ensures the proper formatting of Angular expressions.",
     "rationale": "Having whitespace in the right places in an Angular expression makes the template more readable.",
-    "optionsDescription": "\nOne argument may be optionally provided:\n* `\"check-interpolation\"` checks for whitespace before and after the interpolation characters",
+    "optionsDescription": "\nArguments may be optionally provided:\n* `\"check-interpolation\"` checks for whitespace before and after the interpolation characters\n* `\"check-pipe\"` checks for whitespace before and after a pipe\n* `\"check-semicolon\"` checks for whitespace after semicolon",
     "options": {
       "type": "array",
       "items": {
         "type": "string",
         "enum": [
-          "check-interpolation"
+          "check-interpolation",
+          "check-pipe",
+          "check-semicolon"
         ]
       },
       "minLength": 0,
-      "maxLength": 1
+      "maxLength": 3
     },
     "optionExamples": [
       "[true, \"check-interpolation\"]"
@@ -96,6 +98,24 @@
     "typescriptOnly": true
   },
   {
+    "ruleName": "contextual-life-cycle",
+    "type": "functionality",
+    "description": "Ensure that classes use allowed life cycle method in its body",
+    "rationale": "Some life cycle methods can only be used in certain class types.\n    For example, ngOnInit() hook method should not be used in an @Injectable class.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "decorator-not-allowed",
+    "type": "functionality",
+    "description": "Ensure that classes use allowed decorator in its body",
+    "rationale": "Some decorators can only be used in certain class types.\n    For example, an @Input should not be used in an @Injectable class.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "typescriptOnly": true
+  },
+  {
     "ruleName": "directive-class-suffix",
     "type": "style",
     "description": "Classes decorated with @Directive must have suffix \"Directive\" (or custom) in their name.",
@@ -161,28 +181,33 @@
     "typescriptOnly": true
   },
   {
-    "ruleName": "import-destructing-spacing",
+    "ruleName": "i18n",
+    "type": "maintainability",
+    "description": "Ensures following best practices for i18n.",
+    "rationale": "Makes the code more maintainable in i18n sense.",
+    "optionsDescription": "\nArguments may be optionally provided:\n* `\"check-id\"` Makes sure i18n attributes have ID specified\n* `\"check-text\"` Makes sure there are no elements with text content but no i18n attribute\n    ",
+    "options": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "check-id",
+          "check-text"
+        ]
+      },
+      "minLength": 0,
+      "maxLength": 3
+    },
+    "optionExamples": [
+      "[true, \"check-id\"]"
+    ],
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "import-destructuring-spacing",
     "type": "style",
     "description": "Ensure consistent and tidy imports.",
     "rationale": "Imports are easier for the reader to look at when they're tidy.",
-    "options": null,
-    "optionsDescription": "Not configurable.",
-    "typescriptOnly": true
-  },
-  {
-    "ruleName": "invoke-injectable",
-    "type": "functionality",
-    "description": "Ensures that @Injectable decorator is properly invoked.",
-    "rationale": "Application will fail mysteriously if we forget the parentheses.",
-    "options": null,
-    "optionsDescription": "Not configurable.",
-    "typescriptOnly": true
-  },
-  {
-    "ruleName": "no-access-missing-member",
-    "type": "functionality",
-    "description": "Disallows using non-existing properties and methods from the component in templates.",
-    "rationale": "Such occurances in code are most likely a result of a typo.",
     "options": null,
     "optionsDescription": "Not configurable.",
     "typescriptOnly": true
@@ -211,6 +236,16 @@
     "description": "Disallows renaming directive inputs by providing a string to the decorator.",
     "descriptionDetails": "See more at https://angular.io/styleguide#style-05-13.",
     "rationale": "Two names for the same property (one private, one public) is inherently confusing.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "typescriptOnly": true
+  },
+  {
+    "ruleName": "no-output-on-prefix",
+    "type": "maintainability",
+    "description": "Name events without the prefix on",
+    "descriptionDetails": "See more at https://angular.io/guide/styleguide#dont-prefix-output-properties",
+    "rationale": "Angular allows for an alternative syntax on-*. If the event itself was prefixed with on\n     this would result in an on-onEvent binding expression",
     "options": null,
     "optionsDescription": "Not configurable.",
     "typescriptOnly": true
@@ -275,24 +310,6 @@
     "type": "functionality",
     "description": "Ensures that strict equality is used when evaluating negations on async pipe outout.",
     "rationale": "Async pipe evaluate to `null` before the observable or promise emits, which can lead to layout thrashing as components load. Prefer strict `=== false` checks instead.",
-    "options": null,
-    "optionsDescription": "Not configurable.",
-    "typescriptOnly": true
-  },
-  {
-    "ruleName": "templates-use-public",
-    "type": "functionality",
-    "description": "Ensure that properties and methods accessed from the template are public.",
-    "rationale": "When Angular compiles the templates, it has to access these properties from outside the class.",
-    "options": null,
-    "optionsDescription": "Not configurable.",
-    "typescriptOnly": true
-  },
-  {
-    "ruleName": "template-to-ng-template",
-    "type": "functionality",
-    "description": "Ensure that <ng-template> is used instance of <template>.",
-    "rationale": "Since Angular 4.0,  <template> is deprecated.",
     "options": null,
     "optionsDescription": "Not configurable.",
     "typescriptOnly": true

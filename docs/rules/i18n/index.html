@@ -1,0 +1,39 @@
+---
+ruleName: i18n
+type: maintainability
+description: Ensures following best practices for i18n.
+rationale: Makes the code more maintainable in i18n sense.
+optionsDescription: |-
+
+  Arguments may be optionally provided:
+  * `"check-id"` Makes sure i18n attributes have ID specified
+  * `"check-text"` Makes sure there are no elements with text content but no i18n attribute
+      
+options:
+  type: array
+  items:
+    type: string
+    enum:
+      - check-id
+      - check-text
+  minLength: 0
+  maxLength: 3
+optionExamples:
+  - '[true, "check-id"]'
+typescriptOnly: true
+layout: rule
+title: 'Rule: i18n'
+optionsJSON: |-
+  {
+    "type": "array",
+    "items": {
+      "type": "string",
+      "enum": [
+        "check-id",
+        "check-text"
+      ]
+    },
+    "minLength": 0,
+    "maxLength": 3
+  }
+---
