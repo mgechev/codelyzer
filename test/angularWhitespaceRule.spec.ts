@@ -287,14 +287,17 @@ describe('failure', () => {
         @Component({
           template: \`
             <div>{{foo}}</div>
-                 ~~~~~~~
+                 ~~   ^^
           \`
         })
         class Bar {}
         `;
-      assertAnnotated({
+      assertMultipleAnnotated({
         ruleName: 'angular-whitespace',
-        message: 'Missing whitespace in interpolation; expecting {{ expr }}',
+        failures: [
+          {char: '~', msg: 'Missing whitespace in interpolation start; expecting {{ expr }}', },
+          {char: '^', msg: 'Missing whitespace in interpolation end; expecting {{ expr }}', },
+        ],
         source,
         options: ['check-interpolation']
       });
@@ -305,14 +308,14 @@ describe('failure', () => {
         @Component({
           template: \`
             <div>{{foo }}</div>
-                 ~~~~~~~~
+                 ~~
           \`
         })
         class Bar {}
         `;
       assertAnnotated({
         ruleName: 'angular-whitespace',
-        message: 'Missing whitespace in interpolation; expecting {{ expr }}',
+        message: 'Missing whitespace in interpolation start; expecting {{ expr }}',
         source,
         options: ['check-interpolation']
       });
@@ -324,23 +327,26 @@ describe('failure', () => {
           @Component({
             template: \`
               <div>  {{foo}}   </div>
-                     ~~~~~~~
+                     ~~   ^^
             \`
           })
           class Bar {}`;
-        const failures = assertAnnotated({
+        const failures = assertMultipleAnnotated({
           ruleName: 'angular-whitespace',
-          message: 'Missing whitespace in interpolation; expecting {{ expr }}',
+          failures: [
+            {char: '~', msg: 'Missing whitespace in interpolation start; expecting {{ expr }}', },
+            {char: '^', msg: 'Missing whitespace in interpolation end; expecting {{ expr }}', },
+          ],
           source,
           options: ['check-interpolation']
         });
 
-        const res = Replacement.applyAll(source, failures[0].getFix());
+        const res = Replacement.applyAll(source, [].concat.apply([], failures.map(f => f.getFix())));
         expect(res).to.eq(`
           @Component({
             template: \`
               <div>  {{ foo }}   </div>
-                     ~~~~~~~
+                     ~~   ^^
             \`
           })
           class Bar {}`);
@@ -353,26 +359,29 @@ describe('failure', () => {
               <div>
               some additional text
                 {{foo}}
-                ~~~~~~~
+                ~~   ^^
               </div>
             \`
           })
           class Bar {}`;
-        const failures = assertAnnotated({
+        const failures = assertMultipleAnnotated({
           ruleName: 'angular-whitespace',
-          message: 'Missing whitespace in interpolation; expecting {{ expr }}',
+          failures: [
+            {char: '~', msg: 'Missing whitespace in interpolation start; expecting {{ expr }}', },
+            {char: '^', msg: 'Missing whitespace in interpolation end; expecting {{ expr }}', },
+          ],
           source,
           options: ['check-interpolation']
         });
 
-        const res = Replacement.applyAll(source, failures[0].getFix());
+        const res = Replacement.applyAll(source, [].concat.apply([], failures.map(f => f.getFix())));
         expect(res).to.eq(`
           @Component({
             template: \`
               <div>
               some additional text
                 {{ foo }}
-                ~~~~~~~
+                ~~   ^^
               </div>
             \`
           })
@@ -386,10 +395,10 @@ describe('failure', () => {
               <div>
               some additional text
                 {{foo}}
-                ~~~~~~~
+                ~~   --
                 some other text
                 {{  bar  }}
-                ^^^^^^^^^^^
+                ^^^^   ####
               </div>
             \`
           })
@@ -397,8 +406,10 @@ describe('failure', () => {
         const failures = assertMultipleAnnotated({
           ruleName: 'angular-whitespace',
           failures: [
-            {char: '~', msg: 'Missing whitespace in interpolation; expecting {{ expr }}', },
-            {char: '^', msg: 'Extra whitespace in interpolation; expecting {{ expr }}', },
+            {char: '~', msg: 'Missing whitespace in interpolation start; expecting {{ expr }}', },
+            {char: '-', msg: 'Missing whitespace in interpolation end; expecting {{ expr }}', },
+            {char: '^', msg: 'Extra whitespace in interpolation start; expecting {{ expr }}', },
+            {char: '#', msg: 'Extra whitespace in interpolation end; expecting {{ expr }}', },
           ],
           source,
           options: ['check-interpolation']
@@ -411,10 +422,10 @@ describe('failure', () => {
               <div>
               some additional text
                 {{ foo }}
-                ~~~~~~~
+                ~~   --
                 some other text
                 {{ bar }}
-                ^^^^^^^^^^^
+                ^^^^   ####
               </div>
             \`
           })
@@ -426,13 +437,13 @@ describe('failure', () => {
           @Component({
             template: \`
               <div>  {{foo }}   </div>
-                     ~~~~~~~~
+                     ~~
             \`
           })
           class Bar {}`;
         const failures = assertAnnotated({
           ruleName: 'angular-whitespace',
-          message: 'Missing whitespace in interpolation; expecting {{ expr }}',
+          message: 'Missing whitespace in interpolation start; expecting {{ expr }}',
           source,
           options: ['check-interpolation']
         });
@@ -442,7 +453,7 @@ describe('failure', () => {
           @Component({
             template: \`
               <div>  {{ foo }}   </div>
-                     ~~~~~~~~
+                     ~~
             \`
           })
           class Bar {}`);
@@ -453,23 +464,26 @@ describe('failure', () => {
           @Component({
             template: \`
               <div>{{  foo    }}</div>
-                   ~~~~~~~~~~~~~
+                   ~~~~   ^^^^^^
             \`
           })
           class Bar {}`;
-        const failures = assertAnnotated({
+        const failures = assertMultipleAnnotated({
           ruleName: 'angular-whitespace',
-          message: 'Extra whitespace in interpolation; expecting {{ expr }}',
+          failures: [
+            {char: '~', msg: 'Extra whitespace in interpolation start; expecting {{ expr }}', },
+            {char: '^', msg: 'Extra whitespace in interpolation end; expecting {{ expr }}', },
+          ],
           source,
           options: ['check-interpolation']
         });
 
-        const res = Replacement.applyAll(source, failures[0].getFix());
+        const res = Replacement.applyAll(source, [].concat.apply([], failures.map(f => f.getFix())));
         expect(res).to.eq(`
           @Component({
             template: \`
               <div>{{ foo }}</div>
-                   ~~~~~~~~~~~~~
+                   ~~~~   ^^^^^^
             \`
           })
           class Bar {}`);
@@ -602,6 +616,31 @@ describe('failure', () => {
       })
       class Bar {}
       `);
+      });
+
+      it('should fail and apply proper replacement when equality sign exists within the directive expression', () => {
+        let source = `
+          @Component({
+            template: \` <div *ngFor="let item of list;trackBy item?.id; let $index=index">{{ item.title }}</div>
+                                                      ~~
+            \`
+          })
+          class Bar {}`;
+        const failures = assertAnnotated({
+          ruleName: 'angular-whitespace',
+          message: 'Missing whitespace after semicolon; expecting \'; expr\'',
+          source,
+          options: ['check-semicolon']
+        });
+
+        const res = Replacement.applyAll(source, failures[0].getFix());
+        expect(res).to.eq(`
+          @Component({
+            template: \` <div *ngFor="let item of list; trackBy item?.id; let $index=index">{{ item.title }}</div>
+                                                      ~~
+            \`
+          })
+          class Bar {}`);
       });
 
     });
@@ -863,3 +902,52 @@ describe('pipes', () => {
 
 });
 
+describe('angular-whitespace multiple checks', () => {
+
+  it('should work with proper style of interpolation and pipe', () => {
+    let source = `
+    @Component({
+      template: \`
+        <h4>{{ title | translate }}</h4>
+      \`
+    })
+    class Bar {}
+    `;
+    assertSuccess('angular-whitespace', source, ['check-interpolation', 'check-pipe']);
+  });
+
+  describe('replacements', () => {
+
+    it('should fail and apply proper replacements with multiple failures of interpolation and pipe', () => {
+      let source = `
+        @Component({
+          template: \`
+            <h4>{{title|translate }}</h4>
+                ~~    ^^^
+          \`
+        })
+        class Bar {}`;
+      const failures = assertMultipleAnnotated({
+        ruleName: 'angular-whitespace',
+        failures: [
+          {char: '~', msg: 'Missing whitespace in interpolation start; expecting {{ expr }}', },
+          {char: '^', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".', },
+        ],
+        source,
+        options: ['check-interpolation', 'check-pipe']
+      });
+
+      const res = Replacement.applyAll(source, [].concat.apply([], failures.map(f => f.getFix())));
+      expect(res).to.eq(`
+        @Component({
+          template: \`
+            <h4>{{ title | translate }}</h4>
+                ~~    ^^^
+          \`
+        })
+        class Bar {}`);
+    });
+
+  });
+
+});
