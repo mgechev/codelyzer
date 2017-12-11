@@ -1,3 +1,12 @@
+# 4.0.2
+
+### Bug Fixes
+
+- Two issues in `angular-whitespace` related to `check-semicolon` and `check-interpolation` [#469](https://github.com/mgechev/codelyzer/issues/469) [2ef7438](https://github.com/mgechev/codelyzer/pull/470/commits/2ef7438b63829064d2bb9fabe0cd0eb7504fad98)
+- Check multiple semicolons inside the directive expressions [#472](https://github.com/mgechev/codelyzer/issues/472) [e6036d2](https://github.com/mgechev/codelyzer/pull/471/commits/e6036d2f757dd1b8f837afef6aea5803acd0cfca)
+
+Thanks to [@sagittarius-rev](https://github.com/sagittarius-rev) for the bug fixes!
+
 # 4.0.1
 
 ### Bug Fixes
