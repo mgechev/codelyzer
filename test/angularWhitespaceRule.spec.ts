@@ -272,6 +272,18 @@ describe('angular-whitespace', () => {
         assertSuccess('angular-whitespace', source, ['check-semicolon']);
       });
 
+
+      it('should work with proper style of multiple semicolons', () => {
+        let source = `
+      @Component({
+        template: \` <div *ngIf='date | date:"fullDate"; let dateString; else errorDate;'>{{ dateString }}</div>
+          <ng-template #errorDate>error date!</ng-template>
+        \`
+      })
+      class Bar {}`;
+        assertSuccess('angular-whitespace', source, ['check-semicolon']);
+      });
+
     });
 
   });
@@ -638,6 +650,120 @@ describe('failure', () => {
           @Component({
             template: \` <div *ngFor="let item of list; trackBy item?.id; let $index=index">{{ item.title }}</div>
                                                       ~~
+            \`
+          })
+          class Bar {}`);
+      });
+
+      it('should fail and apply proper replacements with multiple failures of semicolon inside double quote', () => {
+        let source = `
+          @Component({
+            template: \` <div *ngIf="date | date:'fullDate';let dateString;else errorDate">{{ dateString }}</div>
+                                                           ~~             ^^
+              <ng-template #errorDate>error date!</ng-template>
+            \`
+          })
+          class Bar {}`;
+        const failures = assertMultipleAnnotated({
+          ruleName: 'angular-whitespace',
+          failures: [
+            {char: '~', msg: 'Missing whitespace after semicolon; expecting \'; expr\'', },
+            {char: '^', msg: 'Missing whitespace after semicolon; expecting \'; expr\'', },
+          ],
+          source,
+          options: ['check-semicolon']
+        });
+
+        const res = Replacement.applyAll(source, [].concat.apply([], failures.map(f => f.getFix())));
+        expect(res).to.eq(`
+          @Component({
+            template: \` <div *ngIf="date | date:'fullDate'; let dateString; else errorDate">{{ dateString }}</div>
+                                                           ~~             ^^
+              <ng-template #errorDate>error date!</ng-template>
+            \`
+          })
+          class Bar {}`);
+      });
+
+      it('should fail and apply proper replacements with multiple failures of semicolon inside single quote', () => {
+        let source = `
+          @Component({
+            template: \` <div *ngIf='date | date:"fullDate";let dateString;else errorDate'>{{ dateString }}</div>
+                                                           ~~             ^^
+              <ng-template #errorDate>error date!</ng-template>
+            \`
+          })
+          class Bar {}`;
+        const failures = assertMultipleAnnotated({
+          ruleName: 'angular-whitespace',
+          failures: [
+            {char: '~', msg: 'Missing whitespace after semicolon; expecting \'; expr\'', },
+            {char: '^', msg: 'Missing whitespace after semicolon; expecting \'; expr\'', },
+          ],
+          source,
+          options: ['check-semicolon']
+        });
+
+        const res = Replacement.applyAll(source, [].concat.apply([], failures.map(f => f.getFix())));
+        expect(res).to.eq(`
+          @Component({
+            template: \` <div *ngIf='date | date:"fullDate"; let dateString; else errorDate'>{{ dateString }}</div>
+                                                           ~~             ^^
+              <ng-template #errorDate>error date!</ng-template>
+            \`
+          })
+          class Bar {}`);
+      });
+
+      it('should fail and apply proper replacement with single failure of multiple semicolons inside double quote', () => {
+        let source = `
+          @Component({
+            template: \` <div *ngIf="date | date:'fullDate'; let dateString;else errorDate;">{{ dateString }}</div>
+                                                                           ~~
+              <ng-template #errorDate>error date!</ng-template>
+            \`
+          })
+          class Bar {}`;
+        const failures = assertAnnotated({
+          ruleName: 'angular-whitespace',
+          message: 'Missing whitespace after semicolon; expecting \'; expr\'',
+          source,
+          options: ['check-semicolon']
+        });
+
+        const res = Replacement.applyAll(source, failures[0].getFix());
+        expect(res).to.eq(`
+          @Component({
+            template: \` <div *ngIf="date | date:'fullDate'; let dateString; else errorDate;">{{ dateString }}</div>
+                                                                           ~~
+              <ng-template #errorDate>error date!</ng-template>
+            \`
+          })
+          class Bar {}`);
+      });
+
+      it('should fail and apply proper replacement with single failure of multiple semicolons inside single quote', () => {
+        let source = `
+          @Component({
+            template: \` <div *ngIf='date | date:"fullDate"; let dateString;else errorDate;'>{{ dateString }}</div>
+                                                                           ~~
+              <ng-template #errorDate>error date!</ng-template>
+            \`
+          })
+          class Bar {}`;
+        const failures = assertAnnotated({
+          ruleName: 'angular-whitespace',
+          message: 'Missing whitespace after semicolon; expecting \'; expr\'',
+          source,
+          options: ['check-semicolon']
+        });
+
+        const res = Replacement.applyAll(source, failures[0].getFix());
+        expect(res).to.eq(`
+          @Component({
+            template: \` <div *ngIf='date | date:"fullDate"; let dateString; else errorDate;'>{{ dateString }}</div>
+                                                                           ~~
+              <ng-template #errorDate>error date!</ng-template>
             \`
           })
           class Bar {}`);
