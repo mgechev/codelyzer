@@ -7,14 +7,12 @@
     "docs": "ts-node build/buildDocs.ts",
     "lint": "tslint -c tslint.json \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint:fix": "npm run lint -- --fix",
-    "release":
-      "npm run build && rimraf dist && tsc -p tsconfig-release.json && npm run copy:common && npm run prepare:package && BUILD_TYPE=prod npm run set:vars",
+    "release": "npm run build && rimraf dist && tsc -p tsconfig-release.json && npm run copy:common && npm run prepare:package && BUILD_TYPE=prod npm run set:vars",
     "build": "rimraf dist && tsc && npm run lint && npm t",
     "copy:common": "cp README.md dist",
     "prepare:package": "cat package.json | ts-node build/package.ts > dist/package.json",
     "test": "rimraf dist && tsc && cp -r test/fixtures dist/test && mocha dist/test --recursive",
-    "test:watch":
-      "rimraf dist && tsc && cp -r test/fixtures dist/test && BUILD_TYPE=dev npm run set:vars && mocha dist/test --watch --recursive",
+    "test:watch": "rimraf dist && tsc && cp -r test/fixtures dist/test && BUILD_TYPE=dev npm run set:vars && mocha dist/test --watch --recursive",
     "set:vars": "ts-node build/vars.ts --src ./dist",
     "tscv": "tsc --version",
     "tsc": "tsc",
@@ -30,7 +28,15 @@
     "type": "git",
     "url": "git+https://github.com/mgechev/codelyzer.git"
   },
-  "keywords": ["Angular", "style guide", "styleguide", "nglint", "codelyzer", "lint", "tslint"],
+  "keywords": [
+    "Angular",
+    "style guide",
+    "styleguide",
+    "nglint",
+    "codelyzer",
+    "lint",
+    "tslint"
+  ],
   "author": {
     "name": "Minko Gechev",
     "email": "mgechev@gmail.com"
