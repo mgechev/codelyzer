@@ -219,6 +219,7 @@ Below you can find a recommended configuration which is based on the [Angular St
   "no-forward-ref": true,
   "use-life-cycle-interface": true,
   "use-pipe-transform-interface": true,
+  "no-output-named-after-standard-event": true,
 
   // [ENABLED, "SUFFIX"]
   // Where "SUFFIX" is your custom suffix, for instance "Page" for Ionic 2 components.
