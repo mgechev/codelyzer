@@ -97,7 +97,7 @@ describe('decorator-not-allowed', () => {
   describe('failure', () => {
 
     describe('not allowed input property', () => {
-      it(`should fail, when the class have an @Injectable decorator`, () => {
+      it('should fail, when the class have an @Injectable decorator', () => {
         let source = `
       @Injectable()
       class MyService {
@@ -115,7 +115,7 @@ describe('decorator-not-allowed', () => {
     });
 
     describe('not allowed output property', () => {
-      it(`should fail, when the class have an @Injectable decorator`, () => {
+      it('should fail, when the class have an @Injectable decorator', () => {
         let source = `
       @Injectable()
       class MyService {
@@ -133,7 +133,7 @@ describe('decorator-not-allowed', () => {
     });
 
     describe('not allowed input and output properties', () => {
-      it(`should fail, when the class have an @Injectable decorator`, () => {
+      it('should fail, when the class have an @Injectable decorator', () => {
         let source = `
      @Injectable()
      class MyService {
@@ -171,7 +171,7 @@ describe('decorator-not-allowed', () => {
 
 
     describe('not allowed @HostBinding property', () => {
-      it(`should fail, when the class have an @Injectable decorator`, () => {
+      it('should fail, when the class have an @Injectable decorator', () => {
         let source = `
       @Injectable()
       class MyService {
@@ -189,7 +189,7 @@ describe('decorator-not-allowed', () => {
     });
 
     describe('not allowed @HostListener property', () => {
-      it(`should fail, when the class have an @Injectable decorator`, () => {
+      it('should fail, when the class have an @Injectable decorator', () => {
         let source = `
       @Injectable()
       class MyService {
@@ -210,7 +210,7 @@ describe('decorator-not-allowed', () => {
     });
 
     describe('not allowed @ViewChild and @ViewChildren properties', () => {
-      it(`should fail, when the class have an @Injectable decorator`, () => {
+      it('should fail, when the class have an @Injectable decorator', () => {
         let source = `
      @Injectable()
      class MyService {
@@ -248,7 +248,7 @@ describe('decorator-not-allowed', () => {
 
 
     describe('not allowed @ContentChild and @ContentChildren properties', () => {
-      it(`should fail, when the class have an @Injectable decorator`, () => {
+      it('should fail, when the class have an @Injectable decorator', () => {
         let source = `
      @Injectable()
      class MyService {

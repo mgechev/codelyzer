@@ -10,11 +10,11 @@ export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'decorator-not-allowed',
     type: 'functionality',
-    description: `Ensure that classes use allowed decorator in its body`,
+    description: 'Ensure that classes use allowed decorator in its body',
     rationale: `Some decorators can only be used in certain class types.
     For example, an @Input should not be used in an @Injectable class.`,
     options: null,
-    optionsDescription: `Not configurable.`,
+    optionsDescription: 'Not configurable.',
     typescriptOnly: true,
   };
 

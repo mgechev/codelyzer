@@ -5,10 +5,10 @@ export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'import-destructuring-spacing',
     type: 'style',
-    description: `Ensure consistent and tidy imports.`,
-    rationale: `Imports are easier for the reader to look at when they're tidy.`,
+    description: 'Ensure consistent and tidy imports.',
+    rationale: 'Imports are easier for the reader to look at when they\'re tidy.',
     options: null,
-    optionsDescription: `Not configurable.`,
+    optionsDescription: 'Not configurable.',
     typescriptOnly: true,
   };
 

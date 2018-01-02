@@ -7,10 +7,10 @@ export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'no-output-named-after-standard-event',
     type: 'maintainability',
-    description: `Disallows naming directive outputs after a standard DOM event.`,
-    rationale: `Listeners subscribed to an output with such a name will also be invoked when the native event is raised.`,
+    description: 'Disallows naming directive outputs after a standard DOM event.',
+    rationale: 'Listeners subscribed to an output with such a name will also be invoked when the native event is raised.',
     options: null,
-    optionsDescription: `Not configurable.`,
+    optionsDescription: 'Not configurable.',
     typescriptOnly: true,
   };
 

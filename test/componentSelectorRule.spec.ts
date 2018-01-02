@@ -148,7 +148,7 @@ describe('component-selector-type', () => {
                 options: ['element', ['sg', 'ng'], 'kebab-case']
             });
         });
-        it( `should properly handle es6 template literals`, () => {
+        it( 'should properly handle es6 template literals', () => {
             let source = `
       @Component({
         selector: \`[fooBar]\`
@@ -246,7 +246,7 @@ describe('component-selector-name', () => {
         });
 
         it('should succeed with empty file', () => {
-            let source = ``;
+            let source = '';
             assertSuccess('component-selector', source, ['element', 'sg', 'kebab-case']);
         });
         it('should ignore the selector when it\'s not literal', () => {

@@ -6,9 +6,9 @@ export class Rule extends SelectorRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'component-selector',
     type: 'style',
-    description: `Component selectors should follow given naming rules.`,
-    descriptionDetails: `See more at https://angular.io/styleguide#style-02-07, https://angular.io/styleguide#style-05-02, ` +
-    `and https://angular.io/styleguide#style-05-03.`,
+    description: 'Component selectors should follow given naming rules.',
+    descriptionDetails: 'See more at https://angular.io/styleguide#style-02-07, https://angular.io/styleguide#style-05-02, ' +
+    'and https://angular.io/styleguide#style-05-03.',
     rationale: Lint.Utils.dedent`
     * Consistent conventions make it easy to quickly identify and reference assets of different types.
     * Makes it easier to promote and share the component in other apps.
@@ -45,9 +45,9 @@ export class Rule extends SelectorRule {
       'maxItems': 3
     },
     optionExamples: [
-      `["element", "my-prefix", "kebab-case"]`,
-      `["element", ["ng", "ngx"], "kebab-case"]`,
-      `["attribute", "myPrefix", "camelCase"]`,
+      '["element", "my-prefix", "kebab-case"]',
+      '["element", ["ng", "ngx"], "kebab-case"]',
+      '["attribute", "myPrefix", "camelCase"]',
     ],
     optionsDescription: Lint.Utils.dedent`
     Options accept three obligatory items as an array:

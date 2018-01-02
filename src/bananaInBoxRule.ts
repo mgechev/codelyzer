@@ -53,10 +53,10 @@ export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'banana-in-box',
     type: 'functionality',
-    description: `Ensure that the two-way data binding syntax is correct.`,
-    rationale: `The parens "()" should have been inside the brackets "[]".`,
+    description: 'Ensure that the two-way data binding syntax is correct.',
+    rationale: 'The parens "()" should have been inside the brackets "[]".',
     options: null,
-    optionsDescription: `Not configurable.`,
+    optionsDescription: 'Not configurable.',
     typescriptOnly: true,
     hasFix: true
   };

@@ -7,10 +7,10 @@ export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'no-forward-ref',
     type: 'maintainability',
-    description: `Disallows usage of forward references for DI.`,
-    rationale: `The flow of DI is disrupted by using \`forwardRef\` and might make code more difficult to understand.`,
+    description: 'Disallows usage of forward references for DI.',
+    rationale: 'The flow of DI is disrupted by using `forwardRef` and might make code more difficult to understand.',
     options: null,
-    optionsDescription: `Not configurable.`,
+    optionsDescription: 'Not configurable.',
     typescriptOnly: true,
   };
 

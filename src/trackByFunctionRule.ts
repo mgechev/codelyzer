@@ -8,10 +8,10 @@ export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'trackBy-function',
     type: 'functionality',
-    description: `Ensures a TrackBy function is used.`,
-    rationale: `Using TrackBy is considired as a best pratice.`,
+    description: 'Ensures a TrackBy function is used.',
+    rationale: 'Using TrackBy is considired as a best pratice.',
     options: null,
-    optionsDescription: `Not configurable.`,
+    optionsDescription: 'Not configurable.',
     typescriptOnly: true
   };
 

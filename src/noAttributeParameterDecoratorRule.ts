@@ -11,10 +11,10 @@ export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'no-attribute-parameter-decorator',
     type: 'maintainability',
-    description: `Disallow usage of @Attribute decorator`,
-    rationale: `@Attribute is considered bad practice. Use @Input instead.`,
+    description: 'Disallow usage of @Attribute decorator',
+    rationale: '@Attribute is considered bad practice. Use @Input instead.',
     options: null,
-    optionsDescription: `Not configurable.`,
+    optionsDescription: 'Not configurable.',
     typescriptOnly: true,
   };
 

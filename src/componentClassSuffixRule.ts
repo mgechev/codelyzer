@@ -13,9 +13,9 @@ export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'component-class-suffix',
     type: 'style',
-    description: `Classes decorated with @Component must have suffix "Component" (or custom) in their name.`,
-    descriptionDetails: `See more at https://angular.io/styleguide#style-02-03.`,
-    rationale: `Consistent conventions make it easy to quickly identify and reference assets of different types.`,
+    description: 'Classes decorated with @Component must have suffix "Component" (or custom) in their name.',
+    descriptionDetails: 'See more at https://angular.io/styleguide#style-02-03.',
+    rationale: 'Consistent conventions make it easy to quickly identify and reference assets of different types.',
     options: {
       type: 'array',
       items: {
@@ -23,10 +23,10 @@ export class Rule extends Lint.Rules.AbstractRule {
       }
     },
     optionExamples: [
-      `true`,
-      `[true, "Component", "View"]`
+      'true',
+      '[true, "Component", "View"]'
     ],
-    optionsDescription: `Supply a list of allowed component suffixes. Defaults to "Component".`,
+    optionsDescription: 'Supply a list of allowed component suffixes. Defaults to "Component".',
     typescriptOnly: true,
   };
 

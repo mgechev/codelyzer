@@ -142,9 +142,9 @@ export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'no-unused-css',
     type: 'maintainability',
-    description: `Disallows having an unused CSS rule in the component's stylesheet.`,
+    description: 'Disallows having an unused CSS rule in the component\'s stylesheet.',
     options: null,
-    optionsDescription: `Not configurable.`,
+    optionsDescription: 'Not configurable.',
     typescriptOnly: true,
     hasFix: true
   };
