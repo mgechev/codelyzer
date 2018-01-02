@@ -22,7 +22,7 @@ class TemplateToNgTemplateVisitor extends RecursiveAngularExpressionVisitor {
     this.addFailure(this.createFailure(
       expr.span.start,
       expr.span.end - expr.span.start,
-      `Async pipes must use strict equality \`===\` when comparing with \`false\``,
+      'Async pipes must use strict equality `===` when comparing with `false`',
       [
         new Lint.Replacement(
           this.getSourcePosition(expr.left.span.end) + operatorStart,
@@ -48,7 +48,7 @@ class TemplateToNgTemplateVisitor extends RecursiveAngularExpressionVisitor {
     this.addFailure(this.createFailure(
       expr.span.start,
       width,
-      `Async pipes can not be negated, use (observable | async) === false instead`,
+      'Async pipes can not be negated, use (observable | async) === false instead',
       [
         new Lint.Replacement(absoluteStart + concreteWidth, 1, ' === false '),
         new Lint.Replacement(absoluteStart, 1, ''),
@@ -65,11 +65,11 @@ export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'templates-no-negated-async',
     type: 'functionality',
-    description: `Ensures that strict equality is used when evaluating negations on async pipe outout.`,
-    rationale: `Async pipe evaluate to \`null\` before the observable or promise emits, which can lead to layout thrashing as` +
-      ` components load. Prefer strict \`=== false\` checks instead.`,
+    description: 'Ensures that strict equality is used when evaluating negations on async pipe outout.',
+    rationale: 'Async pipe evaluate to `null` before the observable or promise emits, which can lead to layout thrashing as' +
+      ' components load. Prefer strict `=== false` checks instead.',
     options: null,
-    optionsDescription: `Not configurable.`,
+    optionsDescription: 'Not configurable.',
     typescriptOnly: true,
     hasFix: true
   };

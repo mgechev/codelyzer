@@ -14,11 +14,11 @@ export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'use-life-cycle-interface',
     type: 'maintainability',
-    description: `Ensure that components implement life cycle interfaces if they use them.`,
-    descriptionDetails: `See more at https://angular.io/styleguide#style-09-01.`,
-    rationale: `Interfaces prescribe typed method signatures. Use those signatures to flag spelling and syntax mistakes.`,
+    description: 'Ensure that components implement life cycle interfaces if they use them.',
+    descriptionDetails: 'See more at https://angular.io/styleguide#style-09-01.',
+    rationale: 'Interfaces prescribe typed method signatures. Use those signatures to flag spelling and syntax mistakes.',
     options: null,
-    optionsDescription: `Not configurable.`,
+    optionsDescription: 'Not configurable.',
     typescriptOnly: true,
   };
 

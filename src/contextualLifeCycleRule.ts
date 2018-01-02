@@ -10,11 +10,11 @@ export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'contextual-life-cycle',
     type: 'functionality',
-    description: `Ensure that classes use allowed life cycle method in its body`,
+    description: 'Ensure that classes use allowed life cycle method in its body',
     rationale: `Some life cycle methods can only be used in certain class types.
     For example, ngOnInit() hook method should not be used in an @Injectable class.`,
     options: null,
-    optionsDescription: `Not configurable.`,
+    optionsDescription: 'Not configurable.',
     typescriptOnly: true,
   };
 

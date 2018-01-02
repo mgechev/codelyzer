@@ -2,7 +2,7 @@ import { assertSuccess, assertFailures, assertAnnotated } from './testHelper';
 
 describe('use-life-cycle-interface', () => {
     describe('invalid declaration of life hook', () => {
-        it(`should fail, when a life cycle hook is used without implementing it's interface`, () => {
+        it('should fail, when a life cycle hook is used without implementing it\'s interface', () => {
             let source = `
             class App {
                 ngOnInit(){
@@ -16,7 +16,7 @@ describe('use-life-cycle-interface', () => {
                 source
             });
         });
-        it(`should fail, when life cycle hooks are used without implementing their interfaces`, () => {
+        it('should fail, when life cycle hooks are used without implementing their interfaces', () => {
             let source = `
             class App {
                 ngOnInit(){
@@ -49,7 +49,7 @@ describe('use-life-cycle-interface', () => {
             }
             ]);
         });
-        it(`should fail, when some of the life cycle hooks are used without implementing their interfaces`, () => {
+        it('should fail, when some of the life cycle hooks are used without implementing their interfaces', () => {
             let source = `
             class App extends Component implements OnInit{
                 ngOnInit(){
@@ -67,7 +67,7 @@ describe('use-life-cycle-interface', () => {
         });
     });
     describe('invalid declaration of life hooks, using ng.hookName', () => {
-        it(`should fail, when life cycle hooks are used without implementing all interfaces, using ng.hookName`, () => {
+        it('should fail, when life cycle hooks are used without implementing all interfaces, using ng.hookName', () => {
             let source = `
             class App extends Component implements ng.OnInit{
                 ngOnInit(){
@@ -85,7 +85,7 @@ describe('use-life-cycle-interface', () => {
         });
     });
     describe('valid declaration of life hook', () => {
-        it(`should succeed, when life cycle hook is used with it's corresponding interface`, () => {
+        it('should succeed, when life cycle hook is used with it\'s corresponding interface', () => {
             let source = `
             class App implements OnInit {
                 ngOnInit(){
@@ -93,7 +93,7 @@ describe('use-life-cycle-interface', () => {
             }`;
             assertSuccess('use-life-cycle-interface', source);
         });
-        it(`should succeed, when life cycle hooks are used with their corresponding interfaces`, () => {
+        it('should succeed, when life cycle hooks are used with their corresponding interfaces', () => {
             let source = `
             class App extends Component implements OnInit,OnDestroy  {
                 ngOnInit(){
@@ -113,7 +113,7 @@ describe('use-life-cycle-interface', () => {
 
     describe('valid declaration of life hooks, using ng.hookName', () => {
 
-        it(`should succeed, when life cycle hook is used with it's interface`, () => {
+        it('should succeed, when life cycle hook is used with it\'s interface', () => {
             let source = `
             class App implements ng.OnInit {
                 ngOnInit(){
@@ -140,7 +140,7 @@ describe('use-life-cycle-interface', () => {
             assertSuccess('use-life-cycle-interface', source);
         });
 
-        it(`should succeed, when life cycle hooks are used with their corresponding interfaces`, () => {
+        it('should succeed, when life cycle hooks are used with their corresponding interfaces', () => {
             let source = `
             class App extends Component implements ng.OnInit, ng.OnDestroy  {
                 ngOnInit(){
@@ -158,14 +158,14 @@ describe('use-life-cycle-interface', () => {
         });
     });
     describe('valid use of class without interfaces and life cycle hooks', () => {
-        it(`should succeed when life cycle hooks are not used`, () => {
+        it('should succeed when life cycle hooks are not used', () => {
             let source = `
             class App{}`;
             assertSuccess('use-life-cycle-interface', source);
         });
     });
     describe('valid declaration of class using Iterator', () => {
-        it(`should succeed, when is used iterator`, () => {
+        it('should succeed, when is used iterator', () => {
             let source = `
             export class Heroes implements Iterable<Hero> {
               [Symbol.iterator]() {

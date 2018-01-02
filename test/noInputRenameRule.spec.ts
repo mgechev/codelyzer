@@ -2,7 +2,7 @@ import { assertSuccess, assertAnnotated } from './testHelper';
 
 describe('no-input-rename', () => {
   describe('invalid directive input property', () => {
-    it(`should fail, when a directive input property is renamed`, () => {
+    it('should fail, when a directive input property is renamed', () => {
       let source = `
       class ButtonComponent {
         @Input('labelAttribute') label: string;

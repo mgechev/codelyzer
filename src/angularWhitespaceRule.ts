@@ -21,7 +21,7 @@ const InterpolationOpen = Config.interpolation[0];
 const InterpolationClose = Config.interpolation[1];
 const InterpolationWhitespaceRe = new RegExp(`${InterpolationOpen}(\\s*)(.*?)(\\s*)${InterpolationClose}`, 'g');
 const SemicolonNoWhitespaceNotInSimpleQuoteRe = stickyFlagUsable ?
-  new RegExp(`(?:[^';]|'[^']*'|;(?=\\s))+;(?=\\S)`, 'gy') : /(?:[^';]|'[^']*')+;/g;
+new RegExp(`(?:[^';]|'[^']*'|;(?=\\s))+;(?=\\S)`, 'gy') : /(?:[^';]|'[^']*')+;/g;
 const SemicolonNoWhitespaceNotInDoubleQuoteRe = stickyFlagUsable ?
   new RegExp(`(?:[^";]|"[^"]*"|;(?=\\s))+;(?=\\S)`, 'gy') : /(?:[^";]|"[^"]*")+;/g;
 
@@ -280,8 +280,8 @@ export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'angular-whitespace',
     type: 'style',
-    description: `Ensures the proper formatting of Angular expressions.`,
-    rationale: `Having whitespace in the right places in an Angular expression makes the template more readable.`,
+    description: 'Ensures the proper formatting of Angular expressions.',
+    rationale: 'Having whitespace in the right places in an Angular expression makes the template more readable.',
     optionsDescription: Lint.Utils.dedent`
       Arguments may be optionally provided:
       * \`"check-interpolation"\` checks for whitespace before and after the interpolation characters

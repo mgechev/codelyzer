@@ -2,7 +2,7 @@ import { assertSuccess, assertAnnotated } from './testHelper';
 
 describe('use-pipe-decorator', () => {
   describe('invalid use of pipe transform interface', () => {
-    it(`should fail, when PipeTransform interface is used, without @Pipe or any decorators`, () => {
+    it('should fail, when PipeTransform interface is used, without @Pipe or any decorators', () => {
       let source = `
       export class NewPipe implements PipeTransform {
       ~~~~~~~~~~~~~~~~~~~~
@@ -16,7 +16,7 @@ describe('use-pipe-decorator', () => {
         source
       });
     });
-    it(`should fail, when PipeTransform interface is used, without @Pipe decorator, but using other`, () => {
+    it('should fail, when PipeTransform interface is used, without @Pipe decorator, but using other', () => {
       let source = `
         @Test()
         ~~~~~~~
@@ -29,7 +29,7 @@ describe('use-pipe-decorator', () => {
         source
       });
     });
-    it(`should fail, when PipeTransform interface is used, without @Pipe decorator, but using multiple others`, () => {
+    it('should fail, when PipeTransform interface is used, without @Pipe decorator, but using multiple others', () => {
       let source = `
         @Test()
         ~~~~~~~
@@ -45,7 +45,7 @@ describe('use-pipe-decorator', () => {
     });
   });
   describe('valid use of pipe transform interface', () => {
-    it(`should succeed, when PipeTransform interface is used, with Pipe decorator`, () => {
+    it('should succeed, when PipeTransform interface is used, with Pipe decorator', () => {
       let source = `
       @Pipe({name: 'fetch'})
       export class NewPipe  implements PipeTransform{
@@ -56,8 +56,8 @@ describe('use-pipe-decorator', () => {
     });
   });
   describe('valid use of empty class', () => {
-    it(`should succeed, when PipeTransform interface is not used`, () => {
-      let source = `class App{}`;
+    it('should succeed, when PipeTransform interface is not used', () => {
+      let source = 'class App{}';
       assertSuccess('use-pipe-decorator', source);
     });
   });

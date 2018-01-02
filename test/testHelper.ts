@@ -215,9 +215,9 @@ export function assertFailure(ruleName: string, source: string, fail: IExpectedF
   }
   chai.assert(result.failures && result.failures.length > 0, 'no failures');
   const ruleFail = result.failures[onlyNthFailure];
-  chai.assert.equal(fail.message, ruleFail.getFailure(), `error messages don't match`);
-  chai.assert.deepEqual(fail.startPosition, ruleFail.getStartPosition().getLineAndCharacter(), `start char doesn't match`);
-  chai.assert.deepEqual(fail.endPosition, ruleFail.getEndPosition().getLineAndCharacter(), `end char doesn't match`);
+  chai.assert.equal(fail.message, ruleFail.getFailure(), 'error messages don\'t match');
+  chai.assert.deepEqual(fail.startPosition, ruleFail.getStartPosition().getLineAndCharacter(), 'start char doesn\'t match');
+  chai.assert.deepEqual(fail.endPosition, ruleFail.getEndPosition().getLineAndCharacter(), 'end char doesn\'t match');
   if (result) {
     return result.failures;
   }
@@ -242,9 +242,9 @@ export function assertFailures(ruleName: string, source: string, fails: IExpecte
   }
   chai.assert(result.failures && result.failures.length > 0, 'no failures');
   result.failures.forEach((ruleFail, index) => {
-    chai.assert.equal(fails[index].message, ruleFail.getFailure(), `error messages don't match`);
-    chai.assert.deepEqual(fails[index].startPosition, ruleFail.getStartPosition().getLineAndCharacter(), `start char doesn't match`);
-    chai.assert.deepEqual(fails[index].endPosition, ruleFail.getEndPosition().getLineAndCharacter(), `end char doesn't match`);
+    chai.assert.equal(fails[index].message, ruleFail.getFailure(), 'error messages don\'t match');
+    chai.assert.deepEqual(fails[index].startPosition, ruleFail.getStartPosition().getLineAndCharacter(), 'start char doesn\'t match');
+    chai.assert.deepEqual(fails[index].endPosition, ruleFail.getEndPosition().getLineAndCharacter(), 'end char doesn\'t match');
   });
 }
 

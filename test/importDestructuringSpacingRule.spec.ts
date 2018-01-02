@@ -65,12 +65,12 @@ describe('import-destructuring-spacing', () => {
 
   describe('valid import spacing', () => {
     it('should succeed with valid spacing', () => {
-      let source = `import { Foo } from './foo';`;
+      let source = 'import { Foo } from \'./foo\';';
       assertSuccess('import-destructuring-spacing', source);
     });
 
     it('should work with alias imports', () => {
-      let source = `import * as Foo from './foo';`;
+      let source = 'import * as Foo from \'./foo\';';
       assertSuccess('import-destructuring-spacing', source);
     });
   });

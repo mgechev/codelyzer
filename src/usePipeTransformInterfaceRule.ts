@@ -14,10 +14,10 @@ export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'use-pipe-transform-interface',
     type: 'maintainability',
-    description: `Ensure that pipes implement PipeTransform interface.`,
-    rationale: `Interfaces prescribe typed method signatures. Use those signatures to flag spelling and syntax mistakes.`,
+    description: 'Ensure that pipes implement PipeTransform interface.',
+    rationale: 'Interfaces prescribe typed method signatures. Use those signatures to flag spelling and syntax mistakes.',
     options: null,
-    optionsDescription: `Not configurable.`,
+    optionsDescription: 'Not configurable.',
     typescriptOnly: true,
   };
 

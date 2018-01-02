@@ -2,7 +2,7 @@ import { assertSuccess, assertAnnotated } from './testHelper';
 
 describe('no-output-rename', () => {
   describe('invalid directive output property', () => {
-    it(`should fail, when a directive output property is renamed`, () => {
+    it('should fail, when a directive output property is renamed', () => {
       let source = `
       class ButtonComponent {
         @Output('changeEvent') change = new EventEmitter<any>();

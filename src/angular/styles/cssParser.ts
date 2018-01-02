@@ -760,7 +760,7 @@ export class CssParser {
     } else if (code != chars.$RBRACE) {
       this._error(
           generateErrorMessage(
-              this._getSourceContent(), `The CSS key/value definition did not end with a semicolon`,
+              this._getSourceContent(), 'The CSS key/value definition did not end with a semicolon',
               previous.strValue, previous.index, previous.line, previous.column),
           previous);
     }
@@ -883,7 +883,7 @@ export class CssParser {
     } else {
       this._error(
           generateErrorMessage(
-              this._getSourceContent(), `The CSS property was not paired with a style value`,
+              this._getSourceContent(), 'The CSS property was not paired with a style value',
               prop.strValue, prop.index, prop.line, prop.column),
           prop);
     }
