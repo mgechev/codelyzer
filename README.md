@@ -46,9 +46,37 @@ Note that by default all components are aligned with the style guide so you won'
 
 ### Custom Setup
 
-You can easily use codelyzer with your custom setup:
+#### Preset
 
-#### Installation
+You can use the [`tslint-angular`](https://github.com/mgechev/tslint-angular) preset. All you need is:
+
+```shell
+npm i tslint-angular
+```
+
+After that create a `tslint.json` file with the following configuration:
+
+```json
+{
+  "extends": ["tslint-angular"]
+}
+```
+
+Run the linter with:
+
+```bash
+./node_modules/.bin/tslint -c tslint.json
+```
+
+TSLint will now complain that there are rules which requlre type checking. In order to fix this, use thw `-p` config option:
+
+```bash
+./node_modules/.bin/tslint -p tsconfig.json -c tslint.json
+```
+
+#### Custom Installation
+
+You can easily use codelyzer with your custom setup:
 
 ```shell
 npm i codelyzer@~4.0.0 tslint@^5.0.0 typescript@2.4.0 @angular/core@~5.0.1 @angular/compiler@~5.0.1 rxjs@5.5.0 zone.js@~0.8.4
