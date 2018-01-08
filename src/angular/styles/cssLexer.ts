@@ -191,6 +191,7 @@ export class CssScanner {
         while (!isCommentEnd(this.peek, this.peekPeek)) {
           if (this.peek == chars.$EOF) {
             this.error('Unterminated comment');
+            break;
           }
           this.advance();
         }
@@ -342,6 +343,7 @@ export class CssScanner {
     while (!isCommentEnd(this.peek, this.peekPeek)) {
       if (this.peek == chars.$EOF) {
         this.error('Unterminated comment');
+        break;
       }
       this.advance();
     }
@@ -379,6 +381,7 @@ export class CssScanner {
     while (!isCharMatch(target, previous, this.peek)) {
       if (this.peek == chars.$EOF || isNewline(this.peek)) {
         this.error('Unterminated quote');
+        break;
       }
       previous = this.peek;
       this.advance();
