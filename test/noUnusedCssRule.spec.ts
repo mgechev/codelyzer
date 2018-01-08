@@ -223,7 +223,7 @@ describe('no-unused-css', () => {
   });
 
   describe('failures', () => {
-    it("should fail when having a complex selector that doesn't match anything", () => {
+    it(`should fail when having a complex selector that doesn't match anything`, () => {
       let source = `
         @Component({
           selector: 'foobar',
@@ -895,7 +895,7 @@ describe('no-unused-css', () => {
       console.log(failures);
     });
 
-    it.only('should work with invalid CSS', function() {
+    it('should work with invalid CSS', function() {
       let source = `
         @Component({
           selector: 'div[some-component]',
