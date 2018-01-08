@@ -876,23 +876,7 @@ describe('no-unused-css', () => {
           changeDetection: ChangeDetectionStrategy.OnPush
         })
         class Test {}`;
-      const failures = assertFailure(
-        'no-unused-css',
-        source,
-        {
-          message: 'Unused styles',
-          startPosition: {
-            line: 7,
-            character: 12
-          },
-          endPosition: {
-            line: 9,
-            character: 13
-          }
-        },
-        null
-      );
-      console.log(failures);
+      assertSuccess('no-unused-css', source);
     });
 
     it('should work with invalid CSS', function() {
@@ -910,23 +894,7 @@ describe('no-unused-css', () => {
           changeDetection: ChangeDetectionStrategy.OnPush
         })
         class Test {}`;
-      const failures = assertFailure(
-        'no-unused-css',
-        source,
-        {
-          message: 'Unused styles',
-          startPosition: {
-            line: 7,
-            character: 12
-          },
-          endPosition: {
-            line: 9,
-            character: 13
-          }
-        },
-        null
-      );
-      console.log(failures);
+      assertSuccess('no-unused-css', source);
     });
   });
 });
