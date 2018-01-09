@@ -20,7 +20,7 @@ describe('trackBy-function', () => {
       assertSuccess('trackBy-function', source);
     });
 
-    it('should have a trackBy function when exported ngFor value is assigned', () => {
+    it('should have a trackBy function with exported index value', () => {
       let source = `
       @Component({
         template: \`
