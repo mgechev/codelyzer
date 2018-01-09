@@ -14,7 +14,7 @@ const getAst = (code: string, file = 'file.ts') => {
 describe('i18n', () => {
   describe('check-id', () => {
     it('should work with proper id', () => {
-      let source = `
+      const source = `
       @Component({
         template: \`
           <div i18n="test@@foo">Text</div>
@@ -25,8 +25,22 @@ describe('i18n', () => {
       assertSuccess('i18n', source, ['check-id']);
     });
 
+    it('should work with proper i18n attribute', () => {
+      const source = `
+      @Component({
+        template: \`
+          <div i18n="@@minlength">
+            Use at least {{ minLength }} characters
+          </div>
+        \`
+      })
+      class Bar {}
+      `;
+      assertSuccess('i18n', source, ['check-text']);
+    });
+
     it('should work with proper id', () => {
-      let source = `
+      const source = `
       @Component({
         template: \`
           <div i18n="meaning|description@@foo">Text</div>
@@ -38,7 +52,7 @@ describe('i18n', () => {
     });
 
     it('should work with proper id', () => {
-      let source = `
+      const source = `
       @Component({
         template: \`
           <div i18n="@@foo">Text</div>
@@ -50,7 +64,7 @@ describe('i18n', () => {
     });
 
     it('should fail with missing id string', () => {
-      let source = `
+      const source = `
       @Component({
         template: \`
           <div i18n="foo@@">Text</div>
@@ -68,7 +82,7 @@ describe('i18n', () => {
     });
 
     it('should fail with missing id', () => {
-      let source = `
+      const source = `
       @Component({
         template: \`
           <div i18n="foo">Text</div>
@@ -86,7 +100,7 @@ describe('i18n', () => {
     });
 
     it('should fail with missing id', () => {
-      let source = `
+      const source = `
       @Component({
         template: \`
           <div i18n>Text</div>
@@ -106,7 +120,7 @@ describe('i18n', () => {
 
   describe('check-text', () => {
     it('should work with i18n attribute', () => {
-      let source = `
+      const source = `
       @Component({
         template: \`
           <div i18n>Text</div>
@@ -118,7 +132,7 @@ describe('i18n', () => {
     });
 
     it('should work without i18n attribute & interpolation', () => {
-      let source = `
+      const source = `
       @Component({
         template: \`
           <div>{{text}}</div>
@@ -130,7 +144,7 @@ describe('i18n', () => {
     });
 
     it('should work with multiple valid elements', () => {
-      let source = `
+      const source = `
       @Component({
         template: \`
           <div>{{text}}</div>
@@ -146,7 +160,7 @@ describe('i18n', () => {
     });
 
     it('should fail with missing id string', () => {
-      let source = `
+      const source = `
       @Component({
         template: \`
           <div>Text</div>
@@ -164,7 +178,7 @@ describe('i18n', () => {
     });
 
     it('should fail with missing id string in nested elements', () => {
-      let source = `
+      const source = `
       @Component({
         template: \`
           <div>
@@ -185,7 +199,7 @@ describe('i18n', () => {
     });
 
     it('should fail with text outside element with i18n attribute', () => {
-      let source = `
+      const source = `
       @Component({
         template: \`
           <div i18n>Text</div>
@@ -213,7 +227,7 @@ describe('i18n', () => {
     });
 
     it('should fail with missing id string', () => {
-      let source = `
+      const source = `
       @Component({
         template: \`
           <div>Text {{ foo }}</div>
@@ -231,7 +245,7 @@ describe('i18n', () => {
     });
 
     it('should fail with missing id string', () => {
-      let source = `
+      const source = `
       @Component({
         template: \`
           <div>{{ foo }} text</div>
@@ -249,7 +263,7 @@ describe('i18n', () => {
     });
 
     it('should fail with text outside element with i18n attribute', () => {
-      let source = `
+      const source = `
       @Component({
         template: \`
           <div i18n>Text</div>
