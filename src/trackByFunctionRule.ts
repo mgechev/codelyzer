@@ -24,7 +24,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   }
 }
 
-const ngForExpressionRe = new RegExp(/\*ngFor="(.+)"/);
+const ngForExpressionRe = new RegExp(/\*ngFor\s*=\s*(?:'|")(.+)(?:'|")/);
 const trackByRe = new RegExp(/trackBy\s*:/);
 
 class TrackByNgForTemplateVisitor extends BasicTemplateAstVisitor {
