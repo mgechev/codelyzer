@@ -20,6 +20,22 @@ describe('trackBy-function', () => {
       assertSuccess('trackBy-function', source);
     });
 
+    it('should have a trackBy function when exported ngFor value is assigned', () => {
+      let source = `
+      @Component({
+        template: \`
+         <ul>
+            <li *ngFor="let person of persons; let i = index; trackBy: trackByFn">
+             {{ person.name }}
+            </li>
+         </ul>
+         \`
+      })
+      class Bar {}
+      `;
+      assertSuccess('trackBy-function', source);
+    });
+
     it('should have a trackBy function', () => {
       let source = `
       @Component({
@@ -35,7 +51,6 @@ describe('trackBy-function', () => {
       `;
       assertSuccess('trackBy-function', source);
     });
-
   });
 
 
