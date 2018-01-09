@@ -53,6 +53,37 @@ describe('trackBy-function', () => {
     });
   });
 
+  it('should have a trackBy function with different quotes', () => {
+    let source = `
+    @Component({
+      template: \`
+       <ul>
+          <li *ngFor='let person of persons; let i = index; trackBy: trackByFn'>
+           {{ person.name }}
+          </li>
+       </ul>
+       \`
+    })
+    class Bar {}
+    `;
+    assertSuccess('trackBy-function', source);
+  });
+
+  it('should have a trackBy function with different spacing', () => {
+    let source = `
+    @Component({
+      template: \`
+       <ul>
+          <li *ngFor  =  "let person of persons; let i = index; trackBy : trackByFn">
+           {{ person.name }}
+          </li>
+       </ul>
+       \`
+    })
+    class Bar {}
+    `;
+    assertSuccess('trackBy-function', source);
+  });
 
   describe('failure', () => {
 
