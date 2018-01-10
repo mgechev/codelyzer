@@ -60,7 +60,7 @@ class I18NTextVisitor extends BasicTemplateAstVisitor implements ConfigurableVis
     if (!this.visited.has(text)) {
       this.visited.add(text);
       const val = text.value;
-      if (val instanceof ast.ASTWithSource && val.ast instanceof ast.Interpolation) {
+      if (val instanceof ast.ASTWithSource && val.ast instanceof ast.Interpolation && !this.hasI18n) {
         const textNonEmpty = val.ast.strings.some(s => /\w+/.test(s));
         if (textNonEmpty) {
           const span = text.sourceSpan;
