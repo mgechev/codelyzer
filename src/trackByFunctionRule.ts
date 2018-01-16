@@ -24,28 +24,26 @@ export class Rule extends Lint.Rules.AbstractRule {
   }
 }
 
+const ngForExpressionRe = new RegExp(/\*ngFor\s*=\s*(?:'|")(.+)(?:'|")/);
 const trackByRe = new RegExp(/trackBy\s*:/);
 
 class TrackByNgForTemplateVisitor extends BasicTemplateAstVisitor {
-
   static Error = 'Missing trackBy function in ngFor directive';
 
   visitDirectiveProperty(prop: ast.BoundDirectivePropertyAst, context: BasicTemplateAstVisitor): any {
-
     if (prop.sourceSpan) {
       const directive = (<any>prop.sourceSpan).toString();
-      const rawExpression = directive.split('=')[1].trim();
-      const expr = rawExpression.substring(1, rawExpression.length - 1).trim();
 
-      if (directive.startsWith('*ngFor') && !trackByRe.test(expr)) {
-        const span = prop.sourceSpan;
-        context.addFailure(
-          context.createFailure(
-            span.start.offset,
-            span.end.offset - span.start.offset,
-            TrackByNgForTemplateVisitor.Error
-          )
-        );
+      if (directive.startsWith('*ngFor')) {
+        const directiveMatch = directive.match(ngForExpressionRe);
+        const expr = directiveMatch && directiveMatch[1];
+
+        if (expr && !trackByRe.test(expr)) {
+          const span = prop.sourceSpan;
+          context.addFailure(
+            context.createFailure(span.start.offset, span.end.offset - span.start.offset, TrackByNgForTemplateVisitor.Error)
+          );
+        }
       }
     }
     super.visitDirectiveProperty(prop, context);

@@ -1,10 +1,95 @@
+/* tslint:disable */
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import * as chars from './chars';
+
 export class ParseLocation {
-  constructor(
-      public file: ParseSourceFile, public offset: number, public line: number,
-      public col: number) {}
+  constructor(public file: ParseSourceFile, public offset: number, public line: number, public col: number) {}
 
   toString(): string {
-    return this.offset ? `${this.file.url}@${this.line}:${this.col}` : this.file.url;
+    return this.offset != null ? `${this.file.url}@${this.line}:${this.col}` : this.file.url;
+  }
+
+  moveBy(delta: number): ParseLocation {
+    const source = this.file.content;
+    const len = source.length;
+    let offset = this.offset;
+    let line = this.line;
+    let col = this.col;
+    while (offset > 0 && delta < 0) {
+      offset--;
+      delta++;
+      const ch = source.charCodeAt(offset);
+      if (ch == chars.$LF) {
+        line--;
+        const priorLine = source.substr(0, offset - 1).lastIndexOf(String.fromCharCode(chars.$LF));
+        col = priorLine > 0 ? offset - priorLine : offset;
+      } else {
+        col--;
+      }
+    }
+    while (offset < len && delta > 0) {
+      const ch = source.charCodeAt(offset);
+      offset++;
+      delta--;
+      if (ch == chars.$LF) {
+        line++;
+        col = 0;
+      } else {
+        col++;
+      }
+    }
+    return new ParseLocation(this.file, offset, line, col);
+  }
+
+  // Return the source around the location
+  // Up to `maxChars` or `maxLines` on each side of the location
+  getContext(maxChars: number, maxLines: number): { before: string; after: string } | null {
+    const content = this.file.content;
+    let startOffset = this.offset;
+
+    if (startOffset != null) {
+      if (startOffset > content.length - 1) {
+        startOffset = content.length - 1;
+      }
+      let endOffset = startOffset;
+      let ctxChars = 0;
+      let ctxLines = 0;
+
+      while (ctxChars < maxChars && startOffset > 0) {
+        startOffset--;
+        ctxChars++;
+        if (content[startOffset] == '\n') {
+          if (++ctxLines == maxLines) {
+            break;
+          }
+        }
+      }
+
+      ctxChars = 0;
+      ctxLines = 0;
+      while (ctxChars < maxChars && endOffset < content.length - 1) {
+        endOffset++;
+        ctxChars++;
+        if (content[endOffset] == '\n') {
+          if (++ctxLines == maxLines) {
+            break;
+          }
+        }
+      }
+
+      return {
+        before: content.substring(startOffset, this.offset),
+        after: content.substring(this.offset, endOffset + 1)
+      };
+    }
+
+    return null;
   }
 }
 
@@ -13,8 +98,7 @@ export class ParseSourceFile {
 }
 
 export class ParseSourceSpan {
-  constructor(
-      public start: ParseLocation, public end: ParseLocation, public details: string = null) {}
+  constructor(public start: ParseLocation, public end: ParseLocation, public details: string | null = null) {}
 
   toString(): string {
     return this.start.file.content.substring(this.start.offset, this.end.offset);
@@ -23,56 +107,23 @@ export class ParseSourceSpan {
 
 export enum ParseErrorLevel {
   WARNING,
-  FATAL
+  ERROR
 }
 
-export abstract class ParseError {
+export class ParseError {
   constructor(
-      public span: ParseSourceSpan, public msg: string,
-      public level: ParseErrorLevel = ParseErrorLevel.FATAL) {}
+    public span: ParseSourceSpan,
+    public msg: string,
+    public level: ParseErrorLevel = ParseErrorLevel.ERROR
+  ) {}
+
+  contextualMessage(): string {
+    const ctx = this.span.start.getContext(100, 3);
+    return ctx ? `${this.msg} ("${ctx.before}[${ParseErrorLevel[this.level]} ->]${ctx.after}")` : this.msg;
+  }
 
   toString(): string {
-    const source = this.span.start.file.content;
-    let ctxStart = this.span.start.offset;
-    let contextStr = '';
-    let details = '';
-    if (ctxStart) {
-      if (ctxStart > source.length - 1) {
-        ctxStart = source.length - 1;
-      }
-      let ctxEnd = ctxStart;
-      let ctxLen = 0;
-      let ctxLines = 0;
-
-      while (ctxLen < 100 && ctxStart > 0) {
-        ctxStart--;
-        ctxLen++;
-        if (source[ctxStart] === '\n') {
-          if (++ctxLines === 3) {
-            break;
-          }
-        }
-      }
-
-      ctxLen = 0;
-      ctxLines = 0;
-      while (ctxLen < 100 && ctxEnd < source.length - 1) {
-        ctxEnd++;
-        ctxLen++;
-        if (source[ctxEnd] === '\n') {
-          if (++ctxLines === 3) {
-            break;
-          }
-        }
-      }
-
-      let context = source.substring(ctxStart, this.span.start.offset) + '[ERROR ->]' +
-          source.substring(this.span.start.offset, ctxEnd + 1);
-      contextStr = ` ("${context}")`;
-    }
-    if (this.span.details) {
-      details = `, ${this.span.details}`;
-    }
-    return `${this.msg}${contextStr}: ${this.span.start}${details}`;
+    const details = this.span.details ? `, ${this.span.details}` : '';
+    return `${this.contextualMessage()}: ${this.span.start}${details}`;
   }
 }

@@ -9,7 +9,6 @@ import { Replacement } from 'tslint';
 
 describe('no-unused-css', () => {
   describe('valid cases', () => {
-
     it('should succeed when having valid simple selector', () => {
       let source = `
         @Component({
@@ -26,11 +25,10 @@ describe('no-unused-css', () => {
         class Test {
           bar: number;
         }`;
-        assertSuccess('no-unused-css', source);
+      assertSuccess('no-unused-css', source);
     });
 
     describe('complex selectors', () => {
-
       it('should succeed when having valid complex selector', () => {
         let source = `
           @Component({
@@ -51,7 +49,7 @@ describe('no-unused-css', () => {
           class Test {
             bar: number;
           }`;
-          assertSuccess('no-unused-css', source);
+        assertSuccess('no-unused-css', source);
       });
 
       it('should succeed when having valid complex selector', () => {
@@ -70,7 +68,7 @@ describe('no-unused-css', () => {
           class Test {
             bar: number;
           }`;
-          assertSuccess('no-unused-css', source);
+        assertSuccess('no-unused-css', source);
       });
 
       it('should succeed when having valid complex selector', () => {
@@ -93,7 +91,7 @@ describe('no-unused-css', () => {
           class Test {
             bar: number;
           }`;
-          assertSuccess('no-unused-css', source);
+        assertSuccess('no-unused-css', source);
       });
 
       it('should succeed for structural directives when selector matches', () => {
@@ -116,11 +114,10 @@ describe('no-unused-css', () => {
           class Test {
             bar: number;
           }`;
-          assertSuccess('no-unused-css', source);
+        assertSuccess('no-unused-css', source);
       });
 
       describe('multiple styles', () => {
-
         it('should succeed when having valid complex selector', () => {
           let source = `
             @Component({
@@ -146,11 +143,9 @@ describe('no-unused-css', () => {
             class Test {
               bar: number;
             }`;
-            assertSuccess('no-unused-css', source);
+          assertSuccess('no-unused-css', source);
         });
-
       });
-
     });
 
     describe('class setter', () => {
@@ -174,12 +169,11 @@ describe('no-unused-css', () => {
           class Test {
             bar: number;
           }`;
-          assertSuccess('no-unused-css', source);
+        assertSuccess('no-unused-css', source);
       });
     });
 
     describe('dynamic classes', () => {
-
       it('should skip components with dynamically set classes', () => {
         let source = `
           @Component({
@@ -223,14 +217,13 @@ describe('no-unused-css', () => {
           class Test {
             bar: number;
           }`;
-          assertSuccess('no-unused-css', source);
+        assertSuccess('no-unused-css', source);
       });
     });
-
   });
 
   describe('failures', () => {
-    it('should fail when having a complex selector that doesn\'t match anything', () => {
+    it(`should fail when having a complex selector that doesn't match anything`, () => {
       let source = `
         @Component({
           selector: 'foobar',
@@ -252,11 +245,11 @@ describe('no-unused-css', () => {
         class Test {
           bar: number;
         }`;
-       assertAnnotated({
-         ruleName: 'no-unused-css',
-         message: 'Unused styles',
-         source
-       });
+      assertAnnotated({
+        ruleName: 'no-unused-css',
+        message: 'Unused styles',
+        source
+      });
     });
 
     it('should fail with multiple styles', () => {
@@ -293,7 +286,7 @@ describe('no-unused-css', () => {
       });
     });
 
-   it('should fail when dynamic selector of not the proper type is used', () => {
+    it('should fail when dynamic selector of not the proper type is used', () => {
       let source = `
         @Component({
           selector: 'foobar',
@@ -315,15 +308,15 @@ describe('no-unused-css', () => {
         class Test {
           bar: number;
         }`;
-     assertAnnotated({
-       ruleName: 'no-unused-css',
-       message: 'Unused styles',
-       source
-     });
+      assertAnnotated({
+        ruleName: 'no-unused-css',
+        message: 'Unused styles',
+        source
+      });
     });
 
-      it('should fail for structural directives when selector does not match', () => {
-        let source = `
+    it('should fail for structural directives when selector does not match', () => {
+      let source = `
           @Component({
             selector: 'foobar',
             template: \`<div>
@@ -344,15 +337,14 @@ describe('no-unused-css', () => {
           class Test {
             bar: number;
           }`;
-        assertAnnotated({
-          ruleName: 'no-unused-css',
-          message: 'Unused styles',
-          source
-        });
+      assertAnnotated({
+        ruleName: 'no-unused-css',
+        message: 'Unused styles',
+        source
       });
+    });
 
     describe('class setter', () => {
-
       it('should succeed when having valid complex selector', () => {
         let source = `
           @Component({
@@ -385,7 +377,6 @@ describe('no-unused-css', () => {
   });
 
   describe('host', () => {
-
     it('should never fail for :host', () => {
       let source = `
         @Component({
@@ -406,7 +397,7 @@ describe('no-unused-css', () => {
         class Test {
           bar: number;
         }`;
-        assertSuccess('no-unused-css', source);
+      assertSuccess('no-unused-css', source);
     });
 
     it('should fail when not matched selectors after :host', () => {
@@ -460,7 +451,7 @@ describe('no-unused-css', () => {
         class Test {
           bar: number;
         }`;
-        assertSuccess('no-unused-css', source);
+      assertSuccess('no-unused-css', source);
     });
 
     it('should match before reaching deep', () => {
@@ -512,7 +503,7 @@ describe('no-unused-css', () => {
         class Test {
           bar: number;
         }`;
-        assertSuccess('no-unused-css', source);
+      assertSuccess('no-unused-css', source);
     });
 
     it('should match before reaching deep', () => {
@@ -546,7 +537,6 @@ describe('no-unused-css', () => {
   });
 
   describe('pseudo', () => {
-
     it('should ignore before and after', () => {
       let source = `
         @Component({
@@ -567,7 +557,7 @@ describe('no-unused-css', () => {
         class Test {
           bar: number;
         }`;
-        assertSuccess('no-unused-css', source);
+      assertSuccess('no-unused-css', source);
     });
 
     it('should ignore before and after', () => {
@@ -616,7 +606,7 @@ describe('no-unused-css', () => {
           ]
         })
         class Test {}`;
-        assertSuccess('no-unused-css', source);
+      assertSuccess('no-unused-css', source);
     });
 
     it('should ignore before and after', () => {
@@ -634,7 +624,7 @@ describe('no-unused-css', () => {
           ]
         })
         class Test {}`;
-        assertSuccess('no-unused-css', source);
+      assertSuccess('no-unused-css', source);
     });
 
     it('should ignore before and after', () => {
@@ -708,14 +698,14 @@ describe('no-unused-css', () => {
         source
       });
     });
-
   });
-
 
   it('should work with sass', () => {
     Config.transformStyle = (source: string, url: string, d: Decorator) => {
       const res = sass.renderSync({
-        sourceMap: true, data: source, sourceMapEmbed: true
+        sourceMap: true,
+        data: source,
+        sourceMapEmbed: true
       });
       const code = res.css.toString();
       const base64Map = code.match(/\/\*(.*?)\*\//)[1].replace('# sourceMappingURL=data:application/json;base64,', '');
@@ -755,7 +745,6 @@ describe('no-unused-css', () => {
   });
 
   describe('inconsistencies with template', () => {
-
     it('should ignore misspelled template', () => {
       let source = `
       @Component({
@@ -776,11 +765,9 @@ describe('no-unused-css', () => {
       }`;
       assertSuccess('no-unused-css', source);
     });
-
   });
 
   describe('autofixes', () => {
-
     it('should work with regular CSS', () => {
       let source = `
         @Component({
@@ -796,17 +783,22 @@ describe('no-unused-css', () => {
           ]
         })
         class Test {}`;
-      const failures = assertFailure('no-unused-css', source, {
-        message: 'Unused styles',
-        startPosition: {
-          line: 7,
-          character: 12
+      const failures = assertFailure(
+        'no-unused-css',
+        source,
+        {
+          message: 'Unused styles',
+          startPosition: {
+            line: 7,
+            character: 12
+          },
+          endPosition: {
+            line: 9,
+            character: 13
+          }
         },
-        endPosition: {
-          line: 9,
-          character: 13
-        }
-      }, null);
+        null
+      );
       const replacement = failures[0].getFix() as Replacement;
       expect(replacement.text).to.eq('');
       expect(replacement.start).to.eq(197);
@@ -816,10 +808,14 @@ describe('no-unused-css', () => {
     it('should work with SASS', () => {
       Config.transformStyle = (source: string, url: string, d: Decorator) => {
         const res = sass.renderSync({
-          sourceMap: true, data: source, sourceMapEmbed: true
+          sourceMap: true,
+          data: source,
+          sourceMapEmbed: true
         });
         const code = res.css.toString();
-        const base64Map = code.match(/\/\*(.*?)\*\//)[1].replace('# sourceMappingURL=data:application/json;base64,', '');
+        const base64Map = code
+          .match(/\/\*(.*?)\*\//)[1]
+          .replace('# sourceMappingURL=data:application/json;base64,', '');
         const map = JSON.parse(new Buffer(base64Map, 'base64').toString('ascii'));
         return { code, source, map };
       };
@@ -862,7 +858,43 @@ describe('no-unused-css', () => {
       expect(replacement.start).to.eq(174);
       expect(replacement.end).to.eq(261); // should be 276
     });
-
   });
 
+  describe('invalid CSS', () => {
+    it('should work with non-matching quotes', function() {
+      let source = `
+        @Component({
+          selector: 'div[some-component]',
+        template: \`<ng-content></ng-content>\`,
+          styles: [
+          \`:host {
+            display:        flex;
+            flex:           1 100%;
+            margin:         20px;"
+          }\`
+          ],
+          changeDetection: ChangeDetectionStrategy.OnPush
+        })
+        class Test {}`;
+      assertSuccess('no-unused-css', source);
+    });
+
+    it('should work with invalid CSS', function() {
+      let source = `
+        @Component({
+          selector: 'div[some-component]',
+        template: \`<ng-content></ng-content>\`,
+          styles: [
+          \`:host {
+            display:        flex;
+            flex:           1 100%;
+            margin:   /*      20px;
+          }\`
+          ],
+          changeDetection: ChangeDetectionStrategy.OnPush
+        })
+        class Test {}`;
+      assertSuccess('no-unused-css', source);
+    });
+  });
 });
