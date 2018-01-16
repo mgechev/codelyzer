@@ -256,6 +256,23 @@ Below you can find a recommended configuration which is based on the [Angular St
 }
 ```
 
+## Disable a rule that validates Template or Styles
+
+Lint rules can be disabled by adding a marker in TypeScript files. More information [here](https://palantir.github.io/tslint/usage/rule-flags/).
+
+To disable rules that validate templates or styles you'd need to add a marker in the TypeScript file referencing them.
+
+```ts
+import { Component } from '@angular/core';
+
+/* tslint:disable:trackBy-function */
+@Component({
+  selector: 'codelyzer',
+  templateUrl: './codelyzer.component.html'
+})
+class Codelyzer { }
+```
+
 ## Advanced configuration
 
 Codelyzer supports any template and style language by custom hooks. If you're using Sass for instance, you can allow codelyzer to analyze your styles by creating a file `.codelyzer.js` in the root of your project (where the `node_modules` directory is). In the configuration file can implement custom pre-processing and template resolution logic:
