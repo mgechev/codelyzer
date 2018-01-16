@@ -167,7 +167,7 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
             componentViewType: null,
             rendererType: null,
             componentFactory: null
-          }),
+          } as any),
           template,
           defaultDirectives,
           [],
@@ -196,12 +196,42 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
             componentViewType: null,
             rendererType: null,
             componentFactory: null
-          }),
+          } as any),
           template,
           defaultDirectives,
           [],
           [NO_ERRORS_SCHEMA],
           ''
+        ).templateAst;
+      })
+      .elseIf.lt('5.2.0', () => {
+        result = tmplParser.tryParse(
+          compiler.CompileDirectiveMetadata.create({
+            type,
+            template: templateMetadata,
+            isHost: true,
+            isComponent: true,
+            selector: '',
+            exportAs: '',
+            changeDetection: ChangeDetectionStrategy.Default,
+            inputs: [],
+            outputs: [],
+            host: {},
+            providers: [],
+            viewProviders: [],
+            queries: [],
+            viewQueries: [],
+            entryComponents: [],
+            componentViewType: null,
+            rendererType: null,
+            componentFactory: null
+          } as any),
+          template,
+          defaultDirectives,
+          [],
+          [NO_ERRORS_SCHEMA],
+          '',
+          true
         ).templateAst;
       })
       .else(() => {
@@ -224,7 +254,8 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
             entryComponents: [],
             componentViewType: null,
             rendererType: null,
-            componentFactory: null
+            componentFactory: null,
+            guards: {}
           }),
           template,
           defaultDirectives,
