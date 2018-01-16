@@ -467,7 +467,7 @@ describe('failure', () => {
           class Bar {}`);
       });
 
-      it.only('should work with external templates with interpolation', () => {
+      it('should work with external templates with interpolation', () => {
         const code = `
         @Component({
           selector: 'foo',
@@ -507,7 +507,8 @@ describe('failure', () => {
   <div *ngIf="productIsFixed">
     {{ message.ACTIVATED }}
   </div>
-</div>`);
+</div>
+`);
       });
 
       it('should fail and apply proper replacements when style is incorrect with multiple failures', () => {
