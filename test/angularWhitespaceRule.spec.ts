@@ -1,11 +1,10 @@
-import { assertSuccess, assertAnnotated, assertMultipleAnnotated, assertFailure, assertFailures } from './testHelper';
+import { assertSuccess, assertAnnotated, assertMultipleAnnotated } from './testHelper';
 import { Replacement } from 'tslint';
 import { expect } from 'chai';
 import { FsFileResolver } from '../src/angular/fileResolver/fsFileResolver';
 import { MetadataReader } from '../src/angular/metadataReader';
 import * as ts from 'typescript';
 import chai = require('chai');
-import { readFileSync } from 'fs';
 
 const getAst = (code: string, file = 'file.ts') => {
   return ts.createSourceFile(file, code, ts.ScriptTarget.ES5, true);
@@ -119,6 +118,7 @@ describe('angular-whitespace', () => {
         })
         class Bar {}
         `;
+        const reader = new MetadataReader(new FsFileResolver());
         const ast = getAst(code, __dirname + '/../../test/fixtures/angularWhitespace/component.ts');
         assertSuccess('angular-whitespace', ast, ['check-pipe']);
       });
@@ -167,6 +167,7 @@ describe('angular-whitespace', () => {
           ponies = []
         }
         `;
+        const reader = new MetadataReader(new FsFileResolver());
         const ast = getAst(code, __dirname + '/../../test/fixtures/angularWhitespace/component.ts');
         assertSuccess('angular-whitespace', ast, ['check-pipe']);
       });
@@ -306,8 +307,8 @@ describe('failure', () => {
       assertMultipleAnnotated({
         ruleName: 'angular-whitespace',
         failures: [
-          { char: '~', msg: 'Missing whitespace in interpolation start; expecting {{ expr }}', },
-          { char: '^', msg: 'Missing whitespace in interpolation end; expecting {{ expr }}', },
+          {char: '~', msg: 'Missing whitespace in interpolation start; expecting {{ expr }}', },
+          {char: '^', msg: 'Missing whitespace in interpolation end; expecting {{ expr }}', },
         ],
         source,
         options: ['check-interpolation']
@@ -345,8 +346,8 @@ describe('failure', () => {
         const failures = assertMultipleAnnotated({
           ruleName: 'angular-whitespace',
           failures: [
-            { char: '~', msg: 'Missing whitespace in interpolation start; expecting {{ expr }}', },
-            { char: '^', msg: 'Missing whitespace in interpolation end; expecting {{ expr }}', },
+            {char: '~', msg: 'Missing whitespace in interpolation start; expecting {{ expr }}', },
+            {char: '^', msg: 'Missing whitespace in interpolation end; expecting {{ expr }}', },
           ],
           source,
           options: ['check-interpolation']
@@ -378,8 +379,8 @@ describe('failure', () => {
         const failures = assertMultipleAnnotated({
           ruleName: 'angular-whitespace',
           failures: [
-            { char: '~', msg: 'Missing whitespace in interpolation start; expecting {{ expr }}', },
-            { char: '^', msg: 'Missing whitespace in interpolation end; expecting {{ expr }}', },
+            {char: '~', msg: 'Missing whitespace in interpolation start; expecting {{ expr }}', },
+            {char: '^', msg: 'Missing whitespace in interpolation end; expecting {{ expr }}', },
           ],
           source,
           options: ['check-interpolation']
@@ -397,118 +398,6 @@ describe('failure', () => {
             \`
           })
           class Bar {}`);
-      });
-
-      it('should fail and apply proper replacements when style is incorrect', () => {
-        let source = `
-          @Component({
-            template: \`
-              <h1>
-                {{foo}}
-                ~~   ^^
-              </h1>
-            \`
-          })
-          class Bar {}`;
-        const failures = assertMultipleAnnotated({
-          ruleName: 'angular-whitespace',
-          failures: [
-            { char: '~', msg: 'Missing whitespace in interpolation start; expecting {{ expr }}', },
-            { char: '^', msg: 'Missing whitespace in interpolation end; expecting {{ expr }}', },
-          ],
-          source,
-          options: ['check-interpolation']
-        });
-
-        const res = Replacement.applyAll(source, [].concat.apply([], failures.map(f => f.getFix())));
-        expect(res).to.eq(`
-          @Component({
-            template: \`
-              <h1>
-                {{ foo }}
-                ~~   ^^
-              </h1>
-            \`
-          })
-          class Bar {}`);
-      });
-
-      it('should fail and apply proper replacements when style is incorrect', () => {
-        let source = `
-          @Component({
-            template: \`
-              <div>
-                {{message.ACTIVATED}}
-                ~~                 ^^
-              </div>
-            \`
-          })
-          class Bar {}`;
-        const failures = assertMultipleAnnotated({
-          ruleName: 'angular-whitespace',
-          failures: [
-            { char: '~', msg: 'Missing whitespace in interpolation start; expecting {{ expr }}', },
-            { char: '^', msg: 'Missing whitespace in interpolation end; expecting {{ expr }}', },
-          ],
-          source,
-          options: ['check-interpolation']
-        });
-
-        const res = Replacement.applyAll(source, [].concat.apply([], failures.map(f => f.getFix())));
-        expect(res).to.eq(`
-          @Component({
-            template: \`
-              <div>
-                {{ message.ACTIVATED }}
-                ~~                 ^^
-              </div>
-            \`
-          })
-          class Bar {}`);
-      });
-
-      it('should work with external templates with interpolation', () => {
-        const code = `
-        @Component({
-          selector: 'foo',
-          moduleId: module.id,
-          templateUrl: 'interpolation.html',
-        })
-        class Bar {
-          ponies = []
-        }
-        `;
-        const ast = getAst(code, __dirname + '/../../test/fixtures/angularWhitespace/component.ts');
-        const failures = assertFailures('angular-whitespace', ast, [{
-          message: 'Missing whitespace in interpolation start; expecting {{ expr }}',
-          startPosition: {
-            line: 2,
-            character: 3
-          },
-          endPosition: {
-            line: 2,
-            character: 5
-          }
-        }, {
-          message: 'Missing whitespace in interpolation end; expecting {{ expr }}',
-          startPosition: {
-            line: 2,
-            character: 22
-          },
-          endPosition: {
-            line: 2,
-            character: 24
-          }
-        }
-        ], ['check-interpolation']);
-        const template = readFileSync(__dirname + '/../../test/fixtures/angularWhitespace/interpolation.html').toString();
-        const res = Replacement.applyAll(template, [].concat.apply([], failures.map(f => f.getFix())));
-        expect(res).to.equal(`<div class="account-product__sub-title">
-  <div *ngIf="productIsFixed">
-    {{ message.ACTIVATED }}
-  </div>
-</div>
-`);
       });
 
       it('should fail and apply proper replacements when style is incorrect with multiple failures', () => {
@@ -529,10 +418,10 @@ describe('failure', () => {
         const failures = assertMultipleAnnotated({
           ruleName: 'angular-whitespace',
           failures: [
-            { char: '~', msg: 'Missing whitespace in interpolation start; expecting {{ expr }}', },
-            { char: '-', msg: 'Missing whitespace in interpolation end; expecting {{ expr }}', },
-            { char: '^', msg: 'Extra whitespace in interpolation start; expecting {{ expr }}', },
-            { char: '#', msg: 'Extra whitespace in interpolation end; expecting {{ expr }}', },
+            {char: '~', msg: 'Missing whitespace in interpolation start; expecting {{ expr }}', },
+            {char: '-', msg: 'Missing whitespace in interpolation end; expecting {{ expr }}', },
+            {char: '^', msg: 'Extra whitespace in interpolation start; expecting {{ expr }}', },
+            {char: '#', msg: 'Extra whitespace in interpolation end; expecting {{ expr }}', },
           ],
           source,
           options: ['check-interpolation']
@@ -594,8 +483,8 @@ describe('failure', () => {
         const failures = assertMultipleAnnotated({
           ruleName: 'angular-whitespace',
           failures: [
-            { char: '~', msg: 'Extra whitespace in interpolation start; expecting {{ expr }}', },
-            { char: '^', msg: 'Extra whitespace in interpolation end; expecting {{ expr }}', },
+            {char: '~', msg: 'Extra whitespace in interpolation start; expecting {{ expr }}', },
+            {char: '^', msg: 'Extra whitespace in interpolation end; expecting {{ expr }}', },
           ],
           source,
           options: ['check-interpolation']
@@ -778,8 +667,8 @@ describe('failure', () => {
         const failures = assertMultipleAnnotated({
           ruleName: 'angular-whitespace',
           failures: [
-            { char: '~', msg: 'Missing whitespace after semicolon; expecting \'; expr\'', },
-            { char: '^', msg: 'Missing whitespace after semicolon; expecting \'; expr\'', },
+            {char: '~', msg: 'Missing whitespace after semicolon; expecting \'; expr\'', },
+            {char: '^', msg: 'Missing whitespace after semicolon; expecting \'; expr\'', },
           ],
           source,
           options: ['check-semicolon']
@@ -808,8 +697,8 @@ describe('failure', () => {
         const failures = assertMultipleAnnotated({
           ruleName: 'angular-whitespace',
           failures: [
-            { char: '~', msg: 'Missing whitespace after semicolon; expecting \'; expr\'', },
-            { char: '^', msg: 'Missing whitespace after semicolon; expecting \'; expr\'', },
+            {char: '~', msg: 'Missing whitespace after semicolon; expecting \'; expr\'', },
+            {char: '^', msg: 'Missing whitespace after semicolon; expecting \'; expr\'', },
           ],
           source,
           options: ['check-semicolon']
@@ -1041,8 +930,8 @@ describe('pipes', () => {
     const failures = assertMultipleAnnotated({
       ruleName: 'angular-whitespace',
       failures: [
-        { char: '~', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".', },
-        { char: '^', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".', },
+        {char: '~', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".', },
+        {char: '^', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".', },
       ],
       source,
       options: ['check-pipe']
@@ -1167,8 +1056,8 @@ describe('angular-whitespace multiple checks', () => {
       const failures = assertMultipleAnnotated({
         ruleName: 'angular-whitespace',
         failures: [
-          { char: '~', msg: 'Missing whitespace in interpolation start; expecting {{ expr }}', },
-          { char: '^', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".', },
+          {char: '~', msg: 'Missing whitespace in interpolation start; expecting {{ expr }}', },
+          {char: '^', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".', },
         ],
         source,
         options: ['check-interpolation', 'check-pipe']
