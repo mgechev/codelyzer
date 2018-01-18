@@ -11,7 +11,7 @@
 - Codelyzer hanging for "styles" attribute in Angular component [#446](https://github.com/mgechev/codelyzer/issues/446) [a31c6d2](https://github.com/mgechev/codelyzer/commit/a31c6d2b2726c01f65f33e744b1db4944d941962) and [9c90ac3](https://github.com/mgechev/codelyzer/commit/9c90ac33cea1f947d012b71dcdeffde149b9f965)
 - no-output-on-prefix incorrectly throws error if output property name starts with "one" [#480](https://github.com/mgechev/codelyzer/issues/480) [9b844cc](https://github.com/mgechev/codelyzer/commit/9b844cc226ae127145097f94b734f929308d5827)
 
-Thanks to [@gbilodeau](https://github.com/gbilodeau) for `NoOutputNamedAfterStandardEventRule`!
+Thanks to [@gbilodeau](https://github.com/gbilodeau) for `NoOutputNamedAfterStandardEventRule` and [wKoza](https://github.com/wKoza) for the code reviews!
 
 # 4.0.2
 
