@@ -13,7 +13,7 @@ const getAst = (code: string, file = 'file.ts') => {
 describe('angular-whitespace', () => {
   describe('success', () => {
 
-    describe('interpolation check', () => {
+  describe('interpolation check', () => {
       it('should work with proper style', () => {
         let source = `
         @Component({
@@ -40,6 +40,40 @@ describe('angular-whitespace', () => {
     });
 
     describe('pipe check', () => {
+
+      it.only('should work with carriage return lf', () => {
+        const code = `
+        @Component({
+          selector: 'foo',
+          moduleId: module.id,
+          templateUrl: 'checkpipe_lf.html',
+        })
+        class Bar {
+          ponies = []
+        }
+        `;
+        const reader = new MetadataReader(new FsFileResolver());
+        const ast = getAst(code, __dirname + '/../../test/fixtures/angularWhitespace/component.ts');
+        assertSuccess('angular-whitespace', ast, ['check-pipe']);
+      });
+
+      it.only('should work with carriage return crlf', () => {
+        const code = `
+        @Component({
+          selector: 'foo',
+          moduleId: module.id,
+          templateUrl: 'checkpipe_crlf.html',
+        })
+        class Bar {
+          ponies = []
+        }
+        `;
+        const reader = new MetadataReader(new FsFileResolver());
+        const ast = getAst(code, __dirname + '/../../test/fixtures/angularWhitespace/component.ts');
+        assertSuccess('angular-whitespace', ast, ['check-pipe']);
+      });
+
+
       it('should succeed with proper style', () => {
         let source = `
         @Component({
