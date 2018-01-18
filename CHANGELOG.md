@@ -1,3 +1,18 @@
+# 4.1.0
+
+## Features
+
+- Feature request: no output named after a standard DOM event [#473](https://github.com/mgechev/codelyzer/issues/473) [ae3f07b](https://github.com/mgechev/codelyzer/commit/ae3f07b61eedebe07e2816a29b32ef733febd038)
+- Support for Angular Compiler 5.2 [#496](https://github.com/mgechev/codelyzer/issues/496) [6a6b3de](https://github.com/mgechev/codelyzer/commit/6a6b3de0b1943cb5373e12e0fd7d24e7ea29c162)
+
+### Bug Fixes
+
+- i18n check-text edge cases [#442](https://github.com/mgechev/codelyzer/issues/442) [4c1c8d4](https://github.com/mgechev/codelyzer/commit/4c1c8d453da80436890b75bf77ee888cba2d1855)
+- Codelyzer hanging for "styles" attribute in Angular component [#446](https://github.com/mgechev/codelyzer/issues/446) [a31c6d2](https://github.com/mgechev/codelyzer/commit/a31c6d2b2726c01f65f33e744b1db4944d941962) and [9c90ac3](https://github.com/mgechev/codelyzer/commit/9c90ac33cea1f947d012b71dcdeffde149b9f965)
+- no-output-on-prefix incorrectly throws error if output property name starts with "one" [#480](https://github.com/mgechev/codelyzer/issues/480) [9b844cc](https://github.com/mgechev/codelyzer/commit/9b844cc226ae127145097f94b734f929308d5827)
+
+Thanks to [@gbilodeau](https://github.com/gbilodeau) for `NoOutputNamedAfterStandardEventRule`!
+
 # 4.0.2
 
 ### Bug Fixes
