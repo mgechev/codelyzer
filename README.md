@@ -256,6 +256,36 @@ Below you can find a recommended configuration which is based on the [Angular St
 }
 ```
 
+## Rules Status
+
+| Rule          | Status        |
+| ------------- |:-------------:|
+| `banana-in-box`      | Stable |
+| `contextual-life-cycle`      | Stable      |
+| `decorator-not-allowed` | Stable      |
+| `pipe-impure` | Stable |
+| `templates-no-negated-async` | Stable |
+| `no-attribute-parameter-decorator` | Stable |
+| `no-forward-ref` | Stable |
+| `no-input-rename` | Stable |
+| `no-output-on-prefix` | Stable |
+| `no-output-rename` | Stable |
+| `use-life-cycle-interface` | Stable |
+| `use-pipe-decorator` | Stable |
+| `use-pipe-transform-interface` | Stable |
+| `use-view-encapsulation` | Stable |
+| `component-class-suffix` | Stable |
+| `component-selector` | Stable |
+| `directive-class-suffix` | Stable |
+| `directive-selector` | Stable |
+| `use-host-property-decorator` | Stable |
+| `use-input-property-decorator` | Stable |
+| `use-output-property-decorator` | Stable |
+| `trackBy-function` | Stable |
+| `i18n` | *Experimental* |
+| `no-unused-css` | *Experimental* |
+| `angular-whitespace` | *Experimental* |
+
 ## Disable a rule that validates Template or Styles
 
 Lint rules can be disabled by adding a marker in TypeScript files. More information [here](https://palantir.github.io/tslint/usage/rule-flags/).
