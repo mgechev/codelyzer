@@ -282,9 +282,12 @@ Below you can find a recommended configuration which is based on the [Angular St
 | `use-input-property-decorator` | Stable |
 | `use-output-property-decorator` | Stable |
 | `trackBy-function` | Stable |
+| `import-destructuring-spacing` | Stable |
+| `no-output-named-after-standard-event` | Stable |
 | `i18n` | *Experimental* |
 | `no-unused-css` | *Experimental* |
 | `angular-whitespace` | *Experimental* |
+| `pipe-naming` | *Deprecated* |
 
 ## Disable a rule that validates Template or Styles
 
