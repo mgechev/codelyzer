@@ -100,18 +100,20 @@ Create the following `tslint.json` file like:
     "use-host-property-decorator": true,
     "use-view-encapsulation": true,
     "no-attribute-parameter-decorator": true,
+    "no-output-named-after-standard-event": true,
     "no-input-rename": true,
     "no-output-rename": true,
     "no-output-on-prefix": true,
     "no-forward-ref": true,
+    "no-unused-css": true,
     "use-life-cycle-interface": true,
     "contextual-life-cycle": true,
     "trackBy-function": true,
     "use-pipe-transform-interface": true,
-    "pipe-naming": [true, "camelCase", "sg"],
     "component-class-suffix": true,
     "directive-class-suffix": true,
-    "pipe-impure": true
+    "pipe-impure": true,
+    "i18n": [true, "check-id", "check-text"]
   }
 }
 ```
@@ -150,18 +152,20 @@ Now create the following `tslint.json` file where your `node_modules` directory 
     "use-host-property-decorator": true,
     "use-view-encapsulation": true,
     "no-attribute-parameter-decorator": true,
+    "no-output-named-after-standard-event": true,
     "no-input-rename": true,
     "no-output-rename": true,
     "no-output-on-prefix": true,
     "no-forward-ref": true,
+    "no-unused-css": true,
     "use-life-cycle-interface": true,
     "contextual-life-cycle": true,
     "trackBy-function": true,
     "use-pipe-transform-interface": true,
-    "pipe-naming": [true, "camelCase", "sg"],
     "component-class-suffix": true,
     "directive-class-suffix": true,
-    "pipe-impure": true
+    "pipe-impure": true,
+    "i18n": [true, "check-id", "check-text"]
   }
 }
 ```
@@ -174,7 +178,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'codelyzer',
   template: `
-    <h1>Hello {{ nme }}!</h1>
+    <h1>Hello {{ name }}!</h1>
   `
 })
 class Codelyzer {
@@ -198,7 +202,6 @@ You should see the following output:
 component.ts[4, 13]: The selector of the component "Codelyzer" should have prefix "sg" (https://goo.gl/cix8BY)
 component.ts[12, 3]: Implement lifecycle hook interface OnInit for method ngOnInit in class Codelyzer (https://goo.gl/w1Nwk3)
 component.ts[9, 7]: The name of the class Codelyzer should end with the suffix Component (https://goo.gl/5X1TE7)
-component.ts[6, 18]: The property "nme" that you're trying to access does not exist in the class declaration. Probably you mean: "name".
 ```
 
 ### Editor Configuration
