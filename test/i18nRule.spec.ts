@@ -131,6 +131,18 @@ describe('i18n', () => {
       assertSuccess('i18n', source, ['check-text']);
     });
 
+    it.only('should work with plural', () => {
+      const source = `
+      @Component({
+        template: \`
+          <span i18n>Updated {minutes, plural, =0 {just now} =1 {one minute ago} other {{{minutes}} minutes ago}}</span>
+        \`
+      })
+      class Bar {}
+      `;
+      assertSuccess('i18n', source, ['check-text']);
+    });
+
     it('should work without i18n attribute & interpolation', () => {
       const source = `
       @Component({
