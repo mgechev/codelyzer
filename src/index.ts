@@ -7,6 +7,7 @@ export { Rule as DecoratorNotAllowedRule } from './decoratorNotAllowedRule';
 export { Rule as DirectiveClassSuffixRule } from './directiveClassSuffixRule';
 export { Rule as DirectiveSelectorRule } from './directiveSelectorRule';
 export { Rule as I18nRule } from './i18nRule';
+export { Rule as Complexity } from './complexityRule';
 export { Rule as ImportDestructuringSpacingRule } from './importDestructuringSpacingRule';
 export { Rule as NoAttributeParameterDecoratorRule } from './noAttributeParameterDecoratorRule';
 export { Rule as NoForwardRefRule } from './noForwardRefRule';
