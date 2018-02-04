@@ -16,7 +16,7 @@ describe('complexity', () => {
       })
       class Bar {}
       `;
-            assertSuccess('complexity', source);
+            assertSuccess('template-conditional-complexity', source);
         });
 
         it('should work with a level of complexity customisable', () => {
@@ -30,7 +30,7 @@ describe('complexity', () => {
       })
       class Bar {}
       `;
-            assertSuccess('complexity', source, [4]);
+            assertSuccess('template-conditional-complexity', source, [4]);
         });
 
     });
@@ -50,7 +50,7 @@ describe('complexity', () => {
       class Bar {}
       `;
             assertAnnotated({
-                ruleName: 'complexity',
+                ruleName: 'template-conditional-complexity',
                 message: 'The condition complexity (cost \'4\') exceeded the defined limit (cost \'3\'). The conditional expression should be move in the component\'s template.',
                 source
             });
@@ -74,7 +74,7 @@ describe('complexity', () => {
       class Bar {}
       `;
             assertAnnotated({
-                ruleName: 'complexity',
+                ruleName: 'template-conditional-complexity',
                 message: 'The condition complexity (cost \'4\') exceeded the defined limit (cost \'3\'). The conditional expression should be move in the component\'s template.',
                 source
             });

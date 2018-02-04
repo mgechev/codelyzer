@@ -10,7 +10,7 @@ import { isObject } from 'util';
 
 export class Rule extends Lint.Rules.AbstractRule {
     public static metadata: Lint.IRuleMetadata = {
-        ruleName: 'complexity',
+        ruleName: 'template-conditional-complexity',
         type: 'functionality',
         description: 'The condition complexity shouldn\'t exceed a rational limit in a template.',
         rationale: 'An important complexity complicates the tests and the maintenance.',
@@ -42,13 +42,13 @@ export class Rule extends Lint.Rules.AbstractRule {
         return this.applyWithWalker(
             new NgWalker(sourceFile,
                 this.getOptions(), {
-                    templateVisitorCtrl: ComplexityTemplateVisitor,
+                    templateVisitorCtrl: TemplateConditionalComplexityVisitor,
                 }));
     }
 }
 
 
-class ComplexityTemplateVisitor extends BasicTemplateAstVisitor {
+class TemplateConditionalComplexityVisitor extends BasicTemplateAstVisitor {
 
     visitDirectiveProperty(prop: ast.BoundDirectivePropertyAst, context: BasicTemplateAstVisitor): any {
 
