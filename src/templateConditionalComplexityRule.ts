@@ -56,19 +56,21 @@ class TemplateConditionalComplexityVisitor extends BasicTemplateAstVisitor {
             const directive = (<any>prop.sourceSpan).toString();
 
             if (directive.startsWith('*ngIf')) {
-
-                const expr = directive.split(/\*ngIf\s*=\s*/)[1].replace(/[\n\r]/g, ''); // extract expression and drop character new line
+                // extract expression and drop characters new line and quotes
+                const expr = directive.split(/\*ngIf\s*=\s*/)[1].slice(1, -1).replace(/[\n\r]/g, '');
                 const expression = new Expression(expr);
 
                 let complexity = 0;
-                let currentExpression = expression;
+                let expressions: Array<Expression> = [expression];
 
-                for (let i = 0; i < currentExpression.conditions.length; i++) {
-                    if (currentExpression.conditions[i] instanceof Condition) {
-                        complexity++;
-                    } else if (currentExpression.conditions[i] instanceof Expression) {
-                        currentExpression = (currentExpression.conditions[i]);
-                        i = 0;
+                while (expressions.length) {
+                    let currentExpression = expressions.pop();
+                    for (let i = 0; i < currentExpression.conditions.length; i++) {
+                        if (currentExpression.conditions[i] instanceof Condition) {
+                            complexity++;
+                        } else if (currentExpression.conditions[i] instanceof Expression) {
+                            expressions.push(currentExpression.conditions[i]);
+                        }
                     }
                 }
 

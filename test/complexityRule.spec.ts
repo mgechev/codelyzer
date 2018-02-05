@@ -30,7 +30,21 @@ describe('complexity', () => {
       })
       class Bar {}
       `;
-            assertSuccess('template-conditional-complexity', source, [4]);
+            assertSuccess('template-conditional-complexity', source, [5]);
+        });
+
+        it('should work with a level of complexity customisable', () => {
+            let source = `
+      @Component({
+        template: \`
+        <div *ngIf="(b === '3' && c.d !== '1' && e.f !== '6' && q !== g) || a === '3'">
+            Enter your card details
+        </div>
+        \`
+      })
+      class Bar {}
+      `;
+            assertSuccess('template-conditional-complexity', source, [5]);
         });
 
     });
@@ -51,7 +65,7 @@ describe('complexity', () => {
       `;
             assertAnnotated({
                 ruleName: 'template-conditional-complexity',
-                message: 'The condition complexity (cost \'4\') exceeded the defined limit (cost \'3\'). The conditional expression should be move in the component\'s template.',
+                message: 'The condition complexity (cost \'5\') exceeded the defined limit (cost \'3\'). The conditional expression should be move in the component\'s template.',
                 source
             });
         });
@@ -75,7 +89,7 @@ describe('complexity', () => {
       `;
             assertAnnotated({
                 ruleName: 'template-conditional-complexity',
-                message: 'The condition complexity (cost \'4\') exceeded the defined limit (cost \'3\'). The conditional expression should be move in the component\'s template.',
+                message: 'The condition complexity (cost \'5\') exceeded the defined limit (cost \'3\'). The conditional expression should be move in the component\'s template.',
                 source
             });
         });
