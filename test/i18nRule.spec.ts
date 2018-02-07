@@ -131,7 +131,7 @@ describe('i18n', () => {
       assertSuccess('i18n', source, ['check-text']);
     });
 
-    it.only('should work with plural', () => {
+    it('should work with plural', () => {
       const source = `
       @Component({
         template: \`
