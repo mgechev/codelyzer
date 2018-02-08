@@ -28,3 +28,6 @@ export { Rule as UseViewEncapsulationRule } from './useViewEncapsulationRule';
 export { Rule as TemplatesNoNegatedAsync } from './templatesNoNegatedAsyncRule';
 export { Rule as TrackByFunctionRule } from './trackByFunctionRule';
 export * from './angular/config';
+
+// this file exists for tslint to resolve the rules directory
+export const rulesDirectory = '.';
