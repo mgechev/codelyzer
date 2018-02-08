@@ -19,6 +19,21 @@ describe('complexity', () => {
             assertSuccess('template-conditional-complexity', source);
         });
 
+
+        it('should work with a lower level of complexity', () => {
+            let source = `
+      @Component({
+        template: \`
+        <div *ngIf="a === '1' || b === '2' && c.d !== e">
+            Enter your card details
+        </div>
+        \`
+      })
+      class Bar {}
+      `;
+            assertSuccess('template-conditional-complexity', source);
+        });
+
         it('should work with a level of complexity customisable', () => {
             let source = `
       @Component({
@@ -38,6 +53,20 @@ describe('complexity', () => {
       @Component({
         template: \`
         <div *ngIf="(b === '3' && c.d !== '1' && e.f !== '6' && q !== g) || a === '3'">
+            Enter your card details
+        </div>
+        \`
+      })
+      class Bar {}
+      `;
+            assertSuccess('template-conditional-complexity', source, [5]);
+        });
+
+        it('should work with something else', () => {
+            let source = `
+      @Component({
+        template: \`
+        <div *ngIf="isValid;then content else other_content">
             Enter your card details
         </div>
         \`

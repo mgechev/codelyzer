@@ -26,10 +26,9 @@ export class Rule extends Lint.Rules.AbstractRule {
       'true',
       '[true, 4]'
     ],
-    optionsDescription: 'Not configurable.',
+    optionsDescription: 'Determine the maximum number of Boolean operators allowed.',
     typescriptOnly: true,
     hasFix: false
-
   };
 
   // tslint:disable-next-line:max-line-length
@@ -99,7 +98,6 @@ class Utils {
   static tokensOr = ['\\|\\|', '\\sOR\\s']; // "||" or "OR"
   static tokensXor = ['\\^', '\\sXOR\\s']; // "^" or "XOR"
   static tokensAndOrXor = [].concat(Utils.tokensAnd, Utils.tokensOr, Utils.tokensXor);
-
 
   static trimParenthesisPairs(text: string) {
     let process = (input) => {
@@ -302,7 +300,6 @@ enum COND_TYPE {
 class Operator {
 
   private type: COND_TYPE;
-
 
   constructor(type: COND_TYPE) {
     switch (type.valueOf()) {
