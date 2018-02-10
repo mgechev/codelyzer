@@ -16,7 +16,9 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static FAILURE_STRING = 'In the class "%s", the directive input property "%s" should not be renamed.';
+  static FAILURE_STRING = 'In the class "%s", the directive input property "%s" should not be renamed. ' +
+  'However, you should use an alias when the directive name is also an input property, and the directive name' +
+  " doesn't describe the property. In this last case, you can disable this rule with `tslint:disable-next-line:no-input-rename`.";
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new InputMetadataWalker(sourceFile, this.getOptions()));
@@ -34,7 +36,11 @@ export class InputMetadataWalker extends NgWalker {
     const className = (property.parent as ts.PropertyAccessExpression).name.getText();
     const memberName = property.name.getText();
 
-    if (args.length === 0 || (this.directiveSelector && this.directiveSelector.indexOf(memberName) !== -1)) {
+    if (
+      args.length === 0 ||
+      (this.directiveSelector &&
+        (input.expression as any).arguments.some(arg => this.directiveSelector.indexOf(arg.text) !== -1 && memberName !== arg.text))
+    ) {
       return;
     }
 
