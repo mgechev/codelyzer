@@ -69,6 +69,8 @@ export const Config: Config = {
     { selector: '[ngIf]', exportAs: 'ngIf', inputs: ['ngIf'] },
     { selector: '[ngFor][ngForOf]', exportAs: 'ngFor', inputs: ['ngForTemplate', 'ngForOf'] },
     { selector: '[ngSwitch]', exportAs: 'ngSwitch', inputs: ['ngSwitch'] },
+    { selector: '[ngSwitchCase]', exportAs: 'ngSwitchCase', inputs: ['ngSwitchCase'] },
+    { selector: '[ngSwitchDefault]', exportAs: 'ngSwitchDefault', inputs: ['ngSwitchDefault'] },
 
     // @angular/material
     { selector: 'mat-autocomplete', exportAs: 'matAutocomplete' },
