@@ -73,7 +73,9 @@ class I18NTextVisitor extends BasicTemplateAstVisitor implements ConfigurableVis
   }
 
   visitElement(element: ast.ElementAst, context: BasicTemplateAstVisitor) {
-    this.hasI18n = element.attrs.some(e => e.name === 'i18n');
+    if (element.name !== 'ng-container') {
+      this.hasI18n = element.attrs.some(e => e.name === 'i18n');
+    }
     this.nestedElements.push(element.name);
     super.visitElement(element, context);
     this.nestedElements.pop();
