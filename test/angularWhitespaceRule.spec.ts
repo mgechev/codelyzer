@@ -633,7 +633,7 @@ describe('failure', () => {
       it('should fail and apply proper replacement when equality sign exists within the directive expression', () => {
         let source = `
           @Component({
-            template: \` <div *ngFor="let item of list;trackBy item?.id; let $index=index">{{ item.title }}</div>
+            template: \` <div *ngFor="let item of list;trackBy trackById; let $index=index">{{ item.title }}</div>
                                                       ~~
             \`
           })
@@ -648,7 +648,7 @@ describe('failure', () => {
         const res = Replacement.applyAll(source, failures[0].getFix());
         expect(res).to.eq(`
           @Component({
-            template: \` <div *ngFor="let item of list; trackBy item?.id; let $index=index">{{ item.title }}</div>
+            template: \` <div *ngFor="let item of list; trackBy trackById; let $index=index">{{ item.title }}</div>
                                                       ~~
             \`
           })
