@@ -52,6 +52,7 @@ export const MODULE_SUFFIX = '';
 const builtinExternalReferences = createBuiltinExternalReferencesMap();
 
 export class JitReflector implements CompileReflector {
+  tryAnnotations: any;
   private reflectionCapabilities: ReflectionCapabilities;
   private builtinExternalReferences = new Map<ExternalReference, any>();
 
@@ -72,7 +73,7 @@ export class JitReflector implements CompileReflector {
     } else if (moduleId !== null && moduleId !== void 0) {
       throw syntaxError(
         `moduleId should be a string in "${stringify(type)}". See https://goo.gl/wIDDiL for more information.\n` +
-          `If you're using Webpack you should inline the template and the styles, see https://goo.gl/X2J8zc.`
+        `If you're using Webpack you should inline the template and the styles, see https://goo.gl/X2J8zc.`
       );
     }
 
