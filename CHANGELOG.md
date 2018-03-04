@@ -1,3 +1,9 @@
+# 4.2.1
+
+## Bug Fixes
+
+- Improved `peerDependencies` range.
+
 # 4.2.0
 
 ## New Rules
