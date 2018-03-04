@@ -165,7 +165,9 @@ Now create the following `tslint.json` file where your `node_modules` directory 
     "component-class-suffix": true,
     "directive-class-suffix": true,
     "pipe-impure": true,
-    "i18n": [true, "check-id", "check-text"]
+    "i18n": [true, "check-id", "check-text"],
+    "template-cyclomatic-complexity": [true, 5],
+    "template-conditional-complexity": [true, 4]
   }
 }
 ```
