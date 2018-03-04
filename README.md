@@ -115,7 +115,9 @@ Create the following `tslint.json` file like:
     "component-class-suffix": true,
     "directive-class-suffix": true,
     "pipe-impure": true,
-    "i18n": [true, "check-id", "check-text"]
+    "i18n": [true, "check-id", "check-text"],
+    "template-cyclomatic-complexity": [true, 5],
+    "template-conditional-complexity": [true, 4]
   }
 }
 ```
@@ -294,6 +296,8 @@ Below you can find a recommended configuration which is based on the [Angular St
 | `i18n` | *Experimental* |
 | `no-unused-css` | *Experimental* |
 | `angular-whitespace` | *Experimental* |
+| `template-cyclomatic-complexity` | *Experimental* |
+| `template-conditional-complexity` | *Experimental* |
 | `pipe-naming` | *Deprecated* |
 
 ## Disable a rule that validates Template or Styles
