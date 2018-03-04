@@ -1,3 +1,22 @@
+# 4.2.0
+
+## New Rules
+
+- `template-cyclomatic-complexity` which limits the estimated [Cyclomatic complexity](https://en.wikipedia.org/wiki/Cyclomatic_complexity) in your templates. Credits to [wKoza](https://github.com/wKoza).
+- `template-conditional-complexity` which limits the complexity of boolean expressions inside of your templates. Credits to [wKoza](https://github.com/wKoza).
+
+## Features
+
+- Support for Angular version 6 [#524](https://github.com/mgechev/codelyzer/issues/524) [50fa2d6](https://github.com/mgechev/codelyzer/commit/50fa2d6a2ea64082f2179bf4e3e93777888a9797)
+- Cyclomatic complexity rule `template-cyclomatic-complexity` [#514](https://github.com/mgechev/codelyzer/issues/514) [3221330](https://github.com/mgechev/codelyzer/commit/322133000e47aabf9426ebf5315520c63f3483d8)
+- Limiting template condition complexity (rule `template-conditional-complexity`) [#508](https://github.com/mgechev/codelyzer/issues/508) [bb86295](https://github.com/mgechev/codelyzer/commit/bb862952ca51d5490e81e01b4a125ddab1415404)
+- Complete Rules Status section in README and complete Rules Page [#501](https://github.com/mgechev/codelyzer/issues/501) [1fe9d22](https://github.com/mgechev/codelyzer/commit/1fe9d22a8ef6426899cd1759053d31004658aef8)
+
+## Bug Fixes
+
+- "extends": ["codelyzer"] is broken [#505](https://github.com/mgechev/codelyzer/issues/505) [7b76dfa](https://github.com/mgechev/codelyzer/commit/7b76dfa4543ebf33d640fde2db7d5d4748a144ed)
+- Message for 'use-host-property-decorator' includes invalid link to Angular style docs [#510](https://github.com/mgechev/codelyzer/issues/510) [5fc77c9](https://github.com/angular/angular/commit/5fc77c90cb06970aa8a7a1ea829f81fff9628ff8)
+
 # 4.1.0
 
 ## Features
@@ -381,4 +400,3 @@ $ tslint --type-check --project src/client/tsconfig.json
 ### Refactoring
 
 - Migrate from typings to `@types` [f9cc498](https://github.com/mgechev/codelyzer/commit/f9cc49851312b0d9bbbbaa8fa323238fddfacf78).
-
