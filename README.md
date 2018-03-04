@@ -81,7 +81,7 @@ TSLint will now complain that there are rules which requlre type checking. In or
 You can easily use codelyzer with your custom setup:
 
 ```shell
-npm i codelyzer@~4.0.0 tslint@^5.0.0 typescript@2.4.0 @angular/core@~5.0.1 @angular/compiler@~5.0.1 rxjs@5.5.0 zone.js@~0.8.4
+npm i codelyzer@~4.2.0 tslint@^5.0.0 typescript@2.4.0 @angular/core@~5.0.1 @angular/compiler@~5.0.1 rxjs@5.5.0 zone.js@~0.8.4
 ```
 
 A. Using codelyzer package in PATH
@@ -115,7 +115,9 @@ Create the following `tslint.json` file like:
     "component-class-suffix": true,
     "directive-class-suffix": true,
     "pipe-impure": true,
-    "i18n": [true, "check-id", "check-text"]
+    "i18n": [true, "check-id", "check-text"],
+    "template-cyclomatic-complexity": [true, 5],
+    "template-conditional-complexity": [true, 4]
   }
 }
 ```
