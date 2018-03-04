@@ -81,7 +81,7 @@ TSLint will now complain that there are rules which requlre type checking. In or
 You can easily use codelyzer with your custom setup:
 
 ```shell
-npm i codelyzer@~4.0.0 tslint@^5.0.0 typescript@2.4.0 @angular/core@~5.0.1 @angular/compiler@~5.0.1 rxjs@5.5.0 zone.js@~0.8.4
+npm i codelyzer@~4.2.0 tslint@^5.0.0 @angular/core@~5.2.0 @angular/compiler@~5.2.0
 ```
 
 A. Using codelyzer package in PATH
@@ -115,7 +115,9 @@ Create the following `tslint.json` file like:
     "component-class-suffix": true,
     "directive-class-suffix": true,
     "pipe-impure": true,
-    "i18n": [true, "check-id", "check-text"]
+    "i18n": [true, "check-id", "check-text"],
+    "template-cyclomatic-complexity": [true, 5],
+    "template-conditional-complexity": [true, 4]
   }
 }
 ```
@@ -167,7 +169,9 @@ Now create the following `tslint.json` file where your `node_modules` directory 
     "component-class-suffix": true,
     "directive-class-suffix": true,
     "pipe-impure": true,
-    "i18n": [true, "check-id", "check-text"]
+    "i18n": [true, "check-id", "check-text"],
+    "template-cyclomatic-complexity": [true, 5],
+    "template-conditional-complexity": [true, 4]
   }
 }
 ```
@@ -292,6 +296,8 @@ Below you can find a recommended configuration which is based on the [Angular St
 | `i18n` | *Experimental* |
 | `no-unused-css` | *Experimental* |
 | `angular-whitespace` | *Experimental* |
+| `template-cyclomatic-complexity` | *Experimental* |
+| `template-conditional-complexity` | *Experimental* |
 | `pipe-naming` | *Deprecated* |
 
 ## Disable a rule that validates Template or Styles
