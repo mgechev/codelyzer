@@ -63,7 +63,7 @@ class TemplateConditionalComplexityVisitor extends BasicTemplateAstVisitor {
 
     if (this.complexity > complexityMax) {
       const span = prop.sourceSpan;
-      let failureConfig: string[] = [String(Rule.COMPLEXITY_MAX)];
+      let failureConfig: string[] = [String(complexityMax)];
       failureConfig.unshift(Rule.COMPLEXITY_FAILURE_STRING);
       this.addFailure(this.createFailure(span.start.offset, span.end.offset - span.start.offset,
           sprintf.apply(this, failureConfig))

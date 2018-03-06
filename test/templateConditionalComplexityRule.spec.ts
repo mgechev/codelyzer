@@ -1,7 +1,5 @@
 // tslint:disable:max-line-length
 import { assertSuccess, assertAnnotated } from './testHelper';
-import { Replacement } from 'tslint';
-import { expect } from 'chai';
 
 describe('complexity', () => {
     describe('success', () => {
@@ -94,8 +92,9 @@ describe('complexity', () => {
       `;
             assertAnnotated({
                 ruleName: 'template-conditional-complexity',
-                message: 'The condition complexity (cost \'5\') exceeded the defined limit (cost \'3\'). The conditional expression should be move in the component\'s template.',
-                source
+                message: 'The condition complexity (cost \'5\') exceeded the defined limit (cost \'4\'). The conditional expression should be moved into the component.',
+                source,
+                options: [4]
             });
         });
 
@@ -118,7 +117,7 @@ describe('complexity', () => {
       `;
             assertAnnotated({
                 ruleName: 'template-conditional-complexity',
-                message: 'The condition complexity (cost \'5\') exceeded the defined limit (cost \'3\'). The conditional expression should be move in the component\'s template.',
+                message: 'The condition complexity (cost \'5\') exceeded the defined limit (cost \'3\'). The conditional expression should be moved into the component.',
                 source
             });
         });

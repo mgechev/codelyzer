@@ -31,7 +31,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   };
 
   // tslint:disable-next-line:max-line-length
-  static COMPLEXITY_FAILURE_STRING = 'The condition complexity (cost \'%s\') exceeded the defined limit (cost \'%s\'). The conditional expression should be move in the component\'s template.';
+  static COMPLEXITY_FAILURE_STRING = 'The condition complexity (cost \'%s\') exceeded the defined limit (cost \'%s\'). The conditional expression should be moved into the component.';
 
   static COMPLEXITY_MAX = 3;
 
@@ -86,7 +86,7 @@ class TemplateConditionalComplexityVisitor extends BasicTemplateAstVisitor {
 
         if (complexity > complexityMax) {
           const span = prop.sourceSpan;
-          let failureConfig: string[] = [String(complexity), String(Rule.COMPLEXITY_MAX)];
+          let failureConfig: string[] = [String(complexity), String(complexityMax)];
           failureConfig.unshift(Rule.COMPLEXITY_FAILURE_STRING);
           this.addFailure(this.createFailure(span.start.offset, span.end.offset - span.start.offset,
             sprintf.apply(this, failureConfig))

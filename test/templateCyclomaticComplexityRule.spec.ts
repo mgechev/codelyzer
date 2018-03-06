@@ -1,7 +1,5 @@
 // tslint:disable:max-line-length
 import { assertSuccess, assertAnnotated } from './testHelper';
-import { Replacement } from 'tslint';
-import { expect } from 'chai';
 
 describe('cyclomatic complexity', () => {
     describe('success', () => {
