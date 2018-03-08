@@ -70,7 +70,7 @@ Run the linter with:
 ./node_modules/.bin/tslint -c tslint.json
 ```
 
-TSLint will now complain that there are rules which requlre type checking. In order to fix this, use thw `-p` config option:
+TSLint will now complain that there are rules which require type checking. In order to fix this, use thw `-p` config option:
 
 ```bash
 ./node_modules/.bin/tslint -p tsconfig.json -c tslint.json
