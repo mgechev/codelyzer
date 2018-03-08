@@ -15,7 +15,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   };
 
   static FAILURE_STRING: string = 'In the class "%s", the output ' +
-    'property "%s" should not be named after a standard event.';
+    'property "%s" should not be named or renamed after a standard event.';
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
@@ -204,8 +204,9 @@ export class OutputMetadataWalker extends NgWalker {
   visitNgOutput(property: ts.PropertyDeclaration, output: ts.Decorator, args: string[]) {
     let className = (<any>property).parent.name.text;
     let memberName = (<any>property.name).text;
+    let outputName = args.length === 0 ? memberName : args[0];
 
-    if (memberName && this.standardEventNames.get(memberName)) {
+    if (outputName && this.standardEventNames.get(outputName)) {
       const failureConfig: string[] = [Rule.FAILURE_STRING, className, memberName];
       const errorMessage = sprintf.apply(null, failureConfig);
       this.addFailure(
