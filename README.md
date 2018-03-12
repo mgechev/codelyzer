@@ -276,6 +276,7 @@ Below you can find a recommended configuration which is based on the [Angular St
 | `templates-no-negated-async` | Stable |
 | `no-attribute-parameter-decorator` | Stable |
 | `no-forward-ref` | Stable |
+| `no-input-prefix` | Stable |
 | `no-input-rename` | Stable |
 | `no-output-on-prefix` | Stable |
 | `no-output-rename` | Stable |
