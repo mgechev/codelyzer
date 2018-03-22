@@ -24,6 +24,18 @@ describe('i18n', () => {
       `;
       assertSuccess('i18n', source, ['check-id']);
     });
+    
+    it('should work with proper id on ng-container', () => {
+      const source = `
+      @Component({
+        template: \`
+          <ng-container i18n="test@@foo">Text</ng-container>
+        \`
+      })
+      class Bar {}
+      `;
+      assertSuccess('i18n', source, ['check-id']);
+    });
 
     it('should work with proper i18n attribute', () => {
       const source = `
@@ -130,6 +142,18 @@ describe('i18n', () => {
       `;
       assertSuccess('i18n', source, ['check-text']);
     });
+    
+    it('should work with i18n attribute on ng-container', () => {
+      const source = `
+      @Component({
+        template: \`
+          <ng-container i18n>Text</ng-container>
+        \`
+      })
+      class Bar {}
+      `;
+      assertSuccess('i18n', source, ['check-text']);
+    });
 
     it('should work with plural', () => {
       const source = `
@@ -171,6 +195,22 @@ describe('i18n', () => {
       assertSuccess('i18n', source, ['check-text']);
     });
 
+    it('should work with multiple nested elements', () => {
+      const source = `
+      @Component({
+        template: \`
+          <ul i18n>
+            <li>ItemA</li>
+            <li>ItemB</li>
+            <li>ItemC</li>
+          </ul>
+        \`
+      })
+      class Bar {}
+      `;
+      assertSuccess('i18n', source, ['check-text']);
+    });
+
     it('should fail with missing id string', () => {
       const source = `
       @Component({
@@ -194,7 +234,7 @@ describe('i18n', () => {
       @Component({
         template: \`
           <div>
-            <span i18n>foo</div>
+            <span i18n>foo</span>
             <div>Text</div>
                  ~~~~
           </div>
@@ -295,6 +335,38 @@ describe('i18n', () => {
           },
           endPosition: {
             line: 5,
+            character: 8
+          }
+        },
+        ['check-text']
+      );
+    });
+
+    it('should fail with text outside multiple nested elements', () => {
+      const source = `
+      @Component({
+        template: \`
+          <ul i18n>
+            <li>ItemA</li>
+            <li>ItemB</li>
+            <li>ItemC</li>
+          </ul>
+          Text
+        \`
+      })
+      class Bar {}
+      `;
+      assertFailure(
+        'i18n',
+        source,
+        {
+          message: 'Each element containing text node should have an i18n attribute',
+          startPosition: {
+            line: 7,
+            character: 15
+          },
+          endPosition: {
+            line: 9,
             character: 8
           }
         },
