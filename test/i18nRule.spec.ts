@@ -24,7 +24,7 @@ describe('i18n', () => {
       `;
       assertSuccess('i18n', source, ['check-id']);
     });
-    
+
     it('should work with proper id on ng-container', () => {
       const source = `
       @Component({
@@ -142,7 +142,7 @@ describe('i18n', () => {
       `;
       assertSuccess('i18n', source, ['check-text']);
     });
-    
+
     it('should work with i18n attribute on ng-container', () => {
       const source = `
       @Component({
