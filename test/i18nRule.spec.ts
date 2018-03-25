@@ -155,6 +155,20 @@ describe('i18n', () => {
       assertSuccess('i18n', source, ['check-text']);
     });
 
+      it('should work with input and text', () => {
+          const source = `
+        @Component({
+            template: \`
+                <label class="checkbox-inline" i18n="Bearbeiten eines Artikels|Veröffentlichung im Internet?">
+                <input name="article.publish" [(ngModel)]="article.publish" role="edit" type="checkbox">
+                Veröffentlichen
+                </label>
+                 \`
+        })
+        class Bar {}`;
+          assertSuccess('i18n', source, ['check-text']);
+      });
+
     it('should work with plural', () => {
       const source = `
       @Component({
