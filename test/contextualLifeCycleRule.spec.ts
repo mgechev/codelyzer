@@ -183,6 +183,36 @@ describe('contextual-life-cycle', () => {
 
     });
 
+    describe('valid component class', () => {
+
+        it('should succeed when an @Injectable is defined before him', () => {
+              let source = `
+                @Injectable()
+                class Sample {
+                    public constructor() { }
+                }
+
+              @Component({
+                  selector: 'sg-hero-cmp',
+                    template: \`
+                        <h1>Hello <span>{{ hero.name }}</span></h1>
+                         \`,
+                    providers: [Sample]
+             })
+            class HeroComponent implements OnInit {
+                public hero: Hero;
+
+                public constructor(private sample: Sample) { }
+
+                ngOnInit() {
+                    console.log('Initialized');
+                }
+            }`;
+            assertSuccess('contextual-life-cycle', source);
+          });
+
+      });
+
   });
 
   describe('failure', () => {
