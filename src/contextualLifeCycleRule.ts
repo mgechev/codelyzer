@@ -46,21 +46,33 @@ export class ClassMetadataWalker extends NgWalker {
   visitNgInjectable(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
     this.className = controller.name.text;
     this.isInjectable = true;
+    this.isComponent = false;
+    this.isDirective = false;
+    this.isPipe = false;
   }
 
   visitNgComponent(metadata: ComponentMetadata) {
     this.className = metadata.controller.name.text;
     this.isComponent = true;
+    this.isInjectable = false;
+    this.isDirective = false;
+    this.isPipe = false;
   }
 
   visitNgDirective(metadata: DirectiveMetadata) {
     this.className = metadata.controller.name.text;
     this.isDirective = true;
+    this.isInjectable = false;
+    this.isComponent = false;
+    this.isPipe = false;
   }
 
   visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
     this.className = controller.name.text;
     this.isPipe = true;
+    this.isInjectable = false;
+    this.isComponent = false;
+    this.isDirective = false;
   }
 
   visitMethodDeclaration(method: ts.MethodDeclaration) {
