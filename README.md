@@ -70,7 +70,7 @@ Run the linter with:
 ./node_modules/.bin/tslint -c tslint.json
 ```
 
-TSLint will now complain that there are rules which requlre type checking. In order to fix this, use thw `-p` config option:
+TSLint will now complain that there are rules which require type checking. In order to fix this, use thw `-p` config option:
 
 ```bash
 ./node_modules/.bin/tslint -p tsconfig.json -c tslint.json
@@ -81,7 +81,7 @@ TSLint will now complain that there are rules which requlre type checking. In or
 You can easily use codelyzer with your custom setup:
 
 ```shell
-npm i codelyzer@~4.0.0 tslint@^5.0.0 typescript@2.4.0 @angular/core@~5.0.1 @angular/compiler@~5.0.1 rxjs@5.5.0 zone.js@~0.8.4
+npm i codelyzer@~4.2.0 tslint@^5.0.0 @angular/core@~5.2.0 @angular/compiler@~5.2.0
 ```
 
 A. Using codelyzer package in PATH
@@ -276,6 +276,7 @@ Below you can find a recommended configuration which is based on the [Angular St
 | `templates-no-negated-async` | Stable |
 | `no-attribute-parameter-decorator` | Stable |
 | `no-forward-ref` | Stable |
+| `no-input-prefix` | Stable |
 | `no-input-rename` | Stable |
 | `no-output-on-prefix` | Stable |
 | `no-output-rename` | Stable |
