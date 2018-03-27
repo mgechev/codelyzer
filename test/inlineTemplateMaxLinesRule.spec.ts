@@ -31,7 +31,7 @@ describe('inline-template-max-lines', () => {
         class Test {}`;
 
       assertFailure('inline-template-max-lines', source, {
-        message: 'Defined inline template lines count limit: 3 exceeded.',
+        message: 'Inline template lines limit exceeded. Defined limit: 3 / template lines: 4',
         startPosition: {character: 20, line: 3},
         endPosition: {character: 45, line: 6},
       });
@@ -46,7 +46,7 @@ describe('inline-template-max-lines', () => {
         class Test {}`;
 
       assertFailure('inline-template-max-lines', source, {
-        message: 'Defined inline template lines count limit: 0 exceeded.',
+        message: 'Inline template lines limit exceeded. Defined limit: 0 / template lines: 1',
         startPosition: {character: 20, line: 3},
         endPosition: {character: 43, line: 3},
       }, [0]);
