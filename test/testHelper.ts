@@ -205,7 +205,7 @@ export function assertMultipleAnnotated(configs: AssertMultipleConfigs): Lint.Ru
  *                       This is 0-based index of the error that will be tested for. 0 by default.
  * @returns {any}
  */
-export function assertFailure(ruleName: string, source: string, fail: IExpectedFailure,
+export function assertFailure(ruleName: string, source: string | ts.SourceFile, fail: IExpectedFailure,
                               options = null, onlyNthFailure: number = 0): Lint.RuleFailure[] {
   let result: Lint.LintResult;
   try {
@@ -233,7 +233,7 @@ export function assertFailure(ruleName: string, source: string, fail: IExpectedF
  * @param fails
  * @param options
  */
-export function assertFailures(ruleName: string, source: string, fails: IExpectedFailure[], options = null) {
+export function assertFailures(ruleName: string, source: string | ts.SourceFile, fails: IExpectedFailure[], options = null) {
   let result;
   try {
     result = lint(ruleName, source, options);
