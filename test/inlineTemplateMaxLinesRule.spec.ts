@@ -6,7 +6,7 @@ const getAst = (code: string, file = 'file.ts') => {
   return ts.createSourceFile(file, code, ts.ScriptTarget.ES5, true);
 };
 
-describe.only('inline-template-max-lines', () => {
+describe('inline-template-max-lines', () => {
   describe('component has inline template', () => {
     it('should succeed when lines limit not exceeded', () => {
       let source = `
@@ -31,7 +31,7 @@ describe.only('inline-template-max-lines', () => {
         class Test {}`;
 
       assertFailure('inline-template-max-lines', source, {
-        message: 'Defined inline template lines count limit exceeded.',
+        message: 'Defined inline template lines count limit: 3 exceeded.',
         startPosition: {character: 20, line: 3},
         endPosition: {character: 45, line: 6},
       });
@@ -46,7 +46,7 @@ describe.only('inline-template-max-lines', () => {
         class Test {}`;
 
       assertFailure('inline-template-max-lines', source, {
-        message: 'Defined inline template lines count limit exceeded.',
+        message: 'Defined inline template lines count limit: 0 exceeded.',
         startPosition: {character: 20, line: 3},
         endPosition: {character: 43, line: 3},
       }, [0]);

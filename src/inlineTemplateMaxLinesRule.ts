@@ -10,8 +10,13 @@ export class Rule extends Lint.Rules.AbstractRule {
     type: 'maintainability',
     description: 'Disallows having to many lines in inline template. Forces separate template file creation.',
     descriptionDetails: 'See more at https://angular.io/guide/styleguide#style-05-04',
-    options: null,
-    optionsDescription: 'Not configurable.',
+    options: {
+      type: 'array',
+      items: {
+        type: 'number',
+      }
+    },
+    optionsDescription: 'Define inline template lines limit.',
     typescriptOnly: true,
     hasFix: false
   };
@@ -38,7 +43,7 @@ export class InlineTemplateMaxLinesValidator extends NgWalker {
 
   protected visitNgComponent(metadata: ComponentMetadata): void {
     if (this.hasInlineTemplate(metadata) && this.getTemplateLineCount(metadata) > this.linesLimit) {
-      this.addFailureAtNode(metadata.template.node, 'Defined inline template lines count limit exceeded.');
+      this.addFailureAtNode(metadata.template.node, `Defined inline template lines count limit: ${this.linesLimit} exceeded.`);
     }
     super.visitNgComponent(metadata);
   }
