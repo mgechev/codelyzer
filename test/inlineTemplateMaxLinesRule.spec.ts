@@ -126,6 +126,30 @@ describe('inline-template-max-lines', () => {
       });
     });
 
+    it('should fail when sum of lines (from separate inline styles) limit exceeded default 3 lines limit', () => {
+      const source = `
+        @Component({
+          selector: 'foobar',
+          styles: [\`display: block;
+                     width: 30px;\`,
+                     \`height: 40px;
+                     float: left;\`]
+        })
+        class Test {}`;
+
+      assertFailure('inline-template-max-lines', source, {
+        message: 'Inline styles lines limit exceeded. Defined limit: 3 / styles lines: 4',
+        startPosition: {character: 19, line: 3},
+        endPosition: {character: 34, line: 4},
+      });
+
+      assertFailure('inline-template-max-lines', source, {
+        message: 'Inline styles lines limit exceeded. Defined limit: 3 / styles lines: 4',
+        startPosition: {character: 21, line: 5},
+        endPosition: {character: 34, line: 6},
+      }, null, 1);
+    });
+
     it('should fail when lines limit exceeded custom defined limit', () => {
       const source = `
         @Component({
