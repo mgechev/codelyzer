@@ -16,7 +16,7 @@ export class Rule extends Lint.Rules.AbstractRule {
         type: 'object',
       }
     },
-    optionsDescription: 'Define inline template lines limit.',
+    optionsDescription: 'Define inline template and styles lines limit.',
     optionExamples: ['[{template: 5, styles: 8}]'],
     typescriptOnly: true,
     hasFix: false
