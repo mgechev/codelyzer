@@ -6,7 +6,7 @@ const getAst = (code: string, file = 'file.ts') => {
   return ts.createSourceFile(file, code, ts.ScriptTarget.ES5, true);
 };
 
-describe('inline-template-max-lines', () => {
+describe('max-inline-declarations', () => {
   describe('template', () => {
     describe('component has inline template', () => {
       it('should succeed when lines limit not exceeded', () => {
@@ -17,7 +17,7 @@ describe('inline-template-max-lines', () => {
         })
         class Test {}`;
 
-        assertSuccess('inline-template-max-lines', source);
+        assertSuccess('max-inline-declarations', source);
       });
 
       it('should fail when lines limit exceeded default 3 lines limit', () => {
@@ -31,7 +31,7 @@ describe('inline-template-max-lines', () => {
         })
         class Test {}`;
 
-        assertFailure('inline-template-max-lines', source, {
+        assertFailure('max-inline-declarations', source, {
           message: 'Inline template lines limit exceeded. Defined limit: 3 / template lines: 4',
           startPosition: {character: 20, line: 3},
           endPosition: {character: 45, line: 6},
@@ -47,7 +47,7 @@ describe('inline-template-max-lines', () => {
         class Test {}`;
 
         const options = [true, {template: 0}];
-        assertFailure('inline-template-max-lines', source, {
+        assertFailure('max-inline-declarations', source, {
           message: 'Inline template lines limit exceeded. Defined limit: 0 / template lines: 1',
           startPosition: {character: 20, line: 3},
           endPosition: {character: 43, line: 3},
@@ -63,7 +63,7 @@ describe('inline-template-max-lines', () => {
         class Test {}`;
 
         const options = [true, {template: -5}];
-        assertSuccess('inline-template-max-lines', source, options);
+        assertSuccess('max-inline-declarations', source, options);
       });
     });
 
@@ -75,7 +75,7 @@ describe('inline-template-max-lines', () => {
         })
         class Test {}`;
 
-        assertSuccess('inline-template-max-lines', source);
+        assertSuccess('max-inline-declarations', source);
       });
     });
 
@@ -89,7 +89,7 @@ describe('inline-template-max-lines', () => {
         class Test {}`;
 
         const ast = getAst(source, __dirname + '/../../test/fixtures/inlineTemplateMaxLines/foo.ts');
-        assertSuccess('inline-template-max-lines', ast);
+        assertSuccess('max-inline-declarations', ast);
       });
     });
   });
@@ -104,7 +104,7 @@ describe('inline-template-max-lines', () => {
         })
         class Test {}`;
 
-        assertSuccess('inline-template-max-lines', source);
+        assertSuccess('max-inline-declarations', source);
       });
     });
 
@@ -119,7 +119,7 @@ describe('inline-template-max-lines', () => {
         })
         class Test {}`;
 
-      assertFailure('inline-template-max-lines', source, {
+      assertFailure('max-inline-declarations', source, {
         message: 'Inline styles lines limit exceeded. Defined limit: 3 / styles lines: 4',
         startPosition: {character: 19, line: 3},
         endPosition: {character: 34, line: 6},
@@ -137,13 +137,13 @@ describe('inline-template-max-lines', () => {
         })
         class Test {}`;
 
-      assertFailure('inline-template-max-lines', source, {
+      assertFailure('max-inline-declarations', source, {
         message: 'Inline styles lines limit exceeded. Defined limit: 3 / styles lines: 4',
         startPosition: {character: 19, line: 3},
         endPosition: {character: 34, line: 4},
       });
 
-      assertFailure('inline-template-max-lines', source, {
+      assertFailure('max-inline-declarations', source, {
         message: 'Inline styles lines limit exceeded. Defined limit: 3 / styles lines: 4',
         startPosition: {character: 21, line: 5},
         endPosition: {character: 34, line: 6},
@@ -159,7 +159,7 @@ describe('inline-template-max-lines', () => {
         class Test {}`;
 
       const options = [true, {styles: 0}];
-      assertFailure('inline-template-max-lines', source, {
+      assertFailure('max-inline-declarations', source, {
         message: 'Inline styles lines limit exceeded. Defined limit: 0 / styles lines: 1',
         startPosition: {character: 19, line: 3},
         endPosition: {character: 35, line: 3},
@@ -175,7 +175,7 @@ describe('inline-template-max-lines', () => {
         class Test {}`;
 
       const options = [true, {styles: -5}];
-      assertSuccess('inline-template-max-lines', source, options);
+      assertSuccess('max-inline-declarations', source, options);
     });
 
     describe('component hasn`t inline styles', () => {
@@ -186,7 +186,7 @@ describe('inline-template-max-lines', () => {
         })
         class Test {}`;
 
-        assertSuccess('inline-template-max-lines', source);
+        assertSuccess('max-inline-declarations', source);
       });
     });
 
@@ -200,7 +200,7 @@ describe('inline-template-max-lines', () => {
         class Test {}`;
 
         const ast = getAst(source, __dirname + '/../../test/fixtures/inlineTemplateMaxLines/foo.ts');
-        assertSuccess('inline-template-max-lines', ast);
+        assertSuccess('max-inline-declarations', ast);
       });
     });
   });

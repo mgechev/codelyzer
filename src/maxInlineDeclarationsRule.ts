@@ -6,7 +6,7 @@ import { NgWalker } from './angular/ngWalker';
 
 export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'inline-template-max-lines',
+    ruleName: 'max-inline-declarations',
     type: 'maintainability',
     description: 'Disallows having too many lines in inline template or styles. Forces separate template or styles file creation.',
     descriptionDetails: 'See more at https://angular.io/guide/styleguide#style-05-04',
