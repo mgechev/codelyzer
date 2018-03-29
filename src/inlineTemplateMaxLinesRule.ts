@@ -39,34 +39,70 @@ export class Rule extends Lint.Rules.AbstractRule {
   }
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(new MaxInlineDeclarationsValidator(sourceFile, this, this.templateLinesLimit));
+    return this.applyWithWalker(new MaxInlineDeclarationsValidator(sourceFile, this, this.templateLinesLimit, this.stylesLinesLimit));
   }
 }
 
 export class MaxInlineDeclarationsValidator extends NgWalker {
 
-  constructor(sourceFile: ts.SourceFile, private rule: Rule, private linesLimit) {
+  private newLineRegExp = /\r\n|\r|\n/;
+
+  constructor(sourceFile: ts.SourceFile, private rule: Rule, private templateLinesLimit: number, private stylesLinesLimit: number) {
     super(sourceFile, rule.getOptions());
   }
 
   protected visitNgComponent(metadata: ComponentMetadata): void {
     this.validateInlineTemplate(metadata);
+    this.validateInlineStyles(metadata);
     super.visitNgComponent(metadata);
   }
 
   private validateInlineTemplate(metadata: ComponentMetadata): void {
-    if (this.hasInlineTemplate(metadata) && this.getTemplateLineCount(metadata) > this.linesLimit) {
-      const templateLinesCount = this.getTemplateLineCount(metadata);
-      const message = `Inline template lines limit exceeded. Defined limit: ${this.linesLimit} / template lines: ${templateLinesCount}`;
-      this.addFailureAtNode(metadata.template.node, message);
+    if (this.hasInlineTemplate(metadata) && this.getTemplateLinesCount(metadata) > this.templateLinesLimit) {
+      const templateLinesCount = this.getTemplateLinesCount(metadata);
+      const msg = `Inline template lines limit exceeded. Defined limit: ${this.templateLinesLimit} / template lines: ${templateLinesCount}`;
+      this.addFailureAtNode(metadata.template.node, msg);
     }
   }
 
-  private hasInlineTemplate(meta: ComponentMetadata): boolean {
-    return !!meta.template && !!meta.template.template && !!meta.template.template.source;
+  private hasInlineTemplate(metadata: ComponentMetadata): boolean {
+    return !!metadata.template && !!metadata.template.template && !!metadata.template.template.source;
   }
 
-  private getTemplateLineCount(meta: ComponentMetadata): number {
-    return meta.template.template.source.split(/\r\n|\r|\n/).length;
+  private getTemplateLinesCount(metadata: ComponentMetadata): number {
+    return metadata.template.template.source.split(this.newLineRegExp).length;
+  }
+
+  private validateInlineStyles(metadata: ComponentMetadata): void {
+    if (this.hasInlineStyles(metadata) && this.getStylesLinesCount(metadata) > this.stylesLinesLimit) {
+      const stylesLinesCount = this.getStylesLinesCount(metadata);
+      const msg = `Inline styles lines limit exceeded. Defined limit: ${this.stylesLinesLimit} / styles lines: ${stylesLinesCount}`;
+      for (let i = 0; i < metadata.styles.length; i++) {
+        this.addFailureAtNode(metadata.styles[i].node, msg);
+      }
+    }
+  }
+
+  private hasInlineStyles(metadata: ComponentMetadata): boolean {
+    if (!metadata.styles) {
+      return false;
+    }
+
+    for (let i = 0; i < metadata.styles.length; i++) {
+      const style = metadata.styles[i];
+      if (style.style && style.style.source) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  private getStylesLinesCount(metadata: ComponentMetadata) {
+    let result = 0;
+    for (let i = 0; i < metadata.styles.length; i++) {
+      result += metadata.styles[i].style.source.split(this.newLineRegExp).length;
+    }
+    return result;
   }
 }
