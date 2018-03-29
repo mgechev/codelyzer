@@ -8,47 +8,58 @@ export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'inline-template-max-lines',
     type: 'maintainability',
-    description: 'Disallows having to many lines in inline template. Forces separate template file creation.',
+    description: 'Disallows having too many lines in inline template or styles. Forces separate template or styles file creation.',
     descriptionDetails: 'See more at https://angular.io/guide/styleguide#style-05-04',
     options: {
       type: 'array',
       items: {
-        type: 'number',
+        type: 'object',
       }
     },
     optionsDescription: 'Define inline template lines limit.',
-    optionExamples: ['[9]'],
+    optionExamples: ['[{template: 5, styles: 8}]'],
     typescriptOnly: true,
     hasFix: false
   };
 
-  private linesLimit: number = 3;
+  private templateLinesLimit: number = 3;
+  private stylesLinesLimit: number = 3;
 
   constructor(options: IOptions) {
     super(options);
-    if (options.ruleArguments.length > 0 && options.ruleArguments[0] > -1) {
-      this.linesLimit = options.ruleArguments[0];
+    if (options.ruleArguments.length > 1) {
+      const args = options.ruleArguments[1];
+      if (args.template > -1) {
+        this.templateLinesLimit = args.template;
+      }
+      if (args.styles > -1) {
+        this.stylesLinesLimit = args.styles;
+      }
     }
   }
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(new InlineTemplateMaxLinesValidator(sourceFile, this, this.linesLimit));
+    return this.applyWithWalker(new MaxInlineDeclarationsValidator(sourceFile, this, this.templateLinesLimit));
   }
 }
 
-export class InlineTemplateMaxLinesValidator extends NgWalker {
+export class MaxInlineDeclarationsValidator extends NgWalker {
 
   constructor(sourceFile: ts.SourceFile, private rule: Rule, private linesLimit) {
     super(sourceFile, rule.getOptions());
   }
 
   protected visitNgComponent(metadata: ComponentMetadata): void {
+    this.validateInlineTemplate(metadata);
+    super.visitNgComponent(metadata);
+  }
+
+  private validateInlineTemplate(metadata: ComponentMetadata): void {
     if (this.hasInlineTemplate(metadata) && this.getTemplateLineCount(metadata) > this.linesLimit) {
       const templateLinesCount = this.getTemplateLineCount(metadata);
       const message = `Inline template lines limit exceeded. Defined limit: ${this.linesLimit} / template lines: ${templateLinesCount}`;
       this.addFailureAtNode(metadata.template.node, message);
     }
-    super.visitNgComponent(metadata);
   }
 
   private hasInlineTemplate(meta: ComponentMetadata): boolean {
