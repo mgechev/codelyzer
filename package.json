@@ -49,9 +49,7 @@
   "devDependencies": {
     "@angular/compiler": "^5.2.0",
     "@angular/core": "^5.2.0",
-    "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/common": "^5.2.0",
-    "@angular/platform-browser": "^5.2.0",
     "@types/chai": "^3.4.33",
     "@types/less": "0.0.31",
     "@types/mocha": "^2.2.32",
@@ -77,8 +75,6 @@
   "peerDependencies": {
     "@angular/compiler": ">=2.3.1 <7.0.0 || >6.0.0-beta <7.0.0",
     "@angular/core": ">=2.3.1 <7.0.0 || >6.0.0-beta <7.0.0",
-    "@angular/platform-browser-dynamic": ">=2.3.1 <7.0.0 || >6.0.0-beta <7.0.0",
-    "@angular/platform-browser": ">=2.3.1 <7.0.0 || >6.0.0-beta <7.0.0",
     "@angular/common": ">=2.3.1 <7.0.0 || >6.0.0-beta <7.0.0",
     "tslint": "^5.0.0"
   },
