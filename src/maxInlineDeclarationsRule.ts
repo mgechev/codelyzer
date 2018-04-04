@@ -22,8 +22,8 @@ export class Rule extends Lint.Rules.AbstractRule {
     hasFix: false
   };
 
-  private templateLinesLimit: number = 3;
-  private stylesLinesLimit: number = 3;
+  private readonly templateLinesLimit: number = 3;
+  private readonly stylesLinesLimit: number = 3;
 
   constructor(options: IOptions) {
     super(options);
@@ -66,7 +66,7 @@ export class MaxInlineDeclarationsValidator extends NgWalker {
   }
 
   private hasInlineTemplate(metadata: ComponentMetadata): boolean {
-    return !!metadata.template && !!metadata.template.template && !!metadata.template.template.source;
+    return !!metadata.template && !metadata.template.url && !!metadata.template.template && !!metadata.template.template.source;
   }
 
   private getTemplateLinesCount(metadata: ComponentMetadata): number {
@@ -74,8 +74,8 @@ export class MaxInlineDeclarationsValidator extends NgWalker {
   }
 
   private validateInlineStyles(metadata: ComponentMetadata): void {
-    if (this.hasInlineStyles(metadata) && this.getStylesLinesCount(metadata) > this.stylesLinesLimit) {
-      const stylesLinesCount = this.getStylesLinesCount(metadata);
+    if (this.hasInlineStyles(metadata) && this.getInlineStylesLinesCount(metadata) > this.stylesLinesLimit) {
+      const stylesLinesCount = this.getInlineStylesLinesCount(metadata);
       const msg = `Inline styles lines limit exceeded. Defined limit: ${this.stylesLinesLimit} / styles lines: ${stylesLinesCount}`;
       for (let i = 0; i < metadata.styles.length; i++) {
         this.addFailureAtNode(metadata.styles[i].node, msg);
@@ -90,7 +90,7 @@ export class MaxInlineDeclarationsValidator extends NgWalker {
 
     for (let i = 0; i < metadata.styles.length; i++) {
       const style = metadata.styles[i];
-      if (style.style && style.style.source) {
+      if (!style.url && style.style && style.style.source) {
         return true;
       }
     }
@@ -98,10 +98,12 @@ export class MaxInlineDeclarationsValidator extends NgWalker {
     return false;
   }
 
-  private getStylesLinesCount(metadata: ComponentMetadata) {
+  private getInlineStylesLinesCount(metadata: ComponentMetadata) {
     let result = 0;
     for (let i = 0; i < metadata.styles.length; i++) {
-      result += metadata.styles[i].style.source.split(this.newLineRegExp).length;
+      if (!metadata.styles[i].url) {
+        result += metadata.styles[i].style.source.split(this.newLineRegExp).length;
+      }
     }
     return result;
   }

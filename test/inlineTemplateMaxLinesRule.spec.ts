@@ -92,6 +92,20 @@ describe('max-inline-declarations', () => {
         assertSuccess('max-inline-declarations', ast);
       });
     });
+
+    describe('component template file exceeded inline template line limit', () => {
+      it('should not report any failure', () => {
+        const source = `
+        @Component({
+          selector: 'foobar',
+          templateUrl: './large.html'
+        })
+        class Test {}`;
+
+        const ast = getAst(source, __dirname + '/../../test/fixtures/inlineTemplateMaxLines/foo.ts');
+        assertSuccess('max-inline-declarations', ast);
+      });
+    });
   });
 
   describe('styles', () => {
@@ -196,6 +210,20 @@ describe('max-inline-declarations', () => {
         @Component({
           selector: 'foobar',
           styleUrls: ['./foo.css']
+        })
+        class Test {}`;
+
+        const ast = getAst(source, __dirname + '/../../test/fixtures/inlineTemplateMaxLines/foo.ts');
+        assertSuccess('max-inline-declarations', ast);
+      });
+    });
+
+    describe('component styles file exceeded inline styles line limit', () => {
+      it('should not report any failure', () => {
+        const source = `
+        @Component({
+          selector: 'foobar',
+          styleUrls: ['./large.css']
         })
         class Test {}`;
 
