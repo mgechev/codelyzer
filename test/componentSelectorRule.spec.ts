@@ -74,6 +74,20 @@ describe('component-selector-prefix', () => {
                 options: ['element', ['fo', 'mg', 'ng'], 'kebab-case']
             });
         });
+
+        it('should fail when selector is not given in @Component', () => {
+            let source = `
+      @Component({
+       ~~~~~~~~~
+    ~})
+      class Test {}`;
+            assertAnnotated({
+                ruleName: 'component-selector',
+                message:  'The selector of the component "Test" is mandatory.',
+                source,
+                options: ['element', 'sg', 'kebab-case', true]
+            });
+        });
     });
 
     describe('valid component selector', () => {
@@ -84,6 +98,24 @@ describe('component-selector-prefix', () => {
       })
       class Test {}`;
             assertSuccess('component-selector', source, ['element', 'sg', 'kebab-case']);
+        });
+
+        it('should succeed when selector is not given in @Component', () => {
+            let source = `
+      @Component({
+
+      })
+      class Test {}`;
+            assertSuccess('component-selector', source, ['element', 'sg', 'kebab-case']);
+        });
+
+        it('should succeed when selector is not given in @Component and boolean is false', () => {
+            let source = `
+      @Component({
+
+      })
+      class Test {}`;
+            assertSuccess('component-selector', source, ['element', 'sg', 'kebab-case', false]);
         });
 
         it('should succeed when set valid selector in @Component using multiple prefixes', () => {
