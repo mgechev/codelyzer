@@ -47,39 +47,31 @@
   },
   "homepage": "https://github.com/mgechev/codelyzer#readme",
   "devDependencies": {
-    "@angular/compiler": "^5.2.0",
-    "@angular/core": "^5.2.0",
-    "@angular/platform-browser-dynamic": "^5.2.0",
-    "@angular/common": "^5.2.0",
-    "@angular/platform-browser": "^5.2.0",
+    "@angular/compiler": "6.0.0-rc.0",
+    "@angular/core": "6.0.0-rc.0",
     "@types/chai": "^3.4.33",
     "@types/less": "0.0.31",
-    "@types/mocha": "^2.2.32",
-    "@types/node": "^6.0.41",
+    "@types/mocha": "^2.2.48",
+    "@types/node": "^6.0.103",
     "@types/node-sass": "^3.10.31",
-    "@types/source-map": "^0.5.0",
     "@types/sprintf-js": "0.0.27",
     "chai": "^3.5.0",
     "chai-spies": "^0.7.1",
+    "js-yaml": "^3.11.0",
+    "json-stringify-pretty-compact": "^1.1.0",
     "minimalist": "1.0.0",
     "mocha": "3.0.2",
-    "node-sass": "^4.7.2",
-    "rimraf": "^2.5.2",
-    "rxjs": "^5.5.0",
+    "node-sass": "^4.8.3",
+    "rimraf": "^2.6.2",
+    "rxjs": "6.0.0-beta.0",
     "ts-node": "1.2.2",
     "tslint": "^5.0.0",
     "typescript": "2.4.0",
-    "zone.js": "^0.8.4",
-    "js-yaml": "^3.8.4",
-    "json-stringify-pretty-compact": "^1.0.4",
-    "@types/js-yaml": "^3.5.31"
+    "zone.js": "^0.8.20"
   },
   "peerDependencies": {
     "@angular/compiler": ">=2.3.1 <7.0.0 || >6.0.0-beta <7.0.0",
     "@angular/core": ">=2.3.1 <7.0.0 || >6.0.0-beta <7.0.0",
-    "@angular/platform-browser-dynamic": ">=2.3.1 <7.0.0 || >6.0.0-beta <7.0.0",
-    "@angular/platform-browser": ">=2.3.1 <7.0.0 || >6.0.0-beta <7.0.0",
-    "@angular/common": ">=2.3.1 <7.0.0 || >6.0.0-beta <7.0.0",
     "tslint": "^5.0.0"
   },
   "dependencies": {
@@ -87,7 +79,7 @@
     "css-selector-tokenizer": "^0.7.0",
     "cssauron": "^1.4.0",
     "semver-dsl": "^1.0.1",
-    "source-map": "^0.5.6",
+    "source-map": "^0.5.7",
     "sprintf-js": "^1.0.3"
   }
 }
