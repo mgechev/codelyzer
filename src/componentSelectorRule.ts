@@ -39,18 +39,14 @@ export class Rule extends SelectorRule {
         },
         {
           'enum': ['kebab-case', 'camelCase']
-        },
-        {
-          'type': 'boolean'
         }
-
       ],
       'minItems': 3,
-      'maxItems': 4
+      'maxItems': 3
     },
     optionExamples: [
       '["element", "my-prefix", "kebab-case"]',
-      '["element", ["ng", "ngx"], "kebab-case", true]',
+      '["element", ["ng", "ngx"], "kebab-case"]',
       '["attribute", "myPrefix", "camelCase"]',
     ],
     optionsDescription: Lint.Utils.dedent`
@@ -59,10 +55,7 @@ export class Rule extends SelectorRule {
     1. \`"element"\` or \`"attribute"\` forces components either to be elements or attributes.
     2. A single prefix (string) or array of prefixes (strings) which have to be used in component selectors.
     3. \`"kebab-case"\` or \`"camelCase"\` allows you to pick a case.
-
-    Furthermore, a boolean can be added to the last position in order to enforce the declaration of a selector. By default, \`false\`.
-    `
-      ,
+    `,
     typescriptOnly: true,
   };
 

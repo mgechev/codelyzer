@@ -6,6 +6,7 @@ export { Rule as ContextualLifeCycleRule } from './contextualLifeCycleRule';
 export { Rule as DecoratorNotAllowedRule } from './decoratorNotAllowedRule';
 export { Rule as DirectiveClassSuffixRule } from './directiveClassSuffixRule';
 export { Rule as DirectiveSelectorRule } from './directiveSelectorRule';
+export { Rule as EnforceComponentSelectorRule} from './enforceComponentSelectorRule';
 export { Rule as I18nRule } from './i18nRule';
 export { Rule as TemplateCyclomaticComplexityRule } from './templateCyclomaticComplexityRule';
 export { Rule as TemplateConditionalComplexityRule } from './templateConditionalComplexityRule';
@@ -30,6 +31,7 @@ export { Rule as UsePipeDecoratorRule } from './usePipeDecoratorRule';
 export { Rule as UseViewEncapsulationRule } from './useViewEncapsulationRule';
 export { Rule as TemplatesNoNegatedAsync } from './templatesNoNegatedAsyncRule';
 export { Rule as TrackByFunctionRule } from './trackByFunctionRule';
+
 export * from './angular/config';
 
 // this file exists for tslint to resolve the rules directory

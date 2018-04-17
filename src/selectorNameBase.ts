@@ -115,11 +115,7 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
 
   private validateSelector(className: string, arg: ts.Node) {
     if (arg.kind === SyntaxKind.current().ObjectLiteralExpression) {
-      let hasSelector = false;
-      (<ts.ObjectLiteralExpression>arg).properties.filter(prop => {
-          hasSelector = this.validateProperty(prop);
-          return hasSelector;
-      })
+      (<ts.ObjectLiteralExpression>arg).properties.filter(prop => this.validateProperty(prop))
         .map(prop => (<any>prop).initializer)
         .forEach(i => {
           const selectors: compiler.CssSelector[] = this.extractMainSelector(i);
@@ -138,13 +134,6 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
             this.addFailure(this.createFailure(i.getStart(), i.getWidth(), error));
           }
         });
-
-      if (!hasSelector && this.rule.getOptions().ruleArguments[3]) {
-          let error = sprintf('The selector of the component "%s" is mandatory.', className);
-          this.addFailure(this.createFailure((<any>(<ts.ObjectLiteralExpression>arg).parent).expression.pos,
-              (<any>(<ts.ObjectLiteralExpression>arg).parent).expression.end, error));
-      }
-
     }
   }
 
