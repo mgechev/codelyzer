@@ -6,6 +6,7 @@ export { Rule as ContextualLifeCycleRule } from './contextualLifeCycleRule';
 export { Rule as DecoratorNotAllowedRule } from './decoratorNotAllowedRule';
 export { Rule as DirectiveClassSuffixRule } from './directiveClassSuffixRule';
 export { Rule as DirectiveSelectorRule } from './directiveSelectorRule';
+export { Rule as EnforceComponentSelectorRule} from './enforceComponentSelectorRule';
 export { Rule as I18nRule } from './i18nRule';
 export { Rule as ImportDestructuringSpacingRule } from './importDestructuringSpacingRule';
 export { Rule as MaxInlineDeclarationsRule } from './maxInlineDeclarationsRule';
@@ -31,6 +32,7 @@ export { Rule as UseOutputPropertyDecoratorRule } from './useOutputPropertyDecor
 export { Rule as UsePipeDecoratorRule } from './usePipeDecoratorRule';
 export { Rule as UsePipeTransformInterfaceRule } from './usePipeTransformInterfaceRule';
 export { Rule as UseViewEncapsulationRule } from './useViewEncapsulationRule';
+
 export * from './angular/config';
 
 // this file exists for tslint to resolve the rules directory
