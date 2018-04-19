@@ -33,10 +33,11 @@ export class EnforceComponentSelectorValidatorWalker extends NgWalker {
 
     visitNgComponent(metadata: ComponentMetadata) {
         if (!metadata.selector) {
-            let failureConfig: string[] = [metadata.controller.name.text];
+            const failureConfig: string[] = [metadata.controller.name.text];
             failureConfig.unshift(Rule.SELECTOR_FAILURE);
             this.generateFailure(metadata.decorator.getStart(), metadata.decorator.getWidth(), failureConfig);
         }
+        super.visitNgComponent(metadata);
     }
 
     private generateFailure(start: number, width: number, failureConfig: string[]) {
