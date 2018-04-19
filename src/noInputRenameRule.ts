@@ -1,6 +1,7 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { sprintf } from 'sprintf-js';
+import { DirectiveMetadata } from './angular/metadata';
 import { NgWalker } from './angular/ngWalker';
 
 export class Rule extends Lint.Rules.AbstractRule {
@@ -15,29 +16,31 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true,
   };
 
-  static FAILURE_STRING: string = 'In the class "%s", the directive ' +
-    'input property "%s" should not be renamed.' +
-    'Please, consider the following use "@Input() %s: string"';
+  static FAILURE_STRING: string = 'In the class "%s", the directive input property "%s" should not be renamed.';
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(
-      new InputMetadataWalker(sourceFile,
-        this.getOptions()));
+    return this.applyWithWalker(new InputMetadataWalker(sourceFile, this.getOptions()));
   }
 }
 
 export class InputMetadataWalker extends NgWalker {
+  private directiveSelector: DirectiveMetadata['selector'][];
+
+  visitNgDirective(metadata: DirectiveMetadata): void {
+    this.directiveSelector =
+        (metadata.selector || '').replace(/[\[\]\s]/g, '').split(',');
+  }
+
   visitNgInput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
-    let className = (<any>property).parent.name.text;
-    let memberName = (<any>property.name).text;
-    if (args.length !== 0 && memberName !== args[0]) {
-      let failureConfig: string[] = [className, memberName, memberName];
-      failureConfig.unshift(Rule.FAILURE_STRING);
-      this.addFailure(
-        this.createFailure(
-          property.getStart(),
-          property.getWidth(),
-          sprintf.apply(this, failureConfig)));
+    const className = (property.parent as any).name.text;
+    const memberName = (property.name as any).text;
+
+    if (args.length === 0 ||
+      (this.directiveSelector && this.directiveSelector.indexOf(memberName) !== -1)) {
+      return;
     }
+
+    const failureConfig = [Rule.FAILURE_STRING, className, memberName];
+    this.addFailureAtNode(property, sprintf.apply(this, failureConfig));
   }
 }

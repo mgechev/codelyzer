@@ -1,37 +1,111 @@
 import { assertSuccess, assertAnnotated } from './testHelper';
 
-describe('no-input-rename', () => {
-  describe('invalid directive input property', () => {
-    it('should fail, when a directive input property is renamed', () => {
-      let source = `
-      class ButtonComponent {
-        @Input('labelAttribute') label: string;
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      }`;
-      assertAnnotated({
-        ruleName: 'no-input-rename',
-        message: 'In the class "ButtonComponent", the directive input property "label" should not be renamed.' +
-        'Please, consider the following use "@Input() label: string"',
-        source
+const ruleName = 'no-input-rename';
+
+const getMessage = (className: string, propertyName: string): string => {
+  return `In the class "${className}", the directive input property "${propertyName}" should not be renamed.`;
+};
+
+describe(ruleName, () => {
+  describe('failure', () => {
+    describe('Component', () => {
+      it('should fail when a input property is renamed', () => {
+        const source = `
+          @Component
+          class TestComponent {
+            @Input('labelAttribute') label: string;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          }
+        `;
+
+        assertAnnotated({
+          ruleName,
+          message: getMessage('TestComponent', 'label'),
+          source
+        });
+      });
+
+      it('should fail when input property is fake renamed', () => {
+        const source = `
+          @Component
+          class TestComponent {
+            @Input('label') label: string;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          }
+        `;
+
+        assertAnnotated({
+          ruleName,
+          message: getMessage('TestComponent', 'label'),
+          source
+        });
+      });
+    });
+
+    describe('Directive', () => {
+      it('should fail when a input property is renamed', () => {
+        const source = `
+          @Directive
+          class TestDirective {
+            @Input('labelText') label: string;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          }
+        `;
+
+        assertAnnotated({
+          ruleName,
+          message: getMessage('TestDirective', 'label'),
+          source
+        });
+      });
+
+      it(`should fail when input property is renamed and it's different from directive's selector`, () => {
+        const source = `
+          @Directive({
+            selector: '[label], label2'
+          })
+          class TestDirective {
+            @Input('label') labelText: string;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          }
+        `;
+
+        assertAnnotated({
+          ruleName,
+          message: getMessage('TestDirective', `labelText`),
+          source
+        });
       });
     });
   });
 
-  describe('valid directive input property', () => {
-    it('should succeed, when a directive input property is properly used', () => {
-      let source = `
-      class ButtonComponent {
-        @Input() label: string;
-      }`;
-      assertSuccess('no-input-rename', source);
+  describe('success', () => {
+    describe('Component', () => {
+      it('should succeed when a input property is not renamed', () => {
+        const source = `
+          @Component
+          class TestComponent {
+            @Input() label: string;
+          }
+        `;
+
+        assertSuccess(ruleName, source);
+      });
     });
 
-    it('should succeed, when a directive input property rename is the same as the name of the property', () => {
-      let source = `
-      class ButtonComponent {
-        @Input('label') label: string;
-      }`;
-      assertSuccess('no-input-rename', source);
+    describe('Directive', () => {
+      it('should succeed when the directive name is also an input property', () => {
+        const source = `
+          @Directive({
+            selector: '[label], label2'
+          })
+          class TestDirective {
+            @Input('labelText') label: string;
+          }
+        `;
+
+        assertSuccess(ruleName, source);
+      });
     });
   });
 });
