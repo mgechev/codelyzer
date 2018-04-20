@@ -97,6 +97,10 @@ Create the following `tslint.json` file like:
     "templates-no-negated-async": true,
     "directive-selector": [true, "attribute", "sg", "camelCase"],
     "component-selector": [true, "element", "sg", "kebab-case"],
+    "max-inline-declarations": true,
+    "prefer-output-readonly": true,
+    "no-conflicting-life-cycle-hooks": true,
+    "enforce-component-selector: true,
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
     "use-host-property-decorator": true,
@@ -151,6 +155,10 @@ Now create the following `tslint.json` file where your `node_modules` directory 
     "templates-no-negated-async": true,
     "directive-selector": [true, "attribute", "sg", "camelCase"],
     "component-selector": [true, "element", "sg", "kebab-case"],
+    "max-inline-declarations": true,
+    "prefer-output-readonly": true,
+    "no-conflicting-life-cycle-hooks": true,
+    "enforce-component-selector: true,
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
     "use-host-property-decorator": true,
@@ -257,6 +265,10 @@ Below you can find a recommended configuration which is based on the [Angular St
   "use-life-cycle-interface": true,
   "use-pipe-transform-interface": true,
   "no-output-named-after-standard-event": true,
+  "max-inline-declarations": true,
+  "prefer-output-readonly": true,
+  "no-conflicting-life-cycle-hooks": true,
+  "enforce-component-selector: true,
 
   // [ENABLED, "SUFFIX"]
   // Where "SUFFIX" is your custom suffix, for instance "Page" for Ionic 2 components.
@@ -294,6 +306,10 @@ Below you can find a recommended configuration which is based on the [Angular St
 | `trackBy-function` | Stable |
 | `import-destructuring-spacing` | Stable |
 | `no-output-named-after-standard-event` | Stable |
+| `max-inline-declarations | Stable |
+| `prefer-output-readonly` | Stable |
+| `no-conflicting-life-cycle-hooks` | Stable |
+| `enforce-component-selector` | Stable |
 | `i18n` | *Experimental* |
 | `no-unused-css` | *Experimental* |
 | `angular-whitespace` | *Experimental* |
