@@ -11,6 +11,7 @@ export { Rule as I18nRule } from './i18nRule';
 export { Rule as ImportDestructuringSpacingRule } from './importDestructuringSpacingRule';
 export { Rule as MaxInlineDeclarationsRule } from './maxInlineDeclarationsRule';
 export { Rule as NoAttributeParameterDecoratorRule } from './noAttributeParameterDecoratorRule';
+export { Rule as NoConflictingLifeCycleHooksRule } from './noConflictingLifeCycleHooksRule';
 export { Rule as NoForwardRefRule } from './noForwardRefRule';
 export { Rule as NoInputPrefixRule } from './noInputPrefixRule';
 export { Rule as NoInputRenameRule } from './noInputRenameRule';
