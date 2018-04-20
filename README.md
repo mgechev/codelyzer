@@ -100,7 +100,7 @@ Create the following `tslint.json` file like:
     "max-inline-declarations": true,
     "prefer-output-readonly": true,
     "no-conflicting-life-cycle-hooks": true,
-    "enforce-component-selector: true,
+    "enforce-component-selector": true,
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
     "use-host-property-decorator": true,
@@ -158,7 +158,7 @@ Now create the following `tslint.json` file where your `node_modules` directory 
     "max-inline-declarations": true,
     "prefer-output-readonly": true,
     "no-conflicting-life-cycle-hooks": true,
-    "enforce-component-selector: true,
+    "enforce-component-selector": true,
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
     "use-host-property-decorator": true,
@@ -268,7 +268,7 @@ Below you can find a recommended configuration which is based on the [Angular St
   "max-inline-declarations": true,
   "prefer-output-readonly": true,
   "no-conflicting-life-cycle-hooks": true,
-  "enforce-component-selector: true,
+  "enforce-component-selector": true,
 
   // [ENABLED, "SUFFIX"]
   // Where "SUFFIX" is your custom suffix, for instance "Page" for Ionic 2 components.
