@@ -306,7 +306,7 @@ Below you can find a recommended configuration which is based on the [Angular St
 | `trackBy-function` | Stable |
 | `import-destructuring-spacing` | Stable |
 | `no-output-named-after-standard-event` | Stable |
-| `max-inline-declarations | Stable |
+| `max-inline-declarations` | Stable |
 | `prefer-output-readonly` | Stable |
 | `no-conflicting-life-cycle-hooks` | Stable |
 | `enforce-component-selector` | Stable |
