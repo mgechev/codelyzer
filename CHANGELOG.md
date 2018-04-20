@@ -1,3 +1,22 @@
+# 4.3.0
+
+## New Rules
+
+- `max-inline-declarations` which limits the size of inline templates and/or styles. Credits to [NagRock](https://github.com/NagRock) [#536](https://github.com/mgechev/codelyzer/issues/536) [174ed46](https://github.com/mgechev/codelyzer/commit/174ed46f11dddd2837559163d6475e00cef8be84).
+- `prefer-output-readonly` requires the `@Output`s of a component to be `readonly`. Credits to [rafaelss95](https://github.com/rafaelss95) [#515](https://github.com/mgechev/codelyzer/issues/515) [3d652d1](https://github.com/mgechev/codelyzer/commit/3d652d13b447fabf333c994506990638ac72fcd8).
+- `no-conflicting-life-cycle-hooks` prevents to implement OnChanges and DoCheck on the same class. Credits to [rafaelss95](https://github.com/rafaelss95) [#560](https://github.com/mgechev/codelyzer/issues/560) [e521115](https://github.com/mgechev/codelyzer/commit/e521115bc6fed7521f83e72b6946a05ef87dfea3).
+- `enforce-component-selector` Component Selector Required [#551](https://github.com/mgechev/codelyzer/issues/551) [b9c899b](https://github.com/mgechev/codelyzer/commit/b9c899bef14fa12d2fb8bddbaaa9da86426a80cb). Credits to [wKoza](https://github.com/wKoza).
+
+## Bug Fixes
+
+- Possible bug with no-input-rename [#374](https://github.com/mgechev/codelyzer/issues/374) [f3a53bd](https://github.com/mgechev/codelyzer/commit/f3a53bd8164483b28816eedf6d80e7dcc7a95cb5).
+- Removed dependency on `@angular/platform-browser-dynamic` [#525](https://github.com/mgechev/codelyzer/issues/525) [671e954](https://github.com/mgechev/codelyzer/commit/671e954de3f5c6db7c1873ea462e25fb963e5e8d).
+- Rule `contextual-life-cycle` too aggressively scoped [#545](https://github.com/mgechev/codelyzer/issues/545) [dcb4b3e](https://github.com/mgechev/codelyzer/commit/dcb4b3e495c38a3cebfa47a23a62a3dcab2e8a03).
+- `no-output-named-after-standard-event` Does Not Check Output Rename [#537](https://github.com/mgechev/codelyzer/issues/537) [96d9292](https://github.com/mgechev/codelyzer/commit/96d9292a77928371819f11df102c5ad7ab198719).
+- Template Conditional Complexity reports incorrect threshold [#533](https://github.com/mgechev/codelyzer/issues/533) [5851306](https://github.com/mgechev/codelyzer/commit/58513061b9b513f2bc99789381daed1bc5316645).
+
+A lot of credits go to [rafaelss95](https://github.com/rafaelss95), [wKoza](https://github.com/wKoza). The rest of the amazing people who work on codelyzer, can be found [here](https://github.com/mgechev/codelyzer#contributors).
+
 # 4.2.1
 
 ## Bug Fixes
