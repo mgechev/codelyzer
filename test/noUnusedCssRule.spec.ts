@@ -16,15 +16,16 @@ describe('no-unused-css', () => {
           template: '<div bar="{{baz}}" [ngClass]="expr">{{ foo }}</div>',
           styles: [
             \`
-            div {
-              color: red;
-            }
+              div {
+                color: red;
+              }
             \`
           ]
         })
         class Test {
           bar: number;
-        }`;
+        }
+      `;
       assertSuccess('no-unused-css', source);
     });
 
@@ -33,22 +34,25 @@ describe('no-unused-css', () => {
         let source = `
           @Component({
             selector: 'foobar',
-            template: \`<div>
-              <section>
-                <span><h1>{{ foo }}</h1></span>
-              </section>
-            </div>\`,
+            template: \`
+              <div>
+                <section>
+                  <span><h1>{{ foo }}</h1></span>
+                </section>
+              </div>
+            \`,
             styles: [
               \`
-              div h1 {
-                color: red;
-              }
+                div h1 {
+                  color: red;
+                }
               \`
             ]
           })
           class Test {
             bar: number;
-          }`;
+          }
+        `;
         assertSuccess('no-unused-css', source);
       });
 
@@ -56,18 +60,19 @@ describe('no-unused-css', () => {
         let source = `
           @Component({
             selector: 'foobar',
-            template: \`<div [class.bar]="true"></div>\`,
+            template: '<div [class.bar]="true"></div>',
             styles: [
               \`
-              div.bar {
-                color: red;
-              }
+                div.bar {
+                  color: red;
+                }
               \`
             ]
           })
           class Test {
             bar: number;
-          }`;
+          }
+        `;
         assertSuccess('no-unused-css', source);
       });
 
@@ -75,22 +80,25 @@ describe('no-unused-css', () => {
         let source = `
           @Component({
             selector: 'foobar',
-            template: \`<div>
-              <section>
-                <span><h1 id="header">{{ foo }}</h1></span>
-              </section>
-            </div>\`,
+            template: \`
+              <div>
+                <section>
+                  <span><h1 id="header">{{ foo }}</h1></span>
+                </section>
+              </div>
+            \`,
             styles: [
               \`
-              div h1#header {
-                color: red;
-              }
+                div h1#header {
+                  color: red;
+                }
               \`
             ]
           })
           class Test {
             bar: number;
-          }`;
+          }
+        `;
         assertSuccess('no-unused-css', source);
       });
 
@@ -98,22 +106,25 @@ describe('no-unused-css', () => {
         let source = `
           @Component({
             selector: 'foobar',
-            template: \`<div>
-              <section>
-                <span><h1>{{ foo }}</h1></span>
-              </section>
-            </div>\`,
+            template: \`
+              <div>
+                <section>
+                  <span><h1>{{ foo }}</h1></span>
+                </section>
+              </div>
+            \`,
             styles: [
               \`
-              div h1 {
-                color: red;
-              }
+                div h1 {
+                  color: red;
+                }
               \`
             ]
           })
           class Test {
             bar: number;
-          }`;
+          }
+        `;
         assertSuccess('no-unused-css', source);
       });
 
@@ -122,27 +133,30 @@ describe('no-unused-css', () => {
           let source = `
             @Component({
               selector: 'foobar',
-              template: \`<div>
-                <section>
-                  <span><h1 id="header">{{ foo }}</h1></span>
-                </section>
-              </div>\`,
+              template: \`
+                <div>
+                  <section>
+                    <span><h1 id="header">{{ foo }}</h1></span>
+                  </section>
+                </div>
+              \`,
               styles: [
                 \`
-                div h1#header {
-                  color: red;
-                }
+                  div h1#header {
+                    color: red;
+                  }
                 \`,
                 \`
-                #header {
-                  font-size: 10px;
-                }
+                  #header {
+                    font-size: 10px;
+                  }
                 \`
               ]
             })
             class Test {
               bar: number;
-            }`;
+            }
+          `;
           assertSuccess('no-unused-css', source);
         });
       });
@@ -153,22 +167,25 @@ describe('no-unused-css', () => {
         let source = `
           @Component({
             selector: 'foobar',
-            template: \`<div>
-              <section>
-                <span><h1 [class.header]="bar">{{ foo }}</h1></span>
-              </section>
-            </div>\`,
+            template: \`
+              <div>
+                <section>
+                  <span><h1 [class.header]="bar">{{ foo }}</h1></span>
+                </section>
+              </div>
+            \`,
             styles: [
               \`
-              div h1.header {
-                color: red;
-              }
+                div h1.header {
+                  color: red;
+                }
               \`
             ]
           })
           class Test {
             bar: number;
-          }`;
+          }
+        `;
         assertSuccess('no-unused-css', source);
       });
     });
@@ -178,22 +195,25 @@ describe('no-unused-css', () => {
         let source = `
           @Component({
             selector: 'foobar',
-            template: \`<div>
-              <section class="bar {{baz}}">
-                <span><h1 [attr.id]="invalid">{{ foo }}</h1></span>
-              </section>
-            </div>\`,
+            template: \`
+              <div>
+                <section class="bar {{baz}}">
+                  <span><h1 [attr.id]="invalid">{{ foo }}</h1></span>
+                </section>
+              </div>
+            \`,
             styles: [
               \`
-              div h1#header {
-                color: red;
-              }
+                div h1#header {
+                  color: red;
+                }
               \`
             ]
           })
           class Test {
             bar: number;
-          }`;
+          }
+        `;
         assertSuccess('no-unused-css', source);
       });
 
@@ -201,50 +221,56 @@ describe('no-unused-css', () => {
         let source = `
           @Component({
             selector: 'foobar',
-            template: \`<div>
-              <section [ngClass]="{ 'bar': true }">
-                <span><h1 id="{{invalid}}">{{ foo }}</h1></span>
-              </section>
-            </div>\`,
+            template: \`
+              <div>
+                <section [ngClass]="{ 'bar': true }">
+                  <span><h1 id="{{invalid}}">{{ foo }}</h1></span>
+                </section>
+              </div>
+            \`,
             styles: [
               \`
-              div h1#header {
-                color: red;
-              }
+                div h1#header {
+                  color: red;
+                }
               \`
             ]
           })
           class Test {
             bar: number;
-          }`;
+          }
+        `;
         assertSuccess('no-unused-css', source);
       });
     });
   });
 
   describe('failures', () => {
-    it(`should fail when having a complex selector that doesn't match anything`, () => {
+    it("should fail when having a complex selector that doesn't match anything", () => {
       let source = `
         @Component({
           selector: 'foobar',
-          template: \`<div>
-            <section>
-              <span><h1>{{ foo }}</h1></span>
-            </section>
-          </div>\`,
+          template: \`
+            <div>
+              <section>
+                <span><h1>{{ foo }}</h1></span>
+              </section>
+            </div>
+          \`,
           styles: [
             \`
-            div h2 {
-            ~~~~~~~~
-              color: red;
-            }
-            ~
+              div h2 {
+              ~~~~~~~~
+                color: red;
+              }
+              ~
             \`
           ]
         })
         class Test {
           bar: number;
-        }`;
+        }
+      `;
       assertAnnotated({
         ruleName: 'no-unused-css',
         message: 'Unused styles',
@@ -256,29 +282,32 @@ describe('no-unused-css', () => {
       let source = `
         @Component({
           selector: 'foobar',
-          template: \`<div>
-            <section>
-              <span><h2>{{ foo }}</h2></span>
-            </section>
-          </div>\`,
+          template: \`
+            <div>
+              <section>
+                <span><h2>{{ foo }}</h2></span>
+              </section>
+            </div>
+          \`,
           styles: [
             \`
-            div h2 {
-              color: red;
-            }
+              div h2 {
+                color: red;
+              }
             \`,
             \`
-            h1 {
-            ~~~~
-              color: black;
-            }
-            ~
+              h1 {
+              ~~~~
+                color: black;
+              }
+              ~
             \`
           ]
         })
         class Test {
           bar: number;
-        }`;
+        }
+      `;
       assertAnnotated({
         ruleName: 'no-unused-css',
         message: 'Unused styles',
@@ -290,24 +319,27 @@ describe('no-unused-css', () => {
       let source = `
         @Component({
           selector: 'foobar',
-          template: \`<div>
-            <section class="bar">
-              <span><h1 [attr.id]="bar">{{ foo }}</h1></span>
-            </section>
-          </div>\`,
+          template: \`
+            <div>
+              <section class="bar">
+                <span><h1 [attr.id]="bar">{{ foo }}</h1></span>
+              </section>
+            </div>
+          \`,
           styles: [
             \`
-            div section.bar h2 {
-            ~~~~~~~~~~~~~~~~~~~~
-              color: red;
-            }
-            ~
+              div section.bar h2 {
+              ~~~~~~~~~~~~~~~~~~~~
+                color: red;
+              }
+              ~
             \`
           ]
         })
         class Test {
           bar: number;
-        }`;
+        }
+      `;
       assertAnnotated({
         ruleName: 'no-unused-css',
         message: 'Unused styles',
@@ -317,26 +349,29 @@ describe('no-unused-css', () => {
 
     it('should fail for structural directives when selector does not match', () => {
       let source = `
-          @Component({
-            selector: 'foobar',
-            template: \`<div>
+        @Component({
+          selector: 'foobar',
+          template: \`
+            <div>
               <section>
                 <span><h1 *ngIf="true">{{ foo }}</h1></span>
               </section>
-            </div>\`,
-            styles: [
-              \`
+            </div>
+          \`,
+          styles: [
+            \`
               div h1#header {
               ~~~~~~~~~~~~~~~
                 color: red;
               }
               ~
-              \`
-            ]
-          })
-          class Test {
-            bar: number;
-          }`;
+            \`
+          ]
+        })
+        class Test {
+          bar: number;
+        }
+      `;
       assertAnnotated({
         ruleName: 'no-unused-css',
         message: 'Unused styles',
@@ -349,24 +384,27 @@ describe('no-unused-css', () => {
         let source = `
           @Component({
             selector: 'foobar',
-            template: \`<div>
-              <section>
-                <span><h1 [class.head]="bar">{{ foo }}</h1></span>
-              </section>
-            </div>\`,
+            template: \`
+              <div>
+                <section>
+                  <span><h1 [class.head]="bar">{{ foo }}</h1></span>
+                </section>
+              </div>
+            \`,
             styles: [
               \`
-              div h1.header {
-              ~~~~~~~~~~~~~~~
-                color: red;
-              }
-              ~
+                div h1.header {
+                ~~~~~~~~~~~~~~~
+                  color: red;
+                }
+                ~
               \`
             ]
           })
           class Test {
             bar: number;
-          }`;
+          }
+        `;
         assertAnnotated({
           ruleName: 'no-unused-css',
           message: 'Unused styles',
@@ -381,22 +419,25 @@ describe('no-unused-css', () => {
       let source = `
         @Component({
           selector: 'foobar',
-          template: \`<div>
-            <section>
-              <span><h1 [class.header]="bar">{{ foo }}</h1></span>
-            </section>
-          </div>\`,
+          template: \`
+            <div>
+              <section>
+                <span><h1 [class.header]="bar">{{ foo }}</h1></span>
+              </section>
+            </div>
+          \`,
           styles: [
             \`
-            :host {
-              color: red;
-            }
+              :host {
+                color: red;
+              }
             \`
           ]
         })
         class Test {
           bar: number;
-        }`;
+        }
+      `;
       assertSuccess('no-unused-css', source);
     });
 
@@ -404,24 +445,27 @@ describe('no-unused-css', () => {
       let source = `
         @Component({
           selector: 'foobar',
-          template: \`<div>
-            <section>
-              <span><h1 [class.header]="bar">{{ foo }}</h1></span>
-            </section>
-          </div>\`,
+          template: \`
+            <div>
+              <section>
+                <span><h1 [class.header]="bar">{{ foo }}</h1></span>
+              </section>
+            </div>
+          \`,
           styles: [
             \`
-            :host section h2 {
-            ~~~~~~~~~~~~~~~~~~
-              color: red;
-            }
-            ~
+              :host section h2 {
+              ~~~~~~~~~~~~~~~~~~
+                color: red;
+              }
+              ~
             \`
           ]
         })
         class Test {
           bar: number;
-        }`;
+        }
+      `;
       assertAnnotated({
         ruleName: 'no-unused-css',
         message: 'Unused styles',
@@ -435,22 +479,25 @@ describe('no-unused-css', () => {
       let source = `
         @Component({
           selector: 'foobar',
-          template: \`<div>
-            <section>
-              <span><h1 [class.header]="bar">{{ foo }}</h1></span>
-            </section>
-          </div>\`,
+          template: \`
+            <div>
+              <section>
+                <span><h1 [class.header]="bar">{{ foo }}</h1></span>
+              </section>
+            </div>
+          \`,
           styles: [
             \`
-            div section /deep/ h2 {
-              color: red;
-            }
+              div section /deep/ h2 {
+                color: red;
+              }
             \`
           ]
         })
         class Test {
           bar: number;
-        }`;
+        }
+      `;
       assertSuccess('no-unused-css', source);
     });
 
@@ -458,24 +505,27 @@ describe('no-unused-css', () => {
       let source = `
         @Component({
           selector: 'foobar',
-          template: \`<div>
-            <content>
-              <span><h1 [class.header]="bar">{{ foo }}</h1></span>
-            </content>
-          </div>\`,
+          template: \`
+            <div>
+              <content>
+                <span><h1 [class.header]="bar">{{ foo }}</h1></span>
+              </content>
+            </div>
+          \`,
           styles: [
             \`
-            div section /deep/ h2 {
-            ~~~~~~~~~~~~~~~~~~~~~~~
-              color: red;
-            }
-            ~
+              div section /deep/ h2 {
+              ~~~~~~~~~~~~~~~~~~~~~~~
+                color: red;
+              }
+              ~
             \`
           ]
         })
         class Test {
           bar: number;
-        }`;
+        }
+      `;
       assertAnnotated({
         ruleName: 'no-unused-css',
         message: 'Unused styles',
@@ -487,22 +537,25 @@ describe('no-unused-css', () => {
       let source = `
         @Component({
           selector: 'foobar',
-          template: \`<div>
-            <section>
-              <span><h1 [class.header]="bar">{{ foo }}</h1></span>
-            </section>
-          </div>\`,
+          template: \`
+            <div>
+              <section>
+                <span><h1 [class.header]="bar">{{ foo }}</h1></span>
+              </section>
+            </div>
+          \`,
           styles: [
             \`
-            div section >>> h2 {
-              color: red;
-            }
+              div section >>> h2 {
+                color: red;
+              }
             \`
           ]
         })
         class Test {
           bar: number;
-        }`;
+        }
+      `;
       assertSuccess('no-unused-css', source);
     });
 
@@ -510,24 +563,27 @@ describe('no-unused-css', () => {
       let source = `
         @Component({
           selector: 'foobar',
-          template: \`<div>
-            <content>
-              <span><h1 [class.header]="bar">{{ foo }}</h1></span>
-            </content>
-          </div>\`,
+          template: \`
+            <div>
+              <content>
+                <span><h1 [class.header]="bar">{{ foo }}</h1></span>
+              </content>
+            </div>
+          \`,
           styles: [
             \`
-            div section >>> h2 {
-            ~~~~~~~~~~~~~~~~~~~~
-              color: red;
-            }
-            ~
+              div section >>> h2 {
+              ~~~~~~~~~~~~~~~~~~~~
+                color: red;
+              }
+              ~
             \`
           ]
         })
         class Test {
           bar: number;
-        }`;
+        }
+      `;
       assertAnnotated({
         ruleName: 'no-unused-css',
         message: 'Unused styles',
@@ -541,22 +597,25 @@ describe('no-unused-css', () => {
       let source = `
         @Component({
           selector: 'foobar',
-          template: \`<div>
-            <section>
-              <span><h1 [class.header]="bar">{{ foo }}</h1></span>
-            </section>
-          </div>\`,
+          template: \`
+            <div>
+              <section>
+                <span><h1 [class.header]="bar">{{ foo }}</h1></span>
+              </section>
+            </div>
+          \`,
           styles: [
             \`
-            div section::before {
-              color: red;
-            }
+              div section::before {
+                color: red;
+              }
             \`
           ]
         })
         class Test {
           bar: number;
-        }`;
+        }
+      `;
       assertSuccess('no-unused-css', source);
     });
 
@@ -564,24 +623,27 @@ describe('no-unused-css', () => {
       let source = `
         @Component({
           selector: 'foobar',
-          template: \`<div>
-            <section>
-              <span><h1 [class.header]="bar">{{ foo }}</h1></span>
-            </section>
-          </div>\`,
+          template: \`
+            <div>
+              <section>
+                <span><h1 [class.header]="bar">{{ foo }}</h1></span>
+              </section>
+            </div>
+          \`,
           styles: [
             \`
-            div content::before {
-            ~~~~~~~~~~~~~~~~~~~~~
-              color: red;
-            }
-            ~
+              div content::before {
+              ~~~~~~~~~~~~~~~~~~~~~
+                color: red;
+              }
+              ~
             \`
           ]
         })
         class Test {
           bar: number;
-        }`;
+        }
+      `;
       assertAnnotated({
         ruleName: 'no-unused-css',
         message: 'Unused styles',
@@ -596,16 +658,19 @@ describe('no-unused-css', () => {
         @Component({
           selector: 'foobar',
           encapsulation: whatever,
-          template: \`<div></div>\`,
+          template: \`
+            <div></div>
+          \`,
           styles: [
             \`
-            p {
-              color: red;
-            }
+              p {
+                color: red;
+              }
             \`
           ]
         })
-        class Test {}`;
+        class Test {}
+      `;
       assertSuccess('no-unused-css', source);
     });
 
@@ -614,16 +679,17 @@ describe('no-unused-css', () => {
         @Component({
           selector: 'foobar',
           encapsulation: ViewEncapsulation.None,
-          template: \`<div></div>\`,
+          template: '<div></div>',
           styles: [
             \`
-            p {
-              color: red;
-            }
+              p {
+                color: red;
+              }
             \`
           ]
         })
-        class Test {}`;
+        class Test {}
+      `;
       assertSuccess('no-unused-css', source);
     });
 
@@ -632,18 +698,19 @@ describe('no-unused-css', () => {
         @Component({
           selector: 'foobar',
           encapsulation: ViewEncapsulation.Native,
-          template: \`<div></div>\`,
+          template: '<div></div>',
           styles: [
             \`
-            p {
-            ~~~
-              color: red;
-            }
-            ~
+              p {
+              ~~~
+                color: red;
+              }
+              ~
             \`
           ]
         })
-        class Test {}`;
+        class Test {}
+      `;
       assertAnnotated({
         ruleName: 'no-unused-css',
         message: 'Unused styles',
@@ -656,18 +723,19 @@ describe('no-unused-css', () => {
         @Component({
           selector: 'foobar',
           encapsulation: ViewEncapsulation.Emulated,
-          template: \`<div></div>\`,
+          template: '<div></div>',
           styles: [
             \`
-            p {
-            ~~~
-              color: red;
-            }
-            ~
+              p {
+              ~~~
+                color: red;
+              }
+              ~
             \`
           ]
         })
-        class Test {}`;
+        class Test {}
+      `;
       assertAnnotated({
         ruleName: 'no-unused-css',
         message: 'Unused styles',
@@ -680,18 +748,19 @@ describe('no-unused-css', () => {
         @Component({
           selector: 'foobar',
           encapsulation: prefix.foo.ViewEncapsulation.Emulated,
-          template: \`<div></div>\`,
+          template: '<div></div>',
           styles: [
             \`
-            p {
-            ~~~
-              color: red;
-            }
-            ~
+              p {
+              ~~~
+                color: red;
+              }
+              ~
             \`
           ]
         })
-        class Test {}`;
+        class Test {}
+      `;
       assertAnnotated({
         ruleName: 'no-unused-css',
         message: 'Unused styles',
@@ -714,28 +783,27 @@ describe('no-unused-css', () => {
     };
 
     let source = `
-    @Component({
-      selector: 'hero-cmp',
-      template: \`
-        <h1>Hello <span>{{ hero.name }}</span></h1>
-      \`,
-      styles: [
-        \`
-        h1 {
-       ~~~~~
-          spam {
-            baz {
-              color: red;
+      @Component({
+        selector: 'hero-cmp',
+        template: '<h1>Hello <span>{{ hero.name }}</span></h1>',
+        styles: [
+          \`
+            h1 {
+           ~~~~~~
+              spam {
+                baz {
+                  color: red;
+                }
+               ~
+              }
             }
-           ~
-          }
-        }
-        \`
-      ]
-    })
-    class HeroComponent {
-      private hero: Hero;
-    }`;
+          \`
+        ]
+      })
+      class HeroComponent {
+        private hero: Hero;
+      }
+    `;
     assertAnnotated({
       ruleName: 'no-unused-css',
       message: 'Unused styles',
@@ -747,22 +815,21 @@ describe('no-unused-css', () => {
   describe('inconsistencies with template', () => {
     it('should ignore misspelled template', () => {
       let source = `
-      @Component({
-        selector: 'hero-cmp',
-        templae: \`
-          <h1>Hello <span>{{ hero.name }}</span></h1>
-        \`,
-        styles: [
-          \`
-          h1 spam {
-            color: red;
-          }
-          \`
-        ]
-      })
-      class HeroComponent {
-        private hero: Hero;
-      }`;
+        @Component({
+          selector: 'hero-cmp',
+          templae: '<h1>Hello <span>{{ hero.name }}</span></h1>',
+          styles: [
+            \`
+              h1 spam {
+                color: red;
+              }
+            \`
+          ]
+        })
+        class HeroComponent {
+          private hero: Hero;
+        }
+      `;
       assertSuccess('no-unused-css', source);
     });
   });
@@ -773,16 +840,17 @@ describe('no-unused-css', () => {
         @Component({
           selector: 'foobar',
           encapsulation: prefix.foo.ViewEncapsulation.Emulated,
-          template: \`<div></div>\`,
+          template: '<div></div>',
           styles: [
             \`
-            p {
-              color: red;
-            }
+              p {
+                color: red;
+              }
             \`
           ]
         })
-        class Test {}`;
+        class Test {}
+      `;
       const failures = assertFailure(
         'no-unused-css',
         source,
@@ -790,19 +858,19 @@ describe('no-unused-css', () => {
           message: 'Unused styles',
           startPosition: {
             line: 7,
-            character: 12
+            character: 14
           },
           endPosition: {
             line: 9,
-            character: 13
+            character: 15
           }
         },
         null
       );
       const replacement = failures[0].getFix() as Replacement;
       expect(replacement.text).to.eq('');
-      expect(replacement.start).to.eq(197);
-      expect(replacement.end).to.eq(240);
+      expect(replacement.start).to.eq(199);
+      expect(replacement.end).to.eq(246);
     });
 
     it('should work with SASS', () => {
@@ -813,50 +881,47 @@ describe('no-unused-css', () => {
           sourceMapEmbed: true
         });
         const code = res.css.toString();
-        const base64Map = code
-          .match(/\/\*(.*?)\*\//)[1]
-          .replace('# sourceMappingURL=data:application/json;base64,', '');
+        const base64Map = code.match(/\/\*(.*?)\*\//)[1].replace('# sourceMappingURL=data:application/json;base64,', '');
         const map = JSON.parse(new Buffer(base64Map, 'base64').toString('ascii'));
         return { code, source, map };
       };
 
       let source = `
-      @Component({
-        selector: 'hero-cmp',
-        template: \`
-          <h1>Hello <span>{{ hero.name }}</span></h1>
-        \`,
-        styles: [
-          \`
-          h1 {
-            spam {
-              baz {
-                color: red;
+        @Component({
+          selector: 'hero-cmp',
+          template: '<h1>Hello <span>{{ hero.name }}</span></h1>',
+          styles: [
+            \`
+              h1 {
+                spam {
+                  baz {
+                    color: red;
+                  }
+                }
               }
-            }
-          }
-          \`
-        ]
-      })
-      class HeroComponent {
-        private hero: Hero;
-      }`;
+            \`
+          ]
+        })
+        class HeroComponent {
+          private hero: Hero;
+        }
+      `;
       const failures = assertFailure('no-unused-css', source, {
         message: 'Unused styles',
         startPosition: {
-          line: 8,
-          character: 9
+          line: 6,
+          character: 13
         },
         endPosition: {
-          line: 12,
-          character: 14
+          line: 10,
+          character: 18
         }
       });
       Config.transformStyle = (code: string) => ({ code, map: null });
       const replacement = failures[0].getFix() as Replacement;
       expect(replacement.text).to.eq('');
-      expect(replacement.start).to.eq(174);
-      expect(replacement.end).to.eq(261); // should be 276
+      expect(replacement.start).to.eq(168);
+      expect(replacement.end).to.eq(271); // should be 276
     });
   });
 
@@ -865,17 +930,20 @@ describe('no-unused-css', () => {
       let source = `
         @Component({
           selector: 'div[some-component]',
-        template: \`<ng-content></ng-content>\`,
+        template: '<ng-content></ng-content>',
           styles: [
-          \`:host {
-            display:        flex;
-            flex:           1 100%;
-            margin:         20px;"
-          }\`
+            \`
+              :host {
+                display:        flex;
+                flex:           1 100%;
+                margin:         20px;"
+              }
+            \`
           ],
           changeDetection: ChangeDetectionStrategy.OnPush
         })
-        class Test {}`;
+        class Test {}
+      `;
       assertSuccess('no-unused-css', source);
     });
 
@@ -883,17 +951,20 @@ describe('no-unused-css', () => {
       let source = `
         @Component({
           selector: 'div[some-component]',
-        template: \`<ng-content></ng-content>\`,
+          template: '<ng-content></ng-content>',
           styles: [
-          \`:host {
-            display:        flex;
-            flex:           1 100%;
-            margin:   /*      20px;
-          }\`
+            \`
+              :host {
+                display:        flex;
+                flex:           1 100%;
+                margin:   /*      20px;
+              }
+            \`
           ],
           changeDetection: ChangeDetectionStrategy.OnPush
         })
-        class Test {}`;
+        class Test {}
+      `;
       assertSuccess('no-unused-css', source);
     });
   });

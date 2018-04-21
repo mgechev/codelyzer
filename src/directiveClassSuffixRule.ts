@@ -18,7 +18,6 @@ const getInterfaceName = (t: any): string => {
 const ValidatorSuffix = 'Validator';
 
 export class Rule extends Lint.Rules.AbstractRule {
-
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'directive-class-suffix',
     type: 'style',
@@ -28,15 +27,12 @@ export class Rule extends Lint.Rules.AbstractRule {
     options: {
       type: 'array',
       items: {
-        type: 'string',
+        type: 'string'
       }
     },
-    optionExamples: [
-      'true',
-      '[true, "Directive", "MySuffix"]',
-    ],
+    optionExamples: ['true', '[true, "Directive", "MySuffix"]'],
     optionsDescription: 'Supply a list of allowed component suffixes. Defaults to "Directive".',
-    typescriptOnly: true,
+    typescriptOnly: true
   };
 
   static FAILURE: string = 'The name of the class %s should end with the suffix %s (https://angular.io/styleguide#style-02-03)';
@@ -46,9 +42,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   }
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(
-      new ClassMetadataWalker(sourceFile,
-        this.getOptions()));
+    return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this.getOptions()));
   }
 }
 
@@ -61,19 +55,20 @@ export class ClassMetadataWalker extends NgWalker {
     const heritageClauses = meta.controller.heritageClauses;
     if (heritageClauses) {
       const i = heritageClauses.filter(h => h.token === ts.SyntaxKind.ImplementsKeyword);
-      if (i.length !== 0 &&
-          i[0].types.map(getInterfaceName)
-            .filter(name => !!name)
-            .some(name => name.endsWith(ValidatorSuffix))) {
+      if (
+        i.length !== 0 &&
+        i[0].types
+          .map(getInterfaceName)
+          .filter(name => !!name)
+          .some(name => name.endsWith(ValidatorSuffix))
+      ) {
         suffixes.push(ValidatorSuffix);
       }
     }
     if (!Rule.validate(className, suffixes)) {
       this.addFailure(
-        this.createFailure(
-          name.getStart(),
-          name.getWidth(),
-          sprintf.apply(this, [Rule.FAILURE, className, suffixes.join(', ')])));
+        this.createFailure(name.getStart(), name.getWidth(), sprintf.apply(this, [Rule.FAILURE, className, suffixes.join(', ')]))
+      );
     }
   }
 }

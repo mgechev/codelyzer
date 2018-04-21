@@ -3,29 +3,24 @@ import { RuleWalker, RuleFailure, IOptions, Fix, Replacement } from 'tslint';
 import { CodeWithSourceMap } from './metadata';
 import { SourceMapConsumer } from 'source-map';
 
-const LineFeed = 0x0A;
-const CarriageReturn = 0x0D;
-const MaxAsciiCharacter = 0x7F;
+const LineFeed = 0x0a;
+const CarriageReturn = 0x0d;
+const MaxAsciiCharacter = 0x7f;
 const LineSeparator = 0x2028;
 const ParagraphSeparator = 0x2029;
 
 export function isLineBreak(ch: number): boolean {
-  return ch === LineFeed ||
-      ch === CarriageReturn ||
-      ch === LineSeparator ||
-      ch === ParagraphSeparator;
+  return ch === LineFeed || ch === CarriageReturn || ch === LineSeparator || ch === ParagraphSeparator;
 }
 
 function binarySearch<T>(array: T[], value: T, comparer?: (v1: T, v2: T) => number, offset?: number): number {
   if (!array || array.length === 0) {
-      return -1;
+    return -1;
   }
 
   let low = offset || 0;
   let high = array.length - 1;
-  comparer = comparer !== undefined
-      ? comparer
-      : (v1, v2) => (v1 < v2 ? -1 : (v1 > v2 ? 1 : 0));
+  comparer = comparer !== undefined ? comparer : (v1, v2) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
   while (low <= high) {
     const middle = low + ((high - low) >> 1);
@@ -97,7 +92,6 @@ function computeLineStarts(text: string): number[] {
 }
 
 export class SourceMappingVisitor extends RuleWalker {
-
   parentAST: any;
   private consumer: SourceMapConsumer;
 

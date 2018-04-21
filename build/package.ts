@@ -1,9 +1,6 @@
 process.stdin.setEncoding('utf8');
 
-const blacklist = [
-  'scripts',
-  'devDependencies'
-];
+const blacklist = ['scripts', 'devDependencies'];
 
 process.stdin.resume();
 process.stdin.setEncoding('utf8');
@@ -29,4 +26,3 @@ process.stdin.on('end', () => {
   process.stdout.write(JSON.stringify(result, null, 2));
   packageJson = '';
 });
-

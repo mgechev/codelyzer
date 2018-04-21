@@ -9,15 +9,16 @@ import { RecursiveAngularExpressionVisitor } from './recursiveAngularExpressionV
 import { SourceMappingVisitor } from '../sourceMappingVisitor';
 import { NgWalker } from '../ngWalker';
 
-
 const getExpressionDisplacement = (binding: any) => {
   let attrLen = 0;
   let valLen = 0;
   let totalLength = 0;
   let result = 0;
-  if (binding instanceof ast.BoundEventAst ||
-      binding instanceof ast.BoundElementPropertyAst ||
-      binding instanceof ast.BoundDirectivePropertyAst) {
+  if (
+    binding instanceof ast.BoundEventAst ||
+    binding instanceof ast.BoundElementPropertyAst ||
+    binding instanceof ast.BoundDirectivePropertyAst
+  ) {
     // subBindingLen is for [class.foo], [style.foo], the length of
     // the binding type. For event it is 0. (+1 because of the ".")
     let subBindingLen = 0;
@@ -26,17 +27,17 @@ const getExpressionDisplacement = (binding: any) => {
       // The length of the binding type
       switch (prop.type) {
         case ast.PropertyBindingType.Animation:
-        subBindingLen = 'animate'.length + 1;
-        break;
+          subBindingLen = 'animate'.length + 1;
+          break;
         case ast.PropertyBindingType.Attribute:
-        subBindingLen = 'attr'.length + 1;
-        break;
+          subBindingLen = 'attr'.length + 1;
+          break;
         case ast.PropertyBindingType.Class:
-        subBindingLen = 'class'.length + 1;
-        break;
+          subBindingLen = 'class'.length + 1;
+          break;
         case ast.PropertyBindingType.Style:
-        subBindingLen = 'style'.length + 1;
-        break;
+          subBindingLen = 'style'.length + 1;
+          break;
       }
     }
     // For [class.foo]=":
@@ -50,8 +51,10 @@ const getExpressionDisplacement = (binding: any) => {
     // Total length of the attribute value
     if (binding instanceof ast.BoundEventAst) {
       valLen = binding.handler.span.end;
-    } else if (binding instanceof ast.BoundDirectivePropertyAst &&
-      ( binding.templateName === 'ngForOf' || binding.templateName === 'ngIf')) {
+    } else if (
+      binding instanceof ast.BoundDirectivePropertyAst &&
+      (binding.templateName === 'ngForOf' || binding.templateName === 'ngIf')
+    ) {
       // Handling everything except [ngForOf] differently
       // [ngForOf] and [ngIf] require different logic because it gets desugered
       result = binding.sourceSpan.start.file.content.lastIndexOf((binding.value as any).source);
@@ -65,8 +68,7 @@ const getExpressionDisplacement = (binding: any) => {
     }
 
     // Handling everything except [ngForOf]
-    if (!(binding instanceof ast.BoundDirectivePropertyAst) ||
-      ( binding.templateName !== 'ngForOf' && binding.templateName !== 'ngIf')) {
+    if (!(binding instanceof ast.BoundDirectivePropertyAst) || (binding.templateName !== 'ngForOf' && binding.templateName !== 'ngIf')) {
       // Total length of the entire part of the template AST corresponding to this AST.
       totalLength = binding.sourceSpan.end.offset - binding.sourceSpan.start.offset;
       // The whitespace are possible only in:
@@ -83,27 +85,32 @@ const getExpressionDisplacement = (binding: any) => {
   return result;
 };
 
-
 export interface RecursiveAngularExpressionVisitorCtr {
-  new(sourceFile: ts.SourceFile, options: Lint.IOptions, context: ComponentMetadata, basePosition: number);
+  new (sourceFile: ts.SourceFile, options: Lint.IOptions, context: ComponentMetadata, basePosition: number);
 }
 
-
 export interface TemplateAstVisitorCtr {
-  new(sourceFile: ts.SourceFile, options: Lint.IOptions, context: ComponentMetadata,
-    templateStart: number, expressionVisitorCtrl: RecursiveAngularExpressionVisitorCtr);
+  new (
+    sourceFile: ts.SourceFile,
+    options: Lint.IOptions,
+    context: ComponentMetadata,
+    templateStart: number,
+    expressionVisitorCtrl: RecursiveAngularExpressionVisitorCtr
+  );
 }
 
 export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast.TemplateAstVisitor {
   private _variables = {};
 
-  constructor(sourceFile: ts.SourceFile,
+  constructor(
+    sourceFile: ts.SourceFile,
     private _originalOptions: Lint.IOptions,
     protected context: ComponentMetadata,
     protected templateStart: number,
-    private expressionVisitorCtrl: RecursiveAngularExpressionVisitorCtr = RecursiveAngularExpressionVisitor) {
-      super(sourceFile, _originalOptions, context.template.template, templateStart);
-    }
+    private expressionVisitorCtrl: RecursiveAngularExpressionVisitorCtr = RecursiveAngularExpressionVisitor
+  ) {
+    super(sourceFile, _originalOptions, context.template.template, templateStart);
+  }
 
   visit?(node: ast.TemplateAst, context: any): any {
     node.visit(this, context);
@@ -137,8 +144,7 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
 
   visitEvent(ast: ast.BoundEventAst, context: any): any {
     this._variables['$event'] = true;
-    this.visitNgTemplateAST(ast.handler,
-        this.templateStart + getExpressionDisplacement(ast));
+    this.visitNgTemplateAST(ast.handler, this.templateStart + getExpressionDisplacement(ast));
     this._variables['$event'] = false;
   }
 
@@ -155,8 +161,7 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
       // Note that will not be reliable for different interpolation symbols
       const ast: any = (<e.ASTWithSource>text.value).ast;
       ast.interpolateExpression = (<any>text.value).source;
-      this.visitNgTemplateAST(ast,
-          this.templateStart + getExpressionDisplacement(text));
+      this.visitNgTemplateAST(ast, this.templateStart + getExpressionDisplacement(text));
     }
   }
 
@@ -174,9 +179,8 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
     }
   }
 
-  protected visitNgTemplateAST(ast: e.AST, templateStart: number,  prop?: any) {
-    const templateVisitor =
-      new this.expressionVisitorCtrl(this.getSourceFile(), this._originalOptions, this.context, templateStart);
+  protected visitNgTemplateAST(ast: e.AST, templateStart: number, prop?: any) {
+    const templateVisitor = new this.expressionVisitorCtrl(this.getSourceFile(), this._originalOptions, this.context, templateStart);
     templateVisitor.preDefinedVariables = this._variables;
     templateVisitor.parentAST = prop;
     templateVisitor.visit(ast);

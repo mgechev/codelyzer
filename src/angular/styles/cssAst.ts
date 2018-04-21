@@ -1,4 +1,3 @@
-/* tslint:disable */
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -72,12 +71,7 @@ export abstract class CssRuleAst extends CssAst {
 }
 
 export class CssBlockRuleAst extends CssRuleAst {
-  constructor(
-    public location: ParseSourceSpan,
-    public type: BlockType,
-    public block: CssBlockAst,
-    public name: CssToken | null = null
-  ) {
+  constructor(public location: ParseSourceSpan, public type: BlockType, public block: CssBlockAst, public name: CssToken | null = null) {
     super(location);
   }
   visit(visitor: CssAstVisitor, context?: any): any {
@@ -113,13 +107,7 @@ export class CssBlockDefinitionRuleAst extends CssBlockRuleAst {
   ) {
     super(location, type, block);
     const firstCssToken: CssToken = query.tokens[0];
-    this.name = new CssToken(
-      firstCssToken.index,
-      firstCssToken.column,
-      firstCssToken.line,
-      CssTokenType.Identifier,
-      this.strValue
-    );
+    this.name = new CssToken(firstCssToken.index, firstCssToken.column, firstCssToken.line, CssTokenType.Identifier, this.strValue);
   }
   visit(visitor: CssAstVisitor, context?: any): any {
     return visitor.visitCssBlock(this.block, context);

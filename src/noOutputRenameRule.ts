@@ -12,20 +12,17 @@ export class Rule extends Lint.Rules.AbstractRule {
     rationale: 'Two names for the same property (one private, one public) is inherently confusing.',
     options: null,
     optionsDescription: 'Not configurable.',
-    typescriptOnly: true,
+    typescriptOnly: true
   };
 
   static FAILURE_STRING: string = 'In the class "%s", the directive output ' +
-    'property "%s" should not be renamed.' +
-    'Please, consider the following use "@Output() %s = new EventEmitter();"';
+  'property "%s" should not be renamed.' +
+  'Please, consider the following use "@Output() %s = new EventEmitter();"';
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(
-      new OutputMetadataWalker(sourceFile,
-        this.getOptions()));
+    return this.applyWithWalker(new OutputMetadataWalker(sourceFile, this.getOptions()));
   }
 }
-
 
 export class OutputMetadataWalker extends NgWalker {
   visitNgOutput(property: ts.PropertyDeclaration, output: ts.Decorator, args: string[]) {
@@ -34,11 +31,7 @@ export class OutputMetadataWalker extends NgWalker {
     if (args.length !== 0 && memberName !== args[0]) {
       let failureConfig: string[] = [className, memberName, memberName];
       failureConfig.unshift(Rule.FAILURE_STRING);
-      this.addFailure(
-        this.createFailure(
-          property.getStart(),
-          property.getWidth(),
-          sprintf.apply(this, failureConfig)));
+      this.addFailure(this.createFailure(property.getStart(), property.getWidth(), sprintf.apply(this, failureConfig)));
     }
   }
 }

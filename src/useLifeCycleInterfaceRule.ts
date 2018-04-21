@@ -19,7 +19,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     rationale: 'Interfaces prescribe typed method signatures. Use those signatures to flag spelling and syntax mistakes.',
     options: null,
     optionsDescription: 'Not configurable.',
-    typescriptOnly: true,
+    typescriptOnly: true
   };
 
   static FAILURE = 'Implement lifecycle hook interface %s for method %s in class %s (https://angular.io/styleguide#style-09-01)';
@@ -38,55 +38,53 @@ export class Rule extends Lint.Rules.AbstractRule {
   ];
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(
-      new ClassMetadataWalker(sourceFile,
-        this.getOptions()));
+    return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this.getOptions()));
   }
 }
 
 export class ClassMetadataWalker extends Lint.RuleWalker {
+  visitClassDeclaration(node: ts.ClassDeclaration) {
+    let syntaxKind = SyntaxKind.current();
+    let className = node.name.text;
+    let interfaces = this.extractInterfaces(node, syntaxKind);
+    let methods = node.members.filter(m => m.kind === syntaxKind.MethodDeclaration);
+    this.validateMethods(methods, interfaces, className);
+    super.visitClassDeclaration(node);
+  }
 
-    visitClassDeclaration(node: ts.ClassDeclaration) {
-        let syntaxKind = SyntaxKind.current();
-        let className = node.name.text;
-        let interfaces = this.extractInterfaces(node, syntaxKind);
-        let methods = node.members.filter(m => m.kind === syntaxKind.MethodDeclaration);
-        this.validateMethods(methods, interfaces, className);
-        super.visitClassDeclaration(node);
+  private extractInterfaces(node: ts.ClassDeclaration, syntaxKind: SyntaxKind.SyntaxKind): string[] {
+    let interfaces: string[] = [];
+    if (node.heritageClauses) {
+      let interfacesClause = node.heritageClauses.filter(h => h.token === syntaxKind.ImplementsKeyword);
+      if (interfacesClause.length !== 0) {
+        interfaces = interfacesClause[0].types.map(getInterfaceName);
+      }
     }
+    return interfaces;
+  }
 
-    private extractInterfaces(node: ts.ClassDeclaration, syntaxKind: SyntaxKind.SyntaxKind): string[] {
-        let interfaces: string[] = [];
-        if (node.heritageClauses) {
-            let interfacesClause = node.heritageClauses.filter(h => h.token === syntaxKind.ImplementsKeyword);
-            if (interfacesClause.length !== 0) {
-                interfaces = interfacesClause[0].types.map(getInterfaceName);
-            }
-        }
-        return interfaces;
-    }
-
-    private validateMethods( methods: any[], interfaces: string[], className: string) {
-        methods.forEach( m => {
-            let n = (<any>m.name).text;
-            if (n && this.isMethodValidHook(m, interfaces)) {
-                let hookName = n.substr(2, n.lenght);
-                this.addFailure(
-                    this.createFailure(
-                        m.name.getStart(),
-                        m.name.getWidth(),
-                        sprintf.apply(this, [Rule.FAILURE, hookName, Rule.HOOKS_PREFIX + hookName, className])));
-            }
-        });
-    }
-
-    private isMethodValidHook(m: any, interfaces: string[]): boolean {
-        let n = (<any>m.name).text;
-        let isNg: boolean = n.substr(0, 2) === Rule.HOOKS_PREFIX;
+  private validateMethods(methods: any[], interfaces: string[], className: string) {
+    methods.forEach(m => {
+      let n = (<any>m.name).text;
+      if (n && this.isMethodValidHook(m, interfaces)) {
         let hookName = n.substr(2, n.lenght);
-        let isHook = Rule.LIFE_CYCLE_HOOKS_NAMES.indexOf(hookName) !== -1;
-        let isNotIn: boolean = interfaces.indexOf(hookName) === -1;
-        return isNg && isHook && isNotIn;
-    }
+        this.addFailure(
+          this.createFailure(
+            m.name.getStart(),
+            m.name.getWidth(),
+            sprintf.apply(this, [Rule.FAILURE, hookName, Rule.HOOKS_PREFIX + hookName, className])
+          )
+        );
+      }
+    });
+  }
 
+  private isMethodValidHook(m: any, interfaces: string[]): boolean {
+    let n = (<any>m.name).text;
+    let isNg: boolean = n.substr(0, 2) === Rule.HOOKS_PREFIX;
+    let hookName = n.substr(2, n.lenght);
+    let isHook = Rule.LIFE_CYCLE_HOOKS_NAMES.indexOf(hookName) !== -1;
+    let isNotIn: boolean = interfaces.indexOf(hookName) === -1;
+    return isNg && isHook && isNotIn;
+  }
 }

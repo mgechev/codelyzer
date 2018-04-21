@@ -13,7 +13,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     rationale: 'Two names for the same property (one private, one public) is inherently confusing.',
     options: null,
     optionsDescription: 'Not configurable.',
-    typescriptOnly: true,
+    typescriptOnly: true
   };
 
   static FAILURE_STRING: string = 'In the class "%s", the directive input property "%s" should not be renamed.';
@@ -27,16 +27,14 @@ export class InputMetadataWalker extends NgWalker {
   private directiveSelector: DirectiveMetadata['selector'][];
 
   visitNgDirective(metadata: DirectiveMetadata): void {
-    this.directiveSelector =
-        (metadata.selector || '').replace(/[\[\]\s]/g, '').split(',');
+    this.directiveSelector = (metadata.selector || '').replace(/[\[\]\s]/g, '').split(',');
   }
 
   visitNgInput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
     const className = (property.parent as any).name.text;
     const memberName = (property.name as any).text;
 
-    if (args.length === 0 ||
-      (this.directiveSelector && this.directiveSelector.indexOf(memberName) !== -1)) {
+    if (args.length === 0 || (this.directiveSelector && this.directiveSelector.indexOf(memberName) !== -1)) {
       return;
     }
 

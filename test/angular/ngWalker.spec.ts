@@ -141,11 +141,13 @@ describe('ngWalker', () => {
     };
     let sf = ts.createSourceFile('foo', source, null);
     let walker = new NgWalker(sf, ruleArgs);
-    (<any>chai).expect(() => {
-      let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
-      walker.walk(sf);
-      (<any>chai.expect(templateSpy).to.not.have.been).called();
-    }).not.to.throw();
+    (<any>chai)
+      .expect(() => {
+        let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
+        walker.walk(sf);
+        (<any>chai.expect(templateSpy).to.not.have.been).called();
+      })
+      .not.to.throw();
   });
 
   it('should not thow when a template is dynamically injected', () => {
@@ -165,11 +167,13 @@ describe('ngWalker', () => {
     };
     let sf = ts.createSourceFile('foo', source, null);
     let walker = new NgWalker(sf, ruleArgs);
-    (<any>chai).expect(() => {
-      let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
-      walker.walk(sf);
-      (<any>chai.expect(templateSpy).to.not.have.been).called();
-    }).not.to.throw();
+    (<any>chai)
+      .expect(() => {
+        let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
+        walker.walk(sf);
+        (<any>chai.expect(templateSpy).to.not.have.been).called();
+      })
+      .not.to.throw();
   });
 
   it('should not thow when a template is template string', () => {
@@ -177,7 +181,7 @@ describe('ngWalker', () => {
       const template = '{{foo}}';
       @Component({
         selector: 'foo',
-        template: \`foo \${test} \`
+        template: \`foo \${test}\`
       })
       class Baz {}
     `;
@@ -189,11 +193,13 @@ describe('ngWalker', () => {
     };
     let sf = ts.createSourceFile('foo', source, null);
     let walker = new NgWalker(sf, ruleArgs);
-    (<any>chai).expect(() => {
-      let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
-      walker.walk(sf);
-      (<any>chai.expect(templateSpy).to.not.have.been).called();
-    }).not.to.throw();
+    (<any>chai)
+      .expect(() => {
+        let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
+        walker.walk(sf);
+        (<any>chai.expect(templateSpy).to.not.have.been).called();
+      })
+      .not.to.throw();
   });
 
   it('should ignore templateUrl', () => {
@@ -212,11 +218,13 @@ describe('ngWalker', () => {
     };
     let sf = ts.createSourceFile('foo', source, null);
     let walker = new NgWalker(sf, ruleArgs);
-    (<any>chai).expect(() => {
-      let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
-      walker.walk(sf);
-      (<any>chai.expect(templateSpy).to.not.have.been).called();
-    }).not.to.throw();
+    (<any>chai)
+      .expect(() => {
+        let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
+        walker.walk(sf);
+        (<any>chai.expect(templateSpy).to.not.have.been).called();
+      })
+      .not.to.throw();
   });
 
   it('should ignore empty @Component decorator', () => {
@@ -232,11 +240,13 @@ describe('ngWalker', () => {
     };
     let sf = ts.createSourceFile('foo', source, null);
     let walker = new NgWalker(sf, ruleArgs);
-    (<any>chai).expect(() => {
-      let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
-      walker.walk(sf);
-      (<any>chai.expect(templateSpy).to.not.have.been).called();
-    }).not.to.throw();
+    (<any>chai)
+      .expect(() => {
+        let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
+        walker.walk(sf);
+        (<any>chai.expect(templateSpy).to.not.have.been).called();
+      })
+      .not.to.throw();
   });
 
   it('should ignore non-invoked @Component decorator', () => {
@@ -252,13 +262,14 @@ describe('ngWalker', () => {
     };
     let sf = ts.createSourceFile('foo', source, null);
     let walker = new NgWalker(sf, ruleArgs);
-    (<any>chai).expect(() => {
-      walker.walk(sf);
-    }).not.to.throw();
+    (<any>chai)
+      .expect(() => {
+        walker.walk(sf);
+      })
+      .not.to.throw();
   });
 
   describe('inline styles', () => {
-
     it('should not throw when there are inline styles', () => {
       let source = `
         @Component({
@@ -276,9 +287,11 @@ describe('ngWalker', () => {
       };
       let sf = ts.createSourceFile('foo', source, null);
       let walker = new NgWalker(sf, ruleArgs);
-      (<any>chai).expect(() => {
-        walker.walk(sf);
-      }).not.to.throw();
+      (<any>chai)
+        .expect(() => {
+          walker.walk(sf);
+        })
+        .not.to.throw();
     });
 
     it('should use the default css walker by default', () => {
@@ -298,11 +311,13 @@ describe('ngWalker', () => {
       };
       let sf = ts.createSourceFile('foo', source, null);
       let walker = new NgWalker(sf, ruleArgs);
-      (<any>chai).expect(() => {
-        let templateSpy = chaiSpy.on(BasicCssAstVisitor.prototype, 'visitCssStyleSheet');
-        walker.walk(sf);
-        (<any>chai.expect(templateSpy).to.have.been).called();
-      }).not.to.throw();
+      (<any>chai)
+        .expect(() => {
+          let templateSpy = chaiSpy.on(BasicCssAstVisitor.prototype, 'visitCssStyleSheet');
+          walker.walk(sf);
+          (<any>chai.expect(templateSpy).to.have.been).called();
+        })
+        .not.to.throw();
     });
 
     it('should not break', () => {
@@ -342,12 +357,11 @@ describe('ngWalker', () => {
       };
       let sf = ts.createSourceFile('foo', source, null);
       let walker = new NgWalker(sf, ruleArgs);
-      (<any>chai).expect(() => {
-        walker.walk(sf);
-      }).not.to.throw();
+      (<any>chai)
+        .expect(() => {
+          walker.walk(sf);
+        })
+        .not.to.throw();
     });
-
   });
-
 });
-

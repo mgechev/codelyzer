@@ -1,10 +1,11 @@
-html, body {
+html,
+body {
   height: 100%;
   width: 100%;
   padding: 0;
   margin: 0;
   font-family: San Francisco, Verdana;
-  background-color: #1D1E1C;
+  background-color: #1d1e1c;
 }
 
 .CodeMirror-lint-markers {
@@ -17,7 +18,8 @@ html, body {
   display: inline;
 }
 
-.CodeMirror, #editor {
+.CodeMirror,
+#editor {
   width: 100%;
 }
 
@@ -30,7 +32,7 @@ html, body {
   font-size: 12px;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-          flex-direction: row;
+  flex-direction: row;
   display: -webkit-box;
   display: flex;
   margin-left: 15px;
@@ -38,7 +40,7 @@ html, body {
 
 .warning-icon,
 .lint-icon {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAANlBMVEX/uwDvrwD/uwD/uwD/uwD/uwD/uwD/uwD/uwD6twD/uwAAAADurwD2tQD7uAD+ugAAAAD/uwDhmeTRAAAADHRSTlMJ8mN1EYcbmiixgACm7WbuAAAAVklEQVR42n3PUQqAIBBFUU1LLc3u/jdbOJoW1P08DA9Gba8+YWJ6gNJoNYIBzAA2chBth5kLmG9YUoG0NHAUwFXwO9LuBQL1giCQb8gC9Oro2vp5rncCIY8L8uEx5ZkAAAAASUVORK5CYII=");
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAANlBMVEX/uwDvrwD/uwD/uwD/uwD/uwD/uwD/uwD/uwD6twD/uwAAAADurwD2tQD7uAD+ugAAAAD/uwDhmeTRAAAADHRSTlMJ8mN1EYcbmiixgACm7WbuAAAAVklEQVR42n3PUQqAIBBFUU1LLc3u/jdbOJoW1P08DA9Gba8+YWJ6gNJoNYIBzAA2chBth5kLmG9YUoG0NHAUwFXwO9LuBQL1giCQb8gC9Oro2vp5rncCIY8L8uEx5ZkAAAAASUVORK5CYII=');
   background-repeat: no-repeat;
   width: 16px;
   height: 16px;
@@ -106,7 +108,7 @@ html, body {
 .side-info ul li {
   margin-bottom: 10px;
   font-family: Consolas, Verdana;
-  background-color: #1D1E1C;
+  background-color: #1d1e1c;
   color: #eee;
   padding: 5px;
   border-radius: 2px;
@@ -127,7 +129,7 @@ html, body {
 
 header {
   height: 60px;
-  background-color: #1D1E1C;
+  background-color: #1d1e1c;
 }
 
 .octo-arm,
@@ -149,10 +151,10 @@ header {
 nav svg {
   width: 40px;
   height: 40px;
-  -moz-transition: -moz-transform 0.3s cubic-bezier(0.000, 0.800, 0.800, 1.650);
-  -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.000, 0.800, 0.800, 1.650);
-  -ms-transition: -ms-transform 0.3s cubic-bezier(0.000, 0.800, 0.800, 1.650);
-  -o-transition: -o-transform 0.3s cubic-bezier(0.000, 0.800, 0.800, 1.650);
+  -moz-transition: -moz-transform 0.3s cubic-bezier(0, 0.8, 0.8, 1.65);
+  -webkit-transition: -webkit-transform 0.3s cubic-bezier(0, 0.8, 0.8, 1.65);
+  -ms-transition: -ms-transform 0.3s cubic-bezier(0, 0.8, 0.8, 1.65);
+  -o-transition: -o-transform 0.3s cubic-bezier(0, 0.8, 0.8, 1.65);
   -webkit-transform: scale(1);
   transform: scale(1);
 
@@ -165,16 +167,16 @@ nav svg {
 
 #flames {
   -webkit-animation: burn 3s infinite;
-          animation: burn 3s infinite;
+  animation: burn 3s infinite;
   -webkit-transform-origin: top;
-          transform-origin: top;
+  transform-origin: top;
 }
 
 @-webkit-keyframes burn {
   0% {
     -webkit-transform: scale(1);
     transform: scale(1);
-    fill: #F59331;
+    fill: #f59331;
   }
 
   20% {
@@ -182,14 +184,12 @@ nav svg {
     transform: scale(1.2);
   }
 
-
   33% {
     fill: #f5cb31;
     -webkit-transform: scale(1);
     transform: scale(1);
-    fill: #F59331;
+    fill: #f59331;
   }
-
 
   70% {
     fill: #f56731;
@@ -200,7 +200,7 @@ nav svg {
   100% {
     -webkit-transform: scale(1);
     transform: scale(1);
-    fill: #F59331;
+    fill: #f59331;
   }
 }
 
@@ -208,7 +208,7 @@ nav svg {
   0% {
     -webkit-transform: scale(1);
     transform: scale(1);
-    fill: #F59331;
+    fill: #f59331;
   }
 
   20% {
@@ -216,14 +216,12 @@ nav svg {
     transform: scale(1.2);
   }
 
-
   33% {
     fill: #f5cb31;
     -webkit-transform: scale(1);
     transform: scale(1);
-    fill: #F59331;
+    fill: #f59331;
   }
-
 
   70% {
     fill: #f56731;
@@ -234,10 +232,9 @@ nav svg {
   100% {
     -webkit-transform: scale(1);
     transform: scale(1);
-    fill: #F59331;
+    fill: #f59331;
   }
 }
-
 
 nav svg:hover {
   -webkit-transform: scale(1.2);
@@ -260,7 +257,7 @@ nav li {
 }
 
 nav li a {
-  color: #CBCBCB;
+  color: #cbcbcb;
   text-shadow: none;
   text-decoration: none;
   -webkit-transition: all 0.3s;
@@ -325,7 +322,7 @@ nav li a:hover {
     max-width: 300px;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-            flex-direction: column;
+    flex-direction: column;
   }
 
   .warnings-wrapper ul {
@@ -343,9 +340,9 @@ nav li a:hover {
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-            flex-direction: row;
+    flex-direction: row;
     -webkit-box-pack: justify;
-            justify-content: space-between;
+    justify-content: space-between;
   }
 }
 
@@ -364,5 +361,5 @@ nav li a:hover {
 }
 
 .codelyzer-logo span {
-  color: #CBCBCB;
+  color: #cbcbcb;
 }

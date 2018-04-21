@@ -52,9 +52,7 @@ export function generateErrorMessage(
   row: number,
   column: number
 ): string {
-  return (
-    `${message} at column ${row}:${column} in expression [` + findProblemCode(input, errorValue, index, column) + ']'
-  );
+  return `${message} at column ${row}:${column} in expression [` + findProblemCode(input, errorValue, index, column) + ']';
 }
 
 export function findProblemCode(input: string, errorValue: string, index: number, column: number): string {
@@ -77,13 +75,7 @@ export function findProblemCode(input: string, errorValue: string, index: number
 
 export class CssToken {
   numValue: number;
-  constructor(
-    public index: number,
-    public column: number,
-    public line: number,
-    public type: CssTokenType,
-    public strValue: string
-  ) {
+  constructor(public index: number, public column: number, public line: number, public type: CssTokenType, public strValue: string) {
     this.numValue = charCode(strValue, 0);
   }
 }
@@ -449,12 +441,7 @@ export class CssScanner {
   scanCharacter(): CssToken | null {
     const start = this.index;
     const startingColumn = this.column;
-    if (
-      this.assertCondition(
-        isValidCssCharacter(this.peek, this._currentMode),
-        charStr(this.peek) + ' is not a valid CSS character'
-      )
-    ) {
+    if (this.assertCondition(isValidCssCharacter(this.peek, this._currentMode), charStr(this.peek) + ' is not a valid CSS character')) {
       return null;
     }
 
@@ -534,13 +521,7 @@ function isIdentifierStart(code: number, next: number): boolean {
 }
 
 function isIdentifierPart(target: number): boolean {
-  return (
-    chars.isAsciiLetter(target) ||
-    target == chars.$BACKSLASH ||
-    target == chars.$MINUS ||
-    target == chars.$_ ||
-    chars.isDigit(target)
-  );
+  return chars.isAsciiLetter(target) || target == chars.$BACKSLASH || target == chars.$MINUS || target == chars.$_ || chars.isDigit(target);
 }
 
 function isValidPseudoSelectorCharacter(code: number): boolean {

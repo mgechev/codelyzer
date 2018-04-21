@@ -35,4 +35,3 @@ export class ComponentMetadata extends DirectiveMetadata {
   template: TemplateMetadata;
   styles: StylesMetadata;
 }
-

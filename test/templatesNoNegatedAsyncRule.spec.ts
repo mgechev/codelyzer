@@ -13,12 +13,13 @@ describe('templates-no-negated-async', () => {
         })
         class Test {
           constructor(public foo: Observable<Boolean>) {}
-        }`;
-        assertAnnotated({
-          ruleName: 'templates-no-negated-async',
-          message: 'Async pipes can not be negated, use (observable | async) === false instead',
-          source
-        });
+        }
+      `;
+      assertAnnotated({
+        ruleName: 'templates-no-negated-async',
+        message: 'Async pipes can not be negated, use (observable | async) === false instead',
+        source
+      });
     });
 
     it('should fail when an async pipe is including other pipes', () => {
@@ -30,24 +31,26 @@ describe('templates-no-negated-async', () => {
         })
         class Test {
           constructor(public foo: Observable<Boolean>) {}
-        }`;
-        assertAnnotated({
-          ruleName: 'templates-no-negated-async',
-          message: 'Async pipes can not be negated, use (observable | async) === false instead',
-          source
-        });
+        }
+      `;
+      assertAnnotated({
+        ruleName: 'templates-no-negated-async',
+        message: 'Async pipes can not be negated, use (observable | async) === false instead',
+        source
+      });
     });
 
     it('should fail when an async pipe uses non-strict equality', () => {
       let source = `
-      @Component({
-        selector: 'foobar',
-        template: '{{ (foo | async) == false }}'
-                       ~~~~~~~~~~~~~~~~~~~~~~
-      })
-      class Test {
-        constructor(public foo: Observable<Boolean>) {}
-      }`;
+        @Component({
+          selector: 'foobar',
+          template: '{{ (foo | async) == false }}'
+                         ~~~~~~~~~~~~~~~~~~~~~~
+        })
+        class Test {
+          constructor(public foo: Observable<Boolean>) {}
+        }
+      `;
       assertAnnotated({
         ruleName: 'templates-no-negated-async',
         message: 'Async pipes must use strict equality `===` when comparing with `false`',
@@ -58,13 +61,14 @@ describe('templates-no-negated-async', () => {
     describe('fixes', () => {
       it('fixes negated pipes', () => {
         let source = `
-        @Component({
-          selector: 'foobar',
-          template: '{{ !(foo | async) }}'
-                        ~~~~~~~~~~~~~~~
-        })
-        class Test {}`;
-        const failures =  assertAnnotated({
+          @Component({
+            selector: 'foobar',
+            template: '{{ !(foo | async) }}'
+                          ~~~~~~~~~~~~~~~
+          })
+          class Test {}
+        `;
+        const failures = assertAnnotated({
           ruleName: 'templates-no-negated-async',
           message: 'Async pipes can not be negated, use (observable | async) === false instead',
           source
@@ -72,23 +76,25 @@ describe('templates-no-negated-async', () => {
 
         const res = Replacement.applyAll(source, failures[0].getFix());
         expect(res).to.eq(`
-        @Component({
-          selector: 'foobar',
-          template: '{{ (foo | async) === false }}'
-                        ~~~~~~~~~~~~~~~
-        })
-        class Test {}`);
+          @Component({
+            selector: 'foobar',
+            template: '{{ (foo | async) === false }}'
+                          ~~~~~~~~~~~~~~~
+          })
+          class Test {}
+        `);
       });
 
       it('fixes un-strict equality', () => {
         let source = `
-        @Component({
-          selector: 'foobar',
-          template: '{{ (foo | async) == false }}'
-                         ~~~~~~~~~~~~~~~~~~~~~~
-        })
-        class Test {}`;
-        const failures =  assertAnnotated({
+          @Component({
+            selector: 'foobar',
+            template: '{{ (foo | async) == false }}'
+                           ~~~~~~~~~~~~~~~~~~~~~~
+          })
+          class Test {}
+        `;
+        const failures = assertAnnotated({
           ruleName: 'templates-no-negated-async',
           message: 'Async pipes must use strict equality `===` when comparing with `false`',
           source
@@ -96,12 +102,13 @@ describe('templates-no-negated-async', () => {
 
         const res = Replacement.applyAll(source, failures[0].getFix());
         expect(res).to.eq(`
-        @Component({
-          selector: 'foobar',
-          template: '{{ (foo | async) === false }}'
-                         ~~~~~~~~~~~~~~~~~~~~~~
-        })
-        class Test {}`);
+          @Component({
+            selector: 'foobar',
+            template: '{{ (foo | async) === false }}'
+                           ~~~~~~~~~~~~~~~~~~~~~~
+          })
+          class Test {}
+        `);
       });
     });
   });
@@ -115,8 +122,9 @@ describe('templates-no-negated-async', () => {
         })
         class Test {
           constructor(public foo: Observable<Boolean>) {}
-        }`;
-        assertSuccess('templates-no-negated-async', source);
+        }
+      `;
+      assertSuccess('templates-no-negated-async', source);
     });
 
     it('should succeed if an async pipe is not the last pipe in the negated chain', () => {
@@ -127,8 +135,9 @@ describe('templates-no-negated-async', () => {
         })
         class Test {
           constructor(public foo: Observable<Boolean>) {}
-        }`;
-        assertSuccess('templates-no-negated-async', source);
+        }
+      `;
+      assertSuccess('templates-no-negated-async', source);
     });
 
     it('should succeed if an async pipe uses strict equality', () => {
@@ -139,8 +148,9 @@ describe('templates-no-negated-async', () => {
         })
         class Test {
           constructor(public foo: Observable<Boolean>) {}
-        }`;
-        assertSuccess('templates-no-negated-async', source);
+        }
+      `;
+      assertSuccess('templates-no-negated-async', source);
     });
 
     it('should succeed if any other pipe is negated', () => {
@@ -151,8 +161,9 @@ describe('templates-no-negated-async', () => {
         })
         class Test {
           constructor(public foo: Observable<Boolean>) {}
-        }`;
-        assertSuccess('templates-no-negated-async', source);
+        }
+      `;
+      assertSuccess('templates-no-negated-async', source);
     });
   });
 });

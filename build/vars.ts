@@ -1,4 +1,4 @@
-import {processFiles} from './processFiles';
+import { processFiles } from './processFiles';
 
 const ARGS = require('minimist')(process.argv.slice(2));
 const SRC = ARGS.src;

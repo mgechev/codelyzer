@@ -5,7 +5,6 @@ import SyntaxKind = require('./util/syntaxKind');
 import { NgWalker } from './angular/ngWalker';
 import { ComponentMetadata, DirectiveMetadata } from './angular/metadata';
 
-
 export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'contextual-life-cycle',
@@ -15,24 +14,19 @@ export class Rule extends Lint.Rules.AbstractRule {
     For example, ngOnInit() hook method should not be used in an @Injectable class.`,
     options: null,
     optionsDescription: 'Not configurable.',
-    typescriptOnly: true,
+    typescriptOnly: true
   };
 
-
   static FAILURE_STRING: string = 'In the class "%s" which have the "%s" decorator, the ' +
-    '"%s" hook method is not allowed. ' +
-    'Please, drop it.';
+  '"%s" hook method is not allowed. ' +
+  'Please, drop it.';
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(
-      new ClassMetadataWalker(sourceFile,
-        this));
+    return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this));
   }
 }
 
-
 export class ClassMetadataWalker extends NgWalker {
-
   className: string;
   isInjectable = false;
   isComponent = false;
@@ -76,7 +70,6 @@ export class ClassMetadataWalker extends NgWalker {
   }
 
   visitMethodDeclaration(method: ts.MethodDeclaration) {
-
     const methodName = (method.name as ts.StringLiteral).text;
 
     if (methodName === 'ngOnInit') {
@@ -162,15 +155,9 @@ export class ClassMetadataWalker extends NgWalker {
         this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
       }
     }
-
   }
 
   private generateFailure(start: number, width: number, failureConfig: string[]) {
-    this.addFailure(
-      this.createFailure(
-        start,
-        width,
-        sprintf.apply(this, failureConfig)));
+    this.addFailure(this.createFailure(start, width, sprintf.apply(this, failureConfig)));
   }
-
 }

@@ -10,7 +10,7 @@ import { RecursiveAngularExpressionVisitor } from './angular/templates/recursive
 // Check if ES6 'y' flag is usable.
 const stickyFlagUsable = (() => {
   try {
-    const reg = new RegExp('\d', 'y');
+    const reg = new RegExp('d', 'y');
     return true;
   } catch (e) {
     return false;
@@ -20,18 +20,15 @@ const stickyFlagUsable = (() => {
 const InterpolationOpen = Config.interpolation[0];
 const InterpolationClose = Config.interpolation[1];
 const InterpolationWhitespaceRe = new RegExp(`${InterpolationOpen}(\\s*)(.*?)(\\s*)${InterpolationClose}`, 'g');
-const SemicolonNoWhitespaceNotInSimpleQuoteRe = stickyFlagUsable ?
-new RegExp(`(?:[^';]|'[^']*'|;(?=\\s))+;(?=\\S)`, 'gy') : /(?:[^';]|'[^']*')+;/g;
-const SemicolonNoWhitespaceNotInDoubleQuoteRe = stickyFlagUsable ?
-  new RegExp(`(?:[^";]|"[^"]*"|;(?=\\s))+;(?=\\S)`, 'gy') : /(?:[^";]|"[^"]*")+;/g;
-
+const SemicolonNoWhitespaceNotInSimpleQuoteRe = stickyFlagUsable
+  ? new RegExp(`(?:[^';]|'[^']*'|;(?=\\s))+;(?=\\S)`, 'gy')
+  : /(?:[^';]|'[^']*')+;/g;
+const SemicolonNoWhitespaceNotInDoubleQuoteRe = stickyFlagUsable
+  ? new RegExp(`(?:[^";]|"[^"]*"|;(?=\\s))+;(?=\\S)`, 'gy')
+  : /(?:[^";]|"[^"]*")+;/g;
 
 const getSemicolonReplacements = (absolutePosition: number) => {
-
-  return [
-    new Lint.Replacement(absolutePosition, 1, '; ')
-  ];
-
+  return [new Lint.Replacement(absolutePosition, 1, '; ')];
 };
 
 interface CheckSemicolonNoWhitespaceMethod {
@@ -40,24 +37,22 @@ interface CheckSemicolonNoWhitespaceMethod {
 
 // Simplify the code when the 'y' flag of RegExp is usable.
 const checkSemicolonNoWhitespaceWithSticky: CheckSemicolonNoWhitespaceMethod = (reg, context, expr, fixedOffset) => {
-  const error = 'Missing whitespace after semicolon; expecting \'; expr\'';
+  const error = "Missing whitespace after semicolon; expecting '; expr'";
   let exprMatch: RegExpExecArray | null;
 
-  while (exprMatch = reg.exec(expr)) {
+  while ((exprMatch = reg.exec(expr))) {
     const start = fixedOffset + reg.lastIndex;
     const absolutePosition = context.getSourcePosition(start - 1);
-    context.addFailure(context.createFailure(start, 2,
-      error, getSemicolonReplacements(absolutePosition))
-    );
+    context.addFailure(context.createFailure(start, 2, error, getSemicolonReplacements(absolutePosition)));
   }
 };
 
 const checkSemicolonNoWhitespaceWithoutSticky: CheckSemicolonNoWhitespaceMethod = (reg, context, expr, fixedOffset) => {
-  const error = 'Missing whitespace after semicolon; expecting \'; expr\'';
+  const error = "Missing whitespace after semicolon; expecting '; expr'";
   let lastIndex = 0;
   let exprMatch: RegExpExecArray | null;
 
-  while (exprMatch = reg.exec(expr)) {
+  while ((exprMatch = reg.exec(expr))) {
     // When the 'y' flag of RegExp is unusable, must compare lastIndex with match.index,
     // otherwise the match results may be incorrect.
     if (lastIndex !== exprMatch.index) {
@@ -69,18 +64,16 @@ const checkSemicolonNoWhitespaceWithoutSticky: CheckSemicolonNoWhitespaceMethod 
     if (nextIndex < expr.length && /\S/.test(expr[nextIndex])) {
       const start = fixedOffset + nextIndex;
       const absolutePosition = context.getSourcePosition(start - 1);
-      context.addFailure(context.createFailure(start, 2,
-        error, getSemicolonReplacements(absolutePosition))
-      );
+      context.addFailure(context.createFailure(start, 2, error, getSemicolonReplacements(absolutePosition)));
     }
 
     lastIndex = nextIndex;
   }
 };
 
-const checkSemicolonNoWhitespace: CheckSemicolonNoWhitespaceMethod = stickyFlagUsable ?
-  checkSemicolonNoWhitespaceWithSticky :
-  checkSemicolonNoWhitespaceWithoutSticky;
+const checkSemicolonNoWhitespace: CheckSemicolonNoWhitespaceMethod = stickyFlagUsable
+  ? checkSemicolonNoWhitespaceWithSticky
+  : checkSemicolonNoWhitespaceWithoutSticky;
 
 type Option = 'check-interpolation' | 'check-pipe' | 'check-semicolon';
 
@@ -96,30 +89,45 @@ class InterpolationWhitespaceVisitor extends BasicTemplateAstVisitor implements 
       // Note that will not be reliable for different interpolation symbols
       let error = null;
       const expr: any = (<any>text.value).source;
-      const checkWhiteSpace = (subMatch: string, location: 'start' | 'end', fixTo: string,
-        position: number, absolutePosition: number, lengthFix: number
+      const checkWhiteSpace = (
+        subMatch: string,
+        location: 'start' | 'end',
+        fixTo: string,
+        position: number,
+        absolutePosition: number,
+        lengthFix: number
       ) => {
         const { length } = subMatch;
         if (length === 1) {
-            return;
+          return;
         }
         const errorText = length === 0 ? 'Missing' : 'Extra';
-        context.addFailure(context.createFailure(position, length + lengthFix,
-          `${errorText} whitespace in interpolation ${location}; expecting ${InterpolationOpen} expr ${InterpolationClose}`, [
-            new Lint.Replacement(absolutePosition, length + lengthFix, fixTo)
-        ]));
+        context.addFailure(
+          context.createFailure(
+            position,
+            length + lengthFix,
+            `${errorText} whitespace in interpolation ${location}; expecting ${InterpolationOpen} expr ${InterpolationClose}`,
+            [new Lint.Replacement(absolutePosition, length + lengthFix, fixTo)]
+          )
+        );
       };
 
       InterpolationWhitespaceRe.lastIndex = 0;
       let match: RegExpExecArray | null;
-      while (match = InterpolationWhitespaceRe.exec(expr)) {
+      while ((match = InterpolationWhitespaceRe.exec(expr))) {
         const start = text.sourceSpan.start.offset + match.index;
         const absolutePosition = context.getSourcePosition(start);
 
         checkWhiteSpace(match[1], 'start', `${InterpolationOpen} `, start, absolutePosition, InterpolationOpen.length);
         const positionFix = InterpolationOpen.length + match[1].length + match[2].length;
-        checkWhiteSpace(match[3], 'end', ` ${InterpolationClose}`, start + positionFix, absolutePosition + positionFix,
-          InterpolationClose.length);
+        checkWhiteSpace(
+          match[3],
+          'end',
+          ` ${InterpolationClose}`,
+          start + positionFix,
+          absolutePosition + positionFix,
+          InterpolationClose.length
+        );
       }
     }
     super.visitBoundText(text, context);
@@ -132,10 +140,7 @@ class InterpolationWhitespaceVisitor extends BasicTemplateAstVisitor implements 
 }
 
 class SemicolonTemplateVisitor extends BasicTemplateAstVisitor implements ConfigurableVisitor {
-
   visitDirectiveProperty(prop: ast.BoundDirectivePropertyAst, context: BasicTemplateAstVisitor): any {
-
-
     if (prop.sourceSpan) {
       const directive = (<any>prop.sourceSpan).toString();
       const match = /^([^=]+=\s*)([^]*?)\s*$/.exec(directive);
@@ -154,9 +159,7 @@ class SemicolonTemplateVisitor extends BasicTemplateAstVisitor implements Config
   getOption(): Option {
     return 'check-semicolon';
   }
-
 }
-
 
 class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
   private visitors: (BasicTemplateAstVisitor & ConfigurableVisitor)[] = [
@@ -183,23 +186,18 @@ class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
       .forEach(f => this.addFailure(f));
     super.visitDirectiveProperty(prop, context);
   }
-
-
 }
-
 
 /* Expression visitors */
 
 class PipeWhitespaceVisitor extends RecursiveAngularExpressionVisitor implements ConfigurableVisitor {
   visitPipe(ast: ast.BindingPipe, context: RecursiveAngularExpressionVisitor): any {
-
     let exprStart, exprEnd, exprText, sf;
 
     exprStart = context.getSourcePosition(ast.exp.span.start);
     exprEnd = context.getSourcePosition(ast.exp.span.end);
     sf = context.getSourceFile().getFullText();
     exprText = sf.substring(exprStart, exprEnd);
-
 
     const replacements = [];
     let parentheses = false;
@@ -235,15 +233,18 @@ class PipeWhitespaceVisitor extends RecursiveAngularExpressionVisitor implements
       }
     } else {
       if (!parentheses) {
-       replacements.push(new Lint.Replacement(exprEnd, 0, ' '));
+        replacements.push(new Lint.Replacement(exprEnd, 0, ' '));
       }
     }
 
     if (replacements.length) {
       context.addFailure(
-        context.createFailure(ast.exp.span.end - 1, 3,
+        context.createFailure(
+          ast.exp.span.end - 1,
+          3,
           'The pipe operator should be surrounded by one space on each side, i.e. " | ".',
-          replacements)
+          replacements
+        )
       );
     }
     super.visitPipe(ast, context);
@@ -258,7 +259,6 @@ class PipeWhitespaceVisitor extends RecursiveAngularExpressionVisitor implements
     return expr instanceof ast.BindingPipe && expr.name === 'async';
   }
 }
-
 
 class TemplateExpressionVisitor extends RecursiveAngularExpressionVisitor {
   private visitors: (RecursiveAngularExpressionVisitor & ConfigurableVisitor)[] = [
@@ -291,10 +291,10 @@ export class Rule extends Lint.Rules.AbstractRule {
       type: 'array',
       items: {
         type: 'string',
-        enum: ['check-interpolation', 'check-pipe', 'check-semicolon'],
+        enum: ['check-interpolation', 'check-pipe', 'check-semicolon']
       },
       minLength: 0,
-      maxLength: 3,
+      maxLength: 3
     },
     optionExamples: ['[true, "check-interpolation"]'],
     typescriptOnly: true,
@@ -303,10 +303,10 @@ export class Rule extends Lint.Rules.AbstractRule {
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
-      new NgWalker(sourceFile,
-        this.getOptions(), {
-          templateVisitorCtrl: WhitespaceTemplateVisitor,
-          expressionVisitorCtrl: TemplateExpressionVisitor,
-        }));
+      new NgWalker(sourceFile, this.getOptions(), {
+        templateVisitorCtrl: WhitespaceTemplateVisitor,
+        expressionVisitorCtrl: TemplateExpressionVisitor
+      })
+    );
   }
 }

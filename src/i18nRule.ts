@@ -43,14 +43,9 @@ class I18NTextVisitor extends BasicTemplateAstVisitor implements ConfigurableVis
     if (!this.visited.has(text)) {
       this.visited.add(text);
       const textNonEmpty = text.value.trim().length > 0;
-      if (
-        (!this.hasI18n && textNonEmpty && this.nestedElements.length) ||
-        (textNonEmpty && !this.nestedElements.length)
-      ) {
+      if ((!this.hasI18n && textNonEmpty && this.nestedElements.length) || (textNonEmpty && !this.nestedElements.length)) {
         const span = text.sourceSpan;
-        context.addFailure(
-          context.createFailure(span.start.offset, span.end.offset - span.start.offset, I18NTextVisitor.Error)
-        );
+        context.addFailure(context.createFailure(span.start.offset, span.end.offset - span.start.offset, I18NTextVisitor.Error));
       }
     }
     super.visitText(text, context);
@@ -64,9 +59,7 @@ class I18NTextVisitor extends BasicTemplateAstVisitor implements ConfigurableVis
         const textNonEmpty = val.ast.strings.some(s => /\w+/.test(s));
         if (textNonEmpty) {
           const span = text.sourceSpan;
-          context.addFailure(
-            context.createFailure(span.start.offset, span.end.offset - span.start.offset, I18NTextVisitor.Error)
-          );
+          context.addFailure(context.createFailure(span.start.offset, span.end.offset - span.start.offset, I18NTextVisitor.Error));
         }
       }
     }

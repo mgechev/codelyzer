@@ -11,7 +11,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     rationale: 'Explicit calls to lifecycle hooks could be confusing. Invoke lifecycle hooks is the responsability of Angular.',
     options: null,
     optionsDescription: 'Not configurable.',
-    typescriptOnly: true,
+    typescriptOnly: true
   };
 
   static FAILURE_STRING: string = 'Avoid explicitly calls to lifecycle hooks in class "%s"';
@@ -22,14 +22,14 @@ export class Rule extends Lint.Rules.AbstractRule {
 }
 
 export type LifecycleHooksMethods =
-  'ngAfterContentChecked' |
-  'ngAfterContentInit' |
-  'ngAfterViewChecked' |
-  'ngAfterViewInit' |
-  'ngDoCheck' |
-  'ngOnChanges' |
-  'ngOnDestroy' |
-  'ngOnInit';
+  | 'ngAfterContentChecked'
+  | 'ngAfterContentInit'
+  | 'ngAfterViewChecked'
+  | 'ngAfterViewInit'
+  | 'ngDoCheck'
+  | 'ngOnChanges'
+  | 'ngOnDestroy'
+  | 'ngOnInit';
 
 export const lifecycleHooksMethods = new Set<LifecycleHooksMethods>([
   'ngAfterContentChecked',

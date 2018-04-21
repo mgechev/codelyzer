@@ -1,32 +1,24 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
     "declaration": false,
-    "removeComments": true,
-    "noLib": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": ["es6", "es2015", "dom"],
-    "sourceMap": true,
-    "pretty": true,
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
+    "module": "commonjs",
+    "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitUseStrict": false,
-    "noFallthroughCasesInSwitch": true,
-    "outDir": "dist"
+    "noLib": false,
+    "outDir": "dist",
+    "pretty": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "target": "es5"
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "src"
-  ],
-  "files": [
-    "src/app.ts",
-    "src/worker.ts"
-  ],
-  "compileOnSave": false
+  "exclude": ["dist", "node_modules", "src"],
+  "files": ["src/app.ts", "src/worker.ts"]
 }
-

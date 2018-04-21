@@ -17,12 +17,14 @@ export abstract class AbstractResolver {
     if (!arg) {
       return null;
     }
-    const prop = arg.properties.filter((p: ts.PropertyAssignment) => {
-      if ((<any>p.name).text === 'templateUrl' && isSimpleTemplateString(p.initializer)) {
-        return true;
-      }
-      return false;
-    }).pop();
+    const prop = arg.properties
+      .filter((p: ts.PropertyAssignment) => {
+        if ((<any>p.name).text === 'templateUrl' && isSimpleTemplateString(p.initializer)) {
+          return true;
+        }
+        return false;
+      })
+      .pop();
     if (prop) {
       // We know that it's has an initializer because it's either
       // a template string or a string literal.
@@ -37,18 +39,22 @@ export abstract class AbstractResolver {
     if (!arg) {
       return [];
     }
-    const prop = arg.properties.filter((p: ts.PropertyAssignment) => {
-      if ((<any>p.name).text === 'styleUrls' && p.initializer.kind === kinds.ArrayLiteralExpression) {
-        return true;
-      }
-      return false;
-    }).pop();
+    const prop = arg.properties
+      .filter((p: ts.PropertyAssignment) => {
+        if ((<any>p.name).text === 'styleUrls' && p.initializer.kind === kinds.ArrayLiteralExpression) {
+          return true;
+        }
+        return false;
+      })
+      .pop();
     if (prop) {
-      return (<ts.ArrayLiteralExpression>(<ts.PropertyAssignment>prop).initializer).elements.filter((e: any) => {
-        return isSimpleTemplateString(e);
-      }).map((e: any) => {
-        return e.text;
-      });
+      return (<ts.ArrayLiteralExpression>(<ts.PropertyAssignment>prop).initializer).elements
+        .filter((e: any) => {
+          return isSimpleTemplateString(e);
+        })
+        .map((e: any) => {
+          return e.text;
+        });
     } else {
       return [];
     }

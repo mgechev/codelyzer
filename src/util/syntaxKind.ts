@@ -7,8 +7,7 @@ import * as ts from 'typescript';
  * the TypeScript version at runtime and return the correct numbers for the SyntaxKind
  * elements.
  */
-module SyntaxKind {
-
+namespace SyntaxKind {
   export interface SyntaxKind {
     Unknown: number;
     EndOfFileToken: number;
@@ -349,4 +348,3 @@ module SyntaxKind {
 }
 
 export = SyntaxKind;
-
