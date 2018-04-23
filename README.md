@@ -98,6 +98,7 @@ Create the following `tslint.json` file like:
     "directive-selector": [true, "attribute", "sg", "camelCase"],
     "component-selector": [true, "element", "sg", "kebab-case"],
     "max-inline-declarations": true,
+    "no-life-cycle-call": true,
     "prefer-output-readonly": true,
     "no-conflicting-life-cycle-hooks": true,
     "enforce-component-selector": true,
@@ -156,6 +157,7 @@ Now create the following `tslint.json` file where your `node_modules` directory 
     "directive-selector": [true, "attribute", "sg", "camelCase"],
     "component-selector": [true, "element", "sg", "kebab-case"],
     "max-inline-declarations": true,
+    "no-life-cycle-call": true,
     "prefer-output-readonly": true,
     "no-conflicting-life-cycle-hooks": true,
     "enforce-component-selector": true,
@@ -266,6 +268,7 @@ Below you can find a recommended configuration which is based on the [Angular St
   "use-pipe-transform-interface": true,
   "no-output-named-after-standard-event": true,
   "max-inline-declarations": true,
+  "no-life-cycle-call": true,
   "prefer-output-readonly": true,
   "no-conflicting-life-cycle-hooks": true,
   "enforce-component-selector": true,
@@ -310,6 +313,7 @@ Below you can find a recommended configuration which is based on the [Angular St
 | `prefer-output-readonly` | Stable |
 | `no-conflicting-life-cycle-hooks` | Stable |
 | `enforce-component-selector` | Stable |
+| `no-life-cycle-call` | Stable |
 | `i18n` | *Experimental* |
 | `no-unused-css` | *Experimental* |
 | `angular-whitespace` | *Experimental* |
