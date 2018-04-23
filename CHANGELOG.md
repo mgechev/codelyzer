@@ -6,7 +6,7 @@
 - `prefer-output-readonly` requires the `@Output`s of a component to be `readonly`. Credits to [rafaelss95](https://github.com/rafaelss95) [#515](https://github.com/mgechev/codelyzer/issues/515) [3d652d1](https://github.com/mgechev/codelyzer/commit/3d652d13b447fabf333c994506990638ac72fcd8).
 - `no-conflicting-life-cycle-hooks` prevents to implement OnChanges and DoCheck on the same class. Credits to [rafaelss95](https://github.com/rafaelss95) [#560](https://github.com/mgechev/codelyzer/issues/560) [e521115](https://github.com/mgechev/codelyzer/commit/e521115bc6fed7521f83e72b6946a05ef87dfea3).
 - `enforce-component-selector` Component Selector Required [#551](https://github.com/mgechev/codelyzer/issues/551) [b9c899b](https://github.com/mgechev/codelyzer/commit/b9c899bef14fa12d2fb8bddbaaa9da86426a80cb). Credits to [wKoza](https://github.com/wKoza).
-- `no-life-cycle-call` disallow explicit calls to lifecycle hooks [#427](https://github.com/mgechev/codelyzer/issues/427) [3e10013](https://github.com/mgechev/codelyzer/commit/3e1001385a1b140633f35b2a1234032b8b9c41a2)
+- `no-life-cycle-call` disallow explicit calls to lifecycle hooks. Credits to [rafaelss95](https://github.com/rafaelss95) [#427](https://github.com/mgechev/codelyzer/issues/427) [3e10013](https://github.com/mgechev/codelyzer/commit/3e1001385a1b140633f35b2a1234032b8b9c41a2)
 
 ## Bug Fixes
 
