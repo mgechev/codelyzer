@@ -49,9 +49,13 @@ export class ExpressionCallMetadataWalker extends NgWalker {
   }
 
   private validateCallExpression(node: ts.CallExpression): void {
-    const name = (node.expression as any).name;
+    const name = ts.isPropertyAccessExpression(node.expression) ? node.expression.name : undefined;
+    const expression = ts.isPropertyAccessExpression(node.expression) ? node.expression.expression : undefined;
 
-    if (!name || !lifecycleHooksMethods.has(name.text)) {
+    const isSuperCall = expression && expression.kind === ts.SyntaxKind.SuperKeyword;
+    const isLifecycleCall = name && ts.isIdentifier(name) && lifecycleHooksMethods.has(name.text as any);
+
+    if (isSuperCall || !isLifecycleCall) {
       return;
     }
 
