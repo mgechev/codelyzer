@@ -14,7 +14,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true,
   };
 
-  static FAILURE_STRING: string = 'Avoid explicitly calls to lifecycle hooks in class "%s"';
+  static FAILURE_STRING: string = 'Avoid explicit calls to lifecycle hooks.';
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new ExpressionCallMetadataWalker(sourceFile, this.getOptions()));
@@ -55,17 +55,8 @@ export class ExpressionCallMetadataWalker extends NgWalker {
     const isSuperCall = expression && expression.kind === ts.SyntaxKind.SuperKeyword;
     const isLifecycleCall = name && ts.isIdentifier(name) && lifecycleHooksMethods.has(name.text as any);
 
-    if (isSuperCall || !isLifecycleCall) {
-      return;
+    if (isLifecycleCall && !isSuperCall) {
+      this.addFailureAtNode(node, Rule.FAILURE_STRING);
     }
-
-    let currentNode = node as any;
-
-    while (currentNode.parent.parent) {
-      currentNode = currentNode.parent;
-    }
-
-    const failureConfig = [Rule.FAILURE_STRING, currentNode.name.text];
-    this.addFailureAtNode(node, sprintf.apply(this, failureConfig));
   }
 }

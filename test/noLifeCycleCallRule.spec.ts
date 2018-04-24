@@ -61,13 +61,36 @@ describe(ruleName, () => {
           it(`should fail when explicitly calling ${lifecycleHookMethodCall}`, () => {
             assertAnnotated({
               ruleName,
-              message: `Avoid explicitly calls to lifecycle hooks in class "${className}"`,
+              message: 'Avoid explicit calls to lifecycle hooks.',
               source
             });
           });
         });
       });
     }
+
+    lifecycleHooksMethods.forEach(lifecycleHookMethod => {
+      const lifecycleHookMethodCall = `fixture.componentInstance.${lifecycleHookMethod}()`;
+        const totalTildes = '~'.repeat(lifecycleHookMethodCall.length);
+        const source = `
+          it('should work', () => {
+            // test code...
+
+            ${lifecycleHookMethodCall}
+            ${totalTildes}
+
+            // more test code...
+          })
+        `;
+
+      it(`should fail when explicitly calling ${lifecycleHookMethod} outside of a class`, () => {
+        assertAnnotated({
+          ruleName,
+          message: `Avoid explicit calls to lifecycle hooks.`,
+          source
+        });
+      });
+    });
   });
 
   describe('success', () => {
