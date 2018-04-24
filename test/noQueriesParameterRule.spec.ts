@@ -3,7 +3,10 @@ import { assertAnnotated, assertSuccess } from './testHelper';
 
 type MetadataType = 'Component' | 'Directive';
 
-const { FAILURE_STRING, metadata: { ruleName } } = Rule;
+const {
+  FAILURE_STRING,
+  metadata: { ruleName }
+} = Rule;
 const metadataTypes = new Set<MetadataType>(['Component', 'Directive']);
 
 describe(ruleName, () => {
@@ -44,7 +47,6 @@ describe(ruleName, () => {
           assertAnnotated({ message: FAILURE_STRING, ruleName, source });
         });
       });
-
       describe('success', () => {
         it('should succeed when "queries" is not used', () => {
           const source = `
