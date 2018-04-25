@@ -50,16 +50,39 @@ describe(ruleName, () => {
             }
           `;
 
-          it(`should fail when explicitly call ${lifecycleHookMethod}`, () => {
+          it(`should fail when explicitly calling ${lifecycleHookMethodCall}`, () => {
             assertAnnotated({
               ruleName,
-              message: `Avoid explicitly calls to lifecycle hooks in class "${className}"`,
+              message: 'Avoid explicit calls to lifecycle hooks.',
               source
             });
           });
         });
       });
     }
+
+    lifecycleHooksMethods.forEach(lifecycleHookMethod => {
+      const lifecycleHookMethodCall = `fixture.componentInstance.${lifecycleHookMethod}()`;
+        const totalTildes = '~'.repeat(lifecycleHookMethodCall.length);
+        const source = `
+          it('should work', () => {
+            // test code...
+
+            ${lifecycleHookMethodCall}
+            ${totalTildes}
+
+            // more test code...
+          })
+        `;
+
+      it(`should fail when explicitly calling ${lifecycleHookMethod} outside of a class`, () => {
+        assertAnnotated({
+          ruleName,
+          message: `Avoid explicit calls to lifecycle hooks.`,
+          source
+        });
+      });
+    });
   });
 
   describe('success', () => {
@@ -77,7 +100,28 @@ describe(ruleName, () => {
             }
           `;
 
-          it(`should pass when call ${fakeMethod} method`, () => {
+          it(`should pass when calling ${fakeMethod} method`, () => {
+            assertSuccess(ruleName, source);
+          });
+        });
+      });
+    }
+
+    // call super lifecycle hook
+    for (const metadataKey of metadataKeys) {
+      describe(metadataKey, () => {
+        metadataPairs[metadataKey].forEach(lifecycleHookMethod => {
+          const lifecycleHookMethodCall = `super.${lifecycleHookMethod}()`;
+          const source = `
+            @${metadataKey}()
+            class ${className} implements ${lifecycleHookMethod.slice(2)} {
+              ${lifecycleHookMethod}() {
+                ${lifecycleHookMethodCall}
+              }
+            }
+          `;
+
+          it(`should pass when explicitly calling ${lifecycleHookMethodCall}`, () => {
             assertSuccess(ruleName, source);
           });
         });
