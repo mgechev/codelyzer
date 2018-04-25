@@ -63,8 +63,8 @@ describe(ruleName, () => {
 
     lifecycleHooksMethods.forEach(lifecycleHookMethod => {
       const lifecycleHookMethodCall = `fixture.componentInstance.${lifecycleHookMethod}()`;
-        const totalTildes = '~'.repeat(lifecycleHookMethodCall.length);
-        const source = `
+      const totalTildes = '~'.repeat(lifecycleHookMethodCall.length);
+      const source = `
           it('should work', () => {
             // test code...
 
