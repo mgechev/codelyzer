@@ -2,13 +2,13 @@ import { SelectorRule } from './selectorNameBase';
 import * as Lint from 'tslint';
 
 export class Rule extends SelectorRule {
-
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'component-selector',
     type: 'style',
     description: 'Component selectors should follow given naming rules.',
-    descriptionDetails: 'See more at https://angular.io/styleguide#style-02-07, https://angular.io/styleguide#style-05-02, ' +
-    'and https://angular.io/styleguide#style-05-03.',
+    descriptionDetails:
+      'See more at https://angular.io/styleguide#style-02-07, https://angular.io/styleguide#style-05-02, ' +
+      'and https://angular.io/styleguide#style-05-03.',
     rationale: Lint.Utils.dedent`
     * Consistent conventions make it easy to quickly identify and reference assets of different types.
     * Makes it easier to promote and share the component in other apps.
@@ -19,35 +19,35 @@ export class Rule extends SelectorRule {
     * It is easier to recognize that a symbol is a component by looking at the template's HTML.
     `,
     options: {
-      'type': 'array',
-      'items': [
+      type: 'array',
+      items: [
         {
-          'enum': ['element', 'attribute']
+          enum: ['element', 'attribute']
         },
         {
-          'oneOf': [
+          oneOf: [
             {
-              'type': 'array',
-              'items': {
-                'type': 'string'
+              type: 'array',
+              items: {
+                type: 'string'
               }
             },
             {
-              'type': 'string'
+              type: 'string'
             }
           ]
         },
         {
-          'enum': ['kebab-case', 'camelCase']
+          enum: ['kebab-case', 'camelCase']
         }
       ],
-      'minItems': 3,
-      'maxItems': 3
+      minItems: 3,
+      maxItems: 3
     },
     optionExamples: [
       '["element", "my-prefix", "kebab-case"]',
       '["element", ["ng", "ngx"], "kebab-case"]',
-      '["attribute", "myPrefix", "camelCase"]',
+      '["attribute", "myPrefix", "camelCase"]'
     ],
     optionsDescription: Lint.Utils.dedent`
     Options accept three obligatory items as an array:
@@ -56,7 +56,7 @@ export class Rule extends SelectorRule {
     2. A single prefix (string) or array of prefixes (strings) which have to be used in component selectors.
     3. \`"kebab-case"\` or \`"camelCase"\` allows you to pick a case.
     `,
-    typescriptOnly: true,
+    typescriptOnly: true
   };
 
   public handleType = 'Component';

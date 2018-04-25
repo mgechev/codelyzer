@@ -22,7 +22,7 @@ export function getSourceFile(fileName: string, source: string): ts.SourceFile {
     },
     readFile: () => null,
     useCaseSensitiveFileNames: () => true,
-    writeFile: () => null,
+    writeFile: () => null
   };
 
   const program = ts.createProgram([normalizedName], compilerOptions, compilerHost);
@@ -32,7 +32,7 @@ export function getSourceFile(fileName: string, source: string): ts.SourceFile {
 export function createCompilerOptions(): ts.CompilerOptions {
   return {
     noResolve: true,
-    target: ts.ScriptTarget.ES5,
+    target: ts.ScriptTarget.ES5
   };
 }
 
@@ -66,7 +66,7 @@ export class WebLinter {
       errorCount: this.failures.length,
       failures: this.failures,
       format: 'json',
-      output,
+      output
     };
   }
 
@@ -75,6 +75,6 @@ export class WebLinter {
   }
 
   private containsRule(rules: Linter.RuleFailure[], rule: Linter.RuleFailure) {
-    return rules.some((r) => r.equals(rule));
+    return rules.some(r => r.equals(rule));
   }
 }

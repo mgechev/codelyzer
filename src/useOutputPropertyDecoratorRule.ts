@@ -16,15 +16,17 @@ export class Rule extends UsePropertyDecorator {
     * Placing the decorator on the same line usually makes for shorter code and still easily identifies the property as an output.`,
     options: null,
     optionsDescription: 'Not configurable.',
-    typescriptOnly: true,
+    typescriptOnly: true
   };
 
-
   constructor(options: IOptions) {
-    super({
-      decoratorName: 'Output',
-      propertyName: 'outputs',
-      errorMessage: 'Use the @Output property decorator instead of the outputs property (https://angular.io/styleguide#style-05-12)'
-    }, options);
+    super(
+      {
+        decoratorName: 'Output',
+        propertyName: 'outputs',
+        errorMessage: 'Use the @Output property decorator instead of the outputs property (https://angular.io/styleguide#style-05-12)'
+      },
+      options
+    );
   }
 }

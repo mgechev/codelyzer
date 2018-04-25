@@ -8,12 +8,13 @@ export class Rule extends Lint.Rules.AbstractRule {
     type: 'maintainability',
     description: 'Ensure that directives not implement conflicting lifecycle hooks.',
     descriptionDetails: 'See more at https://angular.io/api/core/DoCheck#description.',
-    rationale: 'A directive typically should not use both DoCheck and OnChanges to respond ' +
+    rationale:
+      'A directive typically should not use both DoCheck and OnChanges to respond ' +
       'to changes on the same input, as ngOnChanges will continue to be called when the ' +
       'default change detector detects changes.',
     options: null,
     optionsDescription: 'Not configurable.',
-    typescriptOnly: true,
+    typescriptOnly: true
   };
 
   static FAILURE_STRING = 'Implement DoCheck and OnChanges hooks in class %s is not recommended';
@@ -24,10 +25,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 }
 
 const hooksPrefix = 'ng';
-const lifecycleHooksMethods: string[] = [
-  'DoCheck',
-  'OnChanges'
-];
+const lifecycleHooksMethods: string[] = ['DoCheck', 'OnChanges'];
 
 export class ClassMetadataWalker extends Lint.RuleWalker {
   visitClassDeclaration(node: ts.ClassDeclaration) {
@@ -58,9 +56,7 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
   }
 
   private validateMethods(node: ts.ClassDeclaration): void {
-    const methodNames = node.members
-        .filter(m => m.kind === ts.SyntaxKind.MethodDeclaration)
-        .map<string>(m => (m.name as any).text);
+    const methodNames = node.members.filter(m => m.kind === ts.SyntaxKind.MethodDeclaration).map<string>(m => (m.name as any).text);
     const matchesAllHooks = lifecycleHooksMethods.every(l => {
       return methodNames.indexOf(`${hooksPrefix}${l}`) !== -1;
     });

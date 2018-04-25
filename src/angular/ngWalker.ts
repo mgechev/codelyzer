@@ -7,11 +7,7 @@ import { parseCss } from './styles/parseCss';
 import { CssAst } from './styles/cssAst';
 import { BasicCssAstVisitor, CssAstVisitorCtrl } from './styles/basicCssAstVisitor';
 
-import {
-  RecursiveAngularExpressionVisitorCtr,
-  BasicTemplateAstVisitor,
-  TemplateAstVisitorCtr
-} from './templates/basicTemplateAstVisitor';
+import { RecursiveAngularExpressionVisitorCtr, BasicTemplateAstVisitor, TemplateAstVisitorCtr } from './templates/basicTemplateAstVisitor';
 import { RecursiveAngularExpressionVisitor } from './templates/recursiveAngularExpressionVisitor';
 import { ReferenceCollectorVisitor } from './templates/referenceCollectorVisitor';
 
@@ -97,28 +93,16 @@ export class NgWalker extends Lint.RuleWalker {
         this.visitNgHostBinding(<ts.PropertyDeclaration>decorator.parent, decorator, getDecoratorStringArgs(decorator));
         break;
       case 'ContentChild':
-        this.visitNgContentChild(
-          <ts.PropertyDeclaration>decorator.parent,
-          decorator,
-          getDecoratorStringArgs(decorator)
-        );
+        this.visitNgContentChild(<ts.PropertyDeclaration>decorator.parent, decorator, getDecoratorStringArgs(decorator));
         break;
       case 'ContentChildren':
-        this.visitNgContentChildren(
-          <ts.PropertyDeclaration>decorator.parent,
-          decorator,
-          getDecoratorStringArgs(decorator)
-        );
+        this.visitNgContentChildren(<ts.PropertyDeclaration>decorator.parent, decorator, getDecoratorStringArgs(decorator));
         break;
       case 'ViewChild':
         this.visitNgViewChild(<ts.PropertyDeclaration>decorator.parent, decorator, getDecoratorStringArgs(decorator));
         break;
       case 'ViewChildren':
-        this.visitNgViewChildren(
-          <ts.PropertyDeclaration>decorator.parent,
-          decorator,
-          getDecoratorStringArgs(decorator)
-        );
+        this.visitNgViewChildren(<ts.PropertyDeclaration>decorator.parent, decorator, getDecoratorStringArgs(decorator));
         break;
     }
   }
@@ -225,23 +209,12 @@ export class NgWalker extends Lint.RuleWalker {
     }
   }
 
-  protected visitNgStyleHelper(
-    style: CssAst,
-    context: ComponentMetadata,
-    styleMetadata: StyleMetadata,
-    baseStart: number
-  ) {
+  protected visitNgStyleHelper(style: CssAst, context: ComponentMetadata, styleMetadata: StyleMetadata, baseStart: number) {
     if (!style) {
       return;
     } else {
       const sourceFile = this.getContextSourceFile(styleMetadata.url, styleMetadata.style.source);
-      const visitor = new this._config.cssVisitorCtrl(
-        sourceFile,
-        this._originalOptions,
-        context,
-        styleMetadata,
-        baseStart
-      );
+      const visitor = new this._config.cssVisitorCtrl(sourceFile, this._originalOptions, context, styleMetadata, baseStart);
       style.visit(visitor);
       visitor.getFailures().forEach(f => this.addFailure(f));
     }

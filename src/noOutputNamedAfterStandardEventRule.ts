@@ -11,19 +11,15 @@ export class Rule extends Lint.Rules.AbstractRule {
     rationale: 'Listeners subscribed to an output with such a name will also be invoked when the native event is raised.',
     options: null,
     optionsDescription: 'Not configurable.',
-    typescriptOnly: true,
+    typescriptOnly: true
   };
 
-  static FAILURE_STRING: string = 'In the class "%s", the output ' +
-    'property "%s" should not be named or renamed after a standard event.';
+  static FAILURE_STRING: string = 'In the class "%s", the output ' + 'property "%s" should not be named or renamed after a standard event.';
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(
-      new OutputMetadataWalker(sourceFile,
-        this.getOptions()));
+    return this.applyWithWalker(new OutputMetadataWalker(sourceFile, this.getOptions()));
   }
 }
-
 
 export class OutputMetadataWalker extends NgWalker {
   // source: https://developer.mozilla.org/en-US/docs/Web/Events
@@ -209,13 +205,7 @@ export class OutputMetadataWalker extends NgWalker {
     if (outputName && this.standardEventNames.get(outputName)) {
       const failureConfig: string[] = [Rule.FAILURE_STRING, className, memberName];
       const errorMessage = sprintf.apply(null, failureConfig);
-      this.addFailure(
-        this.createFailure(
-          property.getStart(),
-          property.getWidth(),
-          errorMessage
-        )
-      );
+      this.addFailure(this.createFailure(property.getStart(), property.getWidth(), errorMessage));
     }
   }
 }

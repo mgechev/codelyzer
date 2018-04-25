@@ -38,16 +38,7 @@ import {
 
 const SPACE_OPERATOR = ' ';
 
-import {
-  CssLexer,
-  CssLexerMode,
-  CssScanner,
-  CssToken,
-  CssTokenType,
-  generateErrorMessage,
-  getRawMessage,
-  isNewline
-} from './cssLexer';
+import { CssLexer, CssLexerMode, CssScanner, CssToken, CssTokenType, generateErrorMessage, getRawMessage, isNewline } from './cssLexer';
 
 const SLASH_CHARACTER = '/';
 const GT_CHARACTER = '>';
@@ -260,11 +251,7 @@ export class CssParser {
     const token = this._scan();
     const startToken = token;
 
-    this._assertCondition(
-      token.type == CssTokenType.AtKeyword,
-      `The CSS Rule ${token.strValue} is not a valid [@] rule.`,
-      token
-    );
+    this._assertCondition(token.type == CssTokenType.AtKeyword, `The CSS Rule ${token.strValue} is not a valid [@] rule.`, token);
 
     let block: CssBlockAst;
     const type = this._resolveBlockType(token);
@@ -538,8 +525,7 @@ export class CssParser {
       } else {
         // this branch is for things like "en-us, 2k + 1, etc..."
         // which all end up in pseudoSelectors like :lang, :nth-child, etc..
-        const innerValueDelims =
-          delimiters | LBRACE_DELIM_FLAG | COLON_DELIM_FLAG | RPAREN_DELIM_FLAG | LPAREN_DELIM_FLAG;
+        const innerValueDelims = delimiters | LBRACE_DELIM_FLAG | COLON_DELIM_FLAG | RPAREN_DELIM_FLAG | LPAREN_DELIM_FLAG;
         while (!characterContainsDelimiter(this._scanner.peek, innerValueDelims)) {
           const token = this._scan();
           tokens.push(token);
@@ -619,10 +605,7 @@ export class CssParser {
 
     hasAttributeError = hasAttributeError || this._scanner.getMode() == CssLexerMode.ATTRIBUTE_SELECTOR;
     if (hasAttributeError) {
-      this._error(
-        `Unbalanced CSS attribute selector at column ${previousToken.line}:${previousToken.column}`,
-        previousToken
-      );
+      this._error(`Unbalanced CSS attribute selector at column ${previousToken.line}:${previousToken.column}`, previousToken);
     }
 
     let end = this._getScannerIndex() - 1;
@@ -651,11 +634,7 @@ export class CssParser {
               let index = lastOperatorToken.index;
               let line = lastOperatorToken.line;
               let column = lastOperatorToken.column;
-              if (
-                deepToken != null &&
-                deepToken.strValue.toLowerCase() == 'deep' &&
-                deepSlash.strValue == SLASH_CHARACTER
-              ) {
+              if (deepToken != null && deepToken.strValue.toLowerCase() == 'deep' && deepSlash.strValue == SLASH_CHARACTER) {
                 token = new CssToken(
                   lastOperatorToken.index,
                   lastOperatorToken.column,
@@ -666,14 +645,7 @@ export class CssParser {
               } else {
                 const text = SLASH_CHARACTER + deepToken.strValue + deepSlash.strValue;
                 this._error(
-                  generateErrorMessage(
-                    this._getSourceContent(),
-                    `${text} is an invalid CSS operator`,
-                    text,
-                    index,
-                    line,
-                    column
-                  ),
+                  generateErrorMessage(this._getSourceContent(), `${text} is an invalid CSS operator`, text, index, line, column),
                   lastOperatorToken
                 );
                 token = new CssToken(index, column, line, CssTokenType.Invalid, text);
@@ -908,10 +880,7 @@ export class CssParser {
           const nextValue = this._consume(CssTokenType.Character, ':');
           propStr.push(nextValue.strValue);
 
-          const remainingTokens = this._collectUntilDelim(
-            delimiters | COLON_DELIM_FLAG | SEMICOLON_DELIM_FLAG,
-            CssTokenType.Identifier
-          );
+          const remainingTokens = this._collectUntilDelim(delimiters | COLON_DELIM_FLAG | SEMICOLON_DELIM_FLAG, CssTokenType.Identifier);
           if (remainingTokens.length > 0) {
             remainingTokens.forEach(token => {
               propStr.push(token.strValue);
@@ -968,14 +937,7 @@ export class CssParser {
 }
 
 export class CssParseError extends ParseError {
-  static create(
-    file: ParseSourceFile,
-    offset: number,
-    line: number,
-    col: number,
-    length: number,
-    errMsg: string
-  ): CssParseError {
+  static create(file: ParseSourceFile, offset: number, line: number, col: number, length: number, errMsg: string): CssParseError {
     const start = new ParseLocation(file, offset, line, col);
     const end = new ParseLocation(file, offset, line, col + length);
     const span = new ParseSourceSpan(start, end);

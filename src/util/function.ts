@@ -16,7 +16,6 @@ function nullOrUndef(t: any) {
 }
 
 export class Maybe<T> {
-
   static nothing = new Maybe<any>(undefined);
 
   static lift<T>(t: T) {
@@ -30,8 +29,7 @@ export class Maybe<T> {
     return t0.bind(_t0 => t1.fmap(_t1 => [_t0, _t1] as [T0, T1]));
   }
 
-  private constructor(private t: T | undefined) {
-  }
+  private constructor(private t: T | undefined) {}
 
   bind<R>(fn: F1<T, Maybe<R>>): Maybe<R> {
     if (!nullOrUndef(this.t)) {
@@ -64,7 +62,7 @@ export class Maybe<T> {
   }
 }
 
-export function unwrapFirst<T>(ts: Maybe<T>[]): T|undefined {
+export function unwrapFirst<T>(ts: Maybe<T>[]): T | undefined {
   const f = ts.find((t: Maybe<T>) => t.isSomething);
   if (!!f) {
     return f.unwrap();
@@ -80,7 +78,7 @@ export function any<T>(...preds: F1<T, boolean>[]): F1<T, boolean> {
 }
 
 export function ifTrue<T>(pred: F1<T, boolean>): F1<T, Maybe<T>> {
-  return (t: T) => (pred(t)) ? Maybe.lift(t) : Maybe.nothing;
+  return (t: T) => (pred(t) ? Maybe.lift(t) : Maybe.nothing);
 }
 
 export function listToMaybe<T>(ms: Maybe<T>[]): Maybe<T[]> {

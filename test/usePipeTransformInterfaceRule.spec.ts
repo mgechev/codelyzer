@@ -4,13 +4,13 @@ describe('use-pipe-transform-interface', () => {
   describe('invalid declaration of pipe', () => {
     it('should fail, when a Pipe is declared without implementing the PipeTransform interface', () => {
       let source = `
-      @Pipe({name: 'fetch'})
-      ~~~~~~~~~~~~~~~~~~~~~~
-      export class NewPipe {
-        transform(url:string):any {
+        @Pipe({name: 'fetch'})
+        ~~~~~~~~~~~~~~~~~~~~~~
+        export class NewPipe {
+          transform(url: string): any {}
         }
-      }
-      ~`;
+        ~
+      `;
       assertAnnotated({
         ruleName: 'use-pipe-transform-interface',
         message: 'The NewPipe class has the Pipe decorator, so it should implement the PipeTransform interface',
@@ -23,27 +23,27 @@ describe('use-pipe-transform-interface', () => {
     it('should succeed when Pipe is declared properly', () => {
       let source = `
         @Pipe({name: 'fetch'})
-        export class NewPipe  implements PipeTransform{
-          transform(url:string):any {
-          }
-        }`;
+        export class NewPipe implements PipeTransform {
+          transform(url: string): any {}
+        }
+      `;
       assertSuccess('use-pipe-transform-interface', source);
     });
 
     it('should succeed when Pipe is declared properly', () => {
       let source = `
         @Pipe({name: 'fetch'})
-        export class NewPipe  implements ng.PipeTransform {
-          transform(url:string):any {
-          }
-        }`;
+        export class NewPipe implements ng.PipeTransform {
+          transform(url: string): any {}
+        }
+      `;
       assertSuccess('use-pipe-transform-interface', source);
     });
   });
 
   describe('valid use of empty class', () => {
     it('should succeed, when Pipe is not used', () => {
-      let source = 'class App{}';
+      let source = 'class App {}';
       assertSuccess('use-pipe-transform-interface', source);
     });
   });
@@ -51,7 +51,8 @@ describe('use-pipe-transform-interface', () => {
   describe('valid use with @Injectable', () => {
     it('should succeed, when Pipe is not used', () => {
       let source = `@Injectable
-        class App{}`;
+        class App {}
+      `;
       assertSuccess('use-pipe-transform-interface', source);
     });
   });

@@ -17,7 +17,6 @@ describe(ruleName, () => {
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           }
         `;
-
         assertAnnotated({
           ruleName,
           message: getMessage('TestComponent', 'label'),
@@ -33,7 +32,6 @@ describe(ruleName, () => {
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           }
         `;
-
         assertAnnotated({
           ruleName,
           message: getMessage('TestComponent', 'label'),
@@ -51,7 +49,6 @@ describe(ruleName, () => {
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           }
         `;
-
         assertAnnotated({
           ruleName,
           message: getMessage('TestDirective', 'label'),
@@ -59,7 +56,7 @@ describe(ruleName, () => {
         });
       });
 
-      it(`should fail when input property is renamed and it's different from directive's selector`, () => {
+      it("should fail when input property is renamed and it's different from directive's selector", () => {
         const source = `
           @Directive({
             selector: '[label], label2'
@@ -69,10 +66,9 @@ describe(ruleName, () => {
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           }
         `;
-
         assertAnnotated({
           ruleName,
-          message: getMessage('TestDirective', `labelText`),
+          message: getMessage('TestDirective', 'labelText'),
           source
         });
       });
@@ -88,7 +84,6 @@ describe(ruleName, () => {
             @Input() label: string;
           }
         `;
-
         assertSuccess(ruleName, source);
       });
     });
@@ -103,7 +98,6 @@ describe(ruleName, () => {
             @Input('labelText') label: string;
           }
         `;
-
         assertSuccess(ruleName, source);
       });
     });

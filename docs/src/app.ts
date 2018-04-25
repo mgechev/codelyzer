@@ -1,4 +1,4 @@
-import {Linter, Editor, HtmlFormatter, ErrorReportingEditor, PlainReporter} from './app-linter/index';
+import { Linter, Editor, HtmlFormatter, ErrorReportingEditor, PlainReporter } from './app-linter/index';
 
 console.log(`
 Welcome to        __     __
@@ -12,7 +12,9 @@ console.log(`Your code is being processed in a Web Worker.
 You can see the errors in the web user interface
 as well as in the console of your browser.\n\n`);
 
-const sampleCode = localStorage.getItem('code') || `// Welcome to Codelyzer!
+const sampleCode =
+  localStorage.getItem('code') ||
+  `// Welcome to Codelyzer!
 //
 // Codelyzer is a tool great for teams and individuals, which helps you
 // write consistent code, and discover potential errors.
@@ -46,16 +48,16 @@ class Hero {
 }
 `;
 
-const editor = new ErrorReportingEditor('CodeMirror-lint-markers', (window as any).CodeMirror(document.getElementById('editor'), {
-  value: sampleCode,
-  gutters: ['CodeMirror-lint-markers'],
-  mode:  'javascript',
-  theme: 'material',
-  lineNumbers: true
-}) as Editor, new PlainReporter(
-  new HtmlFormatter(),
-  document.getElementById('warnings-header'),
-  document.getElementById('warnings'))
+const editor = new ErrorReportingEditor(
+  'CodeMirror-lint-markers',
+  (window as any).CodeMirror(document.getElementById('editor'), {
+    value: sampleCode,
+    gutters: ['CodeMirror-lint-markers'],
+    mode: 'javascript',
+    theme: 'material',
+    lineNumbers: true
+  }) as Editor,
+  new PlainReporter(new HtmlFormatter(), document.getElementById('warnings-header'), document.getElementById('warnings'))
 );
 
 let unlocked = true;

@@ -17,20 +17,16 @@ class TemplateToNgTemplateVisitor extends RecursiveAngularExpressionVisitor {
     }
 
     const operator = this.codeWithMap.code.slice(expr.left.span.end, expr.right.span.start);
-    const operatorStart = (/^.*==/).exec(operator)[0].length - unstrictEqualityOperator.length;
+    const operatorStart = /^.*==/.exec(operator)[0].length - unstrictEqualityOperator.length;
 
-    this.addFailure(this.createFailure(
-      expr.span.start,
-      expr.span.end - expr.span.start,
-      'Async pipes must use strict equality `===` when comparing with `false`',
-      [
-        new Lint.Replacement(
-          this.getSourcePosition(expr.left.span.end) + operatorStart,
-          unstrictEqualityOperator.length,
-          '===',
-        ),
-      ]
-    ));
+    this.addFailure(
+      this.createFailure(
+        expr.span.start,
+        expr.span.end - expr.span.start,
+        'Async pipes must use strict equality `===` when comparing with `false`',
+        [new Lint.Replacement(this.getSourcePosition(expr.left.span.end) + operatorStart, unstrictEqualityOperator.length, '===')]
+      )
+    );
   }
 
   visitPrefixNot(expr: e.PrefixNot, context: any): any {
@@ -43,17 +39,14 @@ class TemplateToNgTemplateVisitor extends RecursiveAngularExpressionVisitor {
 
     // Angular includes the whitespace after an expression, we want to trim that
     const expressionSource = this.codeWithMap.code.slice(expr.span.start, expr.span.end);
-    const concreteWidth = width - (/ *$/).exec(expressionSource)[0].length;
+    const concreteWidth = width - / *$/.exec(expressionSource)[0].length;
 
-    this.addFailure(this.createFailure(
-      expr.span.start,
-      width,
-      'Async pipes can not be negated, use (observable | async) === false instead',
-      [
+    this.addFailure(
+      this.createFailure(expr.span.start, width, 'Async pipes can not be negated, use (observable | async) === false instead', [
         new Lint.Replacement(absoluteStart + concreteWidth, 1, ' === false '),
-        new Lint.Replacement(absoluteStart, 1, ''),
-      ],
-    ));
+        new Lint.Replacement(absoluteStart, 1, '')
+      ])
+    );
   }
 
   protected isAsyncBinding(expr: any) {
@@ -66,7 +59,8 @@ export class Rule extends Lint.Rules.AbstractRule {
     ruleName: 'templates-no-negated-async',
     type: 'functionality',
     description: 'Ensures that strict equality is used when evaluating negations on async pipe outout.',
-    rationale: 'Async pipe evaluate to `null` before the observable or promise emits, which can lead to layout thrashing as' +
+    rationale:
+      'Async pipe evaluate to `null` before the observable or promise emits, which can lead to layout thrashing as' +
       ' components load. Prefer strict `=== false` checks instead.',
     options: null,
     optionsDescription: 'Not configurable.',
@@ -76,9 +70,9 @@ export class Rule extends Lint.Rules.AbstractRule {
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
-        new NgWalker(sourceFile,
-            this.getOptions(), {
-              expressionVisitorCtrl: TemplateToNgTemplateVisitor
-            }));
+      new NgWalker(sourceFile, this.getOptions(), {
+        expressionVisitorCtrl: TemplateToNgTemplateVisitor
+      })
+    );
   }
 }

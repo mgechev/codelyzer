@@ -5,7 +5,6 @@ import * as ts from 'typescript';
 import { NgWalker } from './angular/ngWalker';
 
 export class Rule extends Lint.Rules.AbstractRule {
-
   static metadata: Lint.IRuleMetadata = {
     ruleName: 'use-view-encapsulation',
     type: 'maintainability',
@@ -25,7 +24,6 @@ export class Rule extends Lint.Rules.AbstractRule {
 }
 
 class ViewEncapsulationWalker extends NgWalker {
-
   visitClassDeclaration(node: ts.ClassDeclaration) {
     const decorator = getComponentDecorator(node);
 
@@ -34,17 +32,10 @@ class ViewEncapsulationWalker extends NgWalker {
     }
     const encapsulation = getDecoratorPropertyInitializer(decorator, 'encapsulation');
 
-    if (!encapsulation ||
-      encapsulation.name.text !== 'None') {
+    if (!encapsulation || encapsulation.name.text !== 'None') {
       return;
     }
 
-    this.addFailure(
-      this.createFailure(
-        encapsulation.getStart(),
-        encapsulation.getWidth(),
-        Rule.FAILURE
-      )
-    );
+    this.addFailure(this.createFailure(encapsulation.getStart(), encapsulation.getWidth(), Rule.FAILURE));
   }
 }

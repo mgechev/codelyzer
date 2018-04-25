@@ -4,7 +4,6 @@ import * as ast from '@angular/compiler';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 import { NgWalker } from './angular/ngWalker';
 
-
 const InvalidSyntaxBoxOpen = '([';
 const InvalidSyntaxBoxClose = '])';
 const ValidSyntaxOpen = '[(';
@@ -19,16 +18,16 @@ const getReplacements = (text: ast.BoundEventAst, absolutePosition: number) => {
   const trimmed = expr.substr(internalStart + InvalidSyntaxBoxOpen.length, len).trim();
 
   return [
-    new Lint.Replacement(absolutePosition,
+    new Lint.Replacement(
+      absolutePosition,
       internalEnd - internalStart + ValidSyntaxClose.length,
-      `${ValidSyntaxOpen}${trimmed}${ValidSyntaxClose}`)
+      `${ValidSyntaxOpen}${trimmed}${ValidSyntaxClose}`
+    )
   ];
 };
 
 class BananaInBoxTemplateVisitor extends BasicTemplateAstVisitor {
-
   visitEvent(prop: ast.BoundEventAst, context: any): any {
-
     if (prop.name) {
       let error = null;
       if (InvalidSyntaxBoxRe.test(prop.name)) {
@@ -41,9 +40,7 @@ class BananaInBoxTemplateVisitor extends BasicTemplateAstVisitor {
         const start = prop.sourceSpan.start.offset + internalStart;
         const absolutePosition = this.getSourcePosition(start - 1);
 
-        this.addFailure(this.createFailure(start, expr.trim().length,
-          error, getReplacements(prop, absolutePosition))
-          );
+        this.addFailure(this.createFailure(start, expr.trim().length, error, getReplacements(prop, absolutePosition)));
       }
     }
   }
@@ -62,11 +59,10 @@ export class Rule extends Lint.Rules.AbstractRule {
   };
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-
     return this.applyWithWalker(
-      new NgWalker(sourceFile,
-        this.getOptions(), {
-          templateVisitorCtrl: BananaInBoxTemplateVisitor,
-        }));
+      new NgWalker(sourceFile, this.getOptions(), {
+        templateVisitorCtrl: BananaInBoxTemplateVisitor
+      })
+    );
   }
 }

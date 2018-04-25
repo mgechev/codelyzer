@@ -16,16 +16,17 @@ export class Rule extends UsePropertyDecorator {
     * Placing the decorator on the same line usually makes for shorter code and still easily identifies the property as an input.`,
     options: null,
     optionsDescription: 'Not configurable.',
-    typescriptOnly: true,
+    typescriptOnly: true
   };
 
-
   constructor(options: IOptions) {
-    super({
-      decoratorName: 'Input',
-      propertyName: 'inputs',
-      errorMessage: 'Use the @Input property decorator instead of the inputs property (https://angular.io/styleguide#style-05-12)'
-    }, options);
+    super(
+      {
+        decoratorName: 'Input',
+        propertyName: 'inputs',
+        errorMessage: 'Use the @Input property decorator instead of the inputs property (https://angular.io/styleguide#style-05-12)'
+      },
+      options
+    );
   }
 }
-

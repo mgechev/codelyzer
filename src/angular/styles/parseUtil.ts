@@ -111,11 +111,7 @@ export enum ParseErrorLevel {
 }
 
 export class ParseError {
-  constructor(
-    public span: ParseSourceSpan,
-    public msg: string,
-    public level: ParseErrorLevel = ParseErrorLevel.ERROR
-  ) {}
+  constructor(public span: ParseSourceSpan, public msg: string, public level: ParseErrorLevel = ParseErrorLevel.ERROR) {}
 
   contextualMessage(): string {
     const ctx = this.span.start.getContext(100, 3);

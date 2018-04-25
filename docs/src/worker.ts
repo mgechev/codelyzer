@@ -1,4 +1,4 @@
-import {WebLinter} from './worker/web-linter';
+import { WebLinter } from './worker/web-linter';
 // import * as rules from 'codelyzer';
 const rules = require('codelyzer');
 
@@ -54,4 +54,3 @@ self.addEventListener('message', (e: any) => {
   }
   linter.reset();
 });
-

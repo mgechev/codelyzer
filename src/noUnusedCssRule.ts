@@ -5,12 +5,7 @@ import { getComponentDecorator, isSimpleTemplateString, getDecoratorPropertyInit
 import { BasicCssAstVisitor } from './angular/styles/basicCssAstVisitor';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 import { VERSION } from '@angular/core';
-import {
-  TemplateAst,
-  ElementAst,
-  EmbeddedTemplateAst,
-  PropertyBindingType
-} from '@angular/compiler';
+import { TemplateAst, ElementAst, EmbeddedTemplateAst, PropertyBindingType } from '@angular/compiler';
 import { parseTemplate } from './angular/templates/templateParser';
 import { CssAst, CssSelectorRuleAst, CssSelectorAst, CssBlockAst } from './angular/styles/cssAst';
 
@@ -55,14 +50,17 @@ const lang = require('cssauron')({
     return (node.name || '').toLowerCase();
   },
   // We do not support it for now
-  contents(node: ElementAst) { return ''; },
+  contents(node: ElementAst) {
+    return '';
+  },
   id(node: ElementAst) {
     return this.attr(node, 'id');
   },
-  'class'(node: ElementAst) {
+  class(node: ElementAst) {
     const classBindings = (node.inputs || [])
       .filter(b => b.type === PropertyBindingType.Class)
-      .map(b => b.name).join(' ');
+      .map(b => b.name)
+      .join(' ');
     const classAttr = node.attrs.filter(a => a.name.toLowerCase() === 'class').pop();
     let staticClasses = '';
     if (classAttr) {
@@ -117,7 +115,7 @@ const dynamicFilters = {
   attribute(ast: ElementAst, selector: any) {
     return (ast.inputs || []).some(i => i.type === PropertyBindingType.Attribute);
   },
-  'class'(ast: ElementAst, selector: any) {
+  class(ast: ElementAst, selector: any) {
     return (ast.inputs || []).some(i => i.name === 'className' || i.name === 'ngClass');
   }
 };
@@ -128,13 +126,18 @@ const dynamicFilters = {
 // - If has selector by attribute and any of the elements has a dynamically set attribute we just skip it.
 class ElementFilterVisitor extends BasicTemplateAstVisitor {
   shouldVisit(ast: ElementAst, strategies: any, selectorTypes: any): boolean {
-    return Object.keys(strategies).every(s => {
-      const strategy = strategies[s];
-      return !selectorTypes[s] || !strategy(ast);
-    }) && (ast.children || [])
-      .every(c => ast instanceof ElementAst && this.shouldVisit(<ElementAst>c, strategies, selectorTypes)
-                  || ast instanceof EmbeddedTemplateAst &&
-                  (ast.children || []).every(c => this.shouldVisit(<ElementAst>c, strategies, selectorTypes)));
+    return (
+      Object.keys(strategies).every(s => {
+        const strategy = strategies[s];
+        return !selectorTypes[s] || !strategy(ast);
+      }) &&
+      (ast.children || []).every(
+        c =>
+          (ast instanceof ElementAst && this.shouldVisit(<ElementAst>c, strategies, selectorTypes)) ||
+          (ast instanceof EmbeddedTemplateAst &&
+            (ast.children || []).every(c => this.shouldVisit(<ElementAst>c, strategies, selectorTypes)))
+      )
+    );
   }
 }
 
@@ -142,33 +145,34 @@ export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'no-unused-css',
     type: 'maintainability',
-    description: 'Disallows having an unused CSS rule in the component\'s stylesheet.',
+    description: "Disallows having an unused CSS rule in the component's stylesheet.",
     options: null,
     optionsDescription: 'Not configurable.',
     typescriptOnly: true,
     hasFix: true
   };
 
-
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
-        new UnusedCssNgVisitor(sourceFile,
-            this.getOptions(), {
-              cssVisitorCtrl: UnusedCssVisitor
-            }));
+      new UnusedCssNgVisitor(sourceFile, this.getOptions(), {
+        cssVisitorCtrl: UnusedCssVisitor
+      })
+    );
   }
 }
 
 class UnusedCssVisitor extends BasicCssAstVisitor {
   templateAst: TemplateAst;
 
-  constructor(sourceFile: ts.SourceFile,
+  constructor(
+    sourceFile: ts.SourceFile,
     originalOptions: Lint.IOptions,
     context: ComponentMetadata,
     protected style: StyleMetadata,
-    templateStart: number) {
-      super(sourceFile, originalOptions, context, style, templateStart);
-    }
+    templateStart: number
+  ) {
+    super(sourceFile, originalOptions, context, style, templateStart);
+  }
 
   visitCssSelectorRule(ast: CssSelectorRuleAst) {
     try {
@@ -193,11 +197,11 @@ class UnusedCssVisitor extends BasicCssAstVisitor {
       const c = ast.selectorParts[i];
       c.strValue = c.strValue.split('::').shift();
       // Stop on /deep/ and >>>
-      if (c.strValue.endsWith('/') ||
-          c.strValue.endsWith('>')) {
+      if (c.strValue.endsWith('/') || c.strValue.endsWith('>')) {
         parts.push(c.strValue);
         break;
-      } else if (!c.strValue.startsWith(':')) { // skip :host
+      } else if (!c.strValue.startsWith(':')) {
+        // skip :host
         parts.push(c.strValue);
       }
     }
@@ -240,15 +244,38 @@ export class UnusedCssNgVisitor extends NgWalker {
       if (meta.template && meta.template.template) {
         try {
           const ElementAstCtr = ElementAst as any;
-          SemVerDSL
-            .gte('4.0.0-beta.8', () => {
-              this.templateAst =
-                new ElementAstCtr('*', [], [], [], [], [], [], false, [], parseTemplate(meta.template.template.code), 0, null, null);
-            })
-            .else(() => {
-              this.templateAst =
-                new ElementAstCtr('*', [], [], [], [], [], [], false, parseTemplate(meta.template.template.code), 0, null, null);
-            });
+          SemVerDSL.gte('4.0.0-beta.8', () => {
+            this.templateAst = new ElementAstCtr(
+              '*',
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              false,
+              [],
+              parseTemplate(meta.template.template.code),
+              0,
+              null,
+              null
+            );
+          }).else(() => {
+            this.templateAst = new ElementAstCtr(
+              '*',
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              false,
+              parseTemplate(meta.template.template.code),
+              0,
+              null,
+              null
+            );
+          });
         } catch (e) {
           logger.error('Cannot parse the template', e);
         }

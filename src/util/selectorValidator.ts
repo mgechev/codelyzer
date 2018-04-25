@@ -1,5 +1,4 @@
 export const SelectorValidator = {
-
   attribute(selector: string): boolean {
     return selector.length !== 0;
   },
@@ -37,4 +36,3 @@ export const SelectorValidator = {
     };
   }
 };
-

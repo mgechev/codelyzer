@@ -1,5 +1,3 @@
-/* tslint:disable */
-
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -75,7 +73,7 @@ export const $AT = 64;
 export const $BT = 96;
 
 export function isWhitespace(code: number): boolean {
-  return (code >= $TAB && code <= $SPACE) || code == $NBSP;
+  return (code >= $TAB && code <= $SPACE) || code === $NBSP;
 }
 
 export function isDigit(code: number): boolean {

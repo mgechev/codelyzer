@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "docs": "ts-node build/buildDocs.ts",
+    "format:check": "prettier --config ./.prettierrc --list-different \"*.{json,md}\" \"src/**/*.{css,scss,ts}\" \"test/**/*.{css,scss,ts}\"",
+    "format:fix": "npm run format:check -- --write",
     "lint": "tslint -c tslint.json \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint:fix": "npm run lint -- --fix",
     "release": "npm run build && rimraf dist && tsc -p tsconfig-release.json && npm run copy:common && npm run prepare:package && BUILD_TYPE=prod npm run set:vars",
@@ -17,6 +19,16 @@
     "tscv": "tsc --version",
     "tsc": "tsc",
     "tsc:watch": "tsc --w"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "npm run lint:fix",
+      "git add"
+    ],
+    "*.{css,json,md,scss,ts}": [
+      "npm run format:fix",
+      "git add"
+    ]
   },
   "contributors": [
     "Minko Gechev <mgechev@gmail.com>",
@@ -57,13 +69,17 @@
     "@types/sprintf-js": "0.0.27",
     "chai": "^3.5.0",
     "chai-spies": "^0.7.1",
+    "husky": "^0.14.3",
     "js-yaml": "^3.11.0",
     "json-stringify-pretty-compact": "^1.1.0",
+    "lint-staged": "^7.0.4",
     "minimalist": "1.0.0",
     "mocha": "3.0.2",
     "node-sass": "^4.8.3",
+    "prettier": "1.12.1",
     "rimraf": "^2.6.2",
     "rxjs": "6.0.0-beta.0",
+    "rxjs-compat": "^6.0.0",
     "ts-node": "1.2.2",
     "tslint": "^5.0.0",
     "typescript": "2.4.0",

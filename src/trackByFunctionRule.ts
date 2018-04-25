@@ -17,10 +17,10 @@ export class Rule extends Lint.Rules.AbstractRule {
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
-      new NgWalker(sourceFile,
-        this.getOptions(), {
-          templateVisitorCtrl: TrackByTemplateVisitor,
-        }));
+      new NgWalker(sourceFile, this.getOptions(), {
+        templateVisitorCtrl: TrackByTemplateVisitor
+      })
+    );
   }
 }
 
@@ -50,7 +50,6 @@ class TrackByNgForTemplateVisitor extends BasicTemplateAstVisitor {
   }
 }
 
-
 class TrackByTemplateVisitor extends BasicTemplateAstVisitor {
   private visitors: (BasicTemplateAstVisitor)[] = [
     new TrackByNgForTemplateVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart)
@@ -63,5 +62,4 @@ class TrackByTemplateVisitor extends BasicTemplateAstVisitor {
       .forEach(f => this.addFailure(f));
     super.visitDirectiveProperty(prop, context);
   }
-
 }

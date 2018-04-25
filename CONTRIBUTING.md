@@ -3,12 +3,12 @@
 We would love for you to contribute to Codelyzer and help make it even better than it is
 today! As a contributor, here are the guidelines we would like you to follow:
 
- - [Question or Problem?](#question)
- - [Issues and Bugs](#issue)
- - [Feature Requests](#feature)
- - [Submission Guidelines](#submit)
- - [Coding Rules](#rules)
- - [Commit Message Guidelines](#commit)
+* [Question or Problem?](#question)
+* [Issues and Bugs](#issue)
+* [Feature Requests](#feature)
+* [Submission Guidelines](#submit)
+* [Coding Rules](#rules)
+* [Commit Message Guidelines](#commit)
 
 ## <a name="question"></a> Got a Question or Problem?
 
@@ -16,28 +16,30 @@ Please, do not open issues for the general support questions as we want to keep 
 
 StackOverflow is a much better place to ask questions since:
 
-- there are thousands of people willing to help on StackOverflow
-- questions and answers stay available for public viewing so your question / answer might help someone else
-- StackOverflow's voting system assures that the best answers are prominently visible.
+* there are thousands of people willing to help on StackOverflow
+* questions and answers stay available for public viewing so your question / answer might help someone else
+* StackOverflow's voting system assures that the best answers are prominently visible.
 
 To save your and our time we will be systematically closing all the issues that are requests for general support and redirecting people to StackOverflow.
 
 If you would like to chat about the question in real-time, you can reach out via [our gitter channel][gitter].
 
 ## <a name="issue"></a> Found an Bug?
+
 If you find a bug in the source code, you can help us by
 [submitting an issue](#submit-issue) to our [GitHub Repository][github]. Even better, you can
 [submit a Pull Request](#submit-pr) with a fix.
 
 ## <a name="feature"></a> Missing a Feature?
-You can *request* a new feature by [submitting an issue](#submit-issue) to our GitHub
-Repository. If you would like to *implement* a new feature, please submit an issue with
+
+You can _request_ a new feature by [submitting an issue](#submit-issue) to our GitHub
+Repository. If you would like to _implement_ a new feature, please submit an issue with
 a proposal for your work first, to be sure that we can use it.
 Please consider what kind of change it is:
 
 * For a **Major Feature**, first open an issue and outline your proposal so that it can be
-discussed. This will also allow us to better coordinate our efforts, prevent duplication of work,
-and help you to craft the change so that it is successfully accepted into the project.
+  discussed. This will also allow us to better coordinate our efforts, prevent duplication of work,
+  and help you to craft the change so that it is successfully accepted into the project.
 * **Small Features** can be crafted and directly [submitted as a Pull Request](#submit-pr).
 
 ## <a name="submit"></a> Submission Guidelines
@@ -48,10 +50,10 @@ Before you submit an issue, please search the issue tracker, maybe an issue for 
 
 We want to fix all the issues as soon as possible, but before fixing a bug we need to reproduce and confirm it. In order to reproduce bugs we will systematically ask you to provide a minimal reproduction scenario by providing a snippet which breaks any of the codelyzer rules. Also make sure that you list:
 
-- version of Codelyzer used
-- version of Angular used
-- 3rd-party libraries and their versions
-- and most importantly - a use-case that fails
+* version of Codelyzer used
+* version of Angular used
+* 3rd-party libraries and their versions
+* and most importantly - a use-case that fails
 
 You can file new issues by filling out our [new issue form](https://github.com/mgechev/codelyzer/issues/new).
 
@@ -69,9 +71,9 @@ Before you submit your Pull Request (PR) consider the following guidelines:
   that relates to your submission. You don't want to duplicate effort.
 * Make your changes in a new git branch:
 
-     ```shell
-     git checkout -b my-fix-branch master
-     ```
+  ```shell
+  git checkout -b my-fix-branch master
+  ```
 
 * Create your patch, **including appropriate test cases**.
 * Follow our [Coding Rules](#rules).
@@ -79,19 +81,21 @@ Before you submit your Pull Request (PR) consider the following guidelines:
   [commit message conventions](#commit). Adherence to these conventions
   is necessary because release notes are automatically generated from these messages.
 
-     ```shell
-     git commit -a
-     ```
+  ```shell
+  git commit -a
+  ```
+
   Note: the optional commit `-a` command line option will automatically "add" and "rm" edited files.
 
 * Push your branch to GitHub:
 
-    ```shell
-    git push origin my-fix-branch
-    ```
+  ```shell
+  git push origin my-fix-branch
+  ```
 
 * In GitHub, send a pull request to `codelyzer:master`.
 * If we suggest changes then:
+
   * Make the required updates.
   * Re-run the Codelyzer test and lint suites to ensure tests are still passing and you're following the coding style.
   * Rebase your branch and force push to your GitHub repository (this will update your Pull Request):
@@ -110,29 +114,30 @@ from the main (upstream) repository:
 
 * Delete the remote branch on GitHub either through the GitHub web UI or your local shell as follows:
 
-    ```shell
-    git push origin --delete my-fix-branch
-    ```
+  ```shell
+  git push origin --delete my-fix-branch
+  ```
 
 * Check out the master branch:
 
-    ```shell
-    git checkout master -f
-    ```
+  ```shell
+  git checkout master -f
+  ```
 
 * Delete the local branch:
 
-    ```shell
-    git branch -D my-fix-branch
-    ```
+  ```shell
+  git branch -D my-fix-branch
+  ```
 
 * Update your master with the latest upstream version:
 
-    ```shell
-    git pull --ff upstream master
-    ```
+  ```shell
+  git pull --ff upstream master
+  ```
 
 ## <a name="rules"></a> Coding Rules
+
 To ensure consistency throughout the source code, keep these rules in mind as you are working:
 
 * All features or bug fixes **must be tested** by one or more specs (unit-tests).
@@ -140,12 +145,13 @@ To ensure consistency throughout the source code, keep these rules in mind as yo
 
 ## <a name="commit"></a> Commit Message Guidelines
 
-We have very precise rules over how our git commit messages can be formatted.  This leads to **more
-readable messages** that are easy to follow when looking through the **project history**.  But also,
+We have very precise rules over how our git commit messages can be formatted. This leads to **more
+readable messages** that are easy to follow when looking through the **project history**. But also,
 we use the git commit messages to **generate the Angular change log**.
 
 ### Commit Message Format
-Each commit message consists of a **header**, a **body** and a **footer**.  The header has a special
+
+Each commit message consists of a **header**, a **body** and a **footer**. The header has a special
 format that includes a **type**, a **scope** and a **subject**:
 
 ```
@@ -168,6 +174,7 @@ Samples: (even more [samples](https://github.com/mgechev/codelyzer/commits/maste
 ```
 docs(changelog): update change log to beta.5
 ```
+
 ```
 fix(release): need to depend on latest rxjs and zone.js
 
@@ -175,9 +182,11 @@ The version in our package.json gets copied to the one we publish, and users nee
 ```
 
 ### Revert
-If the commit reverts a previous commit, it should begin with `revert: `, followed by the header of the reverted commit. In the body it should say: `This reverts commit <hash>.`, where the hash is the SHA of the commit being reverted.
+
+If the commit reverts a previous commit, it should begin with `revert:`, followed by the header of the reverted commit. In the body it should say: `This reverts commit <hash>.`, where the hash is the SHA of the commit being reverted.
 
 ### Type
+
 Must be one of the following:
 
 * **feat**: A new feature
@@ -192,10 +201,12 @@ Must be one of the following:
 * **ci**: Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
 
 ### Scope
+
 The scope could be anything specifying place of the commit change. For example
 `ngWalker`, `useLifeCycleInterface`, etc.
 
 ### Subject
+
 The subject contains succinct description of the change:
 
 * use the imperative, present tense: "change" not "changed" nor "changes"
@@ -203,10 +214,12 @@ The subject contains succinct description of the change:
 * no dot (.) at the end
 
 ### Body
+
 Just as in the **subject**, use the imperative, present tense: "change" not "changed" nor "changes".
 The body should include the motivation for the change and contrast this with previous behavior.
 
 ### Footer
+
 The footer should contain any information about **Breaking Changes** and is also the place to
 reference GitHub issues that this commit **Closes**.
 
@@ -217,4 +230,3 @@ A detailed explanation can be found in this [document][commit-message-format].
 [github]: https://github.com/mgechev/codelyzer
 [gitter]: https://gitter.im/mgechev/codelyzer
 [stackoverflow]: http://stackoverflow.com/questions/tagged/codelyzer
-

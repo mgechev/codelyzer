@@ -6,48 +6,48 @@ describe('trackBy-function', () => {
   describe('ngFor', () => {
     it('should have a trackBy function', () => {
       let source = `
-      @Component({
-        template: \`
-         <ul>
-            <li *ngFor="let person of persons; trackBy: trackByFn">
-             {{ person.name }}
-            </li>
-         </ul>
-         \`
-      })
-      class Bar {}
+        @Component({
+          template: \`
+            <ul>
+              <li *ngFor="let person of persons; trackBy: trackByFn">
+                {{ person.name }}
+              </li>
+            </ul>
+          \`
+        })
+        class Bar {}
       `;
       assertSuccess('trackBy-function', source);
     });
 
     it('should have a trackBy function with exported index value', () => {
       let source = `
-      @Component({
-        template: \`
-         <ul>
-            <li *ngFor="let person of persons; let i = index; trackBy: trackByFn">
-             {{ person.name }}
-            </li>
-         </ul>
-         \`
-      })
-      class Bar {}
+        @Component({
+          template: \`
+            <ul>
+              <li *ngFor="let person of persons; let i = index; trackBy: trackByFn">
+                {{ person.name }}
+              </li>
+            </ul>
+          \`
+        })
+        class Bar {}
       `;
       assertSuccess('trackBy-function', source);
     });
 
     it('should have a trackBy function', () => {
       let source = `
-      @Component({
-        template: \`
-         <ul>
-            <li *ngFor="let person of persons; trackBy : trackByFn">
-             {{ person.name }}
-            </li>
-         </ul>
-         \`
-      })
-      class Bar {}
+        @Component({
+          template: \`
+            <ul>
+              <li *ngFor="let person of persons; trackBy : trackByFn">
+                {{ person.name }}
+              </li>
+            </ul>
+          \`
+        })
+        class Bar {}
       `;
       assertSuccess('trackBy-function', source);
     });
@@ -55,51 +55,50 @@ describe('trackBy-function', () => {
 
   it('should have a trackBy function with different quotes', () => {
     let source = `
-    @Component({
-      template: \`
-       <ul>
-          <li *ngFor='let person of persons; let i = index; trackBy: trackByFn'>
-           {{ person.name }}
-          </li>
-       </ul>
-       \`
-    })
-    class Bar {}
+      @Component({
+        template: \`
+          <ul>
+            <li *ngFor='let person of persons; let i = index; trackBy: trackByFn'>
+              {{ person.name }}
+            </li>
+          </ul>
+        \`
+      })
+      class Bar {}
     `;
     assertSuccess('trackBy-function', source);
   });
 
   it('should have a trackBy function with different spacing', () => {
     let source = `
-    @Component({
-      template: \`
-       <ul>
-          <li *ngFor  =  "let person of persons; let i = index; trackBy : trackByFn">
-           {{ person.name }}
-          </li>
-       </ul>
-       \`
-    })
-    class Bar {}
+      @Component({
+        template: \`
+          <ul>
+            <li *ngFor  =  "let person of persons; let i = index; trackBy : trackByFn">
+              {{ person.name }}
+            </li>
+          </ul>
+        \`
+      })
+      class Bar {}
     `;
     assertSuccess('trackBy-function', source);
   });
 
   describe('failure', () => {
-
     it('should fail when trackBy is misspelled', () => {
       let source = `
-      @Component({
-        template: \`
-         <ul>
-            <li *ngFor="let person of persons; trackBy trackByFn">
-                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-             {{ person.name }}
-            </li>
-         </ul>
-         \`
-      })
-      class Bar {}
+        @Component({
+          template: \`
+            <ul>
+              <li *ngFor="let person of persons; trackBy trackByFn">
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                {{ person.name }}
+              </li>
+            </ul>
+          \`
+        })
+        class Bar {}
       `;
       assertAnnotated({
         ruleName: 'trackBy-function',
@@ -110,17 +109,17 @@ describe('trackBy-function', () => {
 
     it('should fail when the ngFor directive have not trackBy function', () => {
       let source = `
-      @Component({
-        template: \`
-        <ul>
-            <li *ngFor="let person of persons;">
-                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-             {{ person.name }}
-            </li>
-         </ul>
-        \`
-      })
-      class Bar {}
+        @Component({
+          template: \`
+            <ul>
+              <li *ngFor="let person of persons;">
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                {{ person.name }}
+              </li>
+            </ul>
+          \`
+        })
+        class Bar {}
       `;
       assertAnnotated({
         ruleName: 'trackBy-function',
@@ -128,6 +127,5 @@ describe('trackBy-function', () => {
         source
       });
     });
-
   });
 });

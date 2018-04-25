@@ -8,41 +8,36 @@ import { F1, Maybe } from '../util/function';
 export type Walkable = 'NgComponent';
 
 export function allNgComponent(): WalkerBuilder<'NgComponent'> {
-    return new NgComponentWalkerBuilder();
+  return new NgComponentWalkerBuilder();
 }
 
 export class Failure {
-    constructor(public node: ts.Node, public message: string) {}
+  constructor(public node: ts.Node, public message: string) {}
 }
 
 export interface WalkerBuilder<T extends Walkable> {
-    where: (validate: F1<ComponentMetadata, Maybe<Failure>>) => WalkerBuilder<T>;
-    build: (sourceFile: ts.SourceFile, options: IOptions) => NgWalker;
+  where: (validate: F1<ComponentMetadata, Maybe<Failure>>) => WalkerBuilder<T>;
+  build: (sourceFile: ts.SourceFile, options: IOptions) => NgWalker;
 }
 
 class NgComponentWalkerBuilder implements WalkerBuilder<'NgComponent'> {
-    private _where: F1<ComponentMetadata, Maybe<Failure>>;
+  private _where: F1<ComponentMetadata, Maybe<Failure>>;
 
-    where(validate: F1<ComponentMetadata, Maybe<Failure>>): NgComponentWalkerBuilder {
-        this._where = validate;
-        return this;
-    }
+  where(validate: F1<ComponentMetadata, Maybe<Failure>>): NgComponentWalkerBuilder {
+    this._where = validate;
+    return this;
+  }
 
-    build(sourceFile: ts.SourceFile, options: IOptions): NgWalker {
-        const self = this;
-        const e = class extends NgWalker {
-            visitNgComponent(meta: ComponentMetadata) {
-                self._where(meta).fmap(failure => {
-                    this.addFailure(
-                        this.createFailure(
-                            failure.node.getStart(),
-                            failure.node.getWidth(),
-                            failure.message,
-                        ));
-                });
-                super.visitNgComponent(meta);
-            }
-        };
-        return new e(sourceFile, options);
-    }
+  build(sourceFile: ts.SourceFile, options: IOptions): NgWalker {
+    const self = this;
+    const e = class extends NgWalker {
+      visitNgComponent(meta: ComponentMetadata) {
+        self._where(meta).fmap(failure => {
+          this.addFailure(this.createFailure(failure.node.getStart(), failure.node.getWidth(), failure.message));
+        });
+        super.visitNgComponent(meta);
+      }
+    };
+    return new e(sourceFile, options);
+  }
 }

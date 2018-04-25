@@ -4,12 +4,12 @@ describe('use-pipe-decorator', () => {
   describe('invalid use of pipe transform interface', () => {
     it('should fail, when PipeTransform interface is used, without @Pipe or any decorators', () => {
       let source = `
-      export class NewPipe implements PipeTransform {
-      ~~~~~~~~~~~~~~~~~~~~
-        transform(url:string):any {
+        export class NewPipe implements PipeTransform {
+        ~~~~~~~~~~~~~~~~~~~~
+          transform(url: string): any {}
         }
-      }
-      ~`;
+        ~
+      `;
       assertAnnotated({
         ruleName: 'use-pipe-decorator',
         message: 'The NewPipe class implements the PipeTransform interface, so it should use the @Pipe decorator',
@@ -22,7 +22,8 @@ describe('use-pipe-decorator', () => {
         ~~~~~~~
         export class Test implements PipeTransform {
         }
-        ~`;
+        ~
+      `;
       assertAnnotated({
         ruleName: 'use-pipe-decorator',
         message: 'The Test class implements the PipeTransform interface, so it should use the @Pipe decorator',
@@ -34,9 +35,10 @@ describe('use-pipe-decorator', () => {
         @Test()
         ~~~~~~~
         @Test2()
-        export class Test  implements PipeTransform {
+        export class Test implements PipeTransform {
         }
-        ~`;
+        ~
+      `;
       assertAnnotated({
         ruleName: 'use-pipe-decorator',
         message: 'The Test class implements the PipeTransform interface, so it should use the @Pipe decorator',
@@ -47,17 +49,17 @@ describe('use-pipe-decorator', () => {
   describe('valid use of pipe transform interface', () => {
     it('should succeed, when PipeTransform interface is used, with Pipe decorator', () => {
       let source = `
-      @Pipe({name: 'fetch'})
-      export class NewPipe  implements PipeTransform{
-          transform(url:string):any {
-          }
-        }`;
+        @Pipe({name: 'fetch'})
+        export class NewPipe implements PipeTransform {
+          transform(url: string): any {}
+        }
+      `;
       assertSuccess('use-pipe-decorator', source);
     });
   });
   describe('valid use of empty class', () => {
     it('should succeed, when PipeTransform interface is not used', () => {
-      let source = 'class App{}';
+      let source = 'class App {}';
       assertSuccess('use-pipe-decorator', source);
     });
   });

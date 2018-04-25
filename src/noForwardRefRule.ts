@@ -11,18 +11,15 @@ export class Rule extends Lint.Rules.AbstractRule {
     rationale: 'The flow of DI is disrupted by using `forwardRef` and might make code more difficult to understand.',
     options: null,
     optionsDescription: 'Not configurable.',
-    typescriptOnly: true,
+    typescriptOnly: true
   };
-
 
   static FAILURE_IN_CLASS: string = 'Avoid using forwardRef in class "%s"';
 
   static FAILURE_IN_VARIABLE: string = 'Avoid using forwardRef in variable "%s"';
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(
-      new ExpressionCallMetadataWalker(sourceFile,
-        this.getOptions()));
+    return this.applyWithWalker(new ExpressionCallMetadataWalker(sourceFile, this.getOptions()));
   }
 }
 
@@ -44,11 +41,7 @@ export class ExpressionCallMetadataWalker extends Lint.RuleWalker {
       } else {
         failureConfig = [Rule.FAILURE_IN_CLASS, currentNode.name.text];
       }
-      this.addFailure(
-        this.createFailure(
-          callExpression.getStart(),
-          callExpression.getWidth(),
-          sprintf.apply(this, failureConfig)));
+      this.addFailure(this.createFailure(callExpression.getStart(), callExpression.getWidth(), sprintf.apply(this, failureConfig)));
     }
   }
 }

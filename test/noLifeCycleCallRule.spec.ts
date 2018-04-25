@@ -3,25 +3,17 @@ import { assertAnnotated, assertSuccess } from './testHelper';
 
 type Metadata = 'Component' | 'Directive' | 'Injectable' | 'Pipe';
 
-type MetadataPair = {
-  [key in Metadata]: typeof lifecycleHooksMethods
-};
+type MetadataPair = { [key in Metadata]: typeof lifecycleHooksMethods };
 
-type MetadataFakePair = {
-  [key in Metadata]?: Set<string>
-};
+type MetadataFakePair = { [key in Metadata]?: Set<string> };
 
 const className = 'Test';
 const ruleName = 'no-life-cycle-call';
 const metadataPairs: MetadataPair = {
   Component: lifecycleHooksMethods,
   Directive: lifecycleHooksMethods,
-  Injectable: new Set<LifecycleHooksMethods>([
-    'ngOnDestroy'
-  ]),
-  Pipe: new Set<LifecycleHooksMethods>([
-    'ngOnDestroy'
-  ])
+  Injectable: new Set<LifecycleHooksMethods>(['ngOnDestroy']),
+  Pipe: new Set<LifecycleHooksMethods>(['ngOnDestroy'])
 };
 
 const metadataKeys = Object.keys(metadataPairs);
@@ -49,7 +41,7 @@ describe(ruleName, () => {
           const source = `
             @${metadataKey}()
             class ${className} implements ${lifecycleHookMethod.slice(2)} {
-              ${lifecycleHookMethod}() { }
+              ${lifecycleHookMethod}() {}
 
               ${className.toLowerCase()}() {
                 ${lifecycleHookMethodCall}
@@ -77,7 +69,7 @@ describe(ruleName, () => {
           const source = `
             @${metadataKey}()
             class ${className} {
-              ${fakeMethod}() { }
+              ${fakeMethod}() {}
 
               ${className.toLowerCase()}() {
                 this.${fakeMethod}();

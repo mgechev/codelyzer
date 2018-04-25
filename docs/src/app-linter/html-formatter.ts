@@ -1,10 +1,12 @@
-import {Formatter} from './formatter-interface';
+import { Formatter } from './formatter-interface';
 
 export class HtmlFormatter implements Formatter {
   format(e: any) {
-    return `<li id="${e.id}"><i class="warning-icon"></i><span class="position">` +
-    `[${e.startPosition.line + 1} - ${e.endPosition.line + 1}]</span> ${this.linkify(e.failure)}` +
-    ` <span class="rule-name">(${e.ruleName})</span></li>`;
+    return (
+      `<li id="${e.id}"><i class="warning-icon"></i><span class="position">` +
+      `[${e.startPosition.line + 1} - ${e.endPosition.line + 1}]</span> ${this.linkify(e.failure)}` +
+      ` <span class="rule-name">(${e.ruleName})</span></li>`
+    );
   }
 
   formatErrors(errors: any) {

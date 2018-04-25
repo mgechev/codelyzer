@@ -7,4 +7,3 @@ export class FsFileResolver extends FileResolver {
     return readFileSync(path).toString();
   }
 }
-
