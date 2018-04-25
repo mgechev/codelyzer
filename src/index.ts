@@ -18,6 +18,7 @@ export { Rule as NoInputRenameRule } from './noInputRenameRule';
 export { Rule as NoLifeCycleCallRule } from './noLifeCycleCallRule';
 export { Rule as NoOutputNamedAfterStandardEventRule } from './noOutputNamedAfterStandardEventRule';
 export { Rule as NoOutputOnPrefixRule } from './noOutputOnPrefixRule';
+export { Rule as NoOutputPrefixRule } from './noOutputPrefixRule';
 export { Rule as NoOutputRenameRule } from './noOutputRenameRule';
 export { Rule as NoUnusedCssRule } from './noUnusedCssRule';
 export { Rule as PipeImpureRule } from './pipeImpureRule';
