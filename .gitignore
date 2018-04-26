@@ -5,4 +5,5 @@ dist
 npm-debug.log
 .vscode
 yarn.lock
+*.log
 
