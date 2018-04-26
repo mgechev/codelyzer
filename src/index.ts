@@ -20,6 +20,7 @@ export { Rule as NoOutputNamedAfterStandardEventRule } from './noOutputNamedAfte
 export { Rule as NoOutputOnPrefixRule } from './noOutputOnPrefixRule';
 export { Rule as NoOutputRenameRule } from './noOutputRenameRule';
 export { Rule as NoQueriesParameterRule } from './noQueriesParameterRule';
+export { Rule as NoTemplateCallExpressionRule } from './noTemplateCallExpressionRule';
 export { Rule as NoUnusedCssRule } from './noUnusedCssRule';
 export { Rule as PipeImpureRule } from './pipeImpureRule';
 export { Rule as PipeNamingRule } from './pipeNamingRule';
