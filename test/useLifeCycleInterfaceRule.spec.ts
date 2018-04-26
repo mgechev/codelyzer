@@ -1,56 +1,64 @@
-import { assertSuccess, assertFailures, assertAnnotated } from './testHelper';
+import { sprintf } from 'sprintf-js';
+import { Rule } from '../src/useLifeCycleInterfaceRule';
+import { assertAnnotated, assertFailures, assertSuccess } from './testHelper';
 
-describe('use-life-cycle-interface', () => {
+const {
+  FAILURE_STRING,
+  metadata: { ruleName }
+} = Rule;
+const className = 'Test';
+
+const getErrorMessage = (interfaceName: string, methodName): string => {
+  return sprintf(FAILURE_STRING, interfaceName, methodName, className);
+};
+
+describe(ruleName, () => {
   describe('invalid declaration of life hook', () => {
     it("should fail, when a life cycle hook is used without implementing it's interface", () => {
       let source = `
-        class App {
+        class ${className} {
           ngOnInit() {
           ~~~~~~~~
           }
         }
       `;
       assertAnnotated({
-        ruleName: 'use-life-cycle-interface',
-        message:
-          'Implement lifecycle hook interface OnInit for method ngOnInit in class App' + ' (https://angular.io/styleguide#style-09-01)',
+        message: getErrorMessage('OnInit', 'ngOnInit'),
+        ruleName,
         source
       });
     });
 
     it('should fail, when life cycle hooks are used without implementing their interfaces', () => {
       let source = `
-        class App {
+        class ${className} {
           ngOnInit() {
           }
           ngOnDestroy() {
           }
         }
       `;
-      assertFailures('use-life-cycle-interface', source, [
+      assertFailures(ruleName, source, [
         {
-          message:
-            'Implement lifecycle hook interface OnInit for method ngOnInit in class App' + ' (https://angular.io/styleguide#style-09-01)',
-          startPosition: {
-            line: 2,
-            character: 10
-          },
           endPosition: {
-            line: 2,
-            character: 18
+            character: 18,
+            line: 2
+          },
+          message: getErrorMessage('OnInit', 'ngOnInit'),
+          startPosition: {
+            character: 10,
+            line: 2
           }
         },
         {
-          message:
-            'Implement lifecycle hook interface OnDestroy for method ngOnDestroy in class App' +
-            ' (https://angular.io/styleguide#style-09-01)',
-          startPosition: {
-            line: 4,
-            character: 10
-          },
           endPosition: {
-            line: 4,
-            character: 21
+            character: 21,
+            line: 4
+          },
+          message: getErrorMessage('OnDestroy', 'ngOnDestroy'),
+          startPosition: {
+            character: 10,
+            line: 4
           }
         }
       ]);
@@ -58,7 +66,7 @@ describe('use-life-cycle-interface', () => {
 
     it('should fail, when some of the life cycle hooks are used without implementing their interfaces', () => {
       let source = `
-        class App extends Component implements OnInit {
+        class ${className} extends Component implements OnInit {
           ngOnInit() {
           }
           ngOnDestroy() {
@@ -67,10 +75,8 @@ describe('use-life-cycle-interface', () => {
         }
       `;
       assertAnnotated({
-        ruleName: 'use-life-cycle-interface',
-        message:
-          'Implement lifecycle hook interface OnDestroy for method ngOnDestroy in class App' +
-          ' (https://angular.io/styleguide#style-09-01)',
+        ruleName,
+        message: getErrorMessage('OnDestroy', 'ngOnDestroy'),
         source
       });
     });
@@ -79,7 +85,7 @@ describe('use-life-cycle-interface', () => {
   describe('invalid declaration of life hooks, using ng.hookName', () => {
     it('should fail, when life cycle hooks are used without implementing all interfaces, using ng.hookName', () => {
       let source = `
-        class App extends Component implements ng.OnInit {
+        class ${className} extends Component implements ng.OnInit {
           ngOnInit() {
           }
           ngOnDestroy() {
@@ -88,10 +94,8 @@ describe('use-life-cycle-interface', () => {
         }
       `;
       assertAnnotated({
-        ruleName: 'use-life-cycle-interface',
-        message:
-          'Implement lifecycle hook interface OnDestroy for method ngOnDestroy in class App' +
-          ' (https://angular.io/styleguide#style-09-01)',
+        ruleName,
+        message: getErrorMessage('OnDestroy', 'ngOnDestroy'),
         source
       });
     });
@@ -100,17 +104,17 @@ describe('use-life-cycle-interface', () => {
   describe('valid declaration of life hook', () => {
     it("should succeed, when life cycle hook is used with it's corresponding interface", () => {
       let source = `
-        class App implements OnInit {
+        class ${className} implements OnInit {
           ngOnInit() {
           }
         }
       `;
-      assertSuccess('use-life-cycle-interface', source);
+      assertSuccess(ruleName, source);
     });
 
     it('should succeed, when life cycle hooks are used with their corresponding interfaces', () => {
       let source = `
-        class App extends Component implements OnInit, OnDestroy  {
+        class ${className} extends Component implements OnInit, OnDestroy  {
           ngOnInit() {
           }
 
@@ -123,44 +127,44 @@ describe('use-life-cycle-interface', () => {
           }
         }
       `;
-      assertSuccess('use-life-cycle-interface', source);
+      assertSuccess(ruleName, source);
     });
   });
 
   describe('valid declaration of life hooks, using ng.hookName', () => {
     it("should succeed, when life cycle hook is used with it's interface", () => {
       let source = `
-        class App implements ng.OnInit {
+        class ${className} implements ng.OnInit {
           ngOnInit() {
           }
         }
       `;
-      assertSuccess('use-life-cycle-interface', source);
+      assertSuccess(ruleName, source);
     });
 
     it('should succeed when life cycle hook is implemented by using any prefix', () => {
       let source = `
-        class App implements bar.OnInit {
+        class ${className} implements bar.OnInit {
           ngOnInit() {
           }
         }
       `;
-      assertSuccess('use-life-cycle-interface', source);
+      assertSuccess(ruleName, source);
     });
 
     it('should succeed when life cycle hook is implemented by using nested interfaces', () => {
       let source = `
-        class App implements bar.foo.baz.OnInit {
+        class ${className} implements bar.foo.baz.OnInit {
           ngOnInit() {
           }
         }
       `;
-      assertSuccess('use-life-cycle-interface', source);
+      assertSuccess(ruleName, source);
     });
 
     it('should succeed, when life cycle hooks are used with their corresponding interfaces', () => {
       let source = `
-        class App extends Component implements ng.OnInit, ng.OnDestroy  {
+        class ${className} extends Component implements ng.OnInit, ng.OnDestroy  {
           ngOnInit() {
           }
 
@@ -173,16 +177,16 @@ describe('use-life-cycle-interface', () => {
           }
         }
       `;
-      assertSuccess('use-life-cycle-interface', source);
+      assertSuccess(ruleName, source);
     });
   });
 
   describe('valid use of class without interfaces and life cycle hooks', () => {
     it('should succeed when life cycle hooks are not used', () => {
       let source = `
-        class App {}
+        class ${className} {}
       `;
-      assertSuccess('use-life-cycle-interface', source);
+      assertSuccess(ruleName, source);
     });
   });
 
@@ -195,7 +199,7 @@ describe('use-life-cycle-interface', () => {
           }
         }
       `;
-      assertSuccess('use-life-cycle-interface', source);
+      assertSuccess(ruleName, source);
     });
   });
 });

@@ -1,4 +1,4 @@
-import { lifecycleHooksMethods, LifecycleHooksMethods } from '../src/noLifeCycleCallRule';
+import { lifecycleHooksMethods, LifecycleHooksMethods, Rule } from '../src/noLifeCycleCallRule';
 import { assertAnnotated, assertSuccess } from './testHelper';
 
 type Metadata = 'Component' | 'Directive' | 'Injectable' | 'Pipe';
@@ -7,19 +7,22 @@ type MetadataPair = { [key in Metadata]: typeof lifecycleHooksMethods };
 
 type MetadataFakePair = { [key in Metadata]?: Set<string> };
 
+const {
+  FAILURE_STRING,
+  metadata: { ruleName }
+} = Rule;
 const className = 'Test';
-const ruleName = 'no-life-cycle-call';
 const metadataPairs: MetadataPair = {
   Component: lifecycleHooksMethods,
   Directive: lifecycleHooksMethods,
   Injectable: new Set<LifecycleHooksMethods>(['ngOnDestroy']),
   Pipe: new Set<LifecycleHooksMethods>(['ngOnDestroy'])
 };
-
 const metadataKeys = Object.keys(metadataPairs);
 const prefix = 'prefix';
 const suffix = 'Suffix';
 const metadataFakePairs: MetadataFakePair = {};
+
 for (const metadataKey of metadataKeys) {
   metadataFakePairs[metadataKey] = new Set<string>();
 
@@ -31,13 +34,16 @@ for (const metadataKey of metadataKeys) {
   });
 }
 
+const getFailureAnnotations = (num: number): string => {
+  return '~'.repeat(num);
+};
+
 describe(ruleName, () => {
   describe('failure', () => {
     for (const metadataKey of metadataKeys) {
       describe(metadataKey, () => {
         metadataPairs[metadataKey].forEach(lifecycleHookMethod => {
           const lifecycleHookMethodCall = `this.${lifecycleHookMethod}()`;
-          const totalTildes = '~'.repeat(lifecycleHookMethodCall.length);
           const source = `
             @${metadataKey}()
             class ${className} implements ${lifecycleHookMethod.slice(2)} {
@@ -45,15 +51,15 @@ describe(ruleName, () => {
 
               ${className.toLowerCase()}() {
                 ${lifecycleHookMethodCall}
-                ${totalTildes}
+                ${getFailureAnnotations(lifecycleHookMethodCall.length)}
               }
             }
           `;
 
           it(`should fail when explicitly calling ${lifecycleHookMethodCall}`, () => {
             assertAnnotated({
+              message: FAILURE_STRING,
               ruleName,
-              message: 'Avoid explicit calls to lifecycle hooks.',
               source
             });
           });
@@ -61,25 +67,26 @@ describe(ruleName, () => {
       });
     }
 
-    lifecycleHooksMethods.forEach(lifecycleHookMethod => {
-      const lifecycleHookMethodCall = `fixture.componentInstance.${lifecycleHookMethod}()`;
-      const totalTildes = '~'.repeat(lifecycleHookMethodCall.length);
-      const source = `
+    describe('outside of a class', () => {
+      lifecycleHooksMethods.forEach(lifecycleHookMethod => {
+        const lifecycleHookMethodCall = `fixture.componentInstance.${lifecycleHookMethod}()`;
+        const source = `
           it('should work', () => {
             // test code...
 
             ${lifecycleHookMethodCall}
-            ${totalTildes}
+            ${getFailureAnnotations(lifecycleHookMethodCall.length)}
 
             // more test code...
           })
         `;
 
-      it(`should fail when explicitly calling ${lifecycleHookMethod} outside of a class`, () => {
-        assertAnnotated({
-          ruleName,
-          message: `Avoid explicit calls to lifecycle hooks.`,
-          source
+        it(`should fail when explicitly calling ${lifecycleHookMethodCall}`, () => {
+          assertAnnotated({
+            message: FAILURE_STRING,
+            ruleName,
+            source
+          });
         });
       });
     });
@@ -104,12 +111,8 @@ describe(ruleName, () => {
             assertSuccess(ruleName, source);
           });
         });
-      });
-    }
 
-    // call super lifecycle hook
-    for (const metadataKey of metadataKeys) {
-      describe(metadataKey, () => {
+        // call super lifecycle hook
         metadataPairs[metadataKey].forEach(lifecycleHookMethod => {
           const lifecycleHookMethodCall = `super.${lifecycleHookMethod}()`;
           const source = `

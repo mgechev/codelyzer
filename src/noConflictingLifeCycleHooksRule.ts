@@ -3,23 +3,23 @@ import * as Lint from 'tslint';
 import * as ts from 'typescript';
 
 export class Rule extends Lint.Rules.AbstractRule {
-  public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'no-conflicting-life-cycle-hooks',
-    type: 'maintainability',
-    description: 'Ensure that directives not implement conflicting lifecycle hooks.',
+  static metadata: Lint.IRuleMetadata = {
+    description: 'Ensure that directives not implement conflicting life cycle hooks.',
     descriptionDetails: 'See more at https://angular.io/api/core/DoCheck#description.',
+    options: null,
+    optionsDescription: 'Not configurable.',
     rationale:
       'A directive typically should not use both DoCheck and OnChanges to respond ' +
       'to changes on the same input, as ngOnChanges will continue to be called when the ' +
       'default change detector detects changes.',
-    options: null,
-    optionsDescription: 'Not configurable.',
+    ruleName: 'no-conflicting-life-cycle-hooks',
+    type: 'maintainability',
     typescriptOnly: true
   };
 
   static FAILURE_STRING = 'Implement DoCheck and OnChanges hooks in class %s is not recommended';
 
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this.getOptions()));
   }
 }
@@ -62,7 +62,7 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
     });
 
     if (matchesAllHooks) {
-      this.addFailureAtNode(node, sprintf.apply(this, [Rule.FAILURE_STRING, node.name.text]));
+      this.addFailureAtNode(node, sprintf(Rule.FAILURE_STRING, node.name.text));
     }
   }
 }

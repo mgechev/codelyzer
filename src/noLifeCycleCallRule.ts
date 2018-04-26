@@ -4,19 +4,19 @@ import * as ts from 'typescript';
 import { NgWalker } from './angular/ngWalker';
 
 export class Rule extends Lint.Rules.AbstractRule {
-  public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'no-life-cycle-call',
-    type: 'maintainability',
-    description: 'Disallows explicit calls to lifecycle hooks.',
-    rationale: 'Explicit calls to lifecycle hooks could be confusing. Invoke lifecycle hooks is the responsability of Angular.',
+  static metadata: Lint.IRuleMetadata = {
+    description: 'Disallows explicit calls to life cycle hooks.',
     options: null,
     optionsDescription: 'Not configurable.',
+    rationale: 'Explicit calls to life cycle hooks could be confusing. Invoke life cycle hooks is the responsability of Angular.',
+    ruleName: 'no-life-cycle-call',
+    type: 'maintainability',
     typescriptOnly: true
   };
 
-  static FAILURE_STRING: string = 'Avoid explicit calls to lifecycle hooks.';
+  static FAILURE_STRING = 'Avoid explicit calls to life cycle hooks.';
 
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new ExpressionCallMetadataWalker(sourceFile, this.getOptions()));
   }
 }
