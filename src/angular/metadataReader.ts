@@ -19,6 +19,7 @@ import {
   decoratorArgument
 } from '../util/astQuery';
 import { getTemplate, getInlineStyle } from '../util/ngQuery';
+import { maybeNodeArray } from '../util/utils';
 
 const normalizeTransformed = (t: CodeWithSourceMap) => {
   if (!t.map) {
@@ -36,8 +37,8 @@ export class MetadataReader {
   }
 
   read(d: ts.ClassDeclaration): DirectiveMetadata {
-    let componentMetadata = unwrapFirst(
-      (d.decorators || ([] as ts.Decorator[])).map((dec: ts.Decorator) => {
+    const componentMetadata = unwrapFirst(
+      maybeNodeArray(d.decorators).map((dec: ts.Decorator) => {
         return Maybe.lift(dec)
           .bind(callExpression)
           .bind(withIdentifier('Component'))
@@ -45,8 +46,8 @@ export class MetadataReader {
       })
     );
 
-    let directiveMetadata = unwrapFirst(
-      (d.decorators || ([] as ts.Decorator[])).map((dec: ts.Decorator) =>
+    const directiveMetadata = unwrapFirst(
+      maybeNodeArray(d.decorators).map((dec: ts.Decorator) =>
         Maybe.lift(dec)
           .bind(callExpression)
           .bind(withIdentifier('Directive'))

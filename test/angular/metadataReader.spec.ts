@@ -9,9 +9,9 @@ import { Config } from '../../src/angular/config';
 
 import { join, normalize } from 'path';
 
-const getAst = (code: string, file = 'file.ts') => {
-  return ts.createSourceFile(file, code, ts.ScriptTarget.ES2015, true);
-};
+const getAst = (code: string, file = 'file.ts') => ts.createSourceFile(file, code, ts.ScriptTarget.ES2015, true);
+
+const last = <T extends ts.Node>(nodes: ts.NodeArray<T>) => nodes[nodes.length - 1];
 
 describe('metadataReader', () => {
   describe('directive metadata', () => {
@@ -24,7 +24,7 @@ describe('metadataReader', () => {
       `;
       const reader = new MetadataReader(new DummyFileResolver());
       const ast = getAst(code);
-      const metadata = reader.read(<ts.ClassDeclaration>ast.statements.pop());
+      const metadata = reader.read(<ts.ClassDeclaration>last(ast.statements));
       chai.expect(metadata.selector).eq('foo');
     });
 
@@ -35,7 +35,7 @@ describe('metadataReader', () => {
       `;
       const reader = new MetadataReader(new DummyFileResolver());
       const ast = getAst(code);
-      const metadata = reader.read(<ts.ClassDeclaration>ast.statements.pop());
+      const metadata = reader.read(<ts.ClassDeclaration>last(ast.statements));
       chai.expect(metadata.selector).eq(undefined);
     });
 
@@ -46,7 +46,7 @@ describe('metadataReader', () => {
       `;
       const reader = new MetadataReader(new DummyFileResolver());
       const ast = getAst(code);
-      const classDeclaration = <ts.ClassDeclaration>ast.statements.pop();
+      const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
       const metadata = reader.read(classDeclaration);
       chai.expect(metadata.controller).eq(classDeclaration);
     });
@@ -64,7 +64,7 @@ describe('metadataReader', () => {
       `;
       const reader = new MetadataReader(new DummyFileResolver());
       const ast = getAst(code);
-      const classDeclaration = <ts.ClassDeclaration>ast.statements.pop();
+      const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
       const metadata = reader.read(classDeclaration);
       chai.expect(metadata instanceof ComponentMetadata).eq(true);
       chai.expect(metadata.selector).eq('foo');
@@ -86,7 +86,7 @@ describe('metadataReader', () => {
       `;
       const reader = new MetadataReader(new DummyFileResolver());
       const ast = getAst(code);
-      const classDeclaration = <ts.ClassDeclaration>ast.statements.pop();
+      const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
       const metadata = reader.read(classDeclaration);
       chai.expect(metadata instanceof ComponentMetadata).eq(true);
       chai.expect(metadata.selector).eq('foo');
@@ -109,7 +109,7 @@ describe('metadataReader', () => {
       `;
       const reader = new MetadataReader(new DummyFileResolver());
       const ast = getAst(code);
-      const classDeclaration = <ts.ClassDeclaration>ast.statements.pop();
+      const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
       const metadata = reader.read(classDeclaration);
       chai.expect(metadata instanceof ComponentMetadata).eq(true);
       chai.expect(metadata.selector).eq('foo');
@@ -131,7 +131,7 @@ describe('metadataReader', () => {
       `;
       const reader = new MetadataReader(new FsFileResolver());
       const ast = getAst(code, __dirname + '/../../test/fixtures/metadataReader/moduleid/foo.ts');
-      const classDeclaration = <ts.ClassDeclaration>ast.statements.pop();
+      const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
       const metadata = reader.read(classDeclaration);
       chai.expect(metadata instanceof ComponentMetadata).eq(true);
       chai.expect(metadata.selector).eq('foo');
@@ -153,7 +153,7 @@ describe('metadataReader', () => {
       `;
       const reader = new MetadataReader(new FsFileResolver());
       const ast = getAst(code, __dirname + '/../../test/fixtures/metadataReader/moduleid/foo.ts');
-      const classDeclaration = <ts.ClassDeclaration>ast.statements.pop();
+      const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
       const metadata = reader.read(classDeclaration);
       chai.expect(metadata instanceof ComponentMetadata).eq(true);
       chai.expect(metadata.selector).eq('foo');
@@ -174,17 +174,17 @@ describe('metadataReader', () => {
           return url;
         };
         const code = `
-          @Component({
-            selector: 'foo',
-            moduleId: module.id,
-            templateUrl: 'foo.html',
-            styles: [\`baz\`]
-          })
-          class Bar {}
-        `;
+      @Component({
+        selector: 'foo',
+        moduleId: module.id,
+        templateUrl: 'foo.html',
+        styles: [\`baz\`]
+      })
+      class Bar {}
+      `;
         const reader = new MetadataReader(new FsFileResolver());
         const ast = getAst(code, __dirname + '/../../test/fixtures/metadataReader/moduleid/foo.ts');
-        const classDeclaration = <ts.ClassDeclaration>ast.statements.pop();
+        const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
         chai.expect(invoked).eq(false);
         const metadata = reader.read(classDeclaration);
         chai.expect(metadata instanceof ComponentMetadata).eq(true);
@@ -210,17 +210,17 @@ describe('metadataReader', () => {
           return { code };
         };
         const code = `
-          @Component({
-            selector: 'foo',
-            moduleId: module.id,
-            templateUrl: 'foo.html',
-            styles: [\`baz\`]
-          })
-          class Bar {}
-        `;
+      @Component({
+        selector: 'foo',
+        moduleId: module.id,
+        templateUrl: 'foo.html',
+        styles: [\`baz\`]
+      })
+      class Bar {}
+      `;
         const reader = new MetadataReader(new FsFileResolver());
         const ast = getAst(code, __dirname + '/../../test/fixtures/metadataReader/moduleid/foo.ts');
-        const classDeclaration = <ts.ClassDeclaration>ast.statements.pop();
+        const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
         chai.expect(invoked).eq(false);
         const metadata = reader.read(classDeclaration);
         chai.expect(metadata instanceof ComponentMetadata).eq(true);
@@ -246,17 +246,17 @@ describe('metadataReader', () => {
           return { code };
         };
         const code = `
-          @Component({
-            selector: 'foo',
-            moduleId: module.id,
-            templateUrl: 'foo.html',
-            styles: [\`baz\`]
-          })
-          class Bar {}
-        `;
+      @Component({
+        selector: 'foo',
+        moduleId: module.id,
+        templateUrl: 'foo.html',
+        styles: [\`baz\`]
+      })
+      class Bar {}
+      `;
         const reader = new MetadataReader(new FsFileResolver());
         const ast = getAst(code, __dirname + '/../../test/fixtures/metadataReader/moduleid/foo.ts');
-        const classDeclaration = <ts.ClassDeclaration>ast.statements.pop();
+        const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
         chai.expect(invoked).eq(false);
         const metadata = reader.read(classDeclaration);
         chai.expect(metadata instanceof ComponentMetadata).eq(true);
@@ -284,7 +284,7 @@ describe('metadataReader', () => {
       `;
       const reader = new MetadataReader(new FsFileResolver());
       const ast = getAst(code, __dirname + '/../../test/fixtures/metadataReader/specialsymbols/foo.ts');
-      const classDeclaration = <ts.ClassDeclaration>ast.statements.pop();
+      const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
       const metadata = reader.read(classDeclaration);
       chai.expect(metadata instanceof ComponentMetadata).eq(true);
       chai.expect(metadata.selector).eq('foo');
@@ -307,7 +307,7 @@ describe('metadataReader', () => {
       `;
       const reader = new MetadataReader(new FsFileResolver());
       const ast = getAst(code, __dirname + '/../../test/fixtures/metadataReader/notsupported/foo.ts');
-      const classDeclaration = <ts.ClassDeclaration>ast.statements.pop();
+      const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
       const metadata = reader.read(classDeclaration);
       chai.expect(metadata instanceof ComponentMetadata).eq(true);
       chai.expect(metadata.selector).eq('foo');

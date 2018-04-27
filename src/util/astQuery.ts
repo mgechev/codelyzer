@@ -53,7 +53,10 @@ export function getInitializer(p: ts.ObjectLiteralElement): Maybe<ts.Expression>
   return Maybe.lift(isPropertyAssignment(p) && isIdentifier(p.name) ? p.initializer : undefined);
 }
 
-export function getStringInitializerFromProperty(propertyName: string, ps: ts.ObjectLiteralElement[]): Maybe<WithStringInitializer> {
+export function getStringInitializerFromProperty(
+  propertyName: string,
+  ps: ts.NodeArray<ts.ObjectLiteralElement>
+): Maybe<WithStringInitializer> {
   const property = ps.find(p => isProperty(propertyName, p));
   return (
     getInitializer(property)

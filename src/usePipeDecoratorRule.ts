@@ -2,6 +2,7 @@ import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { sprintf } from 'sprintf-js';
 import SyntaxKind = require('./util/syntaxKind');
+import { maybeNodeArray } from './util/utils';
 
 const getInterfaceName = (t: any) => {
   if (t.expression && t.expression.name) {
@@ -32,9 +33,9 @@ export class Rule extends Lint.Rules.AbstractRule {
 export class ClassMetadataWalker extends Lint.RuleWalker {
   visitClassDeclaration(node: ts.ClassDeclaration) {
     if (this.hasIPipeTransform(node)) {
-      let decorators = <any[]>node.decorators || [];
-      let className: string = node.name.text;
-      let pipes: Array<string> = decorators
+      const decorators = maybeNodeArray(<ts.NodeArray<any>>node.decorators);
+      const className: string = node.name.text;
+      const pipes: Array<string> = decorators
         .map(d => (<any>d.expression).text || ((<any>d.expression).expression || {}).text)
         .filter(t => t === 'Pipe');
       if (pipes.length === 0) {
