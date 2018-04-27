@@ -44,7 +44,7 @@ export const getDecoratorName = (decorator: ts.Decorator) => {
 };
 
 export const getComponentDecorator = (declaration: ts.ClassDeclaration) => {
-  return (<ts.Decorator[]>declaration.decorators || [])
+  return ([].slice.apply(declaration.decorators) || [])
     .filter((d: any) => {
       if (
         !(<ts.CallExpression>d.expression).arguments ||
@@ -59,4 +59,11 @@ export const getComponentDecorator = (declaration: ts.ClassDeclaration) => {
       }
     })
     .pop();
+};
+
+export const maybeNodeArray = <T extends ts.Node>(nodes: ts.NodeArray<T>): ReadonlyArray<T> => {
+  if (!nodes) {
+    return [];
+  }
+  return nodes;
 };

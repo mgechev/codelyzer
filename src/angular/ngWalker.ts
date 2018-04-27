@@ -18,7 +18,7 @@ import { ngWalkerFactoryUtils } from './ngWalkerFactoryUtils';
 import { Config } from './config';
 
 import { logger } from '../util/logger';
-import { getDecoratorName } from '../util/utils';
+import { getDecoratorName, maybeNodeArray } from '../util/utils';
 
 const getDecoratorStringArgs = (decorator: ts.Decorator) => {
   let baseExpr = <any>decorator.expression || {};
@@ -59,17 +59,17 @@ export class NgWalker extends Lint.RuleWalker {
     } else if (metadata instanceof DirectiveMetadata) {
       this.visitNgDirective(metadata);
     }
-    (<ts.Decorator[]>declaration.decorators || []).forEach(this.visitClassDecorator.bind(this));
+    maybeNodeArray(<ts.NodeArray<ts.Decorator>>declaration.decorators).forEach(this.visitClassDecorator.bind(this));
     super.visitClassDeclaration(declaration);
   }
 
   visitMethodDeclaration(method: ts.MethodDeclaration) {
-    (<ts.Decorator[]>method.decorators || []).forEach(this.visitMethodDecorator.bind(this));
+    maybeNodeArray(<ts.NodeArray<ts.Decorator>>method.decorators).forEach(this.visitMethodDecorator.bind(this));
     super.visitMethodDeclaration(method);
   }
 
   visitPropertyDeclaration(prop: ts.PropertyDeclaration) {
-    (<ts.Decorator[]>prop.decorators || []).forEach(this.visitPropertyDecorator.bind(this));
+    maybeNodeArray(<ts.NodeArray<ts.Decorator>>prop.decorators).forEach(this.visitPropertyDecorator.bind(this));
     super.visitPropertyDeclaration(prop);
   }
 
@@ -227,10 +227,10 @@ export class NgWalker extends Lint.RuleWalker {
     }
     const sf = ts.createSourceFile(path, `\`${content}\``, ts.ScriptTarget.ES5);
     const original = sf.getFullText;
-    sf.getFullText = function() {
+    sf.getFullText = () => {
       const text = original.apply(sf);
       return text.substring(1, text.length - 1);
-    }.bind(sf);
+    };
     return sf;
   }
 }
