@@ -26,20 +26,17 @@ export class UsePropertyDecorator extends Lint.Rules.AbstractRule {
   }
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(
-      new DirectiveMetadataWalker(sourceFile,
-        this.getOptions(),  this.config));
+    return this.applyWithWalker(new DirectiveMetadataWalker(sourceFile, this.getOptions(), this.config));
   }
 }
 
 class DirectiveMetadataWalker extends Lint.RuleWalker {
   constructor(sourceFile: ts.SourceFile, options: Lint.IOptions, private config: IUsePropertyDecoratorConfig) {
-      super(sourceFile, options);
+    super(sourceFile, options);
   }
 
   visitClassDeclaration(node: ts.ClassDeclaration) {
-    (<ts.Decorator[]>node.decorators || [])
-      .forEach(this.validateDecorator.bind(this, node.name.text));
+    (<ts.NodeArray<ts.Decorator>>node.decorators).forEach(this.validateDecorator.bind(this, node.name.text));
     super.visitClassDeclaration(node);
   }
 
@@ -56,16 +53,11 @@ class DirectiveMetadataWalker extends Lint.RuleWalker {
 
   private validateProperty(className: string, decoratorName: string, arg: ts.ObjectLiteralExpression) {
     if (arg.kind === SyntaxKind.current().ObjectLiteralExpression) {
-      (<ts.ObjectLiteralExpression>arg)
-        .properties
-        .filter(prop => (<any>prop.name).text === this.config.propertyName)
-        .forEach(prop => {
-          let p = <any>prop;
-          this.addFailure(
-            this.createFailure(
-              p.getStart(),
-              p.getWidth(),
-              UsePropertyDecorator.formatFailureString(this.config, decoratorName, className)));
+      (<ts.ObjectLiteralExpression>arg).properties.filter(prop => (<any>prop.name).text === this.config.propertyName).forEach(prop => {
+        let p = <any>prop;
+        this.addFailure(
+          this.createFailure(p.getStart(), p.getWidth(), UsePropertyDecorator.formatFailureString(this.config, decoratorName, className))
+        );
       });
     }
   }

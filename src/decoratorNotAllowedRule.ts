@@ -5,7 +5,6 @@ import SyntaxKind = require('./util/syntaxKind');
 import { NgWalker } from './angular/ngWalker';
 import { ComponentMetadata, DirectiveMetadata } from './angular/metadata';
 
-
 export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'decorator-not-allowed',
@@ -15,24 +14,19 @@ export class Rule extends Lint.Rules.AbstractRule {
     For example, an @Input should not be used in an @Injectable class.`,
     options: null,
     optionsDescription: 'Not configurable.',
-    typescriptOnly: true,
+    typescriptOnly: true
   };
 
-
   static INJECTABLE_FAILURE_STRING: string = 'In the class "%s" which have the "%s" decorator, the ' +
-    '"%s" decorator is not allowed. ' +
-    'Please, drop it.';
+  '"%s" decorator is not allowed. ' +
+  'Please, drop it.';
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(
-      new ClassMetadataWalker(sourceFile,
-        this));
+    return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this));
   }
 }
 
-
 export class ClassMetadataWalker extends NgWalker {
-
   className: string;
   isInjectable = false;
 
@@ -126,11 +120,6 @@ export class ClassMetadataWalker extends NgWalker {
   }
 
   private generateFailure(start: number, width: number, failureConfig: string[]) {
-    this.addFailure(
-      this.createFailure(
-        start,
-        width,
-        sprintf.apply(this, failureConfig)));
+    this.addFailure(this.createFailure(start, width, sprintf.apply(this, failureConfig)));
   }
-
 }

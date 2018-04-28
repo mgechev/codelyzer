@@ -18,17 +18,14 @@ export class Rule extends Lint.Rules.AbstractRule {
     rationale: 'Interfaces prescribe typed method signatures. Use those signatures to flag spelling and syntax mistakes.',
     options: null,
     optionsDescription: 'Not configurable.',
-    typescriptOnly: true,
+    typescriptOnly: true
   };
-
 
   static FAILURE: string = 'The %s class has the Pipe decorator, so it should implement the PipeTransform interface';
   static PIPE_INTERFACE_NAME = 'PipeTransform';
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(
-      new ClassMetadataWalker(sourceFile,
-        this.getOptions()));
+    return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this.getOptions()));
   }
 }
 
@@ -36,17 +33,13 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
   visitClassDeclaration(node: ts.ClassDeclaration) {
     let decorators = node.decorators;
     if (decorators) {
-      let pipes: Array<string> = decorators.map(d =>
-          (<any>d.expression).text ||
-          ((<any>d.expression).expression || {}).text).filter(t => t === 'Pipe');
+      let pipes: Array<string> = decorators
+        .map(d => (<any>d.expression).text || ((<any>d.expression).expression || {}).text)
+        .filter(t => t === 'Pipe');
       if (pipes.length !== 0) {
         let className: string = node.name.text;
         if (!this.hasIPipeTransform(node)) {
-          this.addFailure(
-            this.createFailure(
-              node.getStart(),
-              node.getWidth(),
-              sprintf.apply(this, [Rule.FAILURE, className])));
+          this.addFailure(this.createFailure(node.getStart(), node.getWidth(), sprintf.apply(this, [Rule.FAILURE, className])));
         }
       }
     }
@@ -56,8 +49,7 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
   private hasIPipeTransform(node: ts.ClassDeclaration): boolean {
     let interfaces = [];
     if (node.heritageClauses) {
-      let interfacesClause = node.heritageClauses
-        .filter(h => h.token === SyntaxKind.current().ImplementsKeyword);
+      let interfacesClause = node.heritageClauses.filter(h => h.token === SyntaxKind.current().ImplementsKeyword);
       if (interfacesClause.length !== 0) {
         interfaces = interfacesClause[0].types.map(getInterfaceName);
       }

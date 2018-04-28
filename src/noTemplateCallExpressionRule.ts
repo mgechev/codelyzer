@@ -1,8 +1,8 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
-import { BasicTemplateAstVisitor  } from './angular/templates/basicTemplateAstVisitor';
-import { RecursiveAngularExpressionVisitor  } from './angular/templates/recursiveAngularExpressionVisitor';
+import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
+import { RecursiveAngularExpressionVisitor } from './angular/templates/recursiveAngularExpressionVisitor';
 import * as e from '@angular/compiler/src/expression_parser/ast';
 
 export class Rule extends Lint.Rules.AbstractRule {
@@ -13,12 +13,12 @@ export class Rule extends Lint.Rules.AbstractRule {
     rationale: 'The change detector will call functions used in templates very often. Use an observable instead.',
     options: null,
     optionsDescription: 'Not configurable.',
-    typescriptOnly: true,
+    typescriptOnly: true
   };
 
   static FAILURE_STRING = 'Call expressions are not allowed in templates except in output handlers.';
 
-  apply(sourceFile: ts.SourceFile) {
+  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     const walkerConfig: NgWalkerConfig = {
       templateVisitorCtrl: TemplateVisitor,
       expressionVisitorCtrl: ExpressionVisitor
@@ -29,8 +29,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 }
 
 class TemplateVisitor extends BasicTemplateAstVisitor {
-  // tslint:disable-next-line:no-missing-super no-empty
-  visitEvent() { }
+  visitEvent() {}
 }
 
 class ExpressionVisitor extends RecursiveAngularExpressionVisitor {

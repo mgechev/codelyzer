@@ -1,14 +1,14 @@
 {
-   "title": "Usage",
-   "url": "/usage",
-   "links": [
-      {
-         "title": "Configuration",
-         "url": "/configuration/"
-      },
-      {
-         "title": "Rule Flags",
-         "url": "/rule-flags/"
-      }
-   ]
+  "links": [
+    {
+      "title": "Configuration",
+      "url": "/configuration/"
+    },
+    {
+      "title": "Rule Flags",
+      "url": "/rule-flags/"
+    }
+  ],
+  "title": "Usage",
+  "url": "/usage"
 }

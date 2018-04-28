@@ -9,7 +9,6 @@ import { PathResolver } from './pathResolver';
 const kinds = current();
 
 export class UrlResolver extends AbstractResolver {
-
   constructor(private pathResolver: PathResolver) {
     super();
   }

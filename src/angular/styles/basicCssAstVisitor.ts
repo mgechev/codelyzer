@@ -6,17 +6,19 @@ import { SourceMappingVisitor } from '../sourceMappingVisitor';
 import { ComponentMetadata, StyleMetadata } from '../metadata';
 
 export interface CssAstVisitorCtrl {
-  new(sourceFile: ts.SourceFile, options: Lint.IOptions, context: ComponentMetadata, style: StyleMetadata, templateStart: number);
+  new (sourceFile: ts.SourceFile, options: Lint.IOptions, context: ComponentMetadata, style: StyleMetadata, templateStart: number);
 }
 
 export class BasicCssAstVisitor extends SourceMappingVisitor implements ast.CssAstVisitor {
-  constructor(sourceFile: ts.SourceFile,
+  constructor(
+    sourceFile: ts.SourceFile,
     protected _originalOptions: Lint.IOptions,
     protected context: ComponentMetadata,
     style: StyleMetadata,
-    protected templateStart: number) {
-      super(sourceFile, _originalOptions, style.style, templateStart);
-    }
+    protected templateStart: number
+  ) {
+    super(sourceFile, _originalOptions, style.style, templateStart);
+  }
 
   visitCssValue(ast: ast.CssStyleValueAst, context?: any): any {}
 
@@ -38,18 +40,22 @@ export class BasicCssAstVisitor extends SourceMappingVisitor implements ast.CssA
   }
 
   visitCssSelectorRule(ast: ast.CssSelectorRuleAst, context?: any): any {
-    ast.selectors.forEach((selAst: ast.CssSelectorAst) => { selAst.visit(this, context); });
+    ast.selectors.forEach((selAst: ast.CssSelectorAst) => {
+      selAst.visit(this, context);
+    });
     ast.block.visit(this, context);
   }
 
   visitCssSelector(ast: ast.CssSelectorAst, context?: any): any {
-    ast.selectorParts.forEach(
-        (simpleAst: ast.CssSimpleSelectorAst) => { simpleAst.visit(this, context); });
+    ast.selectorParts.forEach((simpleAst: ast.CssSimpleSelectorAst) => {
+      simpleAst.visit(this, context);
+    });
   }
 
   visitCssSimpleSelector(ast: ast.CssSimpleSelectorAst, context?: any): any {
-    ast.pseudoSelectors.forEach(
-        (pseudoAst: ast.CssPseudoSelectorAst) => { pseudoAst.visit(this, context); });
+    ast.pseudoSelectors.forEach((pseudoAst: ast.CssPseudoSelectorAst) => {
+      pseudoAst.visit(this, context);
+    });
   }
 
   visitCssPseudoSelector(ast: ast.CssPseudoSelectorAst, context?: any): any {}
@@ -59,16 +65,21 @@ export class BasicCssAstVisitor extends SourceMappingVisitor implements ast.CssA
   }
 
   visitCssBlock(ast: ast.CssBlockAst, context?: any): any {
-    ast.entries.forEach((entryAst: ast.CssAst) => { entryAst.visit(this, context); });
+    ast.entries.forEach((entryAst: ast.CssAst) => {
+      entryAst.visit(this, context);
+    });
   }
 
   visitCssStylesBlock(ast: ast.CssStylesBlockAst, context?: any): any {
-    ast.definitions.forEach(
-        (definitionAst: ast.CssDefinitionAst) => { definitionAst.visit(this, context); });
+    ast.definitions.forEach((definitionAst: ast.CssDefinitionAst) => {
+      definitionAst.visit(this, context);
+    });
   }
 
   visitCssStyleSheet(ast: ast.CssStyleSheetAst, context?: any): any {
-    ast.rules.forEach((ruleAst: ast.CssRuleAst) => { ruleAst.visit(this, context); });
+    ast.rules.forEach((ruleAst: ast.CssRuleAst) => {
+      ruleAst.visit(this, context);
+    });
   }
 
   visitCssUnknownRule(ast: ast.CssUnknownRuleAst, context?: any): any {}

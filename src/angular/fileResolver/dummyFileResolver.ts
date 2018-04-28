@@ -5,4 +5,3 @@ export class DummyFileResolver extends FileResolver {
     return '';
   }
 }
-

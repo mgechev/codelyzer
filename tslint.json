@@ -1,55 +1,35 @@
 {
   "rules": {
     "class-name": true,
-    "curly": false,
-    "eofline": true,
-    "indent": [true, "spaces"],
-    "max-line-length": [true, 140],
-    "member-ordering": [true, {"order": [
-      "public-static-field",
-      "public-static-method",
-      "protected-static-field",
-      "protected-static-method",
-      "private-static-field",
-      "private-static-method",
-      "public-instance-field",
-      "protected-instance-field",
-      "private-instance-field",
-      "public-constructor",
-      "protected-constructor",
-      "private-constructor",
-      "public-instance-method",
-      "protected-instance-method",
-      "private-instance-method"
-    ]}],
+    "member-ordering": [
+      true,
+      {
+        "order": [
+          "public-static-field",
+          "public-static-method",
+          "protected-static-field",
+          "protected-static-method",
+          "private-static-field",
+          "private-static-method",
+          "public-instance-field",
+          "protected-instance-field",
+          "private-instance-field",
+          "public-constructor",
+          "protected-constructor",
+          "private-constructor",
+          "public-instance-method",
+          "protected-instance-method",
+          "private-instance-method"
+        ]
+      }
+    ],
     "no-arg": true,
-    "no-consecutive-blank-lines": [true, 2],
     "no-construct": true,
     "no-duplicate-variable": true,
     "no-eval": true,
-    "no-trailing-whitespace": true,
     "no-unused-expression": true,
     "no-var-keyword": true,
-    "one-line": [true,
-      "check-open-brace",
-      "check-catch",
-      "check-else",
-      "check-whitespace"
-    ],
-    "quotemark": [true, "single"],
-    "semicolon": true,
     "triple-equals": true,
-    "variable-name": false,
-    "space-before-function-paren": [true, "never"],
-    "whitespace": [
-      true,
-      "check-branch",
-      "check-decl",
-      "check-module",
-      "check-operator",
-      "check-preblock",
-      "check-separator",
-      "check-type"
-    ]
+    "variable-name": false
   }
 }

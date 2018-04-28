@@ -1,27 +1,16 @@
 {
   "compilerOptions": {
-    "experimentalDecorators": true,
-    "target": "es5",
-    "module": "commonjs",
     "declaration": true,
+    "experimentalDecorators": true,
+    "lib": ["dom", "es2015", "es6"],
+    "module": "commonjs",
     "noImplicitAny": false,
-    "removeComments": true,
-    "lib": ["es6", "es2015", "dom"],
     "noLib": false,
     "outDir": "./dist",
-    "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules"
-    ],
-    "types": [
-      "mocha",
-      "chai",
-      "node",
-      "sprintf-js"
-    ]
+    "removeComments": true,
+    "target": "es5",
+    "typeRoots": ["node_modules", "./node_modules/@types"],
+    "types": ["chai", "mocha", "node", "sprintf-js"]
   },
-  "files": [
-    "src/index.ts",
-    "src/angular/templates/jitReflector.ts"
-  ]
+  "files": ["src/angular/templates/jitReflector.ts", "src/index.ts"]
 }

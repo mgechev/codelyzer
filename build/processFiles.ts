@@ -1,5 +1,5 @@
-import {readFileSync, writeFileSync, readdirSync, lstatSync} from 'fs';
-import {join} from 'path';
+import { readFileSync, writeFileSync, readdirSync, lstatSync } from 'fs';
+import { join } from 'path';
 
 interface Replacement {
   regexp: RegExp;

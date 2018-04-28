@@ -1,9 +1,8 @@
-import {Editor} from './editor-interface';
-import {RichEditor} from './rich-editor-interface';
-import {Reporter} from './reporter-interface';
+import { Editor } from './editor-interface';
+import { RichEditor } from './rich-editor-interface';
+import { Reporter } from './reporter-interface';
 
 export class ErrorReportingEditor implements RichEditor, Editor {
-
   constructor(private marker: string, private delegate: Editor, private reporter: Reporter) {}
 
   getValue(): string {
@@ -30,7 +29,6 @@ export class ErrorReportingEditor implements RichEditor, Editor {
     const editor = this.delegate;
     this.renderErrors(errors);
     editor.operation(() => {
-
       editor.clearGutter(this.marker);
 
       for (let i = 0; i < errors.length; ++i) {
@@ -68,4 +66,3 @@ export class ErrorReportingEditor implements RichEditor, Editor {
     }
   }
 }
-

@@ -13,7 +13,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     options: {
       type: 'array',
       items: {
-        type: 'object',
+        type: 'object'
       }
     },
     optionsDescription: 'Define inline template and styles lines limit.',
@@ -44,7 +44,6 @@ export class Rule extends Lint.Rules.AbstractRule {
 }
 
 export class MaxInlineDeclarationsValidator extends NgWalker {
-
   private newLineRegExp = /\r\n|\r|\n/;
 
   constructor(sourceFile: ts.SourceFile, private rule: Rule, private templateLinesLimit: number, private stylesLinesLimit: number) {
@@ -105,6 +104,7 @@ export class MaxInlineDeclarationsValidator extends NgWalker {
         result += metadata.styles[i].style.source.split(this.newLineRegExp).length;
       }
     }
+
     return result;
   }
 }

@@ -11,12 +11,11 @@ chai.use(spies);
 const chaiSpy = (<any>chai).spy;
 
 describe('basicCssAstVisitor', () => {
-
   it('should use the default css walker by default', () => {
     let source = `
       @Component({
         styles: [
-          \`foo\`
+          'foo'
         ]
       })
       class Baz {}
@@ -29,11 +28,13 @@ describe('basicCssAstVisitor', () => {
     };
     let sf = ts.createSourceFile('foo', source, null);
     let walker = new NgWalker(sf, ruleArgs);
-    (<any>chai).expect(() => {
-      let templateSpy = chaiSpy.on(BasicCssAstVisitor.prototype, 'visitCssStyleSheet');
-      walker.walk(sf);
-      (<any>chai.expect(templateSpy).to.have.been).called();
-    }).not.to.throw();
+    (<any>chai)
+      .expect(() => {
+        let templateSpy = chaiSpy.on(BasicCssAstVisitor.prototype, 'visitCssStyleSheet');
+        walker.walk(sf);
+        (<any>chai.expect(templateSpy).to.have.been).called();
+      })
+      .not.to.throw();
   });
 
   it('should visit the css selector', () => {
@@ -41,8 +42,8 @@ describe('basicCssAstVisitor', () => {
       @Component({
         styles: [
           \`
-          .foo::before {}
-          .baz bar {}
+            .foo::before {}
+            .baz bar {}
           \`
         ]
       })
@@ -56,14 +57,14 @@ describe('basicCssAstVisitor', () => {
     };
     let sf = ts.createSourceFile('foo', source, null);
     let walker = new NgWalker(sf, ruleArgs);
-    (<any>chai).expect(() => {
-      let selectorSpy = chaiSpy.on(BasicCssAstVisitor.prototype, 'visitCssSelector');
-      let pseudoSelectorSpy = chaiSpy.on(BasicCssAstVisitor.prototype, 'visitCssPseudoSelector');
-      walker.walk(sf);
-      (<any>chai.expect(selectorSpy).to.have.been).called();
-      (<any>chai.expect(pseudoSelectorSpy).to.have.been).called();
-    }).not.to.throw();
+    (<any>chai)
+      .expect(() => {
+        let selectorSpy = chaiSpy.on(BasicCssAstVisitor.prototype, 'visitCssSelector');
+        let pseudoSelectorSpy = chaiSpy.on(BasicCssAstVisitor.prototype, 'visitCssPseudoSelector');
+        walker.walk(sf);
+        (<any>chai.expect(selectorSpy).to.have.been).called();
+        (<any>chai.expect(pseudoSelectorSpy).to.have.been).called();
+      })
+      .not.to.throw();
   });
-
 });
-

@@ -37,7 +37,7 @@ import stringify = require('json-stringify-pretty-compact');
 import * as yaml from 'js-yaml';
 import * as path from 'path';
 
-import {IFormatterMetadata, IRuleMetadata} from 'tslint';
+import { IFormatterMetadata, IRuleMetadata } from 'tslint';
 
 type Metadata = IRuleMetadata | IFormatterMetadata;
 
@@ -90,7 +90,7 @@ const ruleDocumentation: IDocumentation = {
   globPattern: '../dist/*Rule.js',
   nameMetadataKey: 'ruleName',
   pageGenerator: generateRuleFile,
-  subDirectory: path.join(DOCS_DIR, 'rules'),
+  subDirectory: path.join(DOCS_DIR, 'rules')
 };
 
 /**
@@ -102,7 +102,7 @@ const formatterDocumentation: IDocumentation = {
   globPattern: '../lib/formatters/*Formatter.js',
   nameMetadataKey: 'formatterName',
   pageGenerator: generateFormatterFile,
-  subDirectory: path.join(DOCS_DIR, 'formatters'),
+  subDirectory: path.join(DOCS_DIR, 'formatters')
 };
 
 /**
@@ -112,7 +112,7 @@ function buildDocumentation(documentation: IDocumentation) {
   // Create each module's documentation file.
   const paths = glob.sync(documentation.globPattern);
   const metadataJson = paths.map((path: string) => {
-      return buildSingleModuleDocumentation(documentation, path);
+    return buildSingleModuleDocumentation(documentation, path);
   });
 
   // Create a data file with details of every module.
@@ -128,22 +128,22 @@ function buildSingleModuleDocumentation(documentation: IDocumentation, modulePat
   const module = require(modulePath);
   const DocumentedItem = module[documentation.exportName] as Documented;
   if (DocumentedItem !== null && DocumentedItem.metadata !== null) {
-      // Build the module's page.
-      const { metadata } = DocumentedItem;
-      const fileData = documentation.pageGenerator(metadata);
+    // Build the module's page.
+    const { metadata } = DocumentedItem;
+    const fileData = documentation.pageGenerator(metadata);
 
-      // Ensure a directory exists and write the module's file.
-      const moduleName = (metadata as any)[documentation.nameMetadataKey];
-      const fileDirectory = path.join(documentation.subDirectory, moduleName);
-      if (!fs.existsSync(documentation.subDirectory)) {
-          fs.mkdirSync(documentation.subDirectory);
-      }
-      if (!fs.existsSync(fileDirectory)) {
-          fs.mkdirSync(fileDirectory);
-      }
-      fs.writeFileSync(path.join(fileDirectory, 'index.html'), fileData);
+    // Ensure a directory exists and write the module's file.
+    const moduleName = (metadata as any)[documentation.nameMetadataKey];
+    const fileDirectory = path.join(documentation.subDirectory, moduleName);
+    if (!fs.existsSync(documentation.subDirectory)) {
+      fs.mkdirSync(documentation.subDirectory);
+    }
+    if (!fs.existsSync(fileDirectory)) {
+      fs.mkdirSync(fileDirectory);
+    }
+    fs.writeFileSync(path.join(fileDirectory, 'index.html'), fileData);
 
-      return metadata;
+    return metadata;
   }
 }
 
@@ -159,7 +159,7 @@ function generateJekyllData(metadata: any, layout: string, type: string, name: s
   return {
     ...metadata,
     layout,
-    title: `${type}: ${name}`,
+    title: `${type}: ${name}`
   };
 }
 
@@ -170,13 +170,14 @@ function generateJekyllData(metadata: any, layout: string, type: string, name: s
 function generateRuleFile(metadata: IRuleMetadata): string {
   if (metadata.optionExamples) {
     metadata = { ...metadata };
-    metadata.optionExamples = (metadata.optionExamples as any[]).map((example) =>
-      typeof example === 'string' ? example : stringify(example));
+    metadata.optionExamples = (metadata.optionExamples as any[]).map(
+      example => (typeof example === 'string' ? example : stringify(example))
+    );
   }
 
   const yamlData = generateJekyllData(metadata, 'rule', 'Rule', metadata.ruleName);
   yamlData.optionsJSON = JSON.stringify(metadata.options, undefined, 2);
-  return `---\n${yaml.safeDump(yamlData, {lineWidth: 140} as any)}---`;
+  return `---\n${yaml.safeDump(yamlData, { lineWidth: 140 } as any)}---`;
 }
 
 /**
@@ -185,7 +186,7 @@ function generateRuleFile(metadata: IRuleMetadata): string {
  */
 function generateFormatterFile(metadata: IFormatterMetadata): string {
   const yamlData = generateJekyllData(metadata, 'formatter', 'TSLint formatter', metadata.formatterName);
-  return `---\n${yaml.safeDump(yamlData, {lineWidth: 140} as any)}---`;
+  return `---\n${yaml.safeDump(yamlData, { lineWidth: 140 } as any)}---`;
 }
 
 buildDocumentation(ruleDocumentation);

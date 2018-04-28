@@ -81,7 +81,7 @@ export interface AssertMultipleConfigs {
   ruleName: string;
   source: string;
   options?: any;
-  failures: {char: string; msg: string}[];
+  failures: { char: string; msg: string }[];
 }
 
 /**
@@ -173,24 +173,30 @@ export function assertAnnotated(config: AssertConfig) {
  * @param configs
  */
 export function assertMultipleAnnotated(configs: AssertMultipleConfigs): Lint.RuleFailure[] {
-  return [].concat.apply([], configs.failures.map((failure, index) => {
-    const otherCharacters = configs.failures.map(message => message.char).filter(x => x !== failure.char);
-    if (failure.msg) {
-      const parsed = parseInvalidSource(configs.source, failure.msg, failure.char, otherCharacters);
-      return assertFailure(configs.ruleName, parsed.source, parsed.failure, configs.options, index)
-        .filter(f => {
-          const start = f.getStartPosition().getLineAndCharacter();
-          const end = f.getEndPosition().getLineAndCharacter();
-          return start.character === parsed.failure.startPosition.character &&
-            start.line === parsed.failure.endPosition.line &&
-            end.character === parsed.failure.endPosition.character &&
-            end.line === parsed.failure.endPosition.line;
-        });
-    } else {
-      assertSuccess(configs.ruleName, configs.source, configs.options);
-      return null;
-    }
-  }).filter(r => r !== null));
+  return [].concat.apply(
+    [],
+    configs.failures
+      .map((failure, index) => {
+        const otherCharacters = configs.failures.map(message => message.char).filter(x => x !== failure.char);
+        if (failure.msg) {
+          const parsed = parseInvalidSource(configs.source, failure.msg, failure.char, otherCharacters);
+          return assertFailure(configs.ruleName, parsed.source, parsed.failure, configs.options, index).filter(f => {
+            const start = f.getStartPosition().getLineAndCharacter();
+            const end = f.getEndPosition().getLineAndCharacter();
+            return (
+              start.character === parsed.failure.startPosition.character &&
+              start.line === parsed.failure.endPosition.line &&
+              end.character === parsed.failure.endPosition.character &&
+              end.line === parsed.failure.endPosition.line
+            );
+          });
+        } else {
+          assertSuccess(configs.ruleName, configs.source, configs.options);
+          return null;
+        }
+      })
+      .filter(r => r !== null)
+  );
 }
 
 /**
@@ -205,8 +211,13 @@ export function assertMultipleAnnotated(configs: AssertMultipleConfigs): Lint.Ru
  *                       This is 0-based index of the error that will be tested for. 0 by default.
  * @returns {any}
  */
-export function assertFailure(ruleName: string, source: string | ts.SourceFile, fail: IExpectedFailure,
-                              options = null, onlyNthFailure: number = 0): Lint.RuleFailure[] {
+export function assertFailure(
+  ruleName: string,
+  source: string | ts.SourceFile,
+  fail: IExpectedFailure,
+  options = null,
+  onlyNthFailure: number = 0
+): Lint.RuleFailure[] {
   let result: Lint.LintResult;
   try {
     result = lint(ruleName, source, options);
@@ -215,9 +226,9 @@ export function assertFailure(ruleName: string, source: string | ts.SourceFile, 
   }
   chai.assert(result.failures && result.failures.length > 0, 'no failures');
   const ruleFail = result.failures[onlyNthFailure];
-  chai.assert.equal(fail.message, ruleFail.getFailure(), 'error messages don\'t match');
-  chai.assert.deepEqual(fail.startPosition, ruleFail.getStartPosition().getLineAndCharacter(), 'start char doesn\'t match');
-  chai.assert.deepEqual(fail.endPosition, ruleFail.getEndPosition().getLineAndCharacter(), 'end char doesn\'t match');
+  chai.assert.equal(fail.message, ruleFail.getFailure(), "error messages don't match");
+  chai.assert.deepEqual(fail.startPosition, ruleFail.getStartPosition().getLineAndCharacter(), "start char doesn't match");
+  chai.assert.deepEqual(fail.endPosition, ruleFail.getEndPosition().getLineAndCharacter(), "end char doesn't match");
   if (result) {
     return result.failures;
   }
@@ -242,9 +253,9 @@ export function assertFailures(ruleName: string, source: string | ts.SourceFile,
   }
   chai.assert(result.failures && result.failures.length > 0, 'no failures');
   result.failures.forEach((ruleFail, index) => {
-    chai.assert.equal(fails[index].message, ruleFail.getFailure(), 'error messages don\'t match');
-    chai.assert.deepEqual(fails[index].startPosition, ruleFail.getStartPosition().getLineAndCharacter(), 'start char doesn\'t match');
-    chai.assert.deepEqual(fails[index].endPosition, ruleFail.getEndPosition().getLineAndCharacter(), 'end char doesn\'t match');
+    chai.assert.equal(fails[index].message, ruleFail.getFailure(), "error messages don't match");
+    chai.assert.deepEqual(fails[index].startPosition, ruleFail.getStartPosition().getLineAndCharacter(), "start char doesn't match");
+    chai.assert.deepEqual(fails[index].endPosition, ruleFail.getEndPosition().getLineAndCharacter(), "end char doesn't match");
   });
 }
 

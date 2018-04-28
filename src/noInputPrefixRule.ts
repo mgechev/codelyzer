@@ -12,14 +12,10 @@ export class Rule extends Lint.Rules.AbstractRule {
     * Example: 'enabled' is prefered over 'isEnabled'.
     `,
     options: {
-      'type': 'array',
-      'items': [
-        { 'type': 'string' }
-      ],
+      type: 'array',
+      items: [{ type: 'string' }]
     },
-    optionExamples: [
-      '["is", "can", "should"]'
-    ],
+    optionExamples: ['["is", "can", "should"]'],
     optionsDescription: 'Options accept a string array of disallowed input prefixes.',
     typescriptOnly: true
   };

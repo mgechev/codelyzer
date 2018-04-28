@@ -2,12 +2,7 @@ import * as ts from 'typescript';
 const SyntaxKind = require('./syntaxKind');
 
 // Lewenshtein algorithm
-export const stringDistance = (
-  s: string,
-  t: string,
-  ls: number = s.length,
-  lt: number = t.length
-) => {
+export const stringDistance = (s: string, t: string, ls: number = s.length, lt: number = t.length) => {
   let memo = [];
   let currRowMemo;
   let i;
@@ -18,11 +13,7 @@ export const stringDistance = (
   for (i = 1; i <= ls; i += 1) {
     currRowMemo = [i];
     for (k = 1; k <= lt; k += 1) {
-      currRowMemo[k] = Math.min(
-        currRowMemo[k - 1] + 1,
-        memo[k] + 1,
-        memo[k - 1] + (s[i - 1] !== t[k - 1] ? 1 : 0)
-      );
+      currRowMemo[k] = Math.min(currRowMemo[k - 1] + 1, memo[k] + 1, memo[k - 1] + (s[i - 1] !== t[k - 1] ? 1 : 0));
     }
     memo = currRowMemo;
   }
@@ -30,18 +21,11 @@ export const stringDistance = (
 };
 
 export const isSimpleTemplateString = (e: any) => {
-  return (
-    e.kind === ts.SyntaxKind.StringLiteral ||
-    e.kind === SyntaxKind.current().FirstTemplateToken
-  );
+  return e.kind === ts.SyntaxKind.StringLiteral || e.kind === SyntaxKind.current().FirstTemplateToken;
 };
 
-export const getDecoratorPropertyInitializer = (
-  decorator: ts.Decorator,
-  name: string
-) => {
-  return (<ts.ObjectLiteralExpression>(<ts.CallExpression>decorator.expression)
-    .arguments[0]).properties
+export const getDecoratorPropertyInitializer = (decorator: ts.Decorator, name: string) => {
+  return (<ts.ObjectLiteralExpression>(<ts.CallExpression>decorator.expression).arguments[0]).properties
     .map((prop: any) => {
       if (prop.name.text === name) {
         return prop;
@@ -60,13 +44,12 @@ export const getDecoratorName = (decorator: ts.Decorator) => {
 };
 
 export const getComponentDecorator = (declaration: ts.ClassDeclaration) => {
-  return (<ts.Decorator[]>declaration.decorators || [])
+  return ([].slice.apply(declaration.decorators) || [])
     .filter((d: any) => {
       if (
         !(<ts.CallExpression>d.expression).arguments ||
         !(<ts.CallExpression>d.expression).arguments.length ||
-        !(<ts.ObjectLiteralExpression>(<ts.CallExpression>d.expression)
-          .arguments[0]).properties
+        !(<ts.ObjectLiteralExpression>(<ts.CallExpression>d.expression).arguments[0]).properties
       ) {
         return false;
       }
@@ -76,4 +59,11 @@ export const getComponentDecorator = (declaration: ts.ClassDeclaration) => {
       }
     })
     .pop();
+};
+
+export const maybeNodeArray = <T extends ts.Node>(nodes: ts.NodeArray<T>): ReadonlyArray<T> => {
+  if (!nodes) {
+    return [];
+  }
+  return nodes;
 };

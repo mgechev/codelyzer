@@ -63,9 +63,9 @@ export abstract class SelectorRule extends Lint.Rules.AbstractRule {
   }
 
   public validatePrefix(selectors: compiler.CssSelector[]): boolean {
-    return this.getValidSelectors(selectors)
-      .some(selector => !this.prefixes.length || this.prefixes.some(p =>
-        this.style.some(s => SelectorValidator.prefix(p, s)(selector))));
+    return this.getValidSelectors(selectors).some(
+      selector => !this.prefixes.length || this.prefixes.some(p => this.style.some(s => SelectorValidator.prefix(p, s)(selector)))
+    );
   }
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
@@ -77,27 +77,35 @@ export abstract class SelectorRule extends Lint.Rules.AbstractRule {
   abstract getPrefixFailure(prefixes: string[]): string;
 
   private getValidSelectors(selectors: compiler.CssSelector[]) {
-    return [].concat.apply([], selectors.map(selector => {
-      return [].concat.apply([], this.types.map(t => {
-        let prop = selector[t];
-        if (prop && !(prop instanceof Array)) {
-          prop = [prop];
-        }
-        return prop;
-      }).filter(s => !!s));
-    }));
+    return [].concat.apply(
+      [],
+      selectors.map(selector => {
+        return [].concat.apply(
+          [],
+          this.types
+            .map(t => {
+              let prop = selector[t];
+              if (prop && !(prop instanceof Array)) {
+                prop = [prop];
+              }
+              return prop;
+            })
+            .filter(s => !!s)
+        );
+      })
+    );
   }
 }
 
 export class SelectorValidatorWalker extends Lint.RuleWalker {
-
   constructor(sourceFile: ts.SourceFile, private rule: SelectorRule) {
     super(sourceFile, rule.getOptions());
   }
 
   visitClassDeclaration(node: ts.ClassDeclaration) {
-    (<ts.Decorator[]>node.decorators || [])
-      .forEach(this.validateDecorator.bind(this, node.name.text));
+    if (node.decorators) {
+      (<ts.NodeArray<ts.Decorator>>node.decorators).forEach(this.validateDecorator.bind(this, node.name.text));
+    }
     super.visitClassDeclaration(node);
   }
 
@@ -115,7 +123,8 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
 
   private validateSelector(className: string, arg: ts.Node) {
     if (arg.kind === SyntaxKind.current().ObjectLiteralExpression) {
-      (<ts.ObjectLiteralExpression>arg).properties.filter(prop => this.validateProperty(prop))
+      (<ts.ObjectLiteralExpression>arg).properties
+        .filter(prop => this.validateProperty(prop))
         .map(prop => (<any>prop).initializer)
         .forEach(i => {
           const selectors: compiler.CssSelector[] = this.extractMainSelector(i);
@@ -150,4 +159,3 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
     return compiler.CssSelector.parse(i.text);
   }
 }
-

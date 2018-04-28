@@ -10,7 +10,6 @@ describe('no-output-named-after-standard-event', () => {
           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         }
       `;
-
       assertAnnotated({
         ruleName: 'no-output-named-after-standard-event',
         message: 'In the class "ButtonComponent", the output property "change" should not be named or renamed after a standard event.',
@@ -26,7 +25,6 @@ describe('no-output-named-after-standard-event', () => {
           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         }
       `;
-
       assertAnnotated({
         ruleName: 'no-output-named-after-standard-event',
         message: 'In the class "ButtonDirective", the output property "change" should not be named or renamed after a standard event.',
@@ -42,7 +40,6 @@ describe('no-output-named-after-standard-event', () => {
           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         }
       `;
-
       assertAnnotated({
         ruleName: 'no-output-named-after-standard-event',
         message: 'In the class "ButtonComponent", the output property "_change" should not be named or renamed after a standard event.',
@@ -58,7 +55,6 @@ describe('no-output-named-after-standard-event', () => {
           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         }
       `;
-
       assertAnnotated({
         ruleName: 'no-output-named-after-standard-event',
         message: 'In the class "ButtonDirective", the output property "_change" should not be named or renamed after a standard event.',

@@ -12,20 +12,17 @@ export class Rule extends Lint.Rules.AbstractRule {
     rationale: 'Impure pipes do not perform well because they are run on every change detection cycle.',
     options: null,
     optionsDescription: 'Not configurable.',
-    typescriptOnly: true,
+    typescriptOnly: true
   };
-
 
   static FAILURE: string = 'Warning: impure pipe declared in class %s.';
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(
-      new ClassMetadataWalker(sourceFile, this));
+    return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this));
   }
 }
 
 export class ClassMetadataWalker extends NgWalker {
-
   constructor(sourceFile: ts.SourceFile, private rule: Rule) {
     super(sourceFile, rule.getOptions());
   }
@@ -37,8 +34,7 @@ export class ClassMetadataWalker extends NgWalker {
   private validateProperties(className: string, pipe: any) {
     let argument = this.extractArgument(pipe);
     if (argument.kind === SyntaxKind.current().ObjectLiteralExpression) {
-      argument.properties.filter(n => n.name.text === 'pure')
-      .forEach(this.validateProperty.bind(this, className));
+      argument.properties.filter(n => n.name.text === 'pure').forEach(this.validateProperty.bind(this, className));
     }
   }
 
@@ -52,10 +48,8 @@ export class ClassMetadataWalker extends NgWalker {
     let propValue: string = property.initializer.getText();
     if (propValue === 'false') {
       this.addFailure(
-        this.createFailure(
-          property.getStart(),
-          property.getWidth(),
-          sprintf.apply(this, this.createFailureArray(className))));
+        this.createFailure(property.getStart(), property.getWidth(), sprintf.apply(this, this.createFailureArray(className)))
+      );
     }
   }
 

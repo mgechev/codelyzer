@@ -9,11 +9,11 @@ export const getDeclaredProperties = (declaration: ts.ClassDeclaration) => {
   const ctr = m.filter((m: any) => m.kind === SyntaxKind.Constructor).pop();
   let params: any = [];
   if (ctr) {
-    params = (((<ts.ConstructorDeclaration>ctr).parameters || []) as any)
-      .filter((p: any) => p.kind === SyntaxKind.Parameter);
+    params = (((<ts.ConstructorDeclaration>ctr).parameters || []) as any).filter((p: any) => p.kind === SyntaxKind.Parameter);
   }
-  return m.filter((m: any) => m.kind === SyntaxKind.PropertyDeclaration ||
-    m.kind === SyntaxKind.GetAccessor || m.kind === SyntaxKind.SetAccessor).concat(params);
+  return m
+    .filter((m: any) => m.kind === SyntaxKind.PropertyDeclaration || m.kind === SyntaxKind.GetAccessor || m.kind === SyntaxKind.SetAccessor)
+    .concat(params);
 };
 
 export const getDeclaredPropertyNames = (declaration: ts.ClassDeclaration) => {
@@ -37,4 +37,3 @@ export const getDeclaredMethodNames = (declaration: ts.ClassDeclaration) => {
       return accum;
     }, {});
 };
-

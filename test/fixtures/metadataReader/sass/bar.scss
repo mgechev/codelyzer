@@ -1,5 +1,5 @@
-@function getColumnWidth($width, $columns,$margin){
-    @return ($width / $columns) - ($margin * 2);
+@function getColumnWidth($width, $columns, $margin) {
+  @return ($width / $columns) - ($margin * 2);
 }
 
 $container-width: 100%;
@@ -15,6 +15,6 @@ $margin: 1%;
   height: 200px;
   display: block;
   float: left;
-  width: getColumnWidth($container-width,$column-count,$margin);
+  width: getColumnWidth($container-width, $column-count, $margin);
   margin: 0 $margin;
 }

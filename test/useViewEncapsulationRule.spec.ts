@@ -9,9 +9,8 @@ describe('use-view-encapsulation', () => {
           encapsulation: ViewEncapsulation.None
                          ~~~~~~~~~~~~~~~~~~~~~~
         })
-        export class TestComponent { }
+        export class TestComponent {}
       `;
-
       assertAnnotated({
         ruleName: 'use-view-encapsulation',
         message: 'Using "ViewEncapsulation.None" will make your styles global which may have unintended effect',
@@ -27,9 +26,8 @@ describe('use-view-encapsulation', () => {
           selector: 'sg-foo-bar',
           encapsulation: ViewEncapsulation.Native
         })
-        export class TestComponent { }
+        export class TestComponent {}
       `;
-
       assertSuccess('use-view-encapsulation', source);
     });
 
@@ -39,9 +37,8 @@ describe('use-view-encapsulation', () => {
           selector: 'sg-foo-bar',
           encapsulation: ViewEncapsulation.Emulated
         })
-        export class TestComponent { }
+        export class TestComponent {}
       `;
-
       assertSuccess('use-view-encapsulation', source);
     });
 
@@ -50,9 +47,8 @@ describe('use-view-encapsulation', () => {
         @Component({
           selector: 'sg-foo-bar',
         })
-        export class TestComponent { }
+        export class TestComponent {}
       `;
-
       assertSuccess('use-view-encapsulation', source);
     });
 
@@ -61,10 +57,9 @@ describe('use-view-encapsulation', () => {
         @NgModule({
           bootstrap: [Foo]
         })
-        export class TestModule { }
+        export class TestModule {}
       `;
       assertSuccess('use-view-encapsulation', source);
     });
-
   });
 });

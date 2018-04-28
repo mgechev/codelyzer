@@ -9,7 +9,7 @@ export function convertRuleOptions(ruleConfiguration: Map<string, Partial<IOptio
       disabledIntervals: [], // deprecated, so just provide an empty array.
       ruleArguments: ruleArguments !== null ? ruleArguments : [],
       ruleName,
-      ruleSeverity: ruleSeverity !== null ? ruleSeverity : 'error',
+      ruleSeverity: ruleSeverity !== null ? ruleSeverity : 'error'
     };
     output.push(options);
   });
@@ -23,13 +23,13 @@ export function camelize(stringWithHyphens: string): string {
 }
 
 function transformName(name: string): string {
-    // camelize strips out leading and trailing underscores and dashes, so make sure they aren't passed to camelize
-    // the regex matches the groups (leading underscores and dashes)(other characters)(trailing underscores and dashes)
-    const nameMatch = name.match(/^([-_]*)(.*?)([-_]*)$/);
-    if (nameMatch === null) {
-        return `${name}Rule`;
-    }
-    return `${nameMatch[1]}${camelize(nameMatch[2])}${nameMatch[3]}Rule`;
+  // camelize strips out leading and trailing underscores and dashes, so make sure they aren't passed to camelize
+  // the regex matches the groups (leading underscores and dashes)(other characters)(trailing underscores and dashes)
+  const nameMatch = name.match(/^([-_]*)(.*?)([-_]*)$/);
+  if (nameMatch === null) {
+    return `${name}Rule`;
+  }
+  return `${nameMatch[1]}${camelize(nameMatch[2])}${nameMatch[3]}Rule`;
 }
 
 /**
@@ -99,13 +99,11 @@ export function find<T, U>(inputs: T[], getResult: (t: T) => U | undefined): U |
 }
 
 function findRule(name: string, rulesDirectories?: string | string[]): any | undefined {
-    const camelizedName = transformName(name);
-    return find(arrayify(rulesDirectories), (dir) => loadCachedRule(dir, camelizedName, true));
+  const camelizedName = transformName(name);
+  return find(arrayify(rulesDirectories), dir => loadCachedRule(dir, camelizedName, true));
 }
 
-export function loadRules(ruleOptionsList: IOptions[],
-                   rulesDirectories?: string | string[],
-                   isJs = false): IRule[] {
+export function loadRules(ruleOptionsList: IOptions[], rulesDirectories?: string | string[], isJs = false): IRule[] {
   const rules: IRule[] = [];
   const notFoundRules: string[] = [];
   const notAllowedInJsRules: string[] = [];
