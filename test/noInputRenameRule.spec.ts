@@ -1,20 +1,24 @@
 import { assertSuccess, assertAnnotated } from './testHelper';
+import { sprintf } from 'sprintf-js';
+import { Rule } from '../src/noInputRenameRule';
 
 const ruleName = 'no-input-rename';
 
 const getMessage = (className: string, propertyName: string): string => {
-  return `In the class "${className}", the directive input property "${propertyName}" should not be renamed.`;
+  return sprintf(Rule.FAILURE_STRING, className, propertyName);
 };
 
 describe(ruleName, () => {
   describe('failure', () => {
     describe('Component', () => {
-      it('should fail when a input property is renamed', () => {
+      it('should fail when an input property is renamed', () => {
         const source = `
-          @Component
+          @Component({
+            selector: 'foo'
+          })
           class TestComponent {
-            @Input('labelAttribute') label: string;
-            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            @Input('bar') label: string;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           }
         `;
         assertAnnotated({
@@ -26,10 +30,12 @@ describe(ruleName, () => {
 
       it('should fail when input property is fake renamed', () => {
         const source = `
-          @Component
+          @Component({
+            selector: 'foo'
+          })
           class TestComponent {
-            @Input('label') label: string;
-            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            @Input('foo') label: string;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           }
         `;
         assertAnnotated({
@@ -41,9 +47,11 @@ describe(ruleName, () => {
     });
 
     describe('Directive', () => {
-      it('should fail when a input property is renamed', () => {
+      it('should fail when an input property is renamed', () => {
         const source = `
-          @Directive
+          @Directive({
+            selector: '[foo]
+          })
           class TestDirective {
             @Input('labelText') label: string;
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -56,19 +64,36 @@ describe(ruleName, () => {
         });
       });
 
-      it("should fail when input property is renamed and it's different from directive's selector", () => {
+      it('should fail when an input property has the same name that the alias', () => {
         const source = `
           @Directive({
-            selector: '[label], label2'
+            selector: '[label]
           })
           class TestDirective {
-            @Input('label') labelText: string;
-            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            @Input('label') label: string;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           }
         `;
         assertAnnotated({
           ruleName,
-          message: getMessage('TestDirective', 'labelText'),
+          message: getMessage('TestDirective', 'label'),
+          source
+        });
+      });
+
+      it('should fail when an input property has the same name that the alias', () => {
+        const source = `
+          @Directive({
+            selector: '[foo]
+          })
+          class TestDirective {
+            @Input('label') label: string;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          }
+        `;
+        assertAnnotated({
+          ruleName,
+          message: getMessage('TestDirective', 'label'),
           source
         });
       });
@@ -77,7 +102,7 @@ describe(ruleName, () => {
 
   describe('success', () => {
     describe('Component', () => {
-      it('should succeed when a input property is not renamed', () => {
+      it('should succeed when an input property is not renamed', () => {
         const source = `
           @Component
           class TestComponent {
@@ -89,13 +114,37 @@ describe(ruleName, () => {
     });
 
     describe('Directive', () => {
-      it('should succeed when the directive name is also an input property', () => {
+      it("should succeed when the directive's selector is also an input metadata property", () => {
         const source = `
           @Directive({
-            selector: '[label], label2'
+            selector: '[foo], label2'
           })
           class TestDirective {
-            @Input('labelText') label: string;
+            @Input('foo') bar: string;
+          }
+        `;
+        assertSuccess(ruleName, source);
+      });
+
+      it("should succeed when the directive's selector is also an input metadata property", () => {
+        const source = `
+          @Directive({
+            selector: '[foo], myselector'
+          })
+          class TestDirective {
+            @Input('myselector') bar: string;
+          }
+        `;
+        assertSuccess(ruleName, source);
+      });
+
+      it("should succeed when the directive's selector is also an input property", () => {
+        const source = `
+          @Directive({
+            selector: '[foo], label2'
+          })
+          class TestDirective {
+            @Input() foo: string;
           }
         `;
         assertSuccess(ruleName, source);
