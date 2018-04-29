@@ -1,19 +1,17 @@
 import { assertSuccess, assertAnnotated } from './testHelper';
+import { sprintf } from 'sprintf-js';
+import { Rule } from '../src/noInputRenameRule';
 
 const ruleName = 'no-input-rename';
 
 const getMessage = (className: string, propertyName: string): string => {
-  return (
-    `In the class "${className}", the directive input property "${propertyName}" should not be renamed.` +
-    ' However, you should use an alias when the directive name is also an input property, and the directive name' +
-    " doesn't describe the property. In this last case, you can disable this rule with `tslint:disable-next-line:no-input-rename`."
-  );
+  return sprintf(Rule.FAILURE_STRING, className, propertyName);
 };
 
 describe(ruleName, () => {
   describe('failure', () => {
     describe('Component', () => {
-      it('should fail when a input property is renamed', () => {
+      it('should fail when an input property is renamed', () => {
         const source = `
           @Component({
             selector: 'foo'
@@ -49,7 +47,7 @@ describe(ruleName, () => {
     });
 
     describe('Directive', () => {
-      it('should fail when a input property is renamed', () => {
+      it('should fail when an input property is renamed', () => {
         const source = `
           @Directive({
             selector: '[foo]
@@ -66,7 +64,7 @@ describe(ruleName, () => {
         });
       });
 
-      it('should fail when a input property has the same name that the alias', () => {
+      it('should fail when an input property has the same name that the alias', () => {
         const source = `
           @Directive({
             selector: '[label]
@@ -82,7 +80,8 @@ describe(ruleName, () => {
           source
         });
       });
-      it('should fail when a input property has the same name that the alias', () => {
+
+      it('should fail when an input property has the same name that the alias', () => {
         const source = `
           @Directive({
             selector: '[foo]
@@ -103,7 +102,7 @@ describe(ruleName, () => {
 
   describe('success', () => {
     describe('Component', () => {
-      it('should succeed when a input property is not renamed', () => {
+      it('should succeed when an input property is not renamed', () => {
         const source = `
           @Component
           class TestComponent {

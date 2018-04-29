@@ -39,7 +39,9 @@ export class InputMetadataWalker extends NgWalker {
     if (
       args.length === 0 ||
       (this.directiveSelector &&
-        (input.expression as any).arguments.some(arg => this.directiveSelector.indexOf(arg.text) !== -1 && memberName !== arg.text))
+        (input.expression as ts.CallExpression).arguments.some(
+          (arg: ts.Identifier) => this.directiveSelector.indexOf(arg.text) !== -1 && memberName !== arg.text
+        ))
     ) {
       return;
     }
