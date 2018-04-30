@@ -1,117 +1,121 @@
-import { assertSuccess, assertAnnotated } from './testHelper';
+import { getFailureMessage, Rule } from '../src/noInputPrefixRule';
+import { assertAnnotated, assertSuccess } from './testHelper';
 
-describe('no-input-prefix', () => {
-  describe('invalid directive input property', () => {
-    it('should fail, when a component input property is named with is prefix', () => {
+const {
+  FAILURE_STRING,
+  metadata: { ruleName }
+} = Rule;
+const className = 'Test';
+
+const getFailureAnnotations = (num: number): string => {
+  return '~'.repeat(num);
+};
+
+const getComposedOptions = (prefixes: string[]): (boolean | string)[] => {
+  return [true, ...prefixes];
+};
+
+describe(ruleName, () => {
+  describe('failure', () => {
+    it('should fail when an input property is prefixed by a blacklisted prefix and blacklist is composed by one prefix', () => {
+      const prefixes = ['is'];
+      const propertyName = `${prefixes[0]}Disabled`;
+      const inputExpression = `@Input() ${propertyName}: boolean;`;
+      const source = `
+        @Directive()
+        class ${className} {
+          ${inputExpression}
+          ${getFailureAnnotations(inputExpression.length)}
+        }
+      `;
+      assertAnnotated({
+        message: getFailureMessage(className, propertyName, prefixes),
+        options: getComposedOptions(prefixes),
+        ruleName,
+        source
+      });
+    });
+
+    it('should fail when an input property is prefixed by a blacklisted prefix and blacklist is composed by two prefixes', () => {
+      const prefixes = ['can', 'is'];
+      const propertyName = `${prefixes[0]}Enable`;
+      const inputExpression = `@Input() ${propertyName}: boolean;`;
       const source = `
         @Component()
-        class ButtonComponent {
-          @Input() isDisabled: boolean;
-          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        class ${className} {
+          ${inputExpression}
+          ${getFailureAnnotations(inputExpression.length)}
         }
       `;
       assertAnnotated({
-        ruleName: 'no-input-prefix',
-        options: ['is'],
-        message: 'In the class "ButtonComponent", the input property "isDisabled" should not be prefixed with is',
+        message: getFailureMessage(className, propertyName, prefixes),
+        options: getComposedOptions(prefixes),
+        ruleName,
         source
       });
     });
 
-    it('should fail, when a directive input property is named with is prefix', () => {
+    it('should fail when an input property is prefixed by a blacklisted prefix and blacklist is composed by two concurrent prefixes', () => {
+      const prefixes = ['is', 'isc'];
+      const propertyName = `${prefixes[1]}Hange`;
+      const inputExpression = `@Input() ${propertyName}: boolean;`;
       const source = `
-        @Directive()
-        class ButtonDirective {
-          @Input() isDisabled: boolean;
-          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        @Component()
+        class ${className} {
+          ${inputExpression}
+          ${getFailureAnnotations(inputExpression.length)}
         }
       `;
       assertAnnotated({
-        ruleName: 'no-input-prefix',
-        options: ['is'],
-        message: 'In the class "ButtonDirective", the input property "isDisabled" should not be prefixed with is',
+        message: getFailureMessage(className, propertyName, prefixes),
+        options: getComposedOptions(prefixes),
+        ruleName,
         source
       });
     });
 
-    it('should fail, when a directive input property is named with is prefix', () => {
+    it('should fail when an input property is snakecased and contains a blacklisted prefix', () => {
+      const prefixes = ['do'];
+      const propertyName = `${prefixes[0]}_it`;
+      const inputExpression = `@Input() ${propertyName}: number;`;
       const source = `
         @Directive()
-        class ButtonDirective {
-          @Input() mustDisable: string;
-          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        class ${className} {
+          ${inputExpression}
+          ${getFailureAnnotations(inputExpression.length)}
         }
       `;
       assertAnnotated({
-        ruleName: 'no-input-prefix',
-        options: ['must'],
-        message: 'In the class "ButtonDirective", the input property "mustDisable" should not be prefixed with must',
-        source
-      });
-    });
-
-    it('should fail, when a directive input property is named with is prefix', () => {
-      const source = `
-        @Directive()
-        class ButtonDirective {
-          @Input() is = true;
-          ~~~~~~~~~~~~~~~~~~~
-        }
-      `;
-      assertAnnotated({
-        ruleName: 'no-input-prefix',
-        options: ['is'],
-        message: 'In the class "ButtonDirective", the input property "is" should not be prefixed with is',
-        source
-      });
-    });
-
-    it('should fail, when a directive input property is named with can prefix', () => {
-      const source = `
-        @Directive()
-        class ButtonDirective {
-          @Input() canEnable = true;
-          ~~~~~~~~~~~~~~~~~~~~~~~~~~
-        }
-      `;
-      assertAnnotated({
-        ruleName: 'no-input-prefix',
-        options: ['can', 'is'],
-        message: 'In the class "ButtonDirective", the input property "canEnable" should not be prefixed with can, is',
+        message: getFailureMessage(className, propertyName, prefixes),
+        options: getComposedOptions(prefixes),
+        ruleName,
         source
       });
     });
   });
 
-  describe('valid directive input property', () => {
-    it('should succeed, when a directive input property is properly named', () => {
+  describe('success', () => {
+    it('should succeed when an input property is not prefixed', () => {
       const source = `
         @Directive()
-        class ButtonComponent {
-          @Input() disabled = true;
+        class ${className} {
+          @Input() mustmust = true;
         }
       `;
-      assertSuccess('no-input-prefix', source);
+      assertSuccess(ruleName, source, getComposedOptions(['must']));
     });
 
-    it('should succeed, when a directive input property is properly named', () => {
-      const source = `
-        @Directive()
-        class ButtonComponent {
-          @Input() disabled = "yes";
-        }
-      `;
-      assertSuccess('no-input-prefix', source);
-    });
-
-    it('should succeed, when a component input property is properly named with is', () => {
+    it('should succeed when multiple input properties are prefixed by something not present in the blacklist', () => {
       const source = `
         @Component()
-        class ButtonComponent {
-          @Input() isometric: boolean;
+        class ${className} {
+          @Input() cana: string;
+          @Input() disabledThing: boolean;
+          @Input() isFoo = 'yes';
+          @Input() shoulddoit: boolean;
         }
       `;
-      assertSuccess('no-input-prefix', source);
+      assertSuccess(ruleName, source, getComposedOptions(['can', 'should', 'dis', 'disable']));
     });
   });
 });
