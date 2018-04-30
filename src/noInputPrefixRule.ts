@@ -1,51 +1,75 @@
-import * as Lint from 'tslint';
-import * as ts from 'typescript';
 import { sprintf } from 'sprintf-js';
+import { IOptions, IRuleMetadata, RuleFailure, Rules } from 'tslint/lib';
+import { arrayify } from 'tslint/lib/utils';
+import { Decorator, Node, PropertyAccessExpression, PropertyDeclaration, SourceFile } from 'typescript';
+
 import { NgWalker } from './angular/ngWalker';
 
-export class Rule extends Lint.Rules.AbstractRule {
-  public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'no-input-prefix',
-    type: 'maintainability',
-    description: 'Input names should not be prefixed with the configured disallowed prefixes.',
-    rationale: `HTML attributes are not prefixed. It's considered best not to prefix Inputs.
+export class Rule extends Rules.AbstractRule {
+  static readonly metadata: IRuleMetadata = {
+    description: 'Input names should not be prefixed by the configured disallowed prefixes.',
+    optionExamples: ['[true, "can", "is", "should"]'],
+    options: {
+      items: [{ type: 'string' }],
+      type: 'array'
+    },
+    optionsDescription: 'Options accept a string array of disallowed input prefixes.',
+    rationale: `HTML attributes are not prefixed. It's considered best not to prefix Inpu
     * Example: 'enabled' is prefered over 'isEnabled'.
     `,
-    options: {
-      type: 'array',
-      items: [{ type: 'string' }]
-    },
-    optionExamples: ['["is", "can", "should"]'],
-    optionsDescription: 'Options accept a string array of disallowed input prefixes.',
+    ruleName: 'no-input-prefix',
+    type: 'maintainability',
     typescriptOnly: true
   };
 
-  static FAILURE_STRING: string = 'In the class "%s", the input property "%s" should not be prefixed with %s';
+  static readonly FAILURE_STRING = 'In the class "%s", the input property "%s" should not be prefixed by %s';
 
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(new InputWalker(sourceFile, this.getOptions()));
+  apply(sourceFile: SourceFile): RuleFailure[] {
+    return this.applyWithWalker(new NoInputPrefixWalker(sourceFile, this.getOptions()));
   }
 }
 
-class InputWalker extends NgWalker {
-  visitNgInput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
-    const className = (<any>property).parent.name.text;
-    const memberName = (<any>property.name).text as string;
-    const options = this.getOptions() as string[];
-    let prefixLength: number;
+const getReadablePrefixes = (prefixes: string[]): string => {
+  const prefixesLength = prefixes.length;
 
-    if (memberName) {
-      const foundInvalid = options.find(x => memberName.startsWith(x));
-      prefixLength = foundInvalid ? foundInvalid.length : 0;
+  if (prefixesLength === 1) {
+    return `"${prefixes[0]}"`;
+  }
+
+  return `${prefixes
+    .map(x => `"${x}"`)
+    .slice(0, prefixesLength - 1)
+    .join(', ')} or "${[...prefixes].pop()}"`;
+};
+
+export const getFailureMessage = (className: string, propertyName: string, prefixes: string[]): string => {
+  return sprintf(Rule.FAILURE_STRING, className, propertyName, getReadablePrefixes(prefixes));
+};
+
+class NoInputPrefixWalker extends NgWalker {
+  private readonly blacklistedPrefixes: string[];
+
+  constructor(source: SourceFile, options: IOptions) {
+    super(source, options);
+    this.blacklistedPrefixes = arrayify<string>(options.ruleArguments).slice(1);
+  }
+
+  protected visitNgInput(property: PropertyDeclaration, input: Decorator, args: string[]) {
+    this.validatePrefix(property, input, args);
+    super.visitNgInput(property, input, args);
+  }
+
+  private validatePrefix(property: PropertyDeclaration, input: Decorator, args: string[]) {
+    const memberName = property.name.getText();
+    const isBlackListedPrefix = this.blacklistedPrefixes.some(x => new RegExp(`^${x}[^a-z]`).test(memberName));
+
+    if (!isBlackListedPrefix) {
+      return;
     }
 
-    if (
-      prefixLength > 0 &&
-      !(memberName.length >= prefixLength + 1 && memberName[prefixLength] !== memberName[prefixLength].toUpperCase())
-    ) {
-      const failureConfig: string[] = [Rule.FAILURE_STRING, className, memberName, options.join(', ')];
-      const errorMessage = sprintf.apply(null, failureConfig);
-      this.addFailure(this.createFailure(property.getStart(), property.getWidth(), errorMessage));
-    }
+    const className = (property.parent as PropertyAccessExpression).name.getText();
+    const failure = getFailureMessage(className, memberName, this.blacklistedPrefixes);
+
+    this.addFailureAtNode(property, failure);
   }
 }
