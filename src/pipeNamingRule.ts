@@ -8,6 +8,7 @@ import { IOptions } from 'tslint';
 
 export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
+    deprecationMessage: 'You can name your pipes only camelCase. If you try to use snake-case then your application will not compile.',
     ruleName: 'pipe-naming',
     type: 'style',
     description: 'Enforce consistent case and prefix for pipes.',
