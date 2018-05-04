@@ -1,6 +1,5 @@
 import { sprintf } from 'sprintf-js';
 import { IOptions, IRuleMetadata, RuleFailure, Rules } from 'tslint/lib';
-import { arrayify } from 'tslint/lib/utils';
 import { Decorator, Node, PropertyAccessExpression, PropertyDeclaration, SourceFile } from 'typescript';
 
 import { NgWalker } from './angular/ngWalker';
@@ -14,7 +13,7 @@ export class Rule extends Rules.AbstractRule {
       type: 'array'
     },
     optionsDescription: 'Options accept a string array of disallowed input prefixes.',
-    rationale: `HTML attributes are not prefixed. It's considered best not to prefix Inpu
+    rationale: `HTML attributes are not prefixed. It's considered best not to prefix Inputs.
     * Example: 'enabled' is prefered over 'isEnabled'.
     `,
     ruleName: 'no-input-prefix',
@@ -22,7 +21,7 @@ export class Rule extends Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'In the class "%s", the input property "%s" should not be prefixed by %s';
+  static readonly FAILURE_STRING = '@Inputs should not be prefixed by %s';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(new NoInputPrefixWalker(sourceFile, this.getOptions()));
@@ -42,8 +41,8 @@ const getReadablePrefixes = (prefixes: string[]): string => {
     .join(', ')} or "${[...prefixes].pop()}"`;
 };
 
-export const getFailureMessage = (className: string, propertyName: string, prefixes: string[]): string => {
-  return sprintf(Rule.FAILURE_STRING, className, propertyName, getReadablePrefixes(prefixes));
+export const getFailureMessage = (prefixes: string[]): string => {
+  return sprintf(Rule.FAILURE_STRING, getReadablePrefixes(prefixes));
 };
 
 class NoInputPrefixWalker extends NgWalker {
@@ -51,7 +50,7 @@ class NoInputPrefixWalker extends NgWalker {
 
   constructor(source: SourceFile, options: IOptions) {
     super(source, options);
-    this.blacklistedPrefixes = arrayify<string>(options.ruleArguments).slice(1);
+    this.blacklistedPrefixes = options.ruleArguments.slice(1);
   }
 
   protected visitNgInput(property: PropertyDeclaration, input: Decorator, args: string[]) {
@@ -61,14 +60,13 @@ class NoInputPrefixWalker extends NgWalker {
 
   private validatePrefix(property: PropertyDeclaration, input: Decorator, args: string[]) {
     const memberName = property.name.getText();
-    const isBlackListedPrefix = this.blacklistedPrefixes.some(x => new RegExp(`^${x}[^a-z]`).test(memberName));
+    const isBlackListedPrefix = this.blacklistedPrefixes.some(x => x === memberName || new RegExp(`^${x}[^a-z]`).test(memberName));
 
     if (!isBlackListedPrefix) {
       return;
     }
 
-    const className = (property.parent as PropertyAccessExpression).name.getText();
-    const failure = getFailureMessage(className, memberName, this.blacklistedPrefixes);
+    const failure = getFailureMessage(this.blacklistedPrefixes);
 
     this.addFailureAtNode(property, failure);
   }

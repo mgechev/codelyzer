@@ -5,89 +5,93 @@ const {
   FAILURE_STRING,
   metadata: { ruleName }
 } = Rule;
-const className = 'Test';
 
-const getFailureAnnotations = (num: number): string => {
-  return '~'.repeat(num);
-};
-
-const getComposedOptions = (prefixes: string[]): (boolean | string)[] => {
-  return [true, ...prefixes];
+const getComposedOptions = (blacklistedPrefixes: string[]): (boolean | string)[] => {
+  return [true, ...blacklistedPrefixes];
 };
 
 describe(ruleName, () => {
   describe('failure', () => {
     it('should fail when an input property is prefixed by a blacklisted prefix and blacklist is composed by one prefix', () => {
-      const prefixes = ['is'];
-      const propertyName = `${prefixes[0]}Disabled`;
-      const inputExpression = `@Input() ${propertyName}: boolean;`;
+      const blacklistedPrefixes = ['is'];
       const source = `
         @Directive()
-        class ${className} {
-          ${inputExpression}
-          ${getFailureAnnotations(inputExpression.length)}
+        class Test {
+          @Input() isDisabled: boolean;
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         }
       `;
       assertAnnotated({
-        message: getFailureMessage(className, propertyName, prefixes),
-        options: getComposedOptions(prefixes),
+        message: getFailureMessage(blacklistedPrefixes),
+        options: getComposedOptions(blacklistedPrefixes),
         ruleName,
         source
       });
     });
 
-    it('should fail when an input property is prefixed by a blacklisted prefix and blacklist is composed by two prefixes', () => {
-      const prefixes = ['can', 'is'];
-      const propertyName = `${prefixes[0]}Enable`;
-      const inputExpression = `@Input() ${propertyName}: boolean;`;
+    it('should fail when an input property is strictly equal to a blacklisted prefix', () => {
+      const blacklistedPrefixes = ['should'];
       const source = `
-        @Component()
-        class ${className} {
-          ${inputExpression}
-          ${getFailureAnnotations(inputExpression.length)}
+        @Directive()
+        class Test {
+          @Input() should: boolean;
+          ~~~~~~~~~~~~~~~~~~~~~~~~~
         }
       `;
       assertAnnotated({
-        message: getFailureMessage(className, propertyName, prefixes),
-        options: getComposedOptions(prefixes),
+        message: getFailureMessage(blacklistedPrefixes),
+        options: getComposedOptions(blacklistedPrefixes),
         ruleName,
         source
       });
     });
 
-    it('should fail when an input property is prefixed by a blacklisted prefix and blacklist is composed by two concurrent prefixes', () => {
-      const prefixes = ['is', 'isc'];
-      const propertyName = `${prefixes[1]}Hange`;
-      const inputExpression = `@Input() ${propertyName}: boolean;`;
+    it('should fail when an input property is prefixed by a blacklisted prefix and blacklist is composed by two blacklistedPrefixes', () => {
+      const blacklistedPrefixes = ['can', 'is'];
       const source = `
         @Component()
-        class ${className} {
-          ${inputExpression}
-          ${getFailureAnnotations(inputExpression.length)}
+        class Test {
+          @Input() canEnable: boolean;
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         }
       `;
       assertAnnotated({
-        message: getFailureMessage(className, propertyName, prefixes),
-        options: getComposedOptions(prefixes),
+        message: getFailureMessage(blacklistedPrefixes),
+        options: getComposedOptions(blacklistedPrefixes),
+        ruleName,
+        source
+      });
+    });
+
+    it('should fail when an input property is prefixed by a blacklisted prefix and blacklist is composed by two concurrent blacklistedPrefixes', () => {
+      const blacklistedPrefixes = ['is', 'isc'];
+      const source = `
+        @Component()
+        class Test {
+          @Input() iscHange: boolean;
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        }
+      `;
+      assertAnnotated({
+        message: getFailureMessage(blacklistedPrefixes),
+        options: getComposedOptions(blacklistedPrefixes),
         ruleName,
         source
       });
     });
 
     it('should fail when an input property is snakecased and contains a blacklisted prefix', () => {
-      const prefixes = ['do'];
-      const propertyName = `${prefixes[0]}_it`;
-      const inputExpression = `@Input() ${propertyName}: number;`;
+      const blacklistedPrefixes = ['do'];
       const source = `
         @Directive()
-        class ${className} {
-          ${inputExpression}
-          ${getFailureAnnotations(inputExpression.length)}
+        class Test {
+          @Input() do_it: number;
+          ~~~~~~~~~~~~~~~~~~~~~~~
         }
       `;
       assertAnnotated({
-        message: getFailureMessage(className, propertyName, prefixes),
-        options: getComposedOptions(prefixes),
+        message: getFailureMessage(blacklistedPrefixes),
+        options: getComposedOptions(blacklistedPrefixes),
         ruleName,
         source
       });
@@ -96,26 +100,28 @@ describe(ruleName, () => {
 
   describe('success', () => {
     it('should succeed when an input property is not prefixed', () => {
+      const blacklistedPrefixes = ['must'];
       const source = `
         @Directive()
-        class ${className} {
+        class Test {
           @Input() mustmust = true;
         }
       `;
-      assertSuccess(ruleName, source, getComposedOptions(['must']));
+      assertSuccess(ruleName, source, getComposedOptions(blacklistedPrefixes));
     });
 
     it('should succeed when multiple input properties are prefixed by something not present in the blacklist', () => {
+      const blacklistedPrefixes = ['can', 'dis', 'disable', 'should'];
       const source = `
         @Component()
-        class ${className} {
+        class Test {
           @Input() cana: string;
           @Input() disabledThing: boolean;
           @Input() isFoo = 'yes';
           @Input() shoulddoit: boolean;
         }
       `;
-      assertSuccess(ruleName, source, getComposedOptions(['can', 'should', 'dis', 'disable']));
+      assertSuccess(ruleName, source, getComposedOptions(blacklistedPrefixes));
     });
   });
 });
