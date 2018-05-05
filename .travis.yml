@@ -10,7 +10,4 @@ os:
 branches:
   only: master
 
-before_install: npm i rxjs@6.0.0-beta.0 @angular/core@6.0.0-rc.0 @angular/compiler@6.0.0-rc.0 zone.js@0.8.20
-
 script: npm run tscv && npm run format:check && npm run lint && npm t
-

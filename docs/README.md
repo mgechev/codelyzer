@@ -2,7 +2,7 @@
 
 ```
 # Install dependencies
-npm install # or yarn install
+npm i # or yarn
 
 # Transpile and bundle packages
 npm run build
@@ -14,4 +14,3 @@ npm run build:prod
 # License
 
 MIT
-

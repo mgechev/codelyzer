@@ -81,7 +81,7 @@ TSLint will now complain that there are rules which require type checking. In or
 You can easily use codelyzer with your custom setup:
 
 ```shell
-npm i codelyzer@~4.2.0 tslint@^5.0.0 @angular/core@~5.2.0 @angular/compiler@~5.2.0
+npm i codelyzer@~4.3.0 tslint@~5.10.0 @angular/compiler@^6.0.0 @angular/core@^6.0.0
 ```
 
 A. Using codelyzer package in PATH
