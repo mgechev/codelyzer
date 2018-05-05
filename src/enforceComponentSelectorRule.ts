@@ -18,16 +18,12 @@ export class Rule extends Lint.Rules.AbstractRule {
   static SELECTOR_FAILURE = 'The selector of the component "%s" is mandatory';
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(new EnforceComponentSelectorValidatorWalker(sourceFile, this));
+    return this.applyWithWalker(new EnforceComponentSelectorValidatorWalker(sourceFile, this.getOptions()));
   }
 }
 
 export class EnforceComponentSelectorValidatorWalker extends NgWalker {
-  constructor(sourceFile: ts.SourceFile, private rule: Rule) {
-    super(sourceFile, rule.getOptions());
-  }
-
-  visitNgComponent(metadata: ComponentMetadata) {
+  protected visitNgComponent(metadata: ComponentMetadata) {
     if (!metadata.selector) {
       const failureConfig: string[] = [metadata.controller.name.text];
       failureConfig.unshift(Rule.SELECTOR_FAILURE);

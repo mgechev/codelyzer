@@ -1,5 +1,4 @@
 import * as Lint from 'tslint';
-import { IOptions } from 'tslint';
 import * as ts from 'typescript';
 import { ComponentMetadata } from './angular/metadata';
 import { NgWalker } from './angular/ngWalker';
@@ -24,7 +23,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   private readonly templateLinesLimit: number = 3;
   private readonly stylesLinesLimit: number = 3;
 
-  constructor(options: IOptions) {
+  constructor(options: Lint.IOptions) {
     super(options);
     if (options.ruleArguments.length > 1) {
       const args = options.ruleArguments[1];
@@ -38,15 +37,17 @@ export class Rule extends Lint.Rules.AbstractRule {
   }
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(new MaxInlineDeclarationsValidator(sourceFile, this, this.templateLinesLimit, this.stylesLinesLimit));
+    return this.applyWithWalker(
+      new MaxInlineDeclarationsValidator(sourceFile, this.getOptions(), this.templateLinesLimit, this.stylesLinesLimit)
+    );
   }
 }
 
 export class MaxInlineDeclarationsValidator extends NgWalker {
   private newLineRegExp = /\r\n|\r|\n/;
 
-  constructor(sourceFile: ts.SourceFile, private rule: Rule, private templateLinesLimit: number, private stylesLinesLimit: number) {
-    super(sourceFile, rule.getOptions());
+  constructor(sourceFile: ts.SourceFile, options: Lint.IOptions, private templateLinesLimit: number, private stylesLinesLimit: number) {
+    super(sourceFile, options);
   }
 
   protected visitNgComponent(metadata: ComponentMetadata): void {

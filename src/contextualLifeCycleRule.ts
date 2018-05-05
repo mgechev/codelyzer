@@ -21,7 +21,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   'Please, drop it.';
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this));
+    return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this.getOptions()));
   }
 }
 
@@ -31,42 +31,6 @@ export class ClassMetadataWalker extends NgWalker {
   isComponent = false;
   isDirective = false;
   isPipe = false;
-
-  constructor(sourceFile: ts.SourceFile, private rule: Rule) {
-    super(sourceFile, rule.getOptions());
-  }
-
-  visitNgInjectable(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
-    this.className = controller.name.text;
-    this.isInjectable = true;
-    this.isComponent = false;
-    this.isDirective = false;
-    this.isPipe = false;
-  }
-
-  visitNgComponent(metadata: ComponentMetadata) {
-    this.className = metadata.controller.name.text;
-    this.isComponent = true;
-    this.isInjectable = false;
-    this.isDirective = false;
-    this.isPipe = false;
-  }
-
-  visitNgDirective(metadata: DirectiveMetadata) {
-    this.className = metadata.controller.name.text;
-    this.isDirective = true;
-    this.isInjectable = false;
-    this.isComponent = false;
-    this.isPipe = false;
-  }
-
-  visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
-    this.className = controller.name.text;
-    this.isPipe = true;
-    this.isInjectable = false;
-    this.isComponent = false;
-    this.isDirective = false;
-  }
 
   visitMethodDeclaration(method: ts.MethodDeclaration) {
     const methodName = (method.name as ts.StringLiteral).text;
@@ -140,6 +104,44 @@ export class ClassMetadataWalker extends NgWalker {
         this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
       }
     }
+
+    super.visitMethodDeclaration(method);
+  }
+
+  protected visitNgInjectable(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
+    this.className = controller.name.text;
+    this.isInjectable = true;
+    this.isComponent = false;
+    this.isDirective = false;
+    this.isPipe = false;
+    super.visitNgInjectable(controller, decorator);
+  }
+
+  protected visitNgComponent(metadata: ComponentMetadata) {
+    this.className = metadata.controller.name.text;
+    this.isComponent = true;
+    this.isInjectable = false;
+    this.isDirective = false;
+    this.isPipe = false;
+    super.visitNgComponent(metadata);
+  }
+
+  protected visitNgDirective(metadata: DirectiveMetadata) {
+    this.className = metadata.controller.name.text;
+    this.isDirective = true;
+    this.isInjectable = false;
+    this.isComponent = false;
+    this.isPipe = false;
+    super.visitNgDirective(metadata);
+  }
+
+  protected visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
+    this.className = controller.name.text;
+    this.isPipe = true;
+    this.isInjectable = false;
+    this.isComponent = false;
+    this.isDirective = false;
+    super.visitNgPipe(controller, decorator);
   }
 
   private generateFailure(start: number, width: number, failureConfig: string[]) {

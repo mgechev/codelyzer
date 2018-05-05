@@ -1,6 +1,6 @@
 import { sprintf } from 'sprintf-js';
 import { IOptions, IRuleMetadata, RuleFailure, Rules } from 'tslint/lib';
-import { Decorator, Node, PropertyAccessExpression, PropertyDeclaration, SourceFile } from 'typescript';
+import { Decorator, PropertyDeclaration, SourceFile } from 'typescript';
 
 import { NgWalker } from './angular/ngWalker';
 
@@ -54,11 +54,11 @@ class NoInputPrefixWalker extends NgWalker {
   }
 
   protected visitNgInput(property: PropertyDeclaration, input: Decorator, args: string[]) {
-    this.validatePrefix(property, input, args);
+    this.validatePrefix(property);
     super.visitNgInput(property, input, args);
   }
 
-  private validatePrefix(property: PropertyDeclaration, input: Decorator, args: string[]) {
+  private validatePrefix(property: PropertyDeclaration) {
     const memberName = property.name.getText();
     const isBlackListedPrefix = this.blacklistedPrefixes.some(x => x === memberName || new RegExp(`^${x}[^a-z]`).test(memberName));
 

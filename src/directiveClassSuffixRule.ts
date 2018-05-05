@@ -47,12 +47,12 @@ export class Rule extends Lint.Rules.AbstractRule {
 }
 
 export class ClassMetadataWalker extends NgWalker {
-  visitNgDirective(meta: DirectiveMetadata) {
-    let name = meta.controller.name;
+  protected visitNgDirective(metadata: DirectiveMetadata) {
+    let name = metadata.controller.name;
     let className: string = name.text;
     const options = this.getOptions();
     const suffixes: string[] = options.length ? options : ['Directive'];
-    const heritageClauses = meta.controller.heritageClauses;
+    const heritageClauses = metadata.controller.heritageClauses;
     if (heritageClauses) {
       const i = heritageClauses.filter(h => h.token === ts.SyntaxKind.ImplementsKeyword);
       if (
@@ -70,5 +70,6 @@ export class ClassMetadataWalker extends NgWalker {
         this.createFailure(name.getStart(), name.getWidth(), sprintf.apply(this, [Rule.FAILURE, className, suffixes.join(', ')]))
       );
     }
+    super.visitNgDirective(metadata);
   }
 }

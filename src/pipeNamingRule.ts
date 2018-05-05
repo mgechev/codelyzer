@@ -71,9 +71,10 @@ export class ClassMetadataWalker extends NgWalker {
     super(sourceFile, rule.getOptions());
   }
 
-  visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
+  protected visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
     let className = controller.name.text;
     this.validateProperties(className, decorator);
+    super.visitNgPipe(controller, decorator);
   }
 
   private validateProperties(className: string, pipe: ts.Decorator) {

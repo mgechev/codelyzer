@@ -24,7 +24,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 }
 
 class OutputWalker extends NgWalker {
-  visitNgOutput(property: ts.PropertyDeclaration, output: ts.Decorator, args: string[]) {
+  protected visitNgOutput(property: ts.PropertyDeclaration, output: ts.Decorator, args: string[]) {
     const className = (<any>property).parent.name.text;
     const memberName = (<any>property.name).text as string;
 
@@ -33,5 +33,6 @@ class OutputWalker extends NgWalker {
       const errorMessage = sprintf.apply(null, failureConfig);
       this.addFailure(this.createFailure(property.getStart(), property.getWidth(), errorMessage));
     }
+    super.visitNgOutput(property, output, args);
   }
 }
