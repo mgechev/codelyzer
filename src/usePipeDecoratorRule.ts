@@ -15,14 +15,14 @@ export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'use-pipe-decorator',
     type: 'maintainability',
-    description: 'Ensure that classes implementing PipeTransform interface, use Pipe decorator',
+    description: 'Ensure that classes implementing PipeTransform interface, use Pipe decorator.',
     rationale: 'Interfaces prescribe typed method signatures. Use those signatures to flag spelling and syntax mistakes.',
     options: null,
     optionsDescription: 'Not configurable.',
     typescriptOnly: true
   };
 
-  static FAILURE: string = 'The %s class implements the PipeTransform interface, so it should use the @Pipe decorator';
+  static FAILURE = 'The %s class implements the PipeTransform interface, so it should use the @Pipe decorator';
   static PIPE_INTERFACE_NAME = 'PipeTransform';
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {

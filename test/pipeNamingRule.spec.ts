@@ -13,7 +13,7 @@ describe('pipe-naming', () => {
       assertAnnotated({
         ruleName: 'pipe-naming',
         message:
-          'The name of the Pipe decorator of class Test should be named ' + 'camelCase with prefix ng, however its value is "foo-bar".',
+          'The name of the Pipe decorator of class Test should be named ' + 'camelCase with prefix ng, however its value is "foo-bar"',
         source,
         options: ['camelCase', 'ng']
       });
@@ -31,7 +31,7 @@ describe('pipe-naming', () => {
         ruleName: 'pipe-naming',
         message:
           'The name of the Pipe decorator of class Test should be named camelCase' +
-          ' with prefix ng,mg,sg, however its value is "foo-bar".',
+          ' with prefix ng,mg,sg, however its value is "foo-bar"',
         source,
         options: ['camelCase', 'ng', 'mg', 'sg']
       });
@@ -48,8 +48,7 @@ describe('pipe-naming', () => {
       assertAnnotated({
         ruleName: 'pipe-naming',
         message:
-          'The name of the Pipe decorator of class Test should be named camelCase ' +
-          'with prefix fo,mg,sg, however its value is "fooBar".',
+          'The name of the Pipe decorator of class Test should be named camelCase ' + 'with prefix fo,mg,sg, however its value is "fooBar"',
         source,
         options: ['camelCase', 'fo', 'mg', 'sg']
       });
@@ -65,7 +64,7 @@ describe('pipe-naming', () => {
       `;
       assertAnnotated({
         ruleName: 'pipe-naming',
-        message: 'The name of the Pipe decorator of class Test should be named camelCase,' + ' however its value is "foo-bar".',
+        message: 'The name of the Pipe decorator of class Test should be named camelCase,' + ' however its value is "foo-bar"',
         source,
         options: 'camelCase'
       });

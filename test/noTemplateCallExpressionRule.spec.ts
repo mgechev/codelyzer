@@ -36,7 +36,7 @@ describe('no-template-call-expression', () => {
       `;
       assertAnnotated({
         ruleName: 'no-template-call-expression',
-        message: 'Call expressions are not allowed in templates except in output handlers.',
+        message: 'Call expressions are not allowed in templates except in output handlers',
         source
       });
     });
@@ -51,7 +51,7 @@ describe('no-template-call-expression', () => {
       `;
       assertAnnotated({
         ruleName: 'no-template-call-expression',
-        message: 'Call expressions are not allowed in templates except in output handlers.',
+        message: 'Call expressions are not allowed in templates except in output handlers',
         source
       });
     });
@@ -66,7 +66,7 @@ describe('no-template-call-expression', () => {
       `;
       assertAnnotated({
         ruleName: 'no-template-call-expression',
-        message: 'Call expressions are not allowed in templates except in output handlers.',
+        message: 'Call expressions are not allowed in templates except in output handlers',
         source
       });
     });

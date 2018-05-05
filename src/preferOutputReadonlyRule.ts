@@ -7,7 +7,6 @@ export class Rule extends Lint.Rules.AbstractRule {
     description: 'Prefer to declare `@Output` as readonly since they are not supposed to be reassigned.',
     options: null,
     optionsDescription: 'Not configurable.',
-    rationale: '',
     ruleName: 'prefer-output-readonly',
     type: 'maintainability',
     typescriptOnly: true

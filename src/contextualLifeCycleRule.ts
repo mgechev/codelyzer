@@ -6,7 +6,7 @@ import { NgWalker } from './angular/ngWalker';
 
 export class Rule extends Lint.Rules.AbstractRule {
   static metadata: Lint.IRuleMetadata = {
-    description: 'Ensure that classes use allowed life cycle method in its body',
+    description: 'Ensure that classes use allowed life cycle method in its body.',
     options: null,
     optionsDescription: 'Not configurable.',
     rationale: `Some life cycle methods can only be used in certain class types.

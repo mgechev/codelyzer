@@ -9,7 +9,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'decorator-not-allowed',
     type: 'functionality',
-    description: 'Ensure that classes use allowed decorator in its body',
+    description: 'Ensure that classes use allowed decorator in its body.',
     rationale: `Some decorators can only be used in certain class types.
     For example, an @Input should not be used in an @Injectable class.`,
     options: null,
@@ -17,7 +17,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static INJECTABLE_FAILURE_STRING: string = 'In the class "%s" which have the "%s" decorator, the ' +
+  static INJECTABLE_FAILURE_STRING = 'In the class "%s" which have the "%s" decorator, the ' +
   '"%s" decorator is not allowed. ' +
   'Please, drop it.';
 

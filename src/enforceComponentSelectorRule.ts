@@ -15,7 +15,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static SELECTOR_FAILURE: string = 'The selector of the component "%s" is mandatory.';
+  static SELECTOR_FAILURE = 'The selector of the component "%s" is mandatory';
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new EnforceComponentSelectorValidatorWalker(sourceFile, this));

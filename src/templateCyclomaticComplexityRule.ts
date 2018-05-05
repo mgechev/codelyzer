@@ -22,8 +22,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     },
     optionExamples: ['true', '[true, 6]'],
     optionsDescription: 'Determine the maximum number of the cyclomatic complexity.',
-    typescriptOnly: true,
-    hasFix: false
+    typescriptOnly: true
   };
 
   static COMPLEXITY_FAILURE_STRING = "The cyclomatic complexity exceeded the defined limit (cost '%s'). Your template should be refactored.";

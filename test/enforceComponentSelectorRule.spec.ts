@@ -8,7 +8,7 @@ describe('enforceComoponentSelectorRule', () => {
       class Test {}`;
     assertAnnotated({
       ruleName: 'enforce-component-selector',
-      message: 'The selector of the component "Test" is mandatory.',
+      message: 'The selector of the component "Test" is mandatory',
       source
     });
   });
@@ -23,7 +23,7 @@ describe('enforceComoponentSelectorRule', () => {
       class Test {}`;
     assertAnnotated({
       ruleName: 'enforce-component-selector',
-      message: 'The selector of the component "Test" is mandatory.',
+      message: 'The selector of the component "Test" is mandatory',
       source
     });
   });
@@ -38,7 +38,7 @@ describe('enforceComoponentSelectorRule', () => {
       class Test {}`;
     assertAnnotated({
       ruleName: 'enforce-component-selector',
-      message: 'The selector of the component "Test" is mandatory.',
+      message: 'The selector of the component "Test" is mandatory',
       source
     });
   });
@@ -53,7 +53,7 @@ describe('enforceComoponentSelectorRule', () => {
       class Test {}`;
     assertAnnotated({
       ruleName: 'enforce-component-selector',
-      message: 'The selector of the component "Test" is mandatory.',
+      message: 'The selector of the component "Test" is mandatory',
       source
     });
   });

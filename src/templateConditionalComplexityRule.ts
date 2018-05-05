@@ -23,8 +23,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     },
     optionExamples: ['true', '[true, 4]'],
     optionsDescription: 'Determine the maximum number of Boolean operators allowed.',
-    typescriptOnly: true,
-    hasFix: false
+    typescriptOnly: true
   };
 
   static COMPLEXITY_FAILURE_STRING = "The condition complexity (cost '%s') exceeded the defined limit (cost '%s'). The conditional expression should be moved into the component.";
