@@ -14,7 +14,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static FAILURE_STRING: string = 'In the class "%s", the output ' + 'property "%s" should not be named or renamed after a standard event.';
+  static FAILURE_STRING = 'In the class "%s", the output ' + 'property "%s" should not be named or renamed after a standard event';
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new OutputMetadataWalker(sourceFile, this.getOptions()));

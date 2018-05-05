@@ -58,7 +58,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     ruleName: 'templates-no-negated-async',
     type: 'functionality',
-    description: 'Ensures that strict equality is used when evaluating negations on async pipe outout.',
+    description: 'Ensures that strict equality is used when evaluating negations on async pipe output.',
     rationale:
       'Async pipe evaluate to `null` before the observable or promise emits, which can lead to layout thrashing as' +
       ' components load. Prefer strict `=== false` checks instead.',

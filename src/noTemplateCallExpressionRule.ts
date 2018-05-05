@@ -16,7 +16,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static FAILURE_STRING = 'Call expressions are not allowed in templates except in output handlers.';
+  static FAILURE_STRING = 'Call expressions are not allowed in templates except in output handlers';
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     const walkerConfig: NgWalkerConfig = {

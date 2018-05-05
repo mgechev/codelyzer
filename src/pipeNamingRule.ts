@@ -25,11 +25,10 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static FAILURE_WITHOUT_PREFIX: string = 'The name of the Pipe decorator of class %s should' +
-  ' be named camelCase, however its value is "%s".';
+  static FAILURE_WITHOUT_PREFIX = 'The name of the Pipe decorator of class %s should' + ' be named camelCase, however its value is "%s"';
 
-  static FAILURE_WITH_PREFIX: string = 'The name of the Pipe decorator of class %s should' +
-  ' be named camelCase with prefix %s, however its value is "%s".';
+  static FAILURE_WITH_PREFIX = 'The name of the Pipe decorator of class %s should' +
+  ' be named camelCase with prefix %s, however its value is "%s"';
 
   public prefix: string;
   public hasPrefix: boolean;

@@ -9,13 +9,13 @@ export class Rule extends Lint.Rules.AbstractRule {
     ruleName: 'pipe-impure',
     type: 'functionality',
     description: 'Pipes cannot be declared as impure.',
-    rationale: 'Impure pipes do not perform well because they are run on every change detection cycle.',
+    rationale: 'Impure pipes do not perform well because they run on every change detection cycle.',
     options: null,
     optionsDescription: 'Not configurable.',
     typescriptOnly: true
   };
 
-  static FAILURE: string = 'Warning: impure pipe declared in class %s.';
+  static FAILURE = 'Warning: impure pipe declared in class %s';
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this));

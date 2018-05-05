@@ -12,7 +12,7 @@ describe('pipe-impure', () => {
       `;
       assertAnnotated({
         ruleName: 'pipe-impure',
-        message: 'Warning: impure pipe declared in class Test.',
+        message: 'Warning: impure pipe declared in class Test',
         source
       });
     });

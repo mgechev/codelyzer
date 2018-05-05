@@ -8,10 +8,9 @@ export class Rule extends Lint.Rules.AbstractRule {
   static metadata: Lint.IRuleMetadata = {
     ruleName: 'use-view-encapsulation',
     type: 'maintainability',
-    description: 'Disallows using of ViewEncapsulation.None',
-    rationale: '',
+    description: 'Disallows usage of ViewEncapsulation.None.',
     options: null,
-    optionsDescription: 'Not configurable',
+    optionsDescription: 'Not configurable.',
     typescriptOnly: true
   };
 
