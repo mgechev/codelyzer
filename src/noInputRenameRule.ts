@@ -30,10 +30,10 @@ export const getFailureMessage = (className: string, propertyName: string): stri
 };
 
 export class InputMetadataWalker extends NgWalker {
-  private directiveSelectors: DirectiveMetadata['selector'][];
+  private directiveSelectors: ReadonlySet<DirectiveMetadata['selector']>;
 
   protected visitNgDirective(metadata: DirectiveMetadata): void {
-    this.directiveSelectors = (metadata.selector || '').replace(/[\[\]\s]/g, '').split(',');
+    this.directiveSelectors = new Set((metadata.selector || '').replace(/[\[\]\s]/g, '').split(','));
     super.visitNgDirective(metadata);
   }
 
@@ -43,7 +43,7 @@ export class InputMetadataWalker extends NgWalker {
   }
 
   private canPropertyBeAliased(propertyAlias: string, propertyName: string): boolean {
-    return !!(this.directiveSelectors && this.directiveSelectors.indexOf(propertyAlias) !== -1 && propertyAlias !== propertyName);
+    return !!(this.directiveSelectors && this.directiveSelectors.has(propertyAlias) && propertyAlias !== propertyName);
   }
 
   private validateInput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
