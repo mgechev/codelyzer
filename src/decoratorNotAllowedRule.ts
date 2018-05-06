@@ -1,7 +1,6 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { sprintf } from 'sprintf-js';
-import SyntaxKind = require('./util/syntaxKind');
 import { NgWalker } from './angular/ngWalker';
 import { ComponentMetadata, DirectiveMetadata } from './angular/metadata';
 
@@ -22,7 +21,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   'Please, drop it.';
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this));
+    return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this.getOptions()));
   }
 }
 
@@ -30,11 +29,7 @@ export class ClassMetadataWalker extends NgWalker {
   className: string;
   isInjectable = false;
 
-  constructor(sourceFile: ts.SourceFile, private rule: Rule) {
-    super(sourceFile, rule.getOptions());
-  }
-
-  visitNgInjectable(classDeclaration: ts.ClassDeclaration, decorator: ts.Decorator) {
+  protected visitNgInjectable(classDeclaration: ts.ClassDeclaration, decorator: ts.Decorator) {
     this.className = classDeclaration.name.text;
     this.isInjectable = true;
     super.visitNgInjectable(classDeclaration, decorator);
@@ -61,6 +56,7 @@ export class ClassMetadataWalker extends NgWalker {
       failureConfig.unshift(Rule.INJECTABLE_FAILURE_STRING);
       this.generateFailure(property.getStart(), property.getWidth(), failureConfig);
     }
+    super.visitNgInput(property, input, args);
   }
 
   protected visitNgOutput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
@@ -69,6 +65,7 @@ export class ClassMetadataWalker extends NgWalker {
       failureConfig.unshift(Rule.INJECTABLE_FAILURE_STRING);
       this.generateFailure(property.getStart(), property.getWidth(), failureConfig);
     }
+    super.visitNgInput(property, input, args);
   }
 
   protected visitNgHostBinding(property: ts.PropertyDeclaration, decorator: ts.Decorator, args: string[]) {
@@ -77,6 +74,7 @@ export class ClassMetadataWalker extends NgWalker {
       failureConfig.unshift(Rule.INJECTABLE_FAILURE_STRING);
       this.generateFailure(property.getStart(), property.getWidth(), failureConfig);
     }
+    super.visitNgHostBinding(property, decorator, args);
   }
 
   protected visitNgHostListener(method: ts.MethodDeclaration, decorator: ts.Decorator, args: string[]) {
@@ -85,6 +83,7 @@ export class ClassMetadataWalker extends NgWalker {
       failureConfig.unshift(Rule.INJECTABLE_FAILURE_STRING);
       this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
     }
+    super.visitNgHostListener(method, decorator, args);
   }
 
   protected visitNgContentChild(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
@@ -93,6 +92,7 @@ export class ClassMetadataWalker extends NgWalker {
       failureConfig.unshift(Rule.INJECTABLE_FAILURE_STRING);
       this.generateFailure(property.getStart(), property.getWidth(), failureConfig);
     }
+    super.visitNgContentChild(property, input, args);
   }
 
   protected visitNgContentChildren(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
@@ -101,6 +101,7 @@ export class ClassMetadataWalker extends NgWalker {
       failureConfig.unshift(Rule.INJECTABLE_FAILURE_STRING);
       this.generateFailure(property.getStart(), property.getWidth(), failureConfig);
     }
+    super.visitNgContentChildren(property, input, args);
   }
 
   protected visitNgViewChild(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
@@ -109,6 +110,7 @@ export class ClassMetadataWalker extends NgWalker {
       failureConfig.unshift(Rule.INJECTABLE_FAILURE_STRING);
       this.generateFailure(property.getStart(), property.getWidth(), failureConfig);
     }
+    super.visitNgViewChild(property, input, args);
   }
 
   protected visitNgViewChildren(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
@@ -117,6 +119,7 @@ export class ClassMetadataWalker extends NgWalker {
       failureConfig.unshift(Rule.INJECTABLE_FAILURE_STRING);
       this.generateFailure(property.getStart(), property.getWidth(), failureConfig);
     }
+    super.visitNgViewChildren(property, input, args);
   }
 
   private generateFailure(start: number, width: number, failureConfig: string[]) {

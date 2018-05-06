@@ -27,6 +27,8 @@ class TemplateToNgTemplateVisitor extends RecursiveAngularExpressionVisitor {
         [new Lint.Replacement(this.getSourcePosition(expr.left.span.end) + operatorStart, unstrictEqualityOperator.length, '===')]
       )
     );
+
+    super.visitBinary(expr, context);
   }
 
   visitPrefixNot(expr: e.PrefixNot, context: any): any {

@@ -197,7 +197,7 @@ export class OutputMetadataWalker extends NgWalker {
     ['wheel', true]
   ]);
 
-  visitNgOutput(property: ts.PropertyDeclaration, output: ts.Decorator, args: string[]) {
+  protected visitNgOutput(property: ts.PropertyDeclaration, output: ts.Decorator, args: string[]) {
     let className = (<any>property).parent.name.text;
     let memberName = (<any>property.name).text;
     let outputName = args.length === 0 ? memberName : args[0];
@@ -207,5 +207,6 @@ export class OutputMetadataWalker extends NgWalker {
       const errorMessage = sprintf.apply(null, failureConfig);
       this.addFailure(this.createFailure(property.getStart(), property.getWidth(), errorMessage));
     }
+    super.visitNgOutput(property, output, args);
   }
 }
