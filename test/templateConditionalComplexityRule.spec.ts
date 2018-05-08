@@ -1,81 +1,14 @@
-import { assertSuccess, assertAnnotated } from './testHelper';
+import { getFailureMessage, Rule } from '../src/templateConditionalComplexityRule';
+import { assertAnnotated, assertSuccess } from './testHelper';
 
-describe('complexity', () => {
-  describe('success', () => {
-    it('should work with a lower level of complexity', () => {
-      let source = `
-        @Component({
-          template: \`
-            <div *ngIf="a === '1' || (b === '2' && c.d !== e)">
-              Enter your card details
-            </div>
-          \`
-        })
-        class Bar {}
-      `;
-      assertSuccess('template-conditional-complexity', source);
-    });
+const {
+  metadata: { ruleName }
+} = Rule;
 
-    it('should work with a lower level of complexity', () => {
-      let source = `
-        @Component({
-          template: \`
-            <div *ngIf="a === '1' || b === '2' && c.d !== e">
-              Enter your card details
-            </div>
-          \`
-        })
-        class Bar {}
-      `;
-      assertSuccess('template-conditional-complexity', source);
-    });
-
-    it('should work with a level of complexity customisable', () => {
-      let source = `
-        @Component({
-          template: \`
-            <div *ngIf="a === '3' || (b === '3' && c.d !== '1' && e.f !== '6' && q !== g)">
-              Enter your card details
-            </div>
-          \`
-        })
-        class Bar {}
-      `;
-      assertSuccess('template-conditional-complexity', source, [5]);
-    });
-
-    it('should work with a level of complexity customisable', () => {
-      let source = `
-        @Component({
-          template: \`
-            <div *ngIf="(b === '3' && c.d !== '1' && e.f !== '6' && q !== g) || a === '3'">
-              Enter your card details
-            </div>
-          \`
-        })
-        class Bar {}
-      `;
-      assertSuccess('template-conditional-complexity', source, [5]);
-    });
-
-    it('should work with something else', () => {
-      let source = `
-        @Component({
-          template: \`
-            <div *ngIf="isValid;then content else other_content">
-              Enter your card details
-            </div>
-          \`
-        })
-        class Bar {}
-      `;
-      assertSuccess('template-conditional-complexity', source, [5]);
-    });
-  });
-
+describe(ruleName, () => {
   describe('failure', () => {
     it('should fail with a higher level of complexity', () => {
-      let source = `
+      const source = `
         @Component({
           template: \`
             <div *ngIf="a === '3' || (b === '3' && c.d !== '1' && e.f !== '6' && q !== g)">
@@ -86,19 +19,11 @@ describe('complexity', () => {
         })
         class Bar {}
       `;
-      assertAnnotated({
-        ruleName: 'template-conditional-complexity',
-        message:
-          "The condition complexity (cost '5') exceeded the defined limit (cost '4'). The conditional expression should be moved into the component.",
-        source,
-        options: [4]
-      });
+      assertAnnotated({ message: getFailureMessage(5, 4), options: [4], ruleName, source });
     });
-  });
 
-  describe('failure', () => {
     it('should fail with a higher level of complexity and a carrier return', () => {
-      let source = `
+      const source = `
         @Component({
           template: \`
             <div *ngIf="a === '3' || (b === '3' && c.d !== '1'
@@ -111,12 +36,102 @@ describe('complexity', () => {
         })
         class Bar {}
       `;
-      assertAnnotated({
-        ruleName: 'template-conditional-complexity',
-        message:
-          "The condition complexity (cost '5') exceeded the defined limit (cost '3'). The conditional expression should be moved into the component.",
-        source
-      });
+      assertAnnotated({ message: getFailureMessage(5, 3), ruleName, source });
+    });
+
+    it('should fail with a higher level of complexity with ng-template', () => {
+      const source = `
+        @Component({
+          template: \`
+            <ng-template [ngIf]="a === '3' || (b === '3' && c.d !== '1'
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                        && e.f !== '6' && q !== g && x === '1')">
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              Enter details
+            </ng-template>
+          \`
+        })
+        class Bar {}
+      `;
+      assertAnnotated({ message: getFailureMessage(6, 3), ruleName, source });
+    });
+  });
+
+  describe('success', () => {
+    it('should succeed with a lower level of complexity', () => {
+      const source = `
+        @Component({
+          template: \`
+            <div *ngIf="a === '1' || b === '2' && c.d !== e">
+              Enter your card details
+            </div>
+          \`
+        })
+        class Bar {}
+      `;
+      assertSuccess(ruleName, source);
+    });
+
+    it('should succeed with a lower level of complexity with separated statements', () => {
+      const source = `
+        @Component({
+          template: \`
+            <div *ngIf="a === '1' || (b === '2' && c.d !== e)">
+              Enter your card details
+            </div>
+          \`
+        })
+        class Bar {}
+      `;
+      assertSuccess(ruleName, source);
+    });
+
+    it('should succeed with a level of complexity customizable', () => {
+      const source = `
+        @Component({
+          template: \`
+            <div *ngIf="a === '3' || (b === '3' && c.d !== '1' && e.f !== '6' && q !== g)">
+              Enter your card details
+            </div>
+          \`
+        })
+        class Bar {}
+      `;
+      assertSuccess(ruleName, source, [5]);
+    });
+
+    it('should succeed with a level of complexity customizable', () => {
+      const source = `
+        @Component({
+          template: \`
+            <div *ngIf="(b === '3' && c.d !== '1' && e.f !== '6' && q !== g) || a === '3'">
+              Enter your card details
+            </div>
+          \`
+        })
+        class Bar {}
+      `;
+      assertSuccess(ruleName, source, [5]);
+    });
+
+    it('should succeed with non-inlined then template', () => {
+      const source = `
+        @Component({
+          template: \`
+            <div *ngIf="isValid; then thenBlock; else elseBlock">
+              Enter your card details
+            </div>
+            <ng-template #thenBlock>
+              thenBlock
+            </ng-template>
+            <ng-template #elseBlock>
+              elseBlock
+            </ng-template>
+          \`
+        })
+        class Bar {}
+      `;
+      assertSuccess(ruleName, source, [5]);
     });
   });
 });
