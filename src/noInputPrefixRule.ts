@@ -50,7 +50,7 @@ class NoInputPrefixWalker extends NgWalker {
 
   constructor(source: SourceFile, options: IOptions) {
     super(source, options);
-    this.blacklistedPrefixes = options.ruleArguments.slice(1);
+    this.blacklistedPrefixes = options.ruleArguments;
   }
 
   protected visitNgInput(property: PropertyDeclaration, input: Decorator, args: string[]) {

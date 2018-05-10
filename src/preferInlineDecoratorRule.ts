@@ -41,7 +41,7 @@ type DecoratorKeys =
   | 'ViewChild'
   | 'ViewChildren';
 
-export const decoratorKeys = new Set<DecoratorKeys>([
+export const decoratorKeys: ReadonlySet<DecoratorKeys> = new Set<DecoratorKeys>([
   'ContentChild',
   'ContentChildren',
   'HostBinding',
@@ -52,12 +52,16 @@ export const decoratorKeys = new Set<DecoratorKeys>([
   'ViewChildren'
 ]);
 
+export const getFailureMessage = (): string => {
+  return Rule.FAILURE_STRING;
+};
+
 export class PreferInlineDecoratorWalker extends NgWalker {
   private readonly blacklistedDecorators: typeof decoratorKeys;
 
   constructor(source: SourceFile, options: IOptions) {
     super(source, options);
-    this.blacklistedDecorators = new Set<DecoratorKeys>(options.ruleArguments.slice(1));
+    this.blacklistedDecorators = new Set<DecoratorKeys>(options.ruleArguments);
   }
 
   protected visitMethodDecorator(decorator: Decorator) {
@@ -86,6 +90,6 @@ export class PreferInlineDecoratorWalker extends NgWalker {
     }
 
     const fix = Replacement.deleteFromTo(decorator.getEnd(), propertyStartPos - 1);
-    this.addFailureAt(decoratorStartPos, property.getWidth(), Rule.FAILURE_STRING, fix);
+    this.addFailureAt(decoratorStartPos, property.getWidth(), getFailureMessage(), fix);
   }
 }

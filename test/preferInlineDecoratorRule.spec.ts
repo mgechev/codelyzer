@@ -1,11 +1,9 @@
 import { expect } from 'chai';
 import { Replacement } from 'tslint/lib';
-
-import { decoratorKeys, Rule } from '../src/preferInlineDecoratorRule';
+import { decoratorKeys, getFailureMessage, Rule } from '../src/preferInlineDecoratorRule';
 import { assertFailure, assertFailures, assertSuccess, IExpectedFailure } from './testHelper';
 
 const {
-  FAILURE_STRING,
   metadata: { ruleName }
 } = Rule;
 const className = 'Test';
@@ -17,7 +15,7 @@ describe(ruleName, () => {
         character: 35,
         line: 3
       },
-      message: FAILURE_STRING,
+      message: getFailureMessage(),
       startPosition: {
         character: 14,
         line: 2
@@ -72,13 +70,13 @@ describe(ruleName, () => {
               character: 44,
               line: 3
             },
-            message: FAILURE_STRING,
+            message: getFailureMessage(),
             startPosition: {
               character: 12,
               line: 2
             }
           },
-          [true, restDecorators]
+          restDecorators
         );
       });
     });
@@ -98,7 +96,7 @@ describe(ruleName, () => {
             character: 31,
             line: 3
           },
-          message: FAILURE_STRING,
+          message: getFailureMessage(),
           startPosition: {
             character: 10,
             line: 2
@@ -109,7 +107,7 @@ describe(ruleName, () => {
             character: 19,
             line: 5
           },
-          message: FAILURE_STRING,
+          message: getFailureMessage(),
           startPosition: {
             character: 10,
             line: 4
@@ -152,7 +150,7 @@ describe(ruleName, () => {
             test = new EventEmitter<void>();
           }
         `;
-        assertSuccess(ruleName, source, [true, firstDecorator]);
+        assertSuccess(ruleName, source, [firstDecorator]);
       });
     });
 
