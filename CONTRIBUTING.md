@@ -42,6 +42,8 @@ Please consider what kind of change it is:
   and help you to craft the change so that it is successfully accepted into the project.
 * **Small Features** can be crafted and directly [submitted as a Pull Request](#submit-pr).
 
+Later, your issue will be closed and tagged with `votes needed`. The [top-👍 feature](https://github.com/mgechev/codelyzer/issues?utf8=%E2%9C%93&q=label%3A%22votes+needed%22+sort%3Areactions-%2B1-desc+) requests will be implemented.
+
 ## <a name="submit"></a> Submission Guidelines
 
 ### <a name="submit-issue"></a> Submitting an Issue

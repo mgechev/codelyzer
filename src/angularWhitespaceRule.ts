@@ -87,7 +87,6 @@ class InterpolationWhitespaceVisitor extends BasicTemplateAstVisitor implements 
   visitBoundText(text: ast.BoundTextAst, context: BasicTemplateAstVisitor): any {
     if (ExpTypes.ASTWithSource(text.value)) {
       // Note that will not be reliable for different interpolation symbols
-      let error = null;
       const expr: any = (<any>text.value).source;
       const checkWhiteSpace = (
         subMatch: string,
@@ -154,6 +153,7 @@ class SemicolonTemplateVisitor extends BasicTemplateAstVisitor implements Config
       reg.lastIndex = 0;
       checkSemicolonNoWhitespace(reg, context, expr, prop.sourceSpan.start.offset + positionFix);
     }
+    super.visitDirectiveProperty(prop, context);
   }
 
   getOption(): Option {

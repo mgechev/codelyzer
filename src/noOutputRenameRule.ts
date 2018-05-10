@@ -1,37 +1,55 @@
-import * as Lint from 'tslint';
-import * as ts from 'typescript';
-import { sprintf } from 'sprintf-js';
+import { IRuleMetadata, RuleFailure, Rules } from 'tslint/lib';
+import { Decorator, PropertyDeclaration, SourceFile } from 'typescript/lib/typescript';
+import { DirectiveMetadata } from './angular/metadata';
 import { NgWalker } from './angular/ngWalker';
 
-export class Rule extends Lint.Rules.AbstractRule {
-  public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'no-output-rename',
-    type: 'maintainability',
+export class Rule extends Rules.AbstractRule {
+  static readonly metadata: IRuleMetadata = {
     description: 'Disallows renaming directive outputs by providing a string to the decorator.',
     descriptionDetails: 'See more at https://angular.io/styleguide#style-05-13.',
-    rationale: 'Two names for the same property (one private, one public) is inherently confusing.',
     options: null,
     optionsDescription: 'Not configurable.',
+    rationale: 'Two names for the same property (one private, one public) is inherently confusing.',
+    ruleName: 'no-output-rename',
+    type: 'maintainability',
     typescriptOnly: true
   };
 
-  static FAILURE_STRING: string = 'In the class "%s", the directive output ' +
-  'property "%s" should not be renamed.' +
-  'Please, consider the following use "@Output() %s = new EventEmitter();"';
+  static readonly FAILURE_STRING = '@Outputs should not be renamed';
 
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(new OutputMetadataWalker(sourceFile, this.getOptions()));
   }
 }
 
+export const getFailureMessage = (): string => {
+  return Rule.FAILURE_STRING;
+};
+
 export class OutputMetadataWalker extends NgWalker {
-  visitNgOutput(property: ts.PropertyDeclaration, output: ts.Decorator, args: string[]) {
-    let className = (<any>property).parent.name.text;
-    let memberName = (<any>property.name).text;
-    if (args.length !== 0 && memberName !== args[0]) {
-      let failureConfig: string[] = [className, memberName, memberName];
-      failureConfig.unshift(Rule.FAILURE_STRING);
-      this.addFailure(this.createFailure(property.getStart(), property.getWidth(), sprintf.apply(this, failureConfig)));
+  private directiveSelectors: ReadonlySet<DirectiveMetadata['selector']>;
+
+  visitNgDirective(metadata: DirectiveMetadata): void {
+    this.directiveSelectors = new Set((metadata.selector || '').replace(/[\[\]\s]/g, '').split(','));
+    super.visitNgDirective(metadata);
+  }
+
+  protected visitNgOutput(property: PropertyDeclaration, output: Decorator, args: string[]) {
+    this.validateOutput(property, output, args);
+    super.visitNgOutput(property, output, args);
+  }
+
+  private canPropertyBeAliased(propertyAlias: string, propertyName: string): boolean {
+    return !!(this.directiveSelectors && this.directiveSelectors.has(propertyAlias) && propertyAlias !== propertyName);
+  }
+
+  private validateOutput(property: PropertyDeclaration, output: Decorator, args: string[]) {
+    const propertyName = property.name.getText();
+
+    if (args.length === 0 || this.canPropertyBeAliased(args[0], propertyName)) {
+      return;
     }
+
+    this.addFailureAtNode(property, getFailureMessage());
   }
 }

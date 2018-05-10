@@ -1,52 +1,73 @@
-import * as ts from 'typescript';
-import * as Lint from 'tslint';
+import { Fix, IOptions, IRuleMetadata, Replacement, RuleFailure, Rules, RuleWalker } from 'tslint/lib';
+import { NamedImports, SourceFile } from 'typescript/lib/typescript';
 
-export class Rule extends Lint.Rules.AbstractRule {
-  public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'import-destructuring-spacing',
-    type: 'style',
+export class Rule extends Rules.AbstractRule {
+  static readonly metadata: IRuleMetadata = {
     description: 'Ensure consistent and tidy imports.',
-    rationale: "Imports are easier for the reader to look at when they're tidy.",
+    hasFix: true,
     options: null,
     optionsDescription: 'Not configurable.',
+    rationale: "Imports are easier for the reader to look at when they're tidy.",
+    ruleName: 'import-destructuring-spacing',
+    type: 'style',
     typescriptOnly: true
   };
 
-  public static FAILURE_STRING = "You need to leave whitespaces inside of the import statement's curly braces";
+  static readonly FAILURE_STRING = "Import statement's curly braces must be spaced exactly by a space to the right and a space to the left";
 
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(new ImportDestructuringSpacingWalker(sourceFile, this.getOptions()));
   }
 }
 
-// The walker takes care of all the work.
-class ImportDestructuringSpacingWalker extends Lint.RuleWalker {
-  private scanner: ts.Scanner;
+export const getFailureMessage = (): string => {
+  return Rule.FAILURE_STRING;
+};
 
-  constructor(sourceFile: ts.SourceFile, options: Lint.IOptions) {
+const isBlankOrMultilineImport = (value: string): boolean => {
+  return value.indexOf('\n') !== -1 || /^\{\s*\}$/.test(value);
+};
+
+class ImportDestructuringSpacingWalker extends RuleWalker {
+  constructor(sourceFile: SourceFile, options: IOptions) {
     super(sourceFile, options);
-    this.scanner = ts.createScanner(ts.ScriptTarget.ES5, false, ts.LanguageVariant.Standard, sourceFile.text);
   }
 
-  public visitImportDeclaration(node: ts.ImportDeclaration) {
-    const importClause = node.importClause;
-    if (importClause && importClause.namedBindings) {
-      const text = importClause.namedBindings.getText();
-
-      if (!this.checkForWhiteSpace(text)) {
-        this.addFailure(
-          this.createFailure(importClause.namedBindings.getStart(), importClause.namedBindings.getWidth(), Rule.FAILURE_STRING)
-        );
-      }
-    }
-    // call the base version of this visitor to actually parse this node
-    super.visitImportDeclaration(node);
+  protected visitNamedImports(node: NamedImports): void {
+    this.validateNamedImports(node);
+    super.visitNamedImports(node);
   }
 
-  private checkForWhiteSpace(text: string) {
-    if (/\s*\*\s+as\s+[^\s]/.test(text)) {
-      return true;
+  private validateNamedImports(node: NamedImports): void {
+    const nodeText = node.getText();
+
+    if (isBlankOrMultilineImport(nodeText)) {
+      return;
     }
-    return /{\s[^]*\s}/.test(text);
+
+    const totalLeadingSpaces = nodeText.match(/^\{(\s*)/)[1].length;
+    const totalTrailingSpaces = nodeText.match(/(\s*)}$/)[1].length;
+
+    if (totalLeadingSpaces === 1 && totalTrailingSpaces === 1) {
+      return;
+    }
+
+    const nodeStartPos = node.getStart();
+    const nodeEndPos = node.getEnd();
+    let fix: Fix = [];
+
+    if (totalLeadingSpaces === 0) {
+      fix.push(Replacement.appendText(nodeStartPos + 1, ' '));
+    } else if (totalLeadingSpaces > 1) {
+      fix.push(Replacement.deleteText(nodeStartPos + 1, totalLeadingSpaces - 1));
+    }
+
+    if (totalTrailingSpaces === 0) {
+      fix.push(Replacement.appendText(nodeEndPos - 1, ' '));
+    } else if (totalTrailingSpaces > 1) {
+      fix.push(Replacement.deleteText(nodeEndPos - totalTrailingSpaces, totalTrailingSpaces - 1));
+    }
+
+    this.addFailureAtNode(node, getFailureMessage(), fix);
   }
 }

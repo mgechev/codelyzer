@@ -43,6 +43,7 @@ class BananaInBoxTemplateVisitor extends BasicTemplateAstVisitor {
         this.addFailure(this.createFailure(start, expr.trim().length, error, getReplacements(prop, absolutePosition)));
       }
     }
+    super.visitEvent(prop, context);
   }
 }
 

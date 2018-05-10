@@ -1,37 +1,33 @@
-import * as Lint from 'tslint';
-import * as ts from 'typescript';
-import * as ast from '@angular/compiler';
+import { AST, ASTWithSource, Binary, BoundDirectivePropertyAst, Lexer, Parser } from '@angular/compiler';
 import { sprintf } from 'sprintf-js';
-import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
+import { IRuleMetadata, RuleFailure, Rules } from 'tslint/lib';
+import { SourceFile } from 'typescript/lib/typescript';
 import { NgWalker } from './angular/ngWalker';
-import * as compiler from '@angular/compiler';
-import { Binary } from '@angular/compiler';
+import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 
-export class Rule extends Lint.Rules.AbstractRule {
-  public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'template-conditional-complexity',
-    type: 'functionality',
+export class Rule extends Rules.AbstractRule {
+  static readonly metadata: IRuleMetadata = {
     description: "The condition complexity shouldn't exceed a rational limit in a template.",
-    rationale: 'An important complexity complicates the tests and the maintenance.',
+    optionExamples: ['true', '[true, 4]'],
     options: {
-      type: 'array',
       items: {
         type: 'string'
       },
+      maxLength: 2,
       minLength: 0,
-      maxLength: 2
+      type: 'array'
     },
-    optionExamples: ['true', '[true, 4]'],
     optionsDescription: 'Determine the maximum number of Boolean operators allowed.',
-    typescriptOnly: true,
-    hasFix: false
+    rationale: 'An important complexity complicates the tests and the maintenance.',
+    ruleName: 'template-conditional-complexity',
+    type: 'maintainability',
+    typescriptOnly: true
   };
 
-  static COMPLEXITY_FAILURE_STRING = "The condition complexity (cost '%s') exceeded the defined limit (cost '%s'). The conditional expression should be moved into the component.";
+  static readonly FAILURE_STRING = "The condition complexity (cost '%s') exceeded the defined limit (cost '%s'). The conditional expression should be moved into the component.";
+  static readonly DEFAULT_MAX_COMPLEXITY = 3;
 
-  static COMPLEXITY_MAX = 3;
-
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(
       new NgWalker(sourceFile, this.getOptions(), {
         templateVisitorCtrl: TemplateConditionalComplexityVisitor
@@ -40,53 +36,69 @@ export class Rule extends Lint.Rules.AbstractRule {
   }
 }
 
-class TemplateConditionalComplexityVisitor extends BasicTemplateAstVisitor {
-  visitDirectiveProperty(prop: ast.BoundDirectivePropertyAst, context: BasicTemplateAstVisitor): any {
-    if (prop.sourceSpan) {
-      const directive = (<any>prop.sourceSpan).toString();
+export const getFailureMessage = (totalComplexity: number, maxComplexity = Rule.DEFAULT_MAX_COMPLEXITY): string => {
+  return sprintf(Rule.FAILURE_STRING, totalComplexity, maxComplexity);
+};
 
-      if (directive.startsWith('*ngIf')) {
-        // extract expression and drop characters new line and quotes
-        const expr = directive
-          .split(/\*ngIf\s*=\s*/)[1]
-          .slice(1, -1)
-          .replace(/[\n\r]/g, '');
+const getTotalComplexity = (ast: AST): number => {
+  const expr = (ast as ASTWithSource).source.replace(/\s/g, '');
+  const expressionParser = new Parser(new Lexer());
+  const astWithSource = expressionParser.parseAction(expr, null);
+  const conditions: Binary[] = [];
+  let totalComplexity = 0;
+  let condition = astWithSource.ast as Binary;
 
-        const expressionParser = new compiler.Parser(new compiler.Lexer());
-        const ast = expressionParser.parseAction(expr, null);
+  if (condition.operation) {
+    totalComplexity++;
+    conditions.push(condition);
+  }
 
-        let complexity = 0;
-        let conditions: Array<Binary> = [];
-        let condition = ast.ast as Binary;
-        if (condition.operation) {
-          complexity++;
-          conditions.push(condition);
-        }
+  while (conditions.length > 0) {
+    condition = conditions.pop();
 
-        while (conditions.length > 0) {
-          condition = conditions.pop();
-          if (condition.operation) {
-            if (condition.left instanceof Binary) {
-              complexity++;
-              conditions.push(condition.left as Binary);
-            }
-
-            if (condition.right instanceof Binary) {
-              conditions.push(condition.right as Binary);
-            }
-          }
-        }
-        const options = this.getOptions();
-        const complexityMax: number = options.length ? options[0] : Rule.COMPLEXITY_MAX;
-
-        if (complexity > complexityMax) {
-          const span = prop.sourceSpan;
-          let failureConfig: string[] = [String(complexity), String(complexityMax)];
-          failureConfig.unshift(Rule.COMPLEXITY_FAILURE_STRING);
-          this.addFailure(this.createFailure(span.start.offset, span.end.offset - span.start.offset, sprintf.apply(this, failureConfig)));
-        }
-      }
+    if (!condition.operation) {
+      continue;
     }
+
+    if (condition.left instanceof Binary) {
+      totalComplexity++;
+      conditions.push(condition.left);
+    }
+
+    if (condition.right instanceof Binary) {
+      conditions.push(condition.right);
+    }
+  }
+
+  return totalComplexity;
+};
+
+class TemplateConditionalComplexityVisitor extends BasicTemplateAstVisitor {
+  visitDirectiveProperty(prop: BoundDirectivePropertyAst, context: BasicTemplateAstVisitor): any {
+    this.validateDirective(prop);
     super.visitDirectiveProperty(prop, context);
+  }
+
+  private validateDirective(prop: BoundDirectivePropertyAst): void {
+    const { templateName, value } = prop;
+
+    if (templateName !== 'ngIf') {
+      return;
+    }
+
+    const maxComplexity: number = this.getOptions()[0] || Rule.DEFAULT_MAX_COMPLEXITY;
+    const totalComplexity = getTotalComplexity(value);
+
+    if (totalComplexity <= maxComplexity) {
+      return;
+    }
+
+    const {
+      sourceSpan: {
+        end: { offset: endOffset },
+        start: { offset: startOffset }
+      }
+    } = prop;
+    this.addFailureFromStartToEnd(startOffset, endOffset, getFailureMessage(totalComplexity, maxComplexity));
   }
 }

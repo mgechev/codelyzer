@@ -9,26 +9,23 @@ export class Rule extends Lint.Rules.AbstractRule {
     ruleName: 'pipe-impure',
     type: 'functionality',
     description: 'Pipes cannot be declared as impure.',
-    rationale: 'Impure pipes do not perform well because they are run on every change detection cycle.',
+    rationale: 'Impure pipes do not perform well because they run on every change detection cycle.',
     options: null,
     optionsDescription: 'Not configurable.',
     typescriptOnly: true
   };
 
-  static FAILURE: string = 'Warning: impure pipe declared in class %s.';
+  static FAILURE = 'Warning: impure pipe declared in class %s';
 
   public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this));
+    return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this.getOptions()));
   }
 }
 
 export class ClassMetadataWalker extends NgWalker {
-  constructor(sourceFile: ts.SourceFile, private rule: Rule) {
-    super(sourceFile, rule.getOptions());
-  }
-
-  visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
+  protected visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
     this.validateProperties(controller.name.text, decorator);
+    super.visitNgPipe(controller, decorator);
   }
 
   private validateProperties(className: string, pipe: any) {

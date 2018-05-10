@@ -8,6 +8,7 @@ import { IOptions } from 'tslint';
 
 export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
+    deprecationMessage: 'You can name your pipes only camelCase. If you try to use snake-case then your application will not compile.',
     ruleName: 'pipe-naming',
     type: 'style',
     description: 'Enforce consistent case and prefix for pipes.',
@@ -24,11 +25,10 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static FAILURE_WITHOUT_PREFIX: string = 'The name of the Pipe decorator of class %s should' +
-  ' be named camelCase, however its value is "%s".';
+  static FAILURE_WITHOUT_PREFIX = 'The name of the Pipe decorator of class %s should' + ' be named camelCase, however its value is "%s"';
 
-  static FAILURE_WITH_PREFIX: string = 'The name of the Pipe decorator of class %s should' +
-  ' be named camelCase with prefix %s, however its value is "%s".';
+  static FAILURE_WITH_PREFIX = 'The name of the Pipe decorator of class %s should' +
+  ' be named camelCase with prefix %s, however its value is "%s"';
 
   public prefix: string;
   public hasPrefix: boolean;
@@ -71,9 +71,10 @@ export class ClassMetadataWalker extends NgWalker {
     super(sourceFile, rule.getOptions());
   }
 
-  visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
+  protected visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
     let className = controller.name.text;
     this.validateProperties(className, decorator);
+    super.visitNgPipe(controller, decorator);
   }
 
   private validateProperties(className: string, pipe: ts.Decorator) {

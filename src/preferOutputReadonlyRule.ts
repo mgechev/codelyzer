@@ -1,34 +1,35 @@
-import * as Lint from 'tslint';
-import * as ts from 'typescript';
+import { IRuleMetadata, RuleFailure, Rules } from 'tslint/lib';
+import { Decorator, PropertyDeclaration, SourceFile, SyntaxKind } from 'typescript/lib/typescript';
 import { NgWalker } from './angular/ngWalker';
 
-export class Rule extends Lint.Rules.AbstractRule {
-  public static metadata: Lint.IRuleMetadata = {
+export class Rule extends Rules.AbstractRule {
+  static readonly metadata: IRuleMetadata = {
     description: 'Prefer to declare `@Output` as readonly since they are not supposed to be reassigned.',
     options: null,
     optionsDescription: 'Not configurable.',
-    rationale: '',
     ruleName: 'prefer-output-readonly',
     type: 'maintainability',
     typescriptOnly: true
   };
 
-  static FAILURE_STRING = 'Prefer to declare `@Output` as readonly since they are not supposed to be reassigned';
+  static readonly FAILURE_STRING = 'Prefer to declare `@Output` as readonly since they are not supposed to be reassigned';
 
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(new OutputMetadataWalker(sourceFile, this.getOptions()));
   }
 }
 
 export class OutputMetadataWalker extends NgWalker {
-  visitNgOutput(property: ts.PropertyDeclaration, output: ts.Decorator, args: string[]) {
-    if (property.modifiers && property.modifiers.some(m => m.kind === ts.SyntaxKind.ReadonlyKeyword)) {
+  protected visitNgOutput(property: PropertyDeclaration, output: Decorator, args: string[]) {
+    this.validateOutput(property);
+    super.visitNgOutput(property, output, args);
+  }
+
+  private validateOutput(property: PropertyDeclaration) {
+    if (property.modifiers && property.modifiers.some(m => m.kind === SyntaxKind.ReadonlyKeyword)) {
       return;
     }
 
-    const className = (property.parent as ts.PropertyAccessExpression).name.getText();
-    const memberName = property.name.getText();
     this.addFailureAtNode(property.name, Rule.FAILURE_STRING);
-    super.visitNgOutput(property, output, args);
   }
 }

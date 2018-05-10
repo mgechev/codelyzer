@@ -19,9 +19,9 @@ init:
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - npm install -g npm@3.10.8
+  - npm install -g npm@6.0.0
   - ps: $env:path = $env:appdata + "\npm;" + $env:path
-  - npm install 
+  - npm install
 
 test_script:
   # Output useful info for debugging.
@@ -37,4 +37,3 @@ notifications:
     on_build_success: false
     on_build_failure: true
     on_build_status_changed: true
-

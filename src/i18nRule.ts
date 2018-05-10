@@ -27,6 +27,7 @@ class I18NAttrVisitor extends BasicTemplateAstVisitor implements ConfigurableVis
     }
     super.visitAttr(attr, context);
   }
+
   getOption(): Option {
     return 'check-id';
   }
@@ -63,6 +64,8 @@ class I18NTextVisitor extends BasicTemplateAstVisitor implements ConfigurableVis
         }
       }
     }
+
+    super.visitBoundText(text, context);
   }
 
   visitElement(element: ast.ElementAst, context: BasicTemplateAstVisitor) {
@@ -72,6 +75,7 @@ class I18NTextVisitor extends BasicTemplateAstVisitor implements ConfigurableVis
     super.visitElement(element, context);
     this.nestedElements.pop();
     this.hasI18n = originalI18n;
+    super.visitElement(element, context);
   }
 
   getOption(): Option {

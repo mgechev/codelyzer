@@ -1,16 +1,14 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { NgWalker } from './angular/ngWalker';
-import { getComponentDecorator, isSimpleTemplateString, getDecoratorPropertyInitializer } from './util/utils';
+import { getComponentDecorator, getDecoratorPropertyInitializer } from './util/utils';
 import { BasicCssAstVisitor } from './angular/styles/basicCssAstVisitor';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
-import { VERSION } from '@angular/core';
 import { TemplateAst, ElementAst, EmbeddedTemplateAst, PropertyBindingType } from '@angular/compiler';
 import { parseTemplate } from './angular/templates/templateParser';
-import { CssAst, CssSelectorRuleAst, CssSelectorAst, CssBlockAst } from './angular/styles/cssAst';
+import { CssAst, CssSelectorRuleAst, CssSelectorAst } from './angular/styles/cssAst';
 
 import { ComponentMetadata, StyleMetadata } from './angular/metadata';
-import { ngWalkerFactoryUtils } from './angular/ngWalkerFactoryUtils';
 import { logger } from './util/logger';
 import { SemVerDSL } from './util/ngVersion';
 
@@ -285,18 +283,23 @@ export class UnusedCssNgVisitor extends NgWalker {
   }
 
   protected visitNgStyleHelper(style: CssAst, context: ComponentMetadata, styleMetadata: StyleMetadata, baseStart: number) {
+    this.validateStyles(style, context, styleMetadata, baseStart);
+    super.visitNgStyleHelper(style, context, styleMetadata, baseStart);
+  }
+
+  private validateStyles(style: CssAst, context: ComponentMetadata, styleMetadata: StyleMetadata, baseStart: number) {
     if (!style) {
       return;
-    } else {
-      const file = this.getContextSourceFile(styleMetadata.url, styleMetadata.style.source);
-      const visitor = new UnusedCssVisitor(file, this._originalOptions, context, styleMetadata, baseStart);
-      visitor.templateAst = this.templateAst;
-      const d = getComponentDecorator(context.controller);
-      const encapsulation = getDecoratorPropertyInitializer(d, 'encapsulation');
-      if (isEncapsulationEnabled(encapsulation)) {
-        style.visit(visitor);
-        visitor.getFailures().forEach(f => this.addFailure(f));
-      }
+    }
+
+    const file = this.getContextSourceFile(styleMetadata.url, styleMetadata.style.source);
+    const visitor = new UnusedCssVisitor(file, this._originalOptions, context, styleMetadata, baseStart);
+    visitor.templateAst = this.templateAst;
+    const d = getComponentDecorator(context.controller);
+    const encapsulation = getDecoratorPropertyInitializer(d, 'encapsulation');
+    if (isEncapsulationEnabled(encapsulation)) {
+      style.visit(visitor);
+      visitor.getFailures().forEach(f => this.addFailure(f));
     }
   }
 }
