@@ -6,10 +6,6 @@ const {
   metadata: { ruleName }
 } = Rule;
 
-const getComposedOptions = (blacklistedPrefixes: string[]): (boolean | string)[] => {
-  return [true, ...blacklistedPrefixes];
-};
-
 describe(ruleName, () => {
   describe('failure', () => {
     it('should fail when an input property is prefixed by a blacklisted prefix and blacklist is composed by one prefix', () => {
@@ -23,7 +19,7 @@ describe(ruleName, () => {
       `;
       assertAnnotated({
         message: getFailureMessage(blacklistedPrefixes),
-        options: getComposedOptions(blacklistedPrefixes),
+        options: blacklistedPrefixes,
         ruleName,
         source
       });
@@ -40,7 +36,7 @@ describe(ruleName, () => {
       `;
       assertAnnotated({
         message: getFailureMessage(blacklistedPrefixes),
-        options: getComposedOptions(blacklistedPrefixes),
+        options: blacklistedPrefixes,
         ruleName,
         source
       });
@@ -57,7 +53,7 @@ describe(ruleName, () => {
       `;
       assertAnnotated({
         message: getFailureMessage(blacklistedPrefixes),
-        options: getComposedOptions(blacklistedPrefixes),
+        options: blacklistedPrefixes,
         ruleName,
         source
       });
@@ -74,7 +70,7 @@ describe(ruleName, () => {
       `;
       assertAnnotated({
         message: getFailureMessage(blacklistedPrefixes),
-        options: getComposedOptions(blacklistedPrefixes),
+        options: blacklistedPrefixes,
         ruleName,
         source
       });
@@ -91,7 +87,7 @@ describe(ruleName, () => {
       `;
       assertAnnotated({
         message: getFailureMessage(blacklistedPrefixes),
-        options: getComposedOptions(blacklistedPrefixes),
+        options: blacklistedPrefixes,
         ruleName,
         source
       });
@@ -107,7 +103,7 @@ describe(ruleName, () => {
           @Input() mustmust = true;
         }
       `;
-      assertSuccess(ruleName, source, getComposedOptions(blacklistedPrefixes));
+      assertSuccess(ruleName, source, blacklistedPrefixes);
     });
 
     it('should succeed when multiple input properties are prefixed by something not present in the blacklist', () => {
@@ -121,7 +117,7 @@ describe(ruleName, () => {
           @Input() shoulddoit: boolean;
         }
       `;
-      assertSuccess(ruleName, source, getComposedOptions(blacklistedPrefixes));
+      assertSuccess(ruleName, source, blacklistedPrefixes);
     });
   });
 });
