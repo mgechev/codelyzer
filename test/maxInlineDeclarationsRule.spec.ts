@@ -13,7 +13,7 @@ const getSourceFile = (code: string): SourceFile => {
   return createSourceFile(filePath, code, ScriptTarget.ES5, true);
 };
 
-describe.only(ruleName, () => {
+describe(ruleName, () => {
   describe('template', () => {
     describe('failure', () => {
       it('should fail when the number of lines exceeds the default lines limit', () => {
