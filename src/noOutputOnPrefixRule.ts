@@ -29,9 +29,7 @@ class OutputWalker extends NgWalker {
     const memberName = (<any>property.name).text as string;
 
     if (memberName && memberName.startsWith('on') && !(memberName.length >= 3 && memberName[2] !== memberName[2].toUpperCase())) {
-      const failureConfig: string[] = [Rule.FAILURE_STRING, className, memberName];
-      const errorMessage = sprintf.apply(null, failureConfig);
-      this.addFailure(this.createFailure(property.getStart(), property.getWidth(), errorMessage));
+      this.addFailureAtNode(property, sprintf(Rule.FAILURE_STRING, className, memberName));
     }
     super.visitNgOutput(property, output, args);
   }

@@ -125,8 +125,8 @@ export class CssParser {
     this._errors = [];
 
     const result = new ParsedCssResult(errors, ast);
-    this._file = null as any;
-    this._scanner = null as any;
+    this._file = null;
+    this._scanner = null;
     return result;
   }
 

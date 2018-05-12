@@ -203,9 +203,8 @@ export class OutputMetadataWalker extends NgWalker {
     let outputName = args.length === 0 ? memberName : args[0];
 
     if (outputName && this.standardEventNames.get(outputName)) {
-      const failureConfig: string[] = [Rule.FAILURE_STRING, className, memberName];
-      const errorMessage = sprintf.apply(null, failureConfig);
-      this.addFailure(this.createFailure(property.getStart(), property.getWidth(), errorMessage));
+      const errorMessage = sprintf(Rule.FAILURE_STRING, className, memberName);
+      this.addFailureAtNode(property, errorMessage);
     }
     super.visitNgOutput(property, output, args);
   }

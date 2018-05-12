@@ -15,13 +15,17 @@ class I18NAttrVisitor extends BasicTemplateAstVisitor implements ConfigurableVis
     if (attr.name === 'i18n') {
       const parts = (attr.value || '').split('@@');
       if (parts.length <= 1 || parts[1].length === 0) {
-        const span = attr.sourceSpan;
-        context.addFailure(
-          context.createFailure(
-            span.start.offset,
-            span.end.offset - span.start.offset,
-            'Missing custom message identifier. For more information visit https://angular.io/guide/i18n'
-          )
+        const {
+          sourceSpan: {
+            end: { offset: endOffset },
+            start: { offset: startOffset }
+          }
+        } = attr;
+
+        context.addFailureFromStartToEnd(
+          startOffset,
+          endOffset,
+          'Missing custom message identifier. For more information visit https://angular.io/guide/i18n'
         );
       }
     }
@@ -45,8 +49,14 @@ class I18NTextVisitor extends BasicTemplateAstVisitor implements ConfigurableVis
       this.visited.add(text);
       const textNonEmpty = text.value.trim().length > 0;
       if ((!this.hasI18n && textNonEmpty && this.nestedElements.length) || (textNonEmpty && !this.nestedElements.length)) {
-        const span = text.sourceSpan;
-        context.addFailure(context.createFailure(span.start.offset, span.end.offset - span.start.offset, I18NTextVisitor.Error));
+        const {
+          sourceSpan: {
+            end: { offset: endOffset },
+            start: { offset: startOffset }
+          }
+        } = text;
+
+        context.addFailureFromStartToEnd(startOffset, endOffset, I18NTextVisitor.Error);
       }
     }
     super.visitText(text, context);
@@ -59,8 +69,14 @@ class I18NTextVisitor extends BasicTemplateAstVisitor implements ConfigurableVis
       if (val instanceof ast.ASTWithSource && val.ast instanceof ast.Interpolation && !this.hasI18n) {
         const textNonEmpty = val.ast.strings.some(s => /\w+/.test(s));
         if (textNonEmpty) {
-          const span = text.sourceSpan;
-          context.addFailure(context.createFailure(span.start.offset, span.end.offset - span.start.offset, I18NTextVisitor.Error));
+          const {
+            sourceSpan: {
+              end: { offset: endOffset },
+              start: { offset: startOffset }
+            }
+          } = text;
+
+          context.addFailureFromStartToEnd(startOffset, endOffset, I18NTextVisitor.Error);
         }
       }
     }
@@ -99,7 +115,9 @@ class I18NTemplateVisitor extends BasicTemplateAstVisitor {
       .filter(v => options.indexOf(v.getOption()) >= 0)
       .map(v => v.visitAttr(attr, this))
       .filter(f => !!f)
-      .forEach(f => this.addFailure(f));
+      .forEach(f =>
+        this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
+      );
     super.visitAttr(attr, context);
   }
 
@@ -109,7 +127,9 @@ class I18NTemplateVisitor extends BasicTemplateAstVisitor {
       .filter(v => options.indexOf(v.getOption()) >= 0)
       .map(v => v.visitElement(element, this))
       .filter(f => !!f)
-      .forEach(f => this.addFailure(f));
+      .forEach(f =>
+        this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
+      );
     super.visitElement(element, context);
   }
 
@@ -119,7 +139,9 @@ class I18NTemplateVisitor extends BasicTemplateAstVisitor {
       .filter(v => options.indexOf(v.getOption()) >= 0)
       .map(v => v.visitText(text, this))
       .filter(f => !!f)
-      .forEach(f => this.addFailure(f));
+      .forEach(f =>
+        this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
+      );
     super.visitText(text, context);
   }
 
@@ -129,7 +151,9 @@ class I18NTemplateVisitor extends BasicTemplateAstVisitor {
       .filter(v => options.indexOf(v.getOption()) >= 0)
       .map(v => v.visitBoundText(text, this))
       .filter(f => !!f)
-      .forEach(f => this.addFailure(f));
+      .forEach(f =>
+        this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
+      );
     super.visitBoundText(text, context);
   }
 }

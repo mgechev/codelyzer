@@ -130,17 +130,17 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
           const selectors: compiler.CssSelector[] = this.extractMainSelector(i);
           if (!this.rule.validateType(selectors)) {
             let error = sprintf(this.rule.getTypeFailure(), className, this.rule.getOptions().ruleArguments[0]);
-            this.addFailure(this.createFailure(i.getStart(), i.getWidth(), error));
+            this.addFailureAtNode(i, error);
           } else if (!this.rule.validateStyle(selectors)) {
             let name = this.rule.getOptions().ruleArguments[2];
             if (name === 'kebab-case') {
               name += ' and include dash';
             }
             let error = sprintf(this.rule.getStyleFailure(), className, name);
-            this.addFailure(this.createFailure(i.getStart(), i.getWidth(), error));
+            this.addFailureAtNode(i, error);
           } else if (!this.rule.validatePrefix(selectors)) {
             let error = sprintf(this.rule.getPrefixFailure(this.rule.prefixes), className, this.rule.prefixes.join(', '));
-            this.addFailure(this.createFailure(i.getStart(), i.getWidth(), error));
+            this.addFailureAtNode(i, error);
           }
         });
     }

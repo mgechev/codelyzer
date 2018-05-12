@@ -113,7 +113,7 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
         ngContentSelectors: this.ngContentSelectors,
         encapsulation: this.encapsulation,
         summaryKind: summaryKind
-      } as any;
+      };
     }
   };
 
@@ -164,10 +164,11 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
             queries: [],
             viewQueries: [],
             entryComponents: [],
+            guards: [],
             componentViewType: null,
             rendererType: null,
             componentFactory: null
-          } as any),
+          }),
           template,
           defaultDirectives,
           [],
@@ -193,10 +194,11 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
             queries: [],
             viewQueries: [],
             entryComponents: [],
+            guards: [],
             componentViewType: null,
             rendererType: null,
             componentFactory: null
-          } as any),
+          }),
           template,
           defaultDirectives,
           [],
@@ -222,10 +224,11 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
             queries: [],
             viewQueries: [],
             entryComponents: [],
+            guards: [],
             componentViewType: null,
             rendererType: null,
             componentFactory: null
-          } as any),
+          }),
           template,
           defaultDirectives,
           [],

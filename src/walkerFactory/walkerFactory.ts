@@ -33,7 +33,7 @@ class NgComponentWalkerBuilder implements WalkerBuilder<'NgComponent'> {
     const e = class extends NgWalker {
       visitNgComponent(meta: ComponentMetadata) {
         self._where(meta).fmap(failure => {
-          this.addFailure(this.createFailure(failure.node.getStart(), failure.node.getWidth(), failure.message));
+          this.addFailureAtNode(failure.node, failure.message);
         });
         super.visitNgComponent(meta);
       }

@@ -51,12 +51,12 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
     const matchesAllHooks = lifecycleHooksMethods.every(l => interfaces.indexOf(l) !== -1);
 
     if (matchesAllHooks) {
-      this.addFailureAtNode(node, sprintf.apply(this, [Rule.FAILURE_STRING, node.name.text]));
+      this.addFailureAtNode(node, sprintf(Rule.FAILURE_STRING, node.name.text));
     }
   }
 
   private validateMethods(node: ts.ClassDeclaration): void {
-    const methodNames = node.members.filter(m => m.kind === ts.SyntaxKind.MethodDeclaration).map<string>(m => (m.name as any).text);
+    const methodNames = node.members.filter(m => m.kind === ts.SyntaxKind.MethodDeclaration).map(m => m.name.getText());
     const matchesAllHooks = lifecycleHooksMethods.every(l => {
       return methodNames.indexOf(`${hooksPrefix}${l}`) !== -1;
     });

@@ -10,9 +10,9 @@ import { RecursiveAngularExpressionVisitor } from './angular/templates/recursive
 // Check if ES6 'y' flag is usable.
 const stickyFlagUsable = (() => {
   try {
-    const reg = new RegExp('d', 'y');
+    const reg = /d/y;
     return true;
-  } catch (e) {
+  } catch {
     return false;
   }
 })();
@@ -43,7 +43,7 @@ const checkSemicolonNoWhitespaceWithSticky: CheckSemicolonNoWhitespaceMethod = (
   while ((exprMatch = reg.exec(expr))) {
     const start = fixedOffset + reg.lastIndex;
     const absolutePosition = context.getSourcePosition(start - 1);
-    context.addFailure(context.createFailure(start, 2, error, getSemicolonReplacements(absolutePosition)));
+    context.addFailureAt(start, 2, error, getSemicolonReplacements(absolutePosition));
   }
 };
 
@@ -64,7 +64,7 @@ const checkSemicolonNoWhitespaceWithoutSticky: CheckSemicolonNoWhitespaceMethod 
     if (nextIndex < expr.length && /\S/.test(expr[nextIndex])) {
       const start = fixedOffset + nextIndex;
       const absolutePosition = context.getSourcePosition(start - 1);
-      context.addFailure(context.createFailure(start, 2, error, getSemicolonReplacements(absolutePosition)));
+      context.addFailureAt(start, 2, error, getSemicolonReplacements(absolutePosition));
     }
 
     lastIndex = nextIndex;
@@ -101,13 +101,11 @@ class InterpolationWhitespaceVisitor extends BasicTemplateAstVisitor implements 
           return;
         }
         const errorText = length === 0 ? 'Missing' : 'Extra';
-        context.addFailure(
-          context.createFailure(
-            position,
-            length + lengthFix,
-            `${errorText} whitespace in interpolation ${location}; expecting ${InterpolationOpen} expr ${InterpolationClose}`,
-            [new Lint.Replacement(absolutePosition, length + lengthFix, fixTo)]
-          )
+        context.addFailureAt(
+          position,
+          length + lengthFix,
+          `${errorText} whitespace in interpolation ${location}; expecting ${InterpolationOpen} expr ${InterpolationClose}`,
+          [new Lint.Replacement(absolutePosition, length + lengthFix, fixTo)]
         );
       };
 
@@ -141,7 +139,7 @@ class InterpolationWhitespaceVisitor extends BasicTemplateAstVisitor implements 
 class SemicolonTemplateVisitor extends BasicTemplateAstVisitor implements ConfigurableVisitor {
   visitDirectiveProperty(prop: ast.BoundDirectivePropertyAst, context: BasicTemplateAstVisitor): any {
     if (prop.sourceSpan) {
-      const directive = (<any>prop.sourceSpan).toString();
+      const directive = prop.sourceSpan.toString();
       const match = /^([^=]+=\s*)([^]*?)\s*$/.exec(directive);
       const rawExpression = match[2];
       const positionFix = match[1].length + 1;
@@ -173,7 +171,9 @@ class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
       .filter(v => options.indexOf(v.getOption()) >= 0)
       .map(v => v.visitBoundText(text, this))
       .filter(f => !!f)
-      .forEach(f => this.addFailure(f));
+      .forEach(f =>
+        this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
+      );
     super.visitBoundText(text, context);
   }
 
@@ -183,7 +183,9 @@ class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
       .filter(v => options.indexOf(v.getOption()) >= 0)
       .map(v => v.visitDirectiveProperty(prop, this))
       .filter(f => !!f)
-      .forEach(f => this.addFailure(f));
+      .forEach(f =>
+        this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
+      );
     super.visitDirectiveProperty(prop, context);
   }
 }
@@ -238,13 +240,11 @@ class PipeWhitespaceVisitor extends RecursiveAngularExpressionVisitor implements
     }
 
     if (replacements.length) {
-      context.addFailure(
-        context.createFailure(
-          ast.exp.span.end - 1,
-          3,
-          'The pipe operator should be surrounded by one space on each side, i.e. " | ".',
-          replacements
-        )
+      context.addFailureAt(
+        ast.exp.span.end - 1,
+        3,
+        'The pipe operator should be surrounded by one space on each side, i.e. " | ".',
+        replacements
       );
     }
     super.visitPipe(ast, context);
@@ -272,7 +272,9 @@ class TemplateExpressionVisitor extends RecursiveAngularExpressionVisitor {
       .filter(v => options.indexOf(v.getOption()) >= 0)
       .map(v => v.visitPipe(expr, this))
       .filter(f => !!f)
-      .forEach(f => this.addFailure(f));
+      .forEach(f =>
+        this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
+      );
   }
 }
 

@@ -33,13 +33,13 @@ export class Rule extends Lint.Rules.AbstractRule {
 export class ClassMetadataWalker extends Lint.RuleWalker {
   visitClassDeclaration(node: ts.ClassDeclaration) {
     if (this.hasIPipeTransform(node)) {
-      const decorators = maybeNodeArray(<ts.NodeArray<any>>node.decorators);
+      const decorators = maybeNodeArray(node.decorators);
       const className: string = node.name.text;
       const pipes: Array<string> = decorators
         .map(d => (<any>d.expression).text || ((<any>d.expression).expression || {}).text)
         .filter(t => t === 'Pipe');
       if (pipes.length === 0) {
-        this.addFailure(this.createFailure(node.getStart(), node.getWidth(), sprintf.apply(this, [Rule.FAILURE, className])));
+        this.addFailureAtNode(node, sprintf(Rule.FAILURE, className));
       }
     }
     super.visitClassDeclaration(node);
