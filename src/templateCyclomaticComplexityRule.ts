@@ -9,19 +9,19 @@ export class Rule extends Rules.AbstractRule {
   static readonly metadata: IRuleMetadata = {
     description:
       "Checks cyclomatic complexity against a specified limit. It is a quantitative measure of the number of linearly independent paths through a program's source code",
-    optionExamples: ['true', '[true, 6]'],
+    optionExamples: [true, [true, 6]],
     options: {
       items: {
         type: 'string'
       },
-      maxLength: 2,
+      maxLength: 1,
       minLength: 0,
       type: 'array'
     },
     optionsDescription: 'Determine the maximum number of the cyclomatic complexity.',
     rationale: 'Cyclomatic complexity over some threshold indicates that the logic should be moved outside the template.',
     ruleName: 'template-cyclomatic-complexity',
-    type: 'functionality',
+    type: 'maintainability',
     typescriptOnly: true
   };
 
@@ -34,6 +34,17 @@ export class Rule extends Rules.AbstractRule {
         templateVisitorCtrl: TemplateConditionalComplexityVisitor
       })
     );
+  }
+
+  isEnabled(): boolean {
+    const {
+      metadata: {
+        options: { maxLength, minLength }
+      }
+    } = Rule;
+    const { length, [0]: maxComplexity } = this.ruleArguments;
+
+    return super.isEnabled() && length >= minLength && length <= maxLength && (maxComplexity === undefined || maxComplexity > 0);
   }
 }
 

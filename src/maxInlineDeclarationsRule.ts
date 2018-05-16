@@ -47,6 +47,17 @@ export class Rule extends Rules.AbstractRule {
   apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(new MaxInlineDeclarationsValidator(sourceFile, this.getOptions()));
   }
+
+  isEnabled(): boolean {
+    const {
+      metadata: {
+        options: { maxLength, minLength }
+      }
+    } = Rule;
+    const { length } = this.ruleArguments;
+
+    return super.isEnabled() && length >= minLength && length <= maxLength;
+  }
 }
 
 type PropertyType = 'styles' | 'template';

@@ -1,20 +1,39 @@
 import { IOptions, IRuleMetadata, Replacement, RuleFailure, Rules } from 'tslint/lib';
 import { isSameLine } from 'tsutils';
 import { Decorator, Node, PropertyAccessExpression, SourceFile } from 'typescript';
-
 import { NgWalker } from './angular/ngWalker';
 import { getDecoratorName } from './util/utils';
+
+enum Decorators {
+  ContentChild = 'ContentChild',
+  ContentChildren = 'ContentChildren',
+  HostBinding = 'HostBinding',
+  HostListener = 'HostListener',
+  Input = 'Input',
+  Output = 'Output',
+  ViewChild = 'ViewChild',
+  ViewChildren = 'ViewChildren'
+}
+
+type DecoratorKeys = keyof typeof Decorators;
+
+const enumKeys = Object.keys(Decorators);
+
+export const decoratorKeys: ReadonlySet<string> = new Set(enumKeys);
 
 export class Rule extends Rules.AbstractRule {
   static readonly metadata: IRuleMetadata = {
     description: 'Ensures that decorators are on the same line as the property/method it decorates.',
     descriptionDetails: 'See more at https://angular.io/guide/styleguide#style-05-12.',
     hasFix: true,
-    optionExamples: ['true', '[true, "HostListener"]'],
+    optionExamples: [true, [true, Decorators.HostListener]],
     options: {
       items: {
+        enum: enumKeys,
         type: 'string'
       },
+      maxLength: decoratorKeys.size,
+      minLength: 0,
       type: 'array'
     },
     optionsDescription: 'A list of blacklisted decorators.',
@@ -29,28 +48,18 @@ export class Rule extends Rules.AbstractRule {
   apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(new PreferInlineDecoratorWalker(sourceFile, this.getOptions()));
   }
+
+  isEnabled(): boolean {
+    const {
+      metadata: {
+        options: { maxLength, minLength }
+      }
+    } = Rule;
+    const { length } = this.ruleArguments;
+
+    return super.isEnabled() && length >= minLength && length <= maxLength;
+  }
 }
-
-type DecoratorKeys =
-  | 'ContentChild'
-  | 'ContentChildren'
-  | 'HostBinding'
-  | 'HostListener'
-  | 'Input'
-  | 'Output'
-  | 'ViewChild'
-  | 'ViewChildren';
-
-export const decoratorKeys: ReadonlySet<DecoratorKeys> = new Set<DecoratorKeys>([
-  'ContentChild',
-  'ContentChildren',
-  'HostBinding',
-  'HostListener',
-  'Input',
-  'Output',
-  'ViewChild',
-  'ViewChildren'
-]);
 
 export const getFailureMessage = (): string => {
   return Rule.FAILURE_STRING;
@@ -61,7 +70,7 @@ export class PreferInlineDecoratorWalker extends NgWalker {
 
   constructor(source: SourceFile, options: IOptions) {
     super(source, options);
-    this.blacklistedDecorators = new Set<DecoratorKeys>(options.ruleArguments);
+    this.blacklistedDecorators = new Set<string>(options.ruleArguments);
   }
 
   protected visitMethodDecorator(decorator: Decorator) {
