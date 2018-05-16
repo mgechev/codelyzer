@@ -778,7 +778,7 @@ describe('no-unused-css', () => {
       });
       const code = res.css.toString();
       const base64Map = code.match(/\/\*(.*?)\*\//)[1].replace('# sourceMappingURL=data:application/json;base64,', '');
-      const map = JSON.parse(new Buffer(base64Map, 'base64').toString('ascii'));
+      const map = JSON.parse(Buffer.from(base64Map, 'base64').toString('ascii'));
       return { code, source, map };
     };
 
@@ -882,7 +882,7 @@ describe('no-unused-css', () => {
         });
         const code = res.css.toString();
         const base64Map = code.match(/\/\*(.*?)\*\//)[1].replace('# sourceMappingURL=data:application/json;base64,', '');
-        const map = JSON.parse(new Buffer(base64Map, 'base64').toString('ascii'));
+        const map = JSON.parse(Buffer.from(base64Map, 'base64').toString('ascii'));
         return { code, source, map };
       };
 

@@ -42,15 +42,9 @@ export class ClassMetadataWalker extends NgWalker {
   }
 
   private validateProperty(className: string, property: any) {
-    let propValue: string = property.initializer.getText();
+    const propValue = property.initializer.getText();
     if (propValue === 'false') {
-      this.addFailure(
-        this.createFailure(property.getStart(), property.getWidth(), sprintf.apply(this, this.createFailureArray(className)))
-      );
+      this.addFailureAtNode(property, sprintf(Rule.FAILURE, className));
     }
-  }
-
-  private createFailureArray(className: string): Array<string> {
-    return [Rule.FAILURE, className];
   }
 }

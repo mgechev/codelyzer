@@ -7,7 +7,6 @@ import { ExpTypes } from '../expressionTypes';
 import { ComponentMetadata } from '../metadata';
 import { RecursiveAngularExpressionVisitor } from './recursiveAngularExpressionVisitor';
 import { SourceMappingVisitor } from '../sourceMappingVisitor';
-import { NgWalker } from '../ngWalker';
 
 const getExpressionDisplacement = (binding: any) => {
   let attrLen = 0;
@@ -184,6 +183,7 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
     templateVisitor.preDefinedVariables = this._variables;
     templateVisitor.parentAST = prop;
     templateVisitor.visit(ast);
+    // tslint:disable-next-line:deprecation
     templateVisitor.getFailures().forEach(f => this.addFailure(f));
   }
 }

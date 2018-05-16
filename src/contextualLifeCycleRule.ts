@@ -33,75 +33,61 @@ export class ClassMetadataWalker extends NgWalker {
   isPipe = false;
 
   visitMethodDeclaration(method: ts.MethodDeclaration) {
-    const methodName = (method.name as ts.StringLiteral).text;
+    const methodName = method.name.getText();
 
     if (methodName === 'ngOnInit') {
       if (this.isInjectable) {
-        let failureConfig: string[] = [this.className, '@Injectable', 'ngOnInit()'];
-        this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
+        this.generateFailure(method, this.className, '@Injectable', 'ngOnInit()');
       } else if (this.isPipe) {
-        let failureConfig: string[] = [this.className, '@Pipe', 'ngOnInit()'];
-        this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
+        this.generateFailure(method, this.className, '@Pipe', 'ngOnInit()');
       }
     }
 
     if (methodName === 'ngOnChanges') {
       if (this.isInjectable) {
-        let failureConfig: string[] = [this.className, '@Injectable', 'ngOnChanges()'];
-        this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
+        this.generateFailure(method, this.className, '@Injectable', 'ngOnChanges()');
       } else if (this.isPipe) {
-        let failureConfig: string[] = [this.className, '@Pipe', 'ngOnChanges()'];
-        this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
+        this.generateFailure(method, this.className, '@Pipe', 'ngOnChanges()');
       }
     }
 
     if (methodName === 'ngDoCheck') {
       if (this.isInjectable) {
-        let failureConfig: string[] = [this.className, '@Injectable', 'ngDoCheck()'];
-        this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
+        this.generateFailure(method, this.className, '@Injectable', 'ngDoCheck()');
       } else if (this.isPipe) {
-        let failureConfig: string[] = [this.className, '@Pipe', 'ngDoCheck()'];
-        this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
+        this.generateFailure(method, this.className, '@Pipe', 'ngDoCheck()');
       }
     }
 
     if (methodName === 'ngAfterContentInit') {
       if (this.isInjectable) {
-        let failureConfig: string[] = [this.className, '@Injectable', 'ngAfterContentInit()'];
-        this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
+        this.generateFailure(method, this.className, '@Injectable', 'ngAfterContentInit()');
       } else if (this.isPipe) {
-        let failureConfig: string[] = [this.className, '@Pipe', 'ngAfterContentInit()'];
-        this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
+        this.generateFailure(method, this.className, '@Pipe', 'ngAfterContentInit()');
       }
     }
 
     if (methodName === 'ngAfterContentChecked') {
       if (this.isInjectable) {
-        let failureConfig: string[] = [this.className, '@Injectable', 'ngAfterContentChecked()'];
-        this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
+        this.generateFailure(method, this.className, '@Injectable', 'ngAfterContentChecked()');
       } else if (this.isPipe) {
-        let failureConfig: string[] = [this.className, '@Pipe', 'ngAfterContentChecked()'];
-        this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
+        this.generateFailure(method, this.className, '@Pipe', 'ngAfterContentChecked()');
       }
     }
 
     if (methodName === 'ngAfterViewInit') {
       if (this.isInjectable) {
-        let failureConfig: string[] = [this.className, '@Injectable', 'ngAfterViewInit()'];
-        this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
+        this.generateFailure(method, this.className, '@Injectable', 'ngAfterViewInit()');
       } else if (this.isPipe) {
-        let failureConfig: string[] = [this.className, '@Pipe', 'ngAfterViewInit()'];
-        this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
+        this.generateFailure(method, this.className, '@Pipe', 'ngAfterViewInit()');
       }
     }
 
     if (methodName === 'ngAfterViewChecked') {
       if (this.isInjectable) {
-        let failureConfig: string[] = [this.className, '@Injectable', 'ngAfterViewChecked()'];
-        this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
+        this.generateFailure(method, this.className, '@Injectable', 'ngAfterViewChecked()');
       } else if (this.isPipe) {
-        let failureConfig: string[] = [this.className, '@Pipe', 'ngAfterViewChecked()'];
-        this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
+        this.generateFailure(method, this.className, '@Pipe', 'ngAfterViewChecked()');
       }
     }
 
@@ -144,7 +130,7 @@ export class ClassMetadataWalker extends NgWalker {
     super.visitNgPipe(controller, decorator);
   }
 
-  private generateFailure(start: number, width: number, failureConfig: string[]) {
-    this.addFailure(this.createFailure(start, width, vsprintf(Rule.FAILURE_STRING, failureConfig)));
+  private generateFailure(method: ts.MethodDeclaration, ...failureConfig: string[]) {
+    this.addFailureAtNode(method, vsprintf(Rule.FAILURE_STRING, failureConfig));
   }
 }

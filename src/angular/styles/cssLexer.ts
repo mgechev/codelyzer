@@ -88,8 +88,8 @@ export class CssLexer {
 
 export function cssScannerError(token: CssToken, message: string): Error {
   const error = Error('CssParseError: ' + message);
-  (error as any)[ERROR_RAW_MESSAGE] = message;
-  (error as any)[ERROR_TOKEN] = token;
+  error[ERROR_RAW_MESSAGE] = message;
+  error[ERROR_TOKEN] = token;
   return error;
 }
 
@@ -97,11 +97,11 @@ const ERROR_TOKEN = 'ngToken';
 const ERROR_RAW_MESSAGE = 'ngRawMessage';
 
 export function getRawMessage(error: Error): string {
-  return (error as any)[ERROR_RAW_MESSAGE];
+  return error[ERROR_RAW_MESSAGE];
 }
 
 export function getToken(error: Error): CssToken {
-  return (error as any)[ERROR_TOKEN];
+  return error[ERROR_TOKEN];
 }
 
 function _trackWhitespace(mode: CssLexerMode) {

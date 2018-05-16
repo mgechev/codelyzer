@@ -8,7 +8,7 @@
     "format:base": "prettier --config ./.prettierrc \"*.{json,md}\" \"src/**/*.{css,scss,ts}\" \"test/**/*.{css,scss,ts}\"",
     "format:check": "npm run format:base -- --list-different",
     "format:fix": "npm run format:base -- --write",
-    "lint": "tslint -c tslint.json \"src/**/*.ts\" \"test/**/*.ts\"",
+    "lint": "tslint -p . -c tslint.json \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint:fix": "npm run lint -- --fix",
     "release": "npm run build && rimraf dist && tsc -p tsconfig-release.json && npm run copy:common && npm run prepare:package && cross-env BUILD_TYPE=prod npm run set:vars",
     "build": "rimraf dist && tsc && npm run format:check && npm run lint && npm t",

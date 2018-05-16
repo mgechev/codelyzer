@@ -8,10 +8,10 @@ const InvalidSyntaxBoxOpen = '([';
 const InvalidSyntaxBoxClose = '])';
 const ValidSyntaxOpen = '[(';
 const ValidSyntaxClose = ')]';
-const InvalidSyntaxBoxRe = new RegExp('\\[(.*?)\\]');
+const InvalidSyntaxBoxRe = /\[(.*?)\]/;
 
 const getReplacements = (text: ast.BoundEventAst, absolutePosition: number) => {
-  const expr: string = (text.sourceSpan as any).toString();
+  const expr = text.sourceSpan.toString();
   const internalStart = expr.indexOf(InvalidSyntaxBoxOpen);
   const internalEnd = expr.lastIndexOf(InvalidSyntaxBoxClose);
   const len = internalEnd - internalStart - InvalidSyntaxBoxClose.length;
@@ -35,12 +35,12 @@ class BananaInBoxTemplateVisitor extends BasicTemplateAstVisitor {
       }
 
       if (error) {
-        const expr: any = (<any>prop.sourceSpan).toString();
+        const expr = prop.sourceSpan.toString();
         const internalStart = expr.indexOf(InvalidSyntaxBoxOpen) + 1;
         const start = prop.sourceSpan.start.offset + internalStart;
         const absolutePosition = this.getSourcePosition(start - 1);
 
-        this.addFailure(this.createFailure(start, expr.trim().length, error, getReplacements(prop, absolutePosition)));
+        this.addFailureAt(start, expr.trim().length, error, getReplacements(prop, absolutePosition));
       }
     }
     super.visitEvent(prop, context);

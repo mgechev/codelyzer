@@ -39,7 +39,7 @@ export function all(...validators: Validator[]): F2<ts.SourceFile, IOptions, NgW
       visitNgComponent(meta: ComponentMetadata) {
         validators.forEach(v => {
           if (v.kind === 'NgComponent') {
-            v.validate(meta, this.getOptions()).fmap(failures => failures.forEach(f => this.failed(f)));
+            v.validate(meta, this.getOptions()).fmap(failures => failures.forEach(f => this.generateFailure(f)));
           }
         });
         super.visitNgComponent(meta);
@@ -48,14 +48,14 @@ export function all(...validators: Validator[]): F2<ts.SourceFile, IOptions, NgW
       visitNode(node: ts.Node) {
         validators.forEach(v => {
           if (v.kind === 'Node') {
-            v.validate(node, this.getOptions()).fmap(failures => failures.forEach(f => this.failed(f)));
+            v.validate(node, this.getOptions()).fmap(failures => failures.forEach(f => this.generateFailure(f)));
           }
         });
         super.visitNode(node);
       }
 
-      private failed(failure: Failure) {
-        this.addFailure(this.createFailure(failure.node.getStart(), failure.node.getWidth(), failure.message));
+      private generateFailure(failure: Failure) {
+        this.addFailureAtNode(failure.node, failure.message);
       }
     };
     return new e(sourceFile, options);

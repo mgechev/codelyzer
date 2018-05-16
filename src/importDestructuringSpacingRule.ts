@@ -38,20 +38,7 @@ class ImportDestructuringSpacingWalker extends RuleWalker {
     super.visitNamedImports(node);
   }
 
-  private validateNamedImports(node: NamedImports): void {
-    const nodeText = node.getText();
-
-    if (isBlankOrMultilineImport(nodeText)) {
-      return;
-    }
-
-    const totalLeadingSpaces = nodeText.match(/^\{(\s*)/)[1].length;
-    const totalTrailingSpaces = nodeText.match(/(\s*)}$/)[1].length;
-
-    if (totalLeadingSpaces === 1 && totalTrailingSpaces === 1) {
-      return;
-    }
-
+  private getFix(node: NamedImports, totalLeadingSpaces: number, totalTrailingSpaces: number): Fix {
     const nodeStartPos = node.getStart();
     const nodeEndPos = node.getEnd();
     let fix: Fix = [];
@@ -67,6 +54,25 @@ class ImportDestructuringSpacingWalker extends RuleWalker {
     } else if (totalTrailingSpaces > 1) {
       fix.push(Replacement.deleteText(nodeEndPos - totalTrailingSpaces, totalTrailingSpaces - 1));
     }
+
+    return fix;
+  }
+
+  private validateNamedImports(node: NamedImports): void {
+    const nodeText = node.getText();
+
+    if (isBlankOrMultilineImport(nodeText)) {
+      return;
+    }
+
+    const totalLeadingSpaces = nodeText.match(/^\{(\s*)/)[1].length;
+    const totalTrailingSpaces = nodeText.match(/(\s*)}$/)[1].length;
+
+    if (totalLeadingSpaces === 1 && totalTrailingSpaces === 1) {
+      return;
+    }
+
+    const fix = this.getFix(node, totalLeadingSpaces, totalTrailingSpaces);
 
     this.addFailureAtNode(node, getFailureMessage(), fix);
   }

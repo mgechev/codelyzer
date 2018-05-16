@@ -25,14 +25,8 @@ export class Rule extends Lint.Rules.AbstractRule {
 export class EnforceComponentSelectorValidatorWalker extends NgWalker {
   protected visitNgComponent(metadata: ComponentMetadata) {
     if (!metadata.selector) {
-      const failureConfig: string[] = [metadata.controller.name.text];
-      failureConfig.unshift(Rule.SELECTOR_FAILURE);
-      this.generateFailure(metadata.decorator.getStart(), metadata.decorator.getWidth(), failureConfig);
+      this.addFailureAtNode(metadata.decorator, sprintf(Rule.SELECTOR_FAILURE, metadata.controller.name.text));
     }
     super.visitNgComponent(metadata);
-  }
-
-  private generateFailure(start: number, width: number, failureConfig: string[]) {
-    this.addFailure(this.createFailure(start, width, sprintf.apply(this, failureConfig)));
   }
 }

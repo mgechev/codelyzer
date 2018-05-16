@@ -205,7 +205,11 @@ export class NgWalker extends Lint.RuleWalker {
       compiler.templateVisitAll(referenceVisitor, roots, null);
       visitor._variables = referenceVisitor.variables;
       roots.forEach(r => visitor.visit(r, context.controller));
-      visitor.getFailures().forEach(f => this.addFailure(f));
+      visitor
+        .getFailures()
+        .forEach(f =>
+          this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
+        );
     }
   }
 
@@ -216,7 +220,11 @@ export class NgWalker extends Lint.RuleWalker {
       const sourceFile = this.getContextSourceFile(styleMetadata.url, styleMetadata.style.source);
       const visitor = new this._config.cssVisitorCtrl(sourceFile, this._originalOptions, context, styleMetadata, baseStart);
       style.visit(visitor);
-      visitor.getFailures().forEach(f => this.addFailure(f));
+      visitor
+        .getFailures()
+        .forEach(f =>
+          this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
+        );
     }
   }
 

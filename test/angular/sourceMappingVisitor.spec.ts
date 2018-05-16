@@ -1,9 +1,9 @@
 import * as ts from 'typescript';
 import chai = require('chai');
-
-import { getDecoratorPropertyInitializer } from '../../src/util/utils';
-import { SourceMappingVisitor } from '../../src/angular/sourceMappingVisitor';
 import { renderSync } from 'node-sass';
+
+import { SourceMappingVisitor } from '../../src/angular/sourceMappingVisitor';
+import { getDecoratorPropertyInitializer } from '../../src/util/utils';
 
 const getAst = (code: string, file = 'file.ts') => {
   return ts.createSourceFile(file, code, ts.ScriptTarget.ES2015, true);
@@ -37,8 +37,8 @@ describe('SourceMappingVisitor', () => {
       ast,
       {
         disabledIntervals: null,
-        ruleName: 'foo',
         ruleArguments: [],
+        ruleName: 'foo',
         ruleSeverity: 'warning'
       },
       {
@@ -48,7 +48,8 @@ describe('SourceMappingVisitor', () => {
       },
       styleNode.getStart() + 1
     );
-    const failure = visitor.createFailure(0, 3, 'bar');
+    visitor.addFailureAt(0, 3, 'bar');
+    const failure = visitor.getFailures()[0];
     chai.expect(failure.getStartPosition().getPosition()).eq(34);
     chai.expect(failure.getEndPosition().getPosition()).eq(38);
   });
