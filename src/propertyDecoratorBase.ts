@@ -53,11 +53,8 @@ class DirectiveMetadataWalker extends Lint.RuleWalker {
 
   private validateProperty(className: string, decoratorName: string, arg: ts.ObjectLiteralExpression) {
     if (arg.kind === SyntaxKind.current().ObjectLiteralExpression) {
-      (<ts.ObjectLiteralExpression>arg).properties.filter(prop => (<any>prop.name).text === this.config.propertyName).forEach(prop => {
-        let p = <any>prop;
-        this.addFailure(
-          this.createFailure(p.getStart(), p.getWidth(), UsePropertyDecorator.formatFailureString(this.config, decoratorName, className))
-        );
+      arg.properties.filter(prop => prop.name.getText() === this.config.propertyName).forEach(prop => {
+        this.addFailureAtNode(prop, UsePropertyDecorator.formatFailureString(this.config, decoratorName, className));
       });
     }
   }

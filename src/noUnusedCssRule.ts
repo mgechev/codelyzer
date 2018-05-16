@@ -1,12 +1,13 @@
+import { ElementAst, EmbeddedTemplateAst, PropertyBindingType, TemplateAst } from '@angular/compiler';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
+
 import { NgWalker } from './angular/ngWalker';
-import { getComponentDecorator, getDecoratorPropertyInitializer } from './util/utils';
 import { BasicCssAstVisitor } from './angular/styles/basicCssAstVisitor';
+import { CssAst, CssSelectorAst, CssSelectorRuleAst } from './angular/styles/cssAst';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
-import { TemplateAst, ElementAst, EmbeddedTemplateAst, PropertyBindingType } from '@angular/compiler';
 import { parseTemplate } from './angular/templates/templateParser';
-import { CssAst, CssSelectorRuleAst, CssSelectorAst } from './angular/styles/cssAst';
+import { getComponentDecorator, getDecoratorPropertyInitializer } from './util/utils';
 
 import { ComponentMetadata, StyleMetadata } from './angular/metadata';
 import { logger } from './util/logger';
@@ -177,11 +178,13 @@ class UnusedCssVisitor extends BasicCssAstVisitor {
       const match = ast.selectors.some(s => this.visitCssSelector(s));
       if (!match) {
         // We need this because of eventual source maps
-        const start = ast.start.offset;
-        const end = ast.end.offset;
-        const length = end - ast.start.offset + 1;
+        const {
+          end: { offset: endOffset },
+          start: { offset: startOffset }
+        } = ast;
         // length + 1 because we want to drop the '}'
-        this.addFailure(this.createFailure(start, length, 'Unused styles', this.createReplacement(start, length, '')));
+        const length = endOffset - startOffset + 1;
+        this.addFailureAt(startOffset, length, 'Unused styles', this.createReplacement(startOffset, length, ''));
       }
     } catch (e) {
       logger.error(e);
@@ -237,7 +240,7 @@ export class UnusedCssNgVisitor extends NgWalker {
   visitClassDeclaration(declaration: ts.ClassDeclaration) {
     const d = getComponentDecorator(declaration);
     if (d) {
-      const meta: ComponentMetadata = <ComponentMetadata>this._metadataReader.read(declaration);
+      const meta = <ComponentMetadata>this._metadataReader.read(declaration);
       this.visitNgComponent(meta);
       if (meta.template && meta.template.template) {
         try {
@@ -299,7 +302,11 @@ export class UnusedCssNgVisitor extends NgWalker {
     const encapsulation = getDecoratorPropertyInitializer(d, 'encapsulation');
     if (isEncapsulationEnabled(encapsulation)) {
       style.visit(visitor);
-      visitor.getFailures().forEach(f => this.addFailure(f));
+      visitor
+        .getFailures()
+        .forEach(f =>
+          this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
+        );
     }
   }
 }

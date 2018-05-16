@@ -1,6 +1,6 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import { sprintf } from 'sprintf-js';
+import { vsprintf } from 'sprintf-js';
 import { NgWalker } from './angular/ngWalker';
 import { ComponentMetadata, DirectiveMetadata } from './angular/metadata';
 
@@ -52,77 +52,61 @@ export class ClassMetadataWalker extends NgWalker {
 
   protected visitNgInput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
     if (this.isInjectable) {
-      let failureConfig: string[] = [this.className, '@Injectable', '@Input'];
-      failureConfig.unshift(Rule.INJECTABLE_FAILURE_STRING);
-      this.generateFailure(property.getStart(), property.getWidth(), failureConfig);
+      this.generateFailure(property, this.className, '@Injectable', '@Input');
     }
     super.visitNgInput(property, input, args);
   }
 
   protected visitNgOutput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
     if (this.isInjectable) {
-      let failureConfig: string[] = [this.className, '@Injectable', '@Output'];
-      failureConfig.unshift(Rule.INJECTABLE_FAILURE_STRING);
-      this.generateFailure(property.getStart(), property.getWidth(), failureConfig);
+      this.generateFailure(property, this.className, '@Injectable', '@Output');
     }
     super.visitNgInput(property, input, args);
   }
 
   protected visitNgHostBinding(property: ts.PropertyDeclaration, decorator: ts.Decorator, args: string[]) {
     if (this.isInjectable) {
-      let failureConfig: string[] = [this.className, '@Injectable', '@HostBinding'];
-      failureConfig.unshift(Rule.INJECTABLE_FAILURE_STRING);
-      this.generateFailure(property.getStart(), property.getWidth(), failureConfig);
+      this.generateFailure(property, this.className, '@Injectable', '@HostBinding');
     }
     super.visitNgHostBinding(property, decorator, args);
   }
 
   protected visitNgHostListener(method: ts.MethodDeclaration, decorator: ts.Decorator, args: string[]) {
     if (this.isInjectable) {
-      let failureConfig: string[] = [this.className, '@Injectable', '@HostListener'];
-      failureConfig.unshift(Rule.INJECTABLE_FAILURE_STRING);
-      this.generateFailure(method.getStart(), method.getWidth(), failureConfig);
+      this.generateFailure(method, this.className, '@Injectable', '@HostListener');
     }
     super.visitNgHostListener(method, decorator, args);
   }
 
   protected visitNgContentChild(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
     if (this.isInjectable) {
-      let failureConfig: string[] = [this.className, '@Injectable', '@ContentChild'];
-      failureConfig.unshift(Rule.INJECTABLE_FAILURE_STRING);
-      this.generateFailure(property.getStart(), property.getWidth(), failureConfig);
+      this.generateFailure(property, this.className, '@Injectable', '@ContentChild');
     }
     super.visitNgContentChild(property, input, args);
   }
 
   protected visitNgContentChildren(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
     if (this.isInjectable) {
-      let failureConfig: string[] = [this.className, '@Injectable', '@ContentChildren'];
-      failureConfig.unshift(Rule.INJECTABLE_FAILURE_STRING);
-      this.generateFailure(property.getStart(), property.getWidth(), failureConfig);
+      this.generateFailure(property, this.className, '@Injectable', '@ContentChildren');
     }
     super.visitNgContentChildren(property, input, args);
   }
 
   protected visitNgViewChild(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
     if (this.isInjectable) {
-      let failureConfig: string[] = [this.className, '@Injectable', '@ViewChild'];
-      failureConfig.unshift(Rule.INJECTABLE_FAILURE_STRING);
-      this.generateFailure(property.getStart(), property.getWidth(), failureConfig);
+      this.generateFailure(property, this.className, '@Injectable', '@ViewChild');
     }
     super.visitNgViewChild(property, input, args);
   }
 
   protected visitNgViewChildren(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
     if (this.isInjectable) {
-      let failureConfig: string[] = [this.className, '@Injectable', '@ViewChildren'];
-      failureConfig.unshift(Rule.INJECTABLE_FAILURE_STRING);
-      this.generateFailure(property.getStart(), property.getWidth(), failureConfig);
+      this.generateFailure(property, this.className, '@Injectable', '@ViewChildren');
     }
     super.visitNgViewChildren(property, input, args);
   }
 
-  private generateFailure(start: number, width: number, failureConfig: string[]) {
-    this.addFailure(this.createFailure(start, width, sprintf.apply(this, failureConfig)));
+  private generateFailure(property: ts.Node, ...failureConfig: string[]) {
+    this.addFailureAtNode(property, vsprintf(Rule.INJECTABLE_FAILURE_STRING, failureConfig));
   }
 }

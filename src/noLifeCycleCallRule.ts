@@ -1,4 +1,3 @@
-import { sprintf } from 'sprintf-js';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { NgWalker } from './angular/ngWalker';
@@ -53,7 +52,7 @@ export class ExpressionCallMetadataWalker extends NgWalker {
     const expression = ts.isPropertyAccessExpression(node.expression) ? node.expression.expression : undefined;
 
     const isSuperCall = expression && expression.kind === ts.SyntaxKind.SuperKeyword;
-    const isLifecycleCall = name && ts.isIdentifier(name) && lifecycleHooksMethods.has(name.text as any);
+    const isLifecycleCall = name && ts.isIdentifier(name) && lifecycleHooksMethods.has(name.text as LifecycleHooksMethods);
 
     if (isLifecycleCall && !isSuperCall) {
       this.addFailureAtNode(node, Rule.FAILURE_STRING);

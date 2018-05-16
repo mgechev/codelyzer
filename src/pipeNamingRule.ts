@@ -98,21 +98,19 @@ export class ClassMetadataWalker extends NgWalker {
   private validateProperty(className: string, property: ts.Node) {
     const init = (<ts.PropertyAssignment>property).initializer;
     if (init && (<ts.StringLiteral>init).text) {
-      let propName: string = (<ts.StringLiteral>init).text;
-      let isValidName: boolean = this.rule.validateName(propName);
-      let isValidPrefix: boolean = this.rule.hasPrefix ? this.rule.validatePrefix(propName) : true;
+      const propName = (<ts.StringLiteral>init).text;
+      const isValidName = this.rule.validateName(propName);
+      const isValidPrefix = this.rule.hasPrefix ? this.rule.validatePrefix(propName) : true;
       if (!isValidName || !isValidPrefix) {
-        this.addFailure(
-          this.createFailure(property.getStart(), property.getWidth(), sprintf.apply(this, this.createFailureArray(className, propName)))
-        );
+        this.addFailureAtNode(property, this.getFailureMessage(className, propName));
       }
     }
   }
 
-  private createFailureArray(className: string, pipeName: string): Array<string> {
+  private getFailureMessage(className: string, pipeName: string): string {
     if (this.rule.hasPrefix) {
-      return [Rule.FAILURE_WITH_PREFIX, className, this.rule.prefix, pipeName];
+      return sprintf(Rule.FAILURE_WITH_PREFIX, className, this.rule.prefix, pipeName);
     }
-    return [Rule.FAILURE_WITHOUT_PREFIX, className, pipeName];
+    return sprintf(Rule.FAILURE_WITHOUT_PREFIX, className, pipeName);
   }
 }

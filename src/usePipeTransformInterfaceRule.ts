@@ -39,7 +39,7 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
       if (pipes.length !== 0) {
         let className: string = node.name.text;
         if (!this.hasIPipeTransform(node)) {
-          this.addFailure(this.createFailure(node.getStart(), node.getWidth(), sprintf.apply(this, [Rule.FAILURE, className])));
+          this.addFailureAtNode(node, sprintf(Rule.FAILURE, className));
         }
       }
     }

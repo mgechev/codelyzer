@@ -1,6 +1,7 @@
 {
   "rules": {
     "class-name": true,
+    "deprecation": true,
     "member-ordering": [
       true,
       {

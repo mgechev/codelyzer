@@ -66,9 +66,7 @@ export class ClassMetadataWalker extends NgWalker {
       }
     }
     if (!Rule.validate(className, suffixes)) {
-      this.addFailure(
-        this.createFailure(name.getStart(), name.getWidth(), sprintf.apply(this, [Rule.FAILURE, className, suffixes.join(', ')]))
-      );
+      this.addFailureAtNode(name, sprintf(Rule.FAILURE, className, suffixes.join(', ')));
     }
     super.visitNgDirective(metadata);
   }

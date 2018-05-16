@@ -34,13 +34,13 @@ class TemplateVisitor extends BasicTemplateAstVisitor {
 
 class ExpressionVisitor extends RecursiveAngularExpressionVisitor {
   visitFunctionCall(node: e.FunctionCall, context: any) {
-    this.addFailureAt(node.span.start, node.span.end - node.span.start, Rule.FAILURE_STRING);
+    this.addFailureFromStartToEnd(node.span.start, node.span.end, Rule.FAILURE_STRING);
 
     super.visitFunctionCall(node, context);
   }
 
   visitMethodCall(node: e.MethodCall, context: any) {
-    this.addFailureAt(node.span.start, node.span.end - node.span.start, Rule.FAILURE_STRING);
+    this.addFailureFromStartToEnd(node.span.start, node.span.end, Rule.FAILURE_STRING);
 
     super.visitMethodCall(node, context);
   }

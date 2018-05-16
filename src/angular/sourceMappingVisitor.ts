@@ -104,6 +104,7 @@ export class SourceMappingVisitor extends RuleWalker {
 
   createFailure(s: number, l: number, message: string, fix?: Fix): RuleFailure {
     const { start, length } = this.getMappedInterval(s, l);
+    // tslint:disable-next-line:deprecation
     return super.createFailure(start, length, message, fix);
   }
 

@@ -61,28 +61,21 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
     return interfaces;
   }
 
-  private validateMethods(methods: any[], interfaces: string[], className: string) {
+  private validateMethods(methods: ts.ClassElement[], interfaces: string[], className: string) {
     methods.forEach(m => {
-      let n = (<any>m.name).text;
-      if (n && this.isMethodValidHook(m, interfaces)) {
-        let hookName = n.substr(2, n.lenght);
-        this.addFailure(
-          this.createFailure(
-            m.name.getStart(),
-            m.name.getWidth(),
-            sprintf(Rule.FAILURE_STRING, hookName, Rule.HOOKS_PREFIX + hookName, className)
-          )
-        );
+      const methodName = m.name.getText();
+      if (methodName && this.isMethodValidHook(methodName, interfaces)) {
+        const hookName = methodName.slice(2);
+        this.addFailureAtNode(m.name, sprintf(Rule.FAILURE_STRING, hookName, Rule.HOOKS_PREFIX + hookName, className));
       }
     });
   }
 
-  private isMethodValidHook(m: any, interfaces: string[]): boolean {
-    let n = (<any>m.name).text;
-    let isNg: boolean = n.substr(0, 2) === Rule.HOOKS_PREFIX;
-    let hookName = n.substr(2, n.lenght);
-    let isHook = Rule.LIFE_CYCLE_HOOKS_NAMES.indexOf(hookName) !== -1;
-    let isNotIn: boolean = interfaces.indexOf(hookName) === -1;
+  private isMethodValidHook(methodName: string, interfaces: string[]): boolean {
+    const isNg = methodName.substr(0, 2) === Rule.HOOKS_PREFIX;
+    const hookName = methodName.slice(2);
+    const isHook = Rule.LIFE_CYCLE_HOOKS_NAMES.indexOf(hookName) !== -1;
+    const isNotIn = interfaces.indexOf(hookName) === -1;
     return isNg && isHook && isNotIn;
   }
 }

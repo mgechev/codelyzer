@@ -16,18 +16,21 @@ class TemplateToNgTemplateVisitor extends RecursiveAngularExpressionVisitor {
       return super.visitBinary(expr, context);
     }
 
-    const operator = this.codeWithMap.code.slice(expr.left.span.end, expr.right.span.start);
+    const {
+      left: {
+        span: { end: endLeftSpan }
+      },
+      right: {
+        span: { start: startRightSpan }
+      },
+      span: { end: spanEnd, start: spanStart }
+    } = expr;
+    const operator = this.codeWithMap.code.slice(endLeftSpan, startRightSpan);
     const operatorStart = /^.*==/.exec(operator)[0].length - unstrictEqualityOperator.length;
 
-    this.addFailure(
-      this.createFailure(
-        expr.span.start,
-        expr.span.end - expr.span.start,
-        'Async pipes must use strict equality `===` when comparing with `false`',
-        [new Lint.Replacement(this.getSourcePosition(expr.left.span.end) + operatorStart, unstrictEqualityOperator.length, '===')]
-      )
-    );
-
+    this.addFailureFromStartToEnd(spanStart, spanEnd, 'Async pipes must use strict equality `===` when comparing with `false`', [
+      new Lint.Replacement(this.getSourcePosition(endLeftSpan) + operatorStart, unstrictEqualityOperator.length, '===')
+    ]);
     super.visitBinary(expr, context);
   }
 
@@ -35,20 +38,19 @@ class TemplateToNgTemplateVisitor extends RecursiveAngularExpressionVisitor {
     if (!this.isAsyncBinding(expr.expression)) {
       return super.visitPrefixNot(expr, context);
     }
-
-    const width = expr.span.end - expr.span.start;
-    const absoluteStart = this.getSourcePosition(expr.span.start);
+    const {
+      span: { end: spanEnd, start: spanStart }
+    } = expr;
+    const absoluteStart = this.getSourcePosition(spanStart);
 
     // Angular includes the whitespace after an expression, we want to trim that
-    const expressionSource = this.codeWithMap.code.slice(expr.span.start, expr.span.end);
-    const concreteWidth = width - / *$/.exec(expressionSource)[0].length;
+    const expressionSource = this.codeWithMap.code.slice(spanStart, spanEnd);
+    const concreteWidth = spanEnd - spanStart - / *$/.exec(expressionSource)[0].length;
 
-    this.addFailure(
-      this.createFailure(expr.span.start, width, 'Async pipes can not be negated, use (observable | async) === false instead', [
-        new Lint.Replacement(absoluteStart + concreteWidth, 1, ' === false '),
-        new Lint.Replacement(absoluteStart, 1, '')
-      ])
-    );
+    this.addFailureFromStartToEnd(spanStart, spanEnd, 'Async pipes can not be negated, use (observable | async) === false instead', [
+      new Lint.Replacement(absoluteStart + concreteWidth, 1, ' === false '),
+      new Lint.Replacement(absoluteStart, 1, '')
+    ]);
   }
 
   protected isAsyncBinding(expr: any) {
