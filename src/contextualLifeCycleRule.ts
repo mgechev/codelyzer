@@ -5,18 +5,18 @@ import { ComponentMetadata, DirectiveMetadata } from './angular/metadata';
 import { NgWalker } from './angular/ngWalker';
 
 export class Rule extends Lint.Rules.AbstractRule {
-  static metadata: Lint.IRuleMetadata = {
+  static readonly metadata: Lint.IRuleMetadata = {
     description: 'Ensure that classes use allowed life cycle method in its body.',
     options: null,
     optionsDescription: 'Not configurable.',
-    rationale: `Some life cycle methods can only be used in certain class types.
-    For example, ngOnInit() hook method should not be used in an @Injectable class.`,
+    rationale:
+      'Some life cycle methods can only be used in certain class types.For example, ngOnInit() hook method should not be used in an @Injectable class.',
     ruleName: 'contextual-life-cycle',
     type: 'functionality',
     typescriptOnly: true
   };
 
-  static FAILURE_STRING = 'In the class "%s" which have the "%s" decorator, the ' +
+  static readonly FAILURE_STRING = 'In the class "%s" which have the "%s" decorator, the ' +
   '"%s" hook method is not allowed. ' +
   'Please, drop it.';
 

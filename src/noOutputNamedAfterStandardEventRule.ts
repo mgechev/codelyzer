@@ -1,22 +1,22 @@
+import { sprintf } from 'sprintf-js';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import { sprintf } from 'sprintf-js';
 import { NgWalker } from './angular/ngWalker';
 
 export class Rule extends Lint.Rules.AbstractRule {
-  public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'no-output-named-after-standard-event',
-    type: 'maintainability',
+  static readonly metadata: Lint.IRuleMetadata = {
     description: 'Disallows naming directive outputs after a standard DOM event.',
-    rationale: 'Listeners subscribed to an output with such a name will also be invoked when the native event is raised.',
     options: null,
     optionsDescription: 'Not configurable.',
+    rationale: 'Listeners subscribed to an output with such a name will also be invoked when the native event is raised.',
+    ruleName: 'no-output-named-after-standard-event',
+    type: 'maintainability',
     typescriptOnly: true
   };
 
-  static FAILURE_STRING = 'In the class "%s", the output ' + 'property "%s" should not be named or renamed after a standard event';
+  static readonly FAILURE_STRING = 'In the class "%s", the output property "%s" should not be named or renamed after a standard event';
 
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new OutputMetadataWalker(sourceFile, this.getOptions()));
   }
 }

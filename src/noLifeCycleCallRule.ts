@@ -3,7 +3,7 @@ import * as ts from 'typescript';
 import { NgWalker } from './angular/ngWalker';
 
 export class Rule extends Lint.Rules.AbstractRule {
-  static metadata: Lint.IRuleMetadata = {
+  static readonly metadata: Lint.IRuleMetadata = {
     description: 'Disallows explicit calls to life cycle hooks.',
     options: null,
     optionsDescription: 'Not configurable.',
@@ -13,7 +13,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static FAILURE_STRING = 'Avoid explicit calls to life cycle hooks.';
+  static readonly FAILURE_STRING = 'Avoid explicit calls to life cycle hooks.';
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new ExpressionCallMetadataWalker(sourceFile, this.getOptions()));

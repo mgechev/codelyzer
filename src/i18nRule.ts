@@ -1,13 +1,16 @@
+import * as ast from '@angular/compiler';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { NgWalker } from './angular/ngWalker';
-import * as ast from '@angular/compiler';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 
-type Option = 'check-id' | 'check-text';
+const OPTION_CHECK_ID = 'check-id';
+const OPTION_CHECK_TEXT = 'check-text';
+
+type CheckOption = typeof OPTION_CHECK_ID | typeof OPTION_CHECK_TEXT;
 
 interface ConfigurableVisitor {
-  getOption(): Option;
+  getCheckOption(): CheckOption;
 }
 
 class I18NAttrVisitor extends BasicTemplateAstVisitor implements ConfigurableVisitor {
@@ -32,7 +35,7 @@ class I18NAttrVisitor extends BasicTemplateAstVisitor implements ConfigurableVis
     super.visitAttr(attr, context);
   }
 
-  getOption(): Option {
+  getCheckOption(): CheckOption {
     return 'check-id';
   }
 }
@@ -94,7 +97,7 @@ class I18NTextVisitor extends BasicTemplateAstVisitor implements ConfigurableVis
     super.visitElement(element, context);
   }
 
-  getOption(): Option {
+  getCheckOption(): CheckOption {
     return 'check-text';
   }
 }
@@ -112,7 +115,7 @@ class I18NTemplateVisitor extends BasicTemplateAstVisitor {
   visitAttr(attr: ast.AttrAst, context: any): any {
     const options = this.getOptions();
     this.visitors
-      .filter(v => options.indexOf(v.getOption()) >= 0)
+      .filter(v => options.indexOf(v.getCheckOption()) >= 0)
       .map(v => v.visitAttr(attr, this))
       .filter(f => !!f)
       .forEach(f =>
@@ -124,7 +127,7 @@ class I18NTemplateVisitor extends BasicTemplateAstVisitor {
   visitElement(element: ast.ElementAst, context: any): any {
     const options = this.getOptions();
     this.visitors
-      .filter(v => options.indexOf(v.getOption()) >= 0)
+      .filter(v => options.indexOf(v.getCheckOption()) >= 0)
       .map(v => v.visitElement(element, this))
       .filter(f => !!f)
       .forEach(f =>
@@ -136,7 +139,7 @@ class I18NTemplateVisitor extends BasicTemplateAstVisitor {
   visitText(text: ast.TextAst, context: any): any {
     const options = this.getOptions();
     this.visitors
-      .filter(v => options.indexOf(v.getOption()) >= 0)
+      .filter(v => options.indexOf(v.getCheckOption()) >= 0)
       .map(v => v.visitText(text, this))
       .filter(f => !!f)
       .forEach(f =>
@@ -148,7 +151,7 @@ class I18NTemplateVisitor extends BasicTemplateAstVisitor {
   visitBoundText(text: ast.BoundTextAst, context: any): any {
     const options = this.getOptions();
     this.visitors
-      .filter(v => options.indexOf(v.getOption()) >= 0)
+      .filter(v => options.indexOf(v.getCheckOption()) >= 0)
       .map(v => v.visitBoundText(text, this))
       .filter(f => !!f)
       .forEach(f =>
@@ -159,35 +162,45 @@ class I18NTemplateVisitor extends BasicTemplateAstVisitor {
 }
 
 export class Rule extends Lint.Rules.AbstractRule {
-  public static metadata: Lint.IRuleMetadata = {
+  static readonly metadata: Lint.IRuleMetadata = {
+    description: 'Ensures following best practices for i18n.',
+    optionExamples: [[true, OPTION_CHECK_ID], [true, OPTION_CHECK_TEXT], [true, OPTION_CHECK_ID, OPTION_CHECK_TEXT]],
+    options: {
+      items: {
+        enum: [OPTION_CHECK_ID, OPTION_CHECK_TEXT],
+        type: 'string'
+      },
+      maxLength: 2,
+      minLength: 1,
+      type: 'array'
+    },
+    optionsDescription: Lint.Utils.dedent`
+      One (or both) of the following arguments must be provided:
+      * \`${OPTION_CHECK_ID}\` Makes sure i18n attributes have ID specified
+      * \`${OPTION_CHECK_TEXT}\` Makes sure there are no elements with text content but no i18n attribute
+    `,
+    rationale: 'Makes the code more maintainable in i18n sense.',
     ruleName: 'i18n',
     type: 'maintainability',
-    description: 'Ensures following best practices for i18n.',
-    rationale: 'Makes the code more maintainable in i18n sense.',
-    optionsDescription: Lint.Utils.dedent`
-      Arguments may be optionally provided:
-      * \`"check-id"\` Makes sure i18n attributes have ID specified
-      * \`"check-text"\` Makes sure there are no elements with text content but no i18n attribute
-    `,
-
-    options: {
-      type: 'array',
-      items: {
-        type: 'string',
-        enum: ['check-id', 'check-text']
-      },
-      minLength: 0,
-      maxLength: 3
-    },
-    optionExamples: ['[true, "check-id"]'],
     typescriptOnly: true
   };
 
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
       new NgWalker(sourceFile, this.getOptions(), {
         templateVisitorCtrl: I18NTemplateVisitor
       })
     );
+  }
+
+  isEnabled(): boolean {
+    const {
+      metadata: {
+        options: { maxLength, minLength }
+      }
+    } = Rule;
+    const { length } = this.ruleArguments;
+
+    return super.isEnabled() && length >= minLength && length <= maxLength;
   }
 }

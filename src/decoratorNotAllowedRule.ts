@@ -1,26 +1,26 @@
+import { vsprintf } from 'sprintf-js';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import { vsprintf } from 'sprintf-js';
-import { NgWalker } from './angular/ngWalker';
 import { ComponentMetadata, DirectiveMetadata } from './angular/metadata';
+import { NgWalker } from './angular/ngWalker';
 
 export class Rule extends Lint.Rules.AbstractRule {
-  public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'decorator-not-allowed',
-    type: 'functionality',
+  static readonly metadata: Lint.IRuleMetadata = {
     description: 'Ensure that classes use allowed decorator in its body.',
-    rationale: `Some decorators can only be used in certain class types.
-    For example, an @Input should not be used in an @Injectable class.`,
     options: null,
     optionsDescription: 'Not configurable.',
+    rationale:
+      'Some decorators can only be used in certain class types. For example, an @Input should not be used in an @Injectable class.',
+    ruleName: 'decorator-not-allowed',
+    type: 'functionality',
     typescriptOnly: true
   };
 
-  static INJECTABLE_FAILURE_STRING = 'In the class "%s" which have the "%s" decorator, the ' +
+  static readonly FAILURE_STRING = 'In the class "%s" which have the "%s" decorator, the ' +
   '"%s" decorator is not allowed. ' +
   'Please, drop it.';
 
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this.getOptions()));
   }
 }
@@ -107,6 +107,6 @@ export class ClassMetadataWalker extends NgWalker {
   }
 
   private generateFailure(property: ts.Node, ...failureConfig: string[]) {
-    this.addFailureAtNode(property, vsprintf(Rule.INJECTABLE_FAILURE_STRING, failureConfig));
+    this.addFailureAtNode(property, vsprintf(Rule.FAILURE_STRING, failureConfig));
   }
 }
