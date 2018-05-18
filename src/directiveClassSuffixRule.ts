@@ -1,6 +1,6 @@
+import { sprintf } from 'sprintf-js';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import { sprintf } from 'sprintf-js';
 import { NgWalker } from './angular/ngWalker';
 
 import { DirectiveMetadata } from './angular/metadata';
@@ -18,30 +18,31 @@ const getInterfaceName = (t: any): string => {
 const ValidatorSuffix = 'Validator';
 
 export class Rule extends Lint.Rules.AbstractRule {
-  public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'directive-class-suffix',
-    type: 'style',
+  static readonly metadata: Lint.IRuleMetadata = {
     description: 'Classes decorated with @Directive must have suffix "Directive" (or custom) in their name.',
     descriptionDetails: 'See more at https://angular.io/styleguide#style-02-03.',
-    rationale: 'Consistent conventions make it easy to quickly identify and reference assets of different types.',
+    optionExamples: [true, [true, 'Directive', 'MySuffix']],
     options: {
-      type: 'array',
       items: {
         type: 'string'
-      }
+      },
+      minLength: 0,
+      type: 'array'
     },
-    optionExamples: ['true', '[true, "Directive", "MySuffix"]'],
     optionsDescription: 'Supply a list of allowed component suffixes. Defaults to "Directive".',
+    rationale: 'Consistent conventions make it easy to quickly identify and reference assets of different types.',
+    ruleName: 'directive-class-suffix',
+    type: 'style',
     typescriptOnly: true
   };
 
-  static FAILURE: string = 'The name of the class %s should end with the suffix %s (https://angular.io/styleguide#style-02-03)';
+  static readonly FAILURE_STRING = 'The name of the class %s should end with the suffix %s (https://angular.io/styleguide#style-02-03)';
 
   static validate(className: string, suffixes: string[]): boolean {
     return suffixes.some(s => className.endsWith(s));
   }
 
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this.getOptions()));
   }
 }
@@ -66,7 +67,7 @@ export class ClassMetadataWalker extends NgWalker {
       }
     }
     if (!Rule.validate(className, suffixes)) {
-      this.addFailureAtNode(name, sprintf(Rule.FAILURE, className, suffixes.join(', ')));
+      this.addFailureAtNode(name, sprintf(Rule.FAILURE_STRING, className, suffixes.join(', ')));
     }
     super.visitNgDirective(metadata);
   }

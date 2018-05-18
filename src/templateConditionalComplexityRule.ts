@@ -8,12 +8,12 @@ import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVis
 export class Rule extends Rules.AbstractRule {
   static readonly metadata: IRuleMetadata = {
     description: "The condition complexity shouldn't exceed a rational limit in a template.",
-    optionExamples: ['true', '[true, 4]'],
+    optionExamples: [true, [true, 4]],
     options: {
       items: {
         type: 'string'
       },
-      maxLength: 2,
+      maxLength: 1,
       minLength: 0,
       type: 'array'
     },
@@ -33,6 +33,17 @@ export class Rule extends Rules.AbstractRule {
         templateVisitorCtrl: TemplateConditionalComplexityVisitor
       })
     );
+  }
+
+  isEnabled(): boolean {
+    const {
+      metadata: {
+        options: { maxLength, minLength }
+      }
+    } = Rule;
+    const { length, [0]: maxComplexity } = this.ruleArguments;
+
+    return super.isEnabled() && length >= minLength && length <= maxLength && (maxComplexity === undefined || maxComplexity > 0);
   }
 }
 

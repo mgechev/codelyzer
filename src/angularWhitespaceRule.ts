@@ -1,10 +1,10 @@
+import * as ast from '@angular/compiler';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import { NgWalker } from './angular/ngWalker';
-import * as ast from '@angular/compiler';
-import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
-import { ExpTypes } from './angular/expressionTypes';
 import { Config } from './angular/config';
+import { ExpTypes } from './angular/expressionTypes';
+import { NgWalker } from './angular/ngWalker';
+import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 import { RecursiveAngularExpressionVisitor } from './angular/templates/recursiveAngularExpressionVisitor';
 
 // Check if ES6 'y' flag is usable.
@@ -75,10 +75,14 @@ const checkSemicolonNoWhitespace: CheckSemicolonNoWhitespaceMethod = stickyFlagU
   ? checkSemicolonNoWhitespaceWithSticky
   : checkSemicolonNoWhitespaceWithoutSticky;
 
-type Option = 'check-interpolation' | 'check-pipe' | 'check-semicolon';
+const OPTION_CHECK_INTERPOLATION = 'check-interpolation';
+const OPTION_CHECK_PIPE = 'check-pipe';
+const OPTION_CHECK_SEMICOLON = 'check-semicolon';
+
+type CheckOption = typeof OPTION_CHECK_INTERPOLATION | typeof OPTION_CHECK_PIPE | typeof OPTION_CHECK_SEMICOLON;
 
 interface ConfigurableVisitor {
-  getOption(): Option;
+  getCheckOption(): CheckOption;
 }
 
 /* Interpolation visitors */
@@ -131,7 +135,7 @@ class InterpolationWhitespaceVisitor extends BasicTemplateAstVisitor implements 
     return null;
   }
 
-  getOption(): Option {
+  getCheckOption(): CheckOption {
     return 'check-interpolation';
   }
 }
@@ -147,14 +151,14 @@ class SemicolonTemplateVisitor extends BasicTemplateAstVisitor implements Config
       const doubleQuote = rawExpression[0] === '"';
 
       // Note that will not be reliable for different interpolation symbols
-      let reg = doubleQuote ? SemicolonNoWhitespaceNotInSimpleQuoteRe : SemicolonNoWhitespaceNotInDoubleQuoteRe;
+      const reg = doubleQuote ? SemicolonNoWhitespaceNotInSimpleQuoteRe : SemicolonNoWhitespaceNotInDoubleQuoteRe;
       reg.lastIndex = 0;
       checkSemicolonNoWhitespace(reg, context, expr, prop.sourceSpan.start.offset + positionFix);
     }
     super.visitDirectiveProperty(prop, context);
   }
 
-  getOption(): Option {
+  getCheckOption(): CheckOption {
     return 'check-semicolon';
   }
 }
@@ -168,7 +172,7 @@ class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
   visitBoundText(text: ast.BoundTextAst, context: any): any {
     const options = this.getOptions();
     this.visitors
-      .filter(v => options.indexOf(v.getOption()) >= 0)
+      .filter(v => options.indexOf(v.getCheckOption()) >= 0)
       .map(v => v.visitBoundText(text, this))
       .filter(f => !!f)
       .forEach(f =>
@@ -180,7 +184,7 @@ class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
   visitDirectiveProperty(prop: ast.BoundDirectivePropertyAst, context: any): any {
     const options = this.getOptions();
     this.visitors
-      .filter(v => options.indexOf(v.getOption()) >= 0)
+      .filter(v => options.indexOf(v.getCheckOption()) >= 0)
       .map(v => v.visitDirectiveProperty(prop, this))
       .filter(f => !!f)
       .forEach(f =>
@@ -251,7 +255,7 @@ class PipeWhitespaceVisitor extends RecursiveAngularExpressionVisitor implements
     return null;
   }
 
-  getOption(): Option {
+  getCheckOption(): CheckOption {
     return 'check-pipe';
   }
 
@@ -269,7 +273,7 @@ class TemplateExpressionVisitor extends RecursiveAngularExpressionVisitor {
     const options = this.getOptions();
     this.visitors
       .map(v => v.addParentAST(this.parentAST))
-      .filter(v => options.indexOf(v.getOption()) >= 0)
+      .filter(v => options.indexOf(v.getCheckOption()) >= 0)
       .map(v => v.visitPipe(expr, this))
       .filter(f => !!f)
       .forEach(f =>
@@ -279,36 +283,53 @@ class TemplateExpressionVisitor extends RecursiveAngularExpressionVisitor {
 }
 
 export class Rule extends Lint.Rules.AbstractRule {
-  public static metadata: Lint.IRuleMetadata = {
+  static readonly metadata: Lint.IRuleMetadata = {
+    description: 'Ensures the proper formatting of Angular expressions.',
+    hasFix: true,
+    optionExamples: [
+      [true, OPTION_CHECK_INTERPOLATION],
+      [true, OPTION_CHECK_PIPE],
+      [true, OPTION_CHECK_SEMICOLON],
+      [true, OPTION_CHECK_INTERPOLATION, OPTION_CHECK_PIPE, OPTION_CHECK_SEMICOLON]
+    ],
+    options: {
+      items: {
+        enum: [OPTION_CHECK_INTERPOLATION, OPTION_CHECK_PIPE, OPTION_CHECK_SEMICOLON],
+        type: 'string'
+      },
+      maxLength: 3,
+      minLength: 1,
+      type: 'array'
+    },
+    optionsDescription: Lint.Utils.dedent`
+      One (or both) of the following arguments must be provided:
+      * \`${OPTION_CHECK_INTERPOLATION}\` - checks for whitespace before and after the interpolation characters.
+      * \`${OPTION_CHECK_PIPE}\` - checks for whitespace before and after a pipe.
+      * \`${OPTION_CHECK_SEMICOLON}\` - checks for whitespace after semicolon.
+    `,
+    rationale: 'Having whitespace in the right places in an Angular expression makes the template more readable.',
     ruleName: 'angular-whitespace',
     type: 'style',
-    description: 'Ensures the proper formatting of Angular expressions.',
-    rationale: 'Having whitespace in the right places in an Angular expression makes the template more readable.',
-    optionsDescription: Lint.Utils.dedent`
-      Arguments may be optionally provided:
-      * \`"check-interpolation"\` checks for whitespace before and after the interpolation characters
-      * \`"check-pipe"\` checks for whitespace before and after a pipe
-      * \`"check-semicolon"\` checks for whitespace after semicolon`,
-    options: {
-      type: 'array',
-      items: {
-        type: 'string',
-        enum: ['check-interpolation', 'check-pipe', 'check-semicolon']
-      },
-      minLength: 0,
-      maxLength: 3
-    },
-    optionExamples: ['[true, "check-interpolation"]'],
-    typescriptOnly: true,
-    hasFix: true
+    typescriptOnly: true
   };
 
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(
       new NgWalker(sourceFile, this.getOptions(), {
-        templateVisitorCtrl: WhitespaceTemplateVisitor,
-        expressionVisitorCtrl: TemplateExpressionVisitor
+        expressionVisitorCtrl: TemplateExpressionVisitor,
+        templateVisitorCtrl: WhitespaceTemplateVisitor
       })
     );
+  }
+
+  isEnabled(): boolean {
+    const {
+      metadata: {
+        options: { maxLength, minLength }
+      }
+    } = Rule;
+    const { length } = this.ruleArguments;
+
+    return super.isEnabled() && length >= minLength && length <= maxLength;
   }
 }

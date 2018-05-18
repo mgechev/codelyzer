@@ -1,22 +1,22 @@
+import * as e from '@angular/compiler/src/expression_parser/ast';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 import { RecursiveAngularExpressionVisitor } from './angular/templates/recursiveAngularExpressionVisitor';
-import * as e from '@angular/compiler/src/expression_parser/ast';
 
 export class Rule extends Lint.Rules.AbstractRule {
-  public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'no-template-call-expression',
-    type: 'functionality',
+  static readonly metadata: Lint.IRuleMetadata = {
     description: 'Call expressions are not allowed in templates except in output handlers.',
-    rationale: 'The change detector will call functions used in templates very often. Use an observable instead.',
     options: null,
     optionsDescription: 'Not configurable.',
+    rationale: 'The change detector will call functions used in templates very often. Use an observable instead.',
+    ruleName: 'no-template-call-expression',
+    type: 'maintainability',
     typescriptOnly: true
   };
 
-  static FAILURE_STRING = 'Call expressions are not allowed in templates except in output handlers';
+  static readonly FAILURE_STRING = 'Call expressions are not allowed in templates except in output handlers';
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     const walkerConfig: NgWalkerConfig = {

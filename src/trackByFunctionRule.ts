@@ -11,7 +11,7 @@ export class Rule extends Rules.AbstractRule {
     optionsDescription: 'Not configurable.',
     rationale: "The use of 'trackBy' is considered a good practice.",
     ruleName: 'trackBy-function',
-    type: 'functionality',
+    type: 'maintainability',
     typescriptOnly: true
   };
 

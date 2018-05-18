@@ -1,34 +1,34 @@
+import { sprintf } from 'sprintf-js';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import { sprintf } from 'sprintf-js';
 import { ComponentMetadata } from './angular/metadata';
+import { NgWalker } from './angular/ngWalker';
+import { F2, Maybe } from './util/function';
 import { Failure } from './walkerFactory/walkerFactory';
 import { all, validateComponent } from './walkerFactory/walkerFn';
-import { Maybe, F2 } from './util/function';
-import { IOptions } from 'tslint';
-import { NgWalker } from './angular/ngWalker';
 
 export class Rule extends Lint.Rules.AbstractRule {
-  public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'component-class-suffix',
-    type: 'style',
+  static readonly metadata: Lint.IRuleMetadata = {
     description: 'Classes decorated with @Component must have suffix "Component" (or custom) in their name.',
     descriptionDetails: 'See more at https://angular.io/styleguide#style-02-03.',
-    rationale: 'Consistent conventions make it easy to quickly identify and reference assets of different types.',
+    optionExamples: [true, [true, 'Component', 'View']],
     options: {
-      type: 'array',
       items: {
         type: 'string'
-      }
+      },
+      minLength: 0,
+      type: 'array'
     },
-    optionExamples: ['true', '[true, "Component", "View"]'],
     optionsDescription: 'Supply a list of allowed component suffixes. Defaults to "Component".',
+    rationale: 'Consistent conventions make it easy to quickly identify and reference assets of different types.',
+    ruleName: 'component-class-suffix',
+    type: 'style',
     typescriptOnly: true
   };
 
-  static FAILURE: string = 'The name of the class %s should end with the suffix %s (https://angular.io/styleguide#style-02-03)';
+  static readonly FAILURE_STRING = 'The name of the class %s should end with the suffix %s (https://angular.io/styleguide#style-02-03)';
 
-  static walkerBuilder: F2<ts.SourceFile, IOptions, NgWalker> = all(
+  static walkerBuilder: F2<ts.SourceFile, Lint.IOptions, NgWalker> = all(
     validateComponent((meta: ComponentMetadata, suffixList?: string[]) =>
       Maybe.lift(meta.controller)
         .fmap(controller => controller.name)
@@ -38,7 +38,7 @@ export class Rule extends Lint.Rules.AbstractRule {
             suffixList = ['Component'];
           }
           if (!Rule.validate(className, suffixList)) {
-            return [new Failure(name, sprintf(Rule.FAILURE, className, suffixList))];
+            return [new Failure(name, sprintf(Rule.FAILURE_STRING, className, suffixList))];
           }
         })
     )
@@ -48,7 +48,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     return suffixList.some(suffix => className.endsWith(suffix));
   }
 
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(Rule.walkerBuilder(sourceFile, this.getOptions()));
   }
 }

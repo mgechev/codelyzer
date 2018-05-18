@@ -1,5 +1,5 @@
 import { sprintf } from 'sprintf-js';
-import { IOptions, IRuleMetadata, RuleFailure, Rules } from 'tslint/lib';
+import { IOptions, IRuleMetadata, RuleFailure, Rules, Utils } from 'tslint/lib';
 import { Decorator, PropertyDeclaration, SourceFile } from 'typescript';
 
 import { NgWalker } from './angular/ngWalker';
@@ -7,14 +7,20 @@ import { NgWalker } from './angular/ngWalker';
 export class Rule extends Rules.AbstractRule {
   static readonly metadata: IRuleMetadata = {
     description: 'Input names should not be prefixed by the configured disallowed prefixes.',
-    optionExamples: ['[true, "can", "is", "should"]'],
+    optionExamples: [[true, 'can', 'is', 'should']],
     options: {
-      items: [{ type: 'string' }],
+      items: [
+        {
+          type: 'string'
+        }
+      ],
+      minLength: 1,
       type: 'array'
     },
     optionsDescription: 'Options accept a string array of disallowed input prefixes.',
-    rationale: `HTML attributes are not prefixed. It's considered best not to prefix Inputs.
-    * Example: 'enabled' is prefered over 'isEnabled'.
+    rationale: Utils.dedent`
+      HTML attributes are not prefixed. It's considered best not to prefix Inputs.
+      * Example: 'enabled' is prefered over 'isEnabled'.
     `,
     ruleName: 'no-input-prefix',
     type: 'maintainability',
@@ -25,6 +31,17 @@ export class Rule extends Rules.AbstractRule {
 
   apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(new NoInputPrefixWalker(sourceFile, this.getOptions()));
+  }
+
+  isEnabled(): boolean {
+    const {
+      metadata: {
+        options: { minLength }
+      }
+    } = Rule;
+    const { length } = this.ruleArguments;
+
+    return super.isEnabled() && length >= minLength;
   }
 }
 

@@ -41,7 +41,7 @@ class ImportDestructuringSpacingWalker extends RuleWalker {
   private getFix(node: NamedImports, totalLeadingSpaces: number, totalTrailingSpaces: number): Fix {
     const nodeStartPos = node.getStart();
     const nodeEndPos = node.getEnd();
-    let fix: Fix = [];
+    const fix: Fix = [];
 
     if (totalLeadingSpaces === 0) {
       fix.push(Replacement.appendText(nodeStartPos + 1, ' '));

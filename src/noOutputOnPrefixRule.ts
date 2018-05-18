@@ -1,24 +1,24 @@
+import { sprintf } from 'sprintf-js';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import { sprintf } from 'sprintf-js';
 import { NgWalker } from './angular/ngWalker';
 
 export class Rule extends Lint.Rules.AbstractRule {
-  public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'no-output-on-prefix',
-    type: 'maintainability',
+  static readonly metadata: Lint.IRuleMetadata = {
     description: 'Name events without the prefix on.',
     descriptionDetails: 'See more at https://angular.io/guide/styleguide#dont-prefix-output-properties.',
-    rationale: `Angular allows for an alternative syntax on-*. If the event itself was prefixed with on
-     this would result in an on-onEvent binding expression.`,
     options: null,
     optionsDescription: 'Not configurable.',
+    rationale:
+      'Angular allows for an alternative syntax on-*. If the event itself was prefixed with on this would result in an on-onEvent binding expression.',
+    ruleName: 'no-output-on-prefix',
+    type: 'maintainability',
     typescriptOnly: true
   };
 
-  static FAILURE_STRING = 'In the class "%s", the output ' + 'property "%s" should not be prefixed with on';
+  static readonly FAILURE_STRING = 'In the class "%s", the output property "%s" should not be prefixed with on';
 
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new OutputWalker(sourceFile, this.getOptions()));
   }
 }
