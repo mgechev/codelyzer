@@ -14,6 +14,8 @@ A set of tslint rules for static code analysis of Angular TypeScript projects.
 
 You can run the static code analyzer over web apps, NativeScript, Ionic, etc.
 
+**Vote for your favorite feature [here](https://github.com/mgechev/codelyzer/issues?utf8=%E2%9C%93&q=label%3A%22votes+needed%22+sort%3Areactions-%2B1-desc+). For more details about the feature request process see [this document](https://github.com/mgechev/codelyzer/blob/master/CONTRIBUTING.md#-missing-a-feature)**
+
 [![](http://s32.postimg.org/vo1xrbgw5/codelyzer.png)](https://youtu.be/bci-Z6nURgE)
 
 ## How to use?
