@@ -26,7 +26,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 }
 
 export class ClassMetadataWalker extends NgWalker {
-  className: string;
+  className!: string;
   isInjectable = false;
   isComponent = false;
   isDirective = false;
@@ -95,7 +95,7 @@ export class ClassMetadataWalker extends NgWalker {
   }
 
   protected visitNgInjectable(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
-    this.className = controller.name.text;
+    this.className = controller.name!.text;
     this.isInjectable = true;
     this.isComponent = false;
     this.isDirective = false;
@@ -104,7 +104,7 @@ export class ClassMetadataWalker extends NgWalker {
   }
 
   protected visitNgComponent(metadata: ComponentMetadata) {
-    this.className = metadata.controller.name.text;
+    this.className = metadata.controller.name!.text;
     this.isComponent = true;
     this.isInjectable = false;
     this.isDirective = false;
@@ -113,7 +113,7 @@ export class ClassMetadataWalker extends NgWalker {
   }
 
   protected visitNgDirective(metadata: DirectiveMetadata) {
-    this.className = metadata.controller.name.text;
+    this.className = metadata.controller.name!.text;
     this.isDirective = true;
     this.isInjectable = false;
     this.isComponent = false;
@@ -122,7 +122,7 @@ export class ClassMetadataWalker extends NgWalker {
   }
 
   protected visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
-    this.className = controller.name.text;
+    this.className = controller.name!.text;
     this.isPipe = true;
     this.isInjectable = false;
     this.isComponent = false;

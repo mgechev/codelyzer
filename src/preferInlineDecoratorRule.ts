@@ -74,17 +74,17 @@ export class PreferInlineDecoratorWalker extends NgWalker {
   }
 
   protected visitMethodDecorator(decorator: Decorator) {
-    this.validateDecorator(decorator, decorator.parent);
+    this.validateDecorator(decorator, decorator.parent!);
     super.visitMethodDecorator(decorator);
   }
 
   protected visitPropertyDecorator(decorator: Decorator) {
-    this.validateDecorator(decorator, decorator.parent);
+    this.validateDecorator(decorator, decorator.parent!);
     super.visitPropertyDecorator(decorator);
   }
 
   private validateDecorator(decorator: Decorator, property: Node) {
-    const decoratorName: DecoratorKeys = getDecoratorName(decorator);
+    const decoratorName = getDecoratorName(decorator) as DecoratorKeys;
     const isDecoratorBlacklisted = this.blacklistedDecorators.has(decoratorName);
 
     if (isDecoratorBlacklisted) {

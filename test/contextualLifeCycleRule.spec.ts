@@ -1,4 +1,4 @@
-import { assertAnnotated, assertFailures, assertSuccess } from './testHelper';
+import { assertAnnotated, assertSuccess } from './testHelper';
 
 describe('contextual-life-cycle', () => {
   describe('success', () => {

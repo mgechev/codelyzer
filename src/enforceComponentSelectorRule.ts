@@ -25,8 +25,9 @@ export class Rule extends Lint.Rules.AbstractRule {
 export class EnforceComponentSelectorValidatorWalker extends NgWalker {
   protected visitNgComponent(metadata: ComponentMetadata) {
     if (!metadata.selector) {
-      this.addFailureAtNode(metadata.decorator, sprintf(Rule.SELECTOR_FAILURE, metadata.controller.name.text));
+      this.addFailureAtNode(metadata.decorator, sprintf(Rule.SELECTOR_FAILURE, metadata.controller.name!.text));
     }
+
     super.visitNgComponent(metadata);
   }
 }

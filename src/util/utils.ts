@@ -2,11 +2,11 @@ import * as ts from 'typescript';
 const SyntaxKind = require('./syntaxKind');
 
 // Lewenshtein algorithm
-export const stringDistance = (s: string, t: string, ls: number = s.length, lt: number = t.length) => {
-  let memo = [];
+export const stringDistance = (s: string, t: string, ls = s.length, lt = t.length) => {
+  let memo = {};
   let currRowMemo;
-  let i;
-  let k;
+  let i: number;
+  let k: number;
   for (k = 0; k <= lt; k += 1) {
     memo[k] = k;
   }
@@ -25,27 +25,24 @@ export const isSimpleTemplateString = (e: any) => {
 };
 
 export const getDecoratorPropertyInitializer = (decorator: ts.Decorator, name: string) => {
-  return (<ts.ObjectLiteralExpression>(<ts.CallExpression>decorator.expression).arguments[0]).properties
-    .map((prop: any) => {
-      if (prop.name.text === name) {
-        return prop;
-      }
-      return null;
-    })
-    .filter((el: any) => !!el)
-    .map((prop: any) => prop.initializer)
-    .pop();
+  return (
+    (<ts.ObjectLiteralExpression>(<ts.CallExpression>decorator.expression).arguments[0]).properties
+      // .map(prop => ((prop.name as any).text === name) ? prop : null)
+      .filter(prop => (prop.name as any).text === name)
+      .map((prop: any) => prop.initializer)
+      .pop()
+  );
 };
 
-export const getDecoratorName = (decorator: ts.Decorator) => {
-  let baseExpr = <any>decorator.expression || {};
-  let expr = baseExpr.expression || {};
-  return expr.text;
+export const getDecoratorName = (decorator: ts.Decorator): string | undefined => {
+  return ts.isCallExpression(decorator.expression) && ts.isIdentifier(decorator.expression.expression)
+    ? decorator.expression.expression.text
+    : undefined;
 };
 
 export const getComponentDecorator = (declaration: ts.ClassDeclaration) => {
   return ([].slice.apply(declaration.decorators) || [])
-    .filter((d: any) => {
+    .filter(d => {
       if (
         !(<ts.CallExpression>d.expression).arguments ||
         !(<ts.CallExpression>d.expression).arguments.length ||
@@ -59,6 +56,12 @@ export const getComponentDecorator = (declaration: ts.ClassDeclaration) => {
       }
     })
     .pop();
+};
+
+export const getInterfaceName = (expression: ts.ExpressionWithTypeArguments): string => {
+  const { expression: childExpression } = expression;
+
+  return ts.isPropertyAccessExpression(childExpression) ? childExpression.name.getText() : childExpression.getText();
 };
 
 export const maybeNodeArray = <T extends ts.Node>(nodes: ts.NodeArray<T>): ReadonlyArray<T> => {

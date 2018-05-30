@@ -2,8 +2,7 @@ import { sprintf } from 'sprintf-js';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { ComponentMetadata } from './angular/metadata';
-import { NgWalker } from './angular/ngWalker';
-import { F2, Maybe } from './util/function';
+import { Maybe } from './util/function';
 import { Failure } from './walkerFactory/walkerFactory';
 import { all, validateComponent } from './walkerFactory/walkerFn';
 
@@ -28,18 +27,20 @@ export class Rule extends Lint.Rules.AbstractRule {
 
   static readonly FAILURE_STRING = 'The name of the class %s should end with the suffix %s (https://angular.io/styleguide#style-02-03)';
 
-  static walkerBuilder: F2<ts.SourceFile, Lint.IOptions, NgWalker> = all(
-    validateComponent((meta: ComponentMetadata, suffixList?: string[]) =>
+  static walkerBuilder = all(
+    validateComponent((meta: ComponentMetadata, suffixList: string[] = []) =>
       Maybe.lift(meta.controller)
         .fmap(controller => controller.name)
         .fmap(name => {
-          const className = name.text;
-          if (suffixList.length === 0) {
-            suffixList = ['Component'];
+          const { text } = name!;
+          const failures: Failure[] = [];
+          const suffixes = suffixList.length > 0 ? suffixList : ['Component'];
+
+          if (!Rule.validate(text, suffixes)) {
+            failures.push(new Failure(name!, sprintf(Rule.FAILURE_STRING, text, suffixes)));
           }
-          if (!Rule.validate(className, suffixList)) {
-            return [new Failure(name, sprintf(Rule.FAILURE_STRING, className, suffixList))];
-          }
+
+          return failures;
         })
     )
   );

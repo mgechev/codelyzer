@@ -21,7 +21,7 @@ export interface WalkerBuilder<T extends Walkable> {
 }
 
 class NgComponentWalkerBuilder implements WalkerBuilder<'NgComponent'> {
-  private _where: F1<ComponentMetadata, Maybe<Failure>>;
+  private _where!: F1<ComponentMetadata, Maybe<Failure>>;
 
   where(validate: F1<ComponentMetadata, Maybe<Failure>>): NgComponentWalkerBuilder {
     this._where = validate;
@@ -33,7 +33,7 @@ class NgComponentWalkerBuilder implements WalkerBuilder<'NgComponent'> {
     const e = class extends NgWalker {
       visitNgComponent(meta: ComponentMetadata) {
         self._where(meta).fmap(failure => {
-          this.addFailureAtNode(failure.node, failure.message);
+          this.addFailureAtNode(failure!.node, failure!.message);
         });
         super.visitNgComponent(meta);
       }

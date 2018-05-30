@@ -198,14 +198,15 @@ export class OutputMetadataWalker extends NgWalker {
   ]);
 
   protected visitNgOutput(property: ts.PropertyDeclaration, output: ts.Decorator, args: string[]) {
-    let className = (<any>property).parent.name.text;
-    let memberName = (<any>property.name).text;
-    let outputName = args.length === 0 ? memberName : args[0];
+    const className = (property.parent as any).name.text;
+    const memberName = (property.name as any).text;
+    const outputName = args.length === 0 ? memberName : args[0];
 
     if (outputName && this.standardEventNames.get(outputName)) {
-      const errorMessage = sprintf(Rule.FAILURE_STRING, className, memberName);
-      this.addFailureAtNode(property, errorMessage);
+      const failure = sprintf(Rule.FAILURE_STRING, className, memberName);
+      this.addFailureAtNode(property, failure);
     }
+
     super.visitNgOutput(property, output, args);
   }
 }

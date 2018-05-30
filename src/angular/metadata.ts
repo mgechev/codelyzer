@@ -3,35 +3,30 @@ import { RawSourceMap } from 'source-map';
 
 export interface CodeWithSourceMap {
   code: string;
-  source?: string;
   map?: RawSourceMap;
+  source?: string;
 }
 
-export interface TemplateMetadata {
-  template: CodeWithSourceMap;
-  node: ts.Node;
-  url: string;
+interface PropertyMetadata {
+  node?: ts.Node;
+  url?: string;
 }
 
-export interface StyleMetadata {
+export interface StyleMetadata extends PropertyMetadata {
   style: CodeWithSourceMap;
-  node: ts.Node;
-  url: string;
 }
 
-export interface StylesMetadata {
-  [index: number]: StyleMetadata;
-  length: number;
-  push(e: StyleMetadata): number;
+export interface TemplateMetadata extends PropertyMetadata {
+  template: CodeWithSourceMap;
 }
 
 export class DirectiveMetadata {
-  selector: string;
-  controller: ts.ClassDeclaration;
-  decorator: ts.Decorator;
+  controller!: ts.ClassDeclaration;
+  decorator!: ts.Decorator;
+  selector!: string;
 }
 
 export class ComponentMetadata extends DirectiveMetadata {
-  template: TemplateMetadata;
-  styles: StylesMetadata;
+  styles!: StyleMetadata[];
+  template!: TemplateMetadata;
 }

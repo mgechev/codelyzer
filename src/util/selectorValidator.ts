@@ -17,22 +17,25 @@ export const SelectorValidator = {
 
   prefix(prefix: string, selectorType: string): Function {
     const regex = new RegExp(`^\\[?(${prefix})`);
+
     return (selector: string) => {
       if (!prefix) {
         return true;
       }
+
       if (!regex.test(selector)) {
         return false;
-      } else {
-        const suffix = selector.replace(regex, '');
-        if (selectorType === 'camelCase') {
-          return !suffix || suffix[0] === suffix[0].toUpperCase();
-        } else if (selectorType === 'kebab-case') {
-          return !suffix || suffix[0] === '-';
-        } else {
-          throw new Error('Invalid selector type');
-        }
       }
+
+      const suffix = selector.replace(regex, '');
+
+      if (selectorType === 'camelCase') {
+        return !suffix || suffix[0] === suffix[0].toUpperCase();
+      } else if (selectorType === 'kebab-case') {
+        return !suffix || suffix[0] === '-';
+      }
+
+      throw Error('Invalid selector type');
     };
   }
 };

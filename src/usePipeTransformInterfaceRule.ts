@@ -1,59 +1,54 @@
-import * as Lint from 'tslint';
-import * as ts from 'typescript';
 import { sprintf } from 'sprintf-js';
-import SyntaxKind = require('./util/syntaxKind');
+import { IRuleMetadata, RuleFailure, Rules, RuleWalker } from 'tslint/lib';
+import { ClassDeclaration, SourceFile, SyntaxKind } from 'typescript/lib/typescript';
+import { getDecoratorName, getInterfaceName } from './util/utils';
 
-const getInterfaceName = (t: any) => {
-  if (t.expression && t.expression.name) {
-    return t.expression.name.text;
-  }
-  return t.expression.text;
-};
-
-export class Rule extends Lint.Rules.AbstractRule {
-  public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'use-pipe-transform-interface',
-    type: 'maintainability',
+export class Rule extends Rules.AbstractRule {
+  static readonly metadata: IRuleMetadata = {
     description: 'Ensure that pipes implement PipeTransform interface.',
-    rationale: 'Interfaces prescribe typed method signatures. Use those signatures to flag spelling and syntax mistakes.',
     options: null,
     optionsDescription: 'Not configurable.',
+    rationale: 'Interfaces prescribe typed method signatures. Use those signatures to flag spelling and syntax mistakes.',
+    ruleName: 'use-pipe-transform-interface',
+    type: 'maintainability',
     typescriptOnly: true
   };
 
-  static FAILURE: string = 'The %s class has the Pipe decorator, so it should implement the PipeTransform interface';
-  static PIPE_INTERFACE_NAME = 'PipeTransform';
+  static readonly FAILURE_STRING = 'The %s class has the Pipe decorator, so it should implement the PipeTransform interface';
+  static readonly PIPE_INTERFACE_NAME = 'PipeTransform';
 
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this.getOptions()));
   }
 }
 
-export class ClassMetadataWalker extends Lint.RuleWalker {
-  visitClassDeclaration(node: ts.ClassDeclaration) {
-    let decorators = node.decorators;
-    if (decorators) {
-      let pipes: Array<string> = decorators
-        .map(d => (<any>d.expression).text || ((<any>d.expression).expression || {}).text)
-        .filter(t => t === 'Pipe');
-      if (pipes.length !== 0) {
-        let className: string = node.name.text;
-        if (!this.hasIPipeTransform(node)) {
-          this.addFailureAtNode(node, sprintf(Rule.FAILURE, className));
-        }
-      }
-    }
+const hasPipe = (node: ClassDeclaration): boolean => {
+  return !!(node.decorators && node.decorators.map(getDecoratorName).some(t => t === 'Pipe'));
+};
+
+const hasPipeTransform = (node: ClassDeclaration): boolean => {
+  const { heritageClauses } = node;
+
+  if (!heritageClauses) {
+    return false;
+  }
+
+  const interfacesClauses = heritageClauses.filter(h => h.token === SyntaxKind.ImplementsKeyword);
+
+  return interfacesClauses.length > 0 && interfacesClauses[0].types.map(getInterfaceName).indexOf(Rule.PIPE_INTERFACE_NAME) !== -1;
+};
+
+export class ClassMetadataWalker extends RuleWalker {
+  visitClassDeclaration(node: ClassDeclaration) {
+    this.validateClassDeclaration(node);
     super.visitClassDeclaration(node);
   }
 
-  private hasIPipeTransform(node: ts.ClassDeclaration): boolean {
-    let interfaces = [];
-    if (node.heritageClauses) {
-      let interfacesClause = node.heritageClauses.filter(h => h.token === SyntaxKind.current().ImplementsKeyword);
-      if (interfacesClause.length !== 0) {
-        interfaces = interfacesClause[0].types.map(getInterfaceName);
-      }
+  private validateClassDeclaration(node: ClassDeclaration) {
+    if (!hasPipe(node) || hasPipeTransform(node)) {
+      return;
     }
-    return interfaces.indexOf(Rule.PIPE_INTERFACE_NAME) !== -1;
+
+    this.addFailureAtNode(node, sprintf(Rule.FAILURE_STRING, node.name!.text));
   }
 }

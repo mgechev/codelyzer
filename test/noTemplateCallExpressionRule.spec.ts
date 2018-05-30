@@ -1,6 +1,4 @@
 import { assertSuccess, assertAnnotated } from './testHelper';
-import { Replacement } from 'tslint';
-import { expect } from 'chai';
 
 describe('no-template-call-expression', () => {
   describe('success', () => {

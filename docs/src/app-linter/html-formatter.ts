@@ -14,7 +14,7 @@ export class HtmlFormatter implements Formatter {
   }
 
   private linkify(inputText: string) {
-    let replacedText: string, replacePattern1: RegExp, replacePattern2: RegExp, replacePattern3: RegExp;
+    let replacedText: string, replacePattern1: RegExp, replacePattern2: RegExp;
 
     // URLs starting with http://, https://, or ftp://
     replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;

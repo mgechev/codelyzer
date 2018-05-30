@@ -6,7 +6,7 @@ import { F1, F2, Maybe } from '../util/function';
 import { Failure } from './walkerFactory';
 
 export type Validator = NodeValidator | ComponentValidator;
-export type ValidateFn<T> = F2<T, IOptions, Maybe<Failure[]>>;
+export type ValidateFn<T> = F2<T, IOptions, Maybe<Failure[] | undefined>>;
 export type WalkerOptions = any;
 
 export interface NodeValidator {
@@ -22,11 +22,11 @@ export interface ComponentValidator {
 export function validate(syntaxKind: ts.SyntaxKind): F1<ValidateFn<ts.Node>, NodeValidator> {
   return validateFn => ({
     kind: 'Node',
-    validate: (node: ts.Node, options: WalkerOptions) => (node.kind === syntaxKind ? validateFn(node, options) : Maybe.nothing)
+    validate: (node: ts.Node, options: WalkerOptions) => (node.kind === syntaxKind ? validateFn!(node, options) : Maybe.nothing)
   });
 }
 
-export function validateComponent(validate: F2<ComponentMetadata, WalkerOptions, Maybe<Failure[]>>): ComponentValidator {
+export function validateComponent(validate: F2<ComponentMetadata, WalkerOptions, Maybe<Failure[] | undefined>>): ComponentValidator {
   return {
     kind: 'NgComponent',
     validate
@@ -39,7 +39,7 @@ export function all(...validators: Validator[]): F2<ts.SourceFile, IOptions, NgW
       visitNgComponent(meta: ComponentMetadata) {
         validators.forEach(v => {
           if (v.kind === 'NgComponent') {
-            v.validate(meta, this.getOptions()).fmap(failures => failures.forEach(f => this.generateFailure(f)));
+            v.validate(meta, this.getOptions()).fmap(failures => failures!.forEach(f => this.generateFailure(f)));
           }
         });
         super.visitNgComponent(meta);
@@ -48,7 +48,7 @@ export function all(...validators: Validator[]): F2<ts.SourceFile, IOptions, NgW
       visitNode(node: ts.Node) {
         validators.forEach(v => {
           if (v.kind === 'Node') {
-            v.validate(node, this.getOptions()).fmap(failures => failures.forEach(f => this.generateFailure(f)));
+            v.validate(node, this.getOptions()).fmap(failures => failures!.forEach(f => this.generateFailure(f)));
           }
         });
         super.visitNode(node);

@@ -39,7 +39,7 @@ import * as path from 'path';
 
 import { IFormatterMetadata, IRuleMetadata } from 'tslint';
 
-type Metadata = IRuleMetadata | IFormatterMetadata;
+type Metadata = IRuleMetadata | IFormatterMetadata | undefined;
 
 interface Documented {
   metadata: Metadata;

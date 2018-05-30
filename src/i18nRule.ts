@@ -44,7 +44,7 @@ class I18NTextVisitor extends BasicTemplateAstVisitor implements ConfigurableVis
   static Error = 'Each element containing text node should have an i18n attribute';
 
   private hasI18n = false;
-  private nestedElements = [];
+  private nestedElements: string[] = [];
   private visited = new Set<ast.TextAst | ast.BoundTextAst>();
 
   visitText(text: ast.TextAst, context: BasicTemplateAstVisitor) {
@@ -109,7 +109,7 @@ class I18NTemplateVisitor extends BasicTemplateAstVisitor {
   ];
 
   visit(a: any, context: any) {
-    super.visit(a, context);
+    super.visit!(a, context);
   }
 
   visitAttr(attr: ast.AttrAst, context: any): any {

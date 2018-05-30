@@ -52,7 +52,7 @@ export const getFailureMessage = (totalComplexity: number, maxComplexity = Rule.
 };
 
 const getTotalComplexity = (ast: AST): number => {
-  const expr = (ast as ASTWithSource).source.replace(/\s/g, '');
+  const expr = ((ast as ASTWithSource).source || '').replace(/\s/g, '');
   const expressionParser = new Parser(new Lexer());
   const astWithSource = expressionParser.parseAction(expr, null);
   const conditions: Binary[] = [];
@@ -65,7 +65,7 @@ const getTotalComplexity = (ast: AST): number => {
   }
 
   while (conditions.length > 0) {
-    condition = conditions.pop();
+    condition = conditions.pop()!;
 
     if (!condition.operation) {
       continue;

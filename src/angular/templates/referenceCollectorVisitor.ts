@@ -31,12 +31,12 @@ export class ReferenceCollectorVisitor implements ast.TemplateAstVisitor {
 
   visitEmbeddedTemplate(ast: ast.EmbeddedTemplateAst, context: any): any {
     ast.references.forEach(r => (this._variables[r.name] = true));
-    ast.children.forEach(e => this.visit(e, context));
+    ast.children.forEach(e => this.visit!(e, context));
   }
 
   visitElement(element: ast.ElementAst, context: any): any {
     element.references.forEach(r => (this._variables[r.name] = true));
-    element.children.forEach(e => this.visit(e, context));
+    element.children.forEach(e => this.visit!(e, context));
   }
 
   get variables() {

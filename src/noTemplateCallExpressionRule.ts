@@ -20,8 +20,8 @@ export class Rule extends Lint.Rules.AbstractRule {
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     const walkerConfig: NgWalkerConfig = {
-      templateVisitorCtrl: TemplateVisitor,
-      expressionVisitorCtrl: ExpressionVisitor
+      expressionVisitorCtrl: ExpressionVisitor,
+      templateVisitorCtrl: TemplateVisitor
     };
 
     return this.applyWithWalker(new NgWalker(sourceFile, this.getOptions(), walkerConfig));
