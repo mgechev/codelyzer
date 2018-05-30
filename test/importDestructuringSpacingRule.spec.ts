@@ -66,7 +66,7 @@ describe(ruleName, () => {
         return;
       }
 
-      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()));
+      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
 
       expect(replacement).to.eq(`
         import { Foo } from './foo';
@@ -85,7 +85,7 @@ describe(ruleName, () => {
         return;
       }
 
-      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()));
+      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
 
       expect(replacement).to.eq(`
         import { Bar, BarFoo, Foo } from './foo';
@@ -104,7 +104,7 @@ describe(ruleName, () => {
         return;
       }
 
-      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()));
+      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
 
       expect(replacement).to.eq(`
         import { Bar, BarFoo, Foo } from './foo';
@@ -123,7 +123,7 @@ describe(ruleName, () => {
         return;
       }
 
-      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()));
+      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
 
       expect(replacement).to.eq(`
         import { Bar, BarFoo, Foo } from './foo';

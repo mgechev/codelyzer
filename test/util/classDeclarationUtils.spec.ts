@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import * as tslint from 'tslint';
+import * as Lint from 'tslint';
 
 import { NgWalker } from '../../src/angular/ngWalker';
 import { getDeclaredMethodNames, getDeclaredPropertyNames } from '../../src/util/classDeclarationUtils';
@@ -15,10 +15,10 @@ describe('ngWalker', () => {
         baz() {}
       }
     `;
-    let ruleArgs: tslint.IOptions = {
+    let ruleArgs: Lint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null,
+      disabledIntervals: [],
       ruleSeverity: 'warning'
     };
     let properties: FlatSymbolTable = {};
@@ -31,7 +31,7 @@ describe('ngWalker', () => {
       }
     }
 
-    let sf = ts.createSourceFile('foo', source, null);
+    let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new ClassUtilWalker(sf, ruleArgs);
     walker.walk(sf);
     chai.expect(methods).to.deep.eq({ bar: true, baz: true });

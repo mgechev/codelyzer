@@ -41,8 +41,8 @@ describe(ruleName, () => {
               childTest: ChildTest;
             }
           `;
-          const failures = assertFailure(ruleName, source, expectedFailure);
-          const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()));
+          const failures = assertFailure(ruleName, source, expectedFailure)!;
+          const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
 
           expect(replacement).to.eq(`
             class ${className} {

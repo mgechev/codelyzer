@@ -1,35 +1,31 @@
+import * as compiler from '@angular/compiler';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import * as compiler from '@angular/compiler';
-import { parseTemplate } from './templates/templateParser';
-
-import { parseCss } from './styles/parseCss';
-import { CssAst } from './styles/cssAst';
-import { BasicCssAstVisitor, CssAstVisitorCtrl } from './styles/basicCssAstVisitor';
-
-import { RecursiveAngularExpressionVisitorCtr, BasicTemplateAstVisitor, TemplateAstVisitorCtr } from './templates/basicTemplateAstVisitor';
-import { RecursiveAngularExpressionVisitor } from './templates/recursiveAngularExpressionVisitor';
-import { ReferenceCollectorVisitor } from './templates/referenceCollectorVisitor';
-
-import { MetadataReader } from './metadataReader';
-import { ComponentMetadata, DirectiveMetadata, StyleMetadata } from './metadata';
-import { ngWalkerFactoryUtils } from './ngWalkerFactoryUtils';
-
-import { Config } from './config';
-
 import { logger } from '../util/logger';
 import { getDecoratorName, maybeNodeArray } from '../util/utils';
+import { Config } from './config';
+import { ComponentMetadata, DirectiveMetadata, StyleMetadata } from './metadata';
+import { MetadataReader } from './metadataReader';
+import { ngWalkerFactoryUtils } from './ngWalkerFactoryUtils';
+import { BasicCssAstVisitor, CssAstVisitorCtrl } from './styles/basicCssAstVisitor';
+import { CssAst } from './styles/cssAst';
+import { parseCss } from './styles/parseCss';
+import { BasicTemplateAstVisitor, RecursiveAngularExpressionVisitorCtr, TemplateAstVisitorCtr } from './templates/basicTemplateAstVisitor';
+import { RecursiveAngularExpressionVisitor } from './templates/recursiveAngularExpressionVisitor';
+import { ReferenceCollectorVisitor } from './templates/referenceCollectorVisitor';
+import { parseTemplate } from './templates/templateParser';
 
-const getDecoratorStringArgs = (decorator: ts.Decorator) => {
-  let baseExpr = <any>decorator.expression || {};
-  let args = baseExpr.arguments || [];
-  return args.map(a => (a.kind === ts.SyntaxKind.StringLiteral ? a.text : null));
+const getDecoratorStringArgs = (decorator: ts.Decorator): (string | null)[] => {
+  const { expression } = decorator;
+  const args = ts.isCallExpression(expression) ? expression.arguments : ts.createNodeArray();
+
+  return args.map(a => (ts.isStringLiteral(a) ? a.text : null));
 };
 
 export interface NgWalkerConfig {
+  cssVisitorCtrl?: CssAstVisitorCtrl;
   expressionVisitorCtrl?: RecursiveAngularExpressionVisitorCtr;
   templateVisitorCtrl?: TemplateAstVisitorCtr;
-  cssVisitorCtrl?: CssAstVisitorCtrl;
 }
 
 export class NgWalker extends Lint.RuleWalker {
@@ -44,16 +40,16 @@ export class NgWalker extends Lint.RuleWalker {
     this._metadataReader = this._metadataReader || ngWalkerFactoryUtils.defaultMetadataReader();
     this._config = Object.assign(
       {
+        cssVisitorCtrl: BasicCssAstVisitor,
         templateVisitorCtrl: BasicTemplateAstVisitor,
-        expressionVisitorCtrl: RecursiveAngularExpressionVisitor,
-        cssVisitorCtrl: BasicCssAstVisitor
+        expressionVisitorCtrl: RecursiveAngularExpressionVisitor
       },
       this._config || {}
     );
   }
 
   visitClassDeclaration(declaration: ts.ClassDeclaration) {
-    const metadata = this._metadataReader.read(declaration);
+    const metadata = this._metadataReader!.read(declaration);
     if (metadata instanceof ComponentMetadata) {
       this.visitNgComponent(metadata);
     } else if (metadata instanceof DirectiveMetadata) {
@@ -134,7 +130,7 @@ export class NgWalker extends Lint.RuleWalker {
 
   protected visitNgComponent(metadata: ComponentMetadata) {
     const template = metadata.template;
-    const getPosition = (node: any) => {
+    const getPosition = (node: ts.Node) => {
       let pos = 0;
       if (node) {
         pos = node.pos + 1;
@@ -144,23 +140,23 @@ export class NgWalker extends Lint.RuleWalker {
       }
       return pos;
     };
+
+    const { styles = [] } = metadata;
+
+    for (const style of styles) {
+      try {
+        this.visitNgStyleHelper(parseCss(style.style.code), metadata, style, getPosition(style.node!));
+      } catch (e) {
+        logger.error('Cannot parse the styles of', ((<any>metadata.controller || {}).name || {}).text, e);
+      }
+    }
+
     if (template && template.template) {
       try {
         const templateAst = parseTemplate(template.template.code, Config.predefinedDirectives);
-        this.visitNgTemplateHelper(templateAst, metadata, getPosition(template.node));
+        this.visitNgTemplateHelper(templateAst, metadata, getPosition(template.node!));
       } catch (e) {
         logger.error('Cannot parse the template of', ((<any>metadata.controller || {}).name || {}).text, e);
-      }
-    }
-    const styles = metadata.styles;
-    if (styles && styles.length) {
-      for (let i = 0; i < styles.length; i += 1) {
-        const style = styles[i];
-        try {
-          this.visitNgStyleHelper(parseCss(style.style.code), metadata, style, getPosition(style.node));
-        } catch (e) {
-          logger.error('Cannot parse the styles of', ((<any>metadata.controller || {}).name || {}).text, e);
-        }
       }
     }
   }
@@ -173,72 +169,74 @@ export class NgWalker extends Lint.RuleWalker {
 
   protected visitNgInjectable(classDeclaration: ts.ClassDeclaration, decorator: ts.Decorator) {}
 
-  protected visitNgInput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {}
+  protected visitNgInput(property: ts.PropertyDeclaration, input: ts.Decorator, args: (string | null)[]) {}
 
-  protected visitNgOutput(property: ts.PropertyDeclaration, output: ts.Decorator, args: string[]) {}
+  protected visitNgOutput(property: ts.PropertyDeclaration, output: ts.Decorator, args: (string | null)[]) {}
 
-  protected visitNgHostBinding(property: ts.PropertyDeclaration, decorator: ts.Decorator, args: string[]) {}
+  protected visitNgHostBinding(property: ts.PropertyDeclaration, decorator: ts.Decorator, args: (string | null)[]) {}
 
-  protected visitNgHostListener(method: ts.MethodDeclaration, decorator: ts.Decorator, args: string[]) {}
+  protected visitNgHostListener(method: ts.MethodDeclaration, decorator: ts.Decorator, args: (string | null)[]) {}
 
-  protected visitNgContentChild(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {}
+  protected visitNgContentChild(property: ts.PropertyDeclaration, input: ts.Decorator, args: (string | null)[]) {}
 
-  protected visitNgContentChildren(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {}
+  protected visitNgContentChildren(property: ts.PropertyDeclaration, input: ts.Decorator, args: (string | null)[]) {}
 
-  protected visitNgViewChild(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {}
+  protected visitNgViewChild(property: ts.PropertyDeclaration, input: ts.Decorator, args: (string | null)[]) {}
 
-  protected visitNgViewChildren(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {}
+  protected visitNgViewChildren(property: ts.PropertyDeclaration, input: ts.Decorator, args: (string | null)[]) {}
 
   protected visitNgTemplateHelper(roots: compiler.TemplateAst[], context: ComponentMetadata, baseStart: number) {
     if (!roots || !roots.length) {
       return;
-    } else {
-      const sourceFile = this.getContextSourceFile(context.template.url, context.template.template.source);
-      const referenceVisitor = new ReferenceCollectorVisitor();
-      const visitor = new this._config.templateVisitorCtrl(
-        sourceFile,
-        this._originalOptions,
-        context,
-        baseStart,
-        this._config.expressionVisitorCtrl
-      );
-      compiler.templateVisitAll(referenceVisitor, roots, null);
-      visitor._variables = referenceVisitor.variables;
-      roots.forEach(r => visitor.visit(r, context.controller));
-      visitor
-        .getFailures()
-        .forEach(f =>
-          this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
-        );
     }
+
+    const sourceFile = this.getContextSourceFile(context.template.url!, context.template.template.source!);
+    const referenceVisitor = new ReferenceCollectorVisitor();
+    const visitor = new this._config!.templateVisitorCtrl!(
+      sourceFile,
+      this._originalOptions,
+      context,
+      baseStart,
+      this._config!.expressionVisitorCtrl!
+    );
+    compiler.templateVisitAll(referenceVisitor, roots, null);
+    visitor._variables = referenceVisitor.variables;
+    roots.forEach(r => visitor.visit(r, context.controller));
+    visitor
+      .getFailures()
+      .forEach(f =>
+        this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
+      );
   }
 
   protected visitNgStyleHelper(style: CssAst, context: ComponentMetadata, styleMetadata: StyleMetadata, baseStart: number) {
     if (!style) {
       return;
-    } else {
-      const sourceFile = this.getContextSourceFile(styleMetadata.url, styleMetadata.style.source);
-      const visitor = new this._config.cssVisitorCtrl(sourceFile, this._originalOptions, context, styleMetadata, baseStart);
-      style.visit(visitor);
-      visitor
-        .getFailures()
-        .forEach(f =>
-          this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
-        );
     }
+
+    const sourceFile = this.getContextSourceFile(styleMetadata.url!, styleMetadata.style.source!);
+    const visitor = new this._config!.cssVisitorCtrl!(sourceFile, this._originalOptions, context, styleMetadata, baseStart);
+    style.visit(visitor);
+    visitor
+      .getFailures()
+      .forEach(f =>
+        this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
+      );
   }
 
   protected getContextSourceFile(path: string, content: string) {
-    const current = this.getSourceFile();
     if (!path) {
-      return current;
+      return this.getSourceFile();
     }
+
     const sf = ts.createSourceFile(path, `\`${content}\``, ts.ScriptTarget.ES5);
     const original = sf.getFullText;
+
     sf.getFullText = () => {
       const text = original.apply(sf);
       return text.substring(1, text.length - 1);
     };
+
     return sf;
   }
 }

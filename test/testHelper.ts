@@ -1,12 +1,7 @@
-import * as tslint from 'tslint';
-import * as Lint from 'tslint';
 import chai = require('chai');
-import * as ts from 'typescript';
-import { IOptions } from 'tslint';
+import { ILinterOptions, IOptions, Linter, LintResult, RuleFailure } from 'tslint/lib';
+import { SourceFile } from 'typescript/lib/typescript';
 import { loadRules, convertRuleOptions } from './utils';
-
-const fs = require('fs');
-const path = require('path');
 
 interface ISourcePosition {
   line: number;
@@ -32,41 +27,43 @@ export interface IExpectedFailure {
  * @param options additional options for the lint rule
  * @returns {LintResult} the result of linting
  */
-function lint(ruleName: string, source: string | ts.SourceFile, options: any): tslint.LintResult {
+function lint(ruleName: string, source: string | SourceFile, options: any): LintResult {
   let configuration = {
     extends: [],
-    rules: new Map<string, Partial<tslint.IOptions>>(),
-    jsRules: new Map<string, Partial<tslint.IOptions>>(),
+    rules: new Map<string, Partial<IOptions>>(),
+    jsRules: new Map<string, Partial<IOptions>>(),
     rulesDirectory: []
   };
   if (!options) {
     options = [];
   }
-  const ops: Partial<tslint.IOptions> = { ruleName, ruleArguments: options, disabledIntervals: [] };
+  const ops: Partial<IOptions> = { ruleName, ruleArguments: options, disabledIntervals: [] };
   configuration.rules.set(ruleName, ops);
-  const linterOptions: tslint.ILinterOptions = {
+  const linterOptions: ILinterOptions = {
     formatter: 'json',
     rulesDirectory: './dist/src',
-    formattersDirectory: null,
+    formattersDirectory: undefined,
     fix: false
   };
 
-  let linter = new tslint.Linter(linterOptions, undefined);
+  let linter = new Linter(linterOptions, undefined);
   if (typeof source === 'string') {
     linter.lint('file.ts', source, configuration);
   } else {
     const rules = loadRules(convertRuleOptions(configuration.rules), linterOptions.rulesDirectory, false);
-    const res = [].concat.apply([], rules.map(r => r.apply(source))) as tslint.RuleFailure[];
+    const res = [].concat.apply([], rules.map(r => r.apply(source))) as RuleFailure[];
     const errCount = res.filter(r => !r.getRuleSeverity || r.getRuleSeverity() === 'error').length;
+
     return {
       errorCount: errCount,
       warningCount: res.length - errCount,
       output: '',
-      format: null,
+      format: '',
       fixes: [].concat.apply(res.map(r => r.getFix())),
       failures: res
     };
   }
+
   return linter.getResult();
 }
 
@@ -112,41 +109,48 @@ export interface AssertMultipleConfigs {
  *                   failures where there are multiple invalid characters.
  * @returns {{source: string, failure: {message: string, startPosition: null, endPosition: any}}}
  */
-const parseInvalidSource = (source: string, message: string, specialChar: string = '~', otherChars: string[] = []) => {
+const parseInvalidSource = (source: string, message: string, specialChar = '~', otherChars: string[] = []) => {
   otherChars.forEach(char => source.replace(new RegExp(char, 'g'), ' '));
-  let start = null;
+
+  let start;
   let end;
   let line = 0;
   let col = 0;
   let lastCol = 0;
   let lastLine = 0;
+
   for (let i = 0; i < source.length; i += 1) {
-    if (source[i] === specialChar && source[i - 1] !== '/' && start === null) {
+    if (source[i] === specialChar && source[i - 1] !== '/' && start === undefined) {
       start = {
         line: line - 1,
         character: col
       };
     }
+
     if (source[i] === '\n') {
       col = 0;
       line += 1;
     } else {
       col += 1;
     }
+
     if (source[i] === specialChar && source[i - 1] !== '/') {
       lastCol = col;
       lastLine = line - 1;
     }
   }
+
   end = {
     line: lastLine,
     character: lastCol
   };
+
   source = source.replace(new RegExp(specialChar, 'g'), '');
+
   return {
-    source: source,
+    source,
     failure: {
-      message: message,
+      message,
       startPosition: start,
       endPosition: end
     }
@@ -160,40 +164,49 @@ const parseInvalidSource = (source: string, message: string, specialChar: string
  * @param config
  */
 export function assertAnnotated(config: AssertConfig) {
-  if (config.message) {
-    const parsed = parseInvalidSource(config.source, config.message);
-    return assertFailure(config.ruleName, parsed.source, parsed.failure, config.options);
-  } else {
-    return assertSuccess(config.ruleName, config.source, config.options);
+  const { message, options, ruleName, source: sourceConfig } = config;
+
+  if (message) {
+    const { failure, source } = parseInvalidSource(sourceConfig, message);
+
+    return assertFailure(ruleName, source, failure, options);
   }
+
+  return assertSuccess(ruleName, sourceConfig, options);
 }
 
 /**
  * Helper function which asserts multiple annotated failures.
  * @param configs
  */
-export function assertMultipleAnnotated(configs: AssertMultipleConfigs): Lint.RuleFailure[] {
+export function assertMultipleAnnotated(configs: AssertMultipleConfigs): RuleFailure[] {
+  const { failures, options, ruleName, source } = configs;
+
   return [].concat.apply(
     [],
-    configs.failures
+    failures
       .map((failure, index) => {
-        const otherCharacters = configs.failures.map(message => message.char).filter(x => x !== failure.char);
-        if (failure.msg) {
-          const parsed = parseInvalidSource(configs.source, failure.msg, failure.char, otherCharacters);
-          return assertFailure(configs.ruleName, parsed.source, parsed.failure, configs.options, index).filter(f => {
-            const start = f.getStartPosition().getLineAndCharacter();
-            const end = f.getEndPosition().getLineAndCharacter();
-            return (
-              start.character === parsed.failure.startPosition.character &&
-              start.line === parsed.failure.endPosition.line &&
-              end.character === parsed.failure.endPosition.character &&
-              end.line === parsed.failure.endPosition.line
-            );
-          });
-        } else {
-          assertSuccess(configs.ruleName, configs.source, configs.options);
+        const otherCharacters = failures.map(message => message.char).filter(x => x !== failure.char);
+
+        if (!failure.msg) {
+          assertSuccess(ruleName, source, options);
+
           return null;
         }
+
+        const { failure: parsedFailure, source: parsedSource } = parseInvalidSource(source, failure.msg, failure.char, otherCharacters);
+
+        return (assertFailure(ruleName, parsedSource, parsedFailure, options, index) || []).filter(f => {
+          const { character: startChar, line: startLine } = f.getStartPosition().getLineAndCharacter();
+          const { character: endChar, line: endLine } = f.getEndPosition().getLineAndCharacter();
+
+          return (
+            startChar === parsedFailure.startPosition.character &&
+            startLine === parsedFailure.endPosition.line &&
+            endChar === parsedFailure.endPosition.character &&
+            endLine === parsedFailure.endPosition.line
+          );
+        });
       })
       .filter(r => r !== null)
   );
@@ -213,26 +226,29 @@ export function assertMultipleAnnotated(configs: AssertMultipleConfigs): Lint.Ru
  */
 export function assertFailure(
   ruleName: string,
-  source: string | ts.SourceFile,
+  source: string | SourceFile,
   fail: IExpectedFailure,
-  options = null,
-  onlyNthFailure: number = 0
-): Lint.RuleFailure[] {
-  let result: Lint.LintResult;
+  options?: any,
+  onlyNthFailure = 0
+): RuleFailure[] | undefined {
+  let result: LintResult;
+
   try {
     result = lint(ruleName, source, options);
+
+    chai.assert(result.failures && result.failures.length > 0, 'no failures');
+
+    const ruleFail = result.failures[onlyNthFailure];
+
+    chai.assert.equal(fail.message, ruleFail.getFailure(), "error messages don't match");
+    chai.assert.deepEqual(fail.startPosition, ruleFail.getStartPosition().getLineAndCharacter(), "start char doesn't match");
+    chai.assert.deepEqual(fail.endPosition, ruleFail.getEndPosition().getLineAndCharacter(), "end char doesn't match");
+
+    return result ? result.failures : undefined;
   } catch (e) {
     console.log(e.stack);
+    return undefined;
   }
-  chai.assert(result.failures && result.failures.length > 0, 'no failures');
-  const ruleFail = result.failures[onlyNthFailure];
-  chai.assert.equal(fail.message, ruleFail.getFailure(), "error messages don't match");
-  chai.assert.deepEqual(fail.startPosition, ruleFail.getStartPosition().getLineAndCharacter(), "start char doesn't match");
-  chai.assert.deepEqual(fail.endPosition, ruleFail.getEndPosition().getLineAndCharacter(), "end char doesn't match");
-  if (result) {
-    return result.failures;
-  }
-  return undefined;
 }
 
 /**
@@ -244,13 +260,14 @@ export function assertFailure(
  * @param fails
  * @param options
  */
-export function assertFailures(ruleName: string, source: string | ts.SourceFile, fails: IExpectedFailure[], options = null) {
+export function assertFailures(ruleName: string, source: string | SourceFile, fails: IExpectedFailure[], options?: any) {
   let result;
   try {
     result = lint(ruleName, source, options);
   } catch (e) {
     console.log(e.stack);
   }
+
   chai.assert(result.failures && result.failures.length > 0, 'no failures');
   result.failures.forEach((ruleFail, index) => {
     chai.assert.equal(fails[index].message, ruleFail.getFailure(), "error messages don't match");
@@ -266,7 +283,7 @@ export function assertFailures(ruleName: string, source: string | ts.SourceFile,
  * @param source
  * @param options
  */
-export function assertSuccess(ruleName: string, source: string | ts.SourceFile, options = null) {
+export function assertSuccess(ruleName: string, source: string | SourceFile, options?: any) {
   const result = lint(ruleName, source, options);
   chai.assert.isTrue(result && result.failures.length === 0);
 }

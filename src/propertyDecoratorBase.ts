@@ -2,7 +2,6 @@ import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { sprintf } from 'sprintf-js';
 import { IOptions } from 'tslint';
-import SyntaxKind = require('./util/syntaxKind');
 
 export interface IUsePropertyDecoratorConfig {
   propertyName: string;
@@ -36,7 +35,7 @@ class DirectiveMetadataWalker extends Lint.RuleWalker {
   }
 
   visitClassDeclaration(node: ts.ClassDeclaration) {
-    (<ts.NodeArray<ts.Decorator>>node.decorators).forEach(this.validateDecorator.bind(this, node.name.text));
+    (<ts.NodeArray<ts.Decorator>>node.decorators).forEach(this.validateDecorator.bind(this, node.name!.text));
     super.visitClassDeclaration(node);
   }
 
@@ -52,8 +51,8 @@ class DirectiveMetadataWalker extends Lint.RuleWalker {
   }
 
   private validateProperty(className: string, decoratorName: string, arg: ts.ObjectLiteralExpression) {
-    if (arg.kind === SyntaxKind.current().ObjectLiteralExpression) {
-      arg.properties.filter(prop => prop.name.getText() === this.config.propertyName).forEach(prop => {
+    if (arg.kind === ts.SyntaxKind.ObjectLiteralExpression) {
+      arg.properties.filter(prop => prop.name!.getText() === this.config.propertyName).forEach(prop => {
         this.addFailureAtNode(prop, UsePropertyDecorator.formatFailureString(this.config, decoratorName, className));
       });
     }

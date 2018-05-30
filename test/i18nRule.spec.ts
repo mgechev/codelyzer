@@ -1,15 +1,5 @@
-import { assertSuccess, assertAnnotated, assertMultipleAnnotated } from './testHelper';
-import { Replacement } from 'tslint';
-import { expect } from 'chai';
-import { FsFileResolver } from '../src/angular/fileResolver/fsFileResolver';
-import { MetadataReader } from '../src/angular/metadataReader';
-import * as ts from 'typescript';
+import { assertSuccess, assertAnnotated } from './testHelper';
 import { assertFailure } from './testHelper';
-import chai = require('chai');
-
-const getAst = (code: string, file = 'file.ts') => {
-  return ts.createSourceFile(file, code, ts.ScriptTarget.ES5, true);
-};
 
 describe('i18n', () => {
   describe('check-id', () => {

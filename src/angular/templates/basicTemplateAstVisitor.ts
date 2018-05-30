@@ -118,21 +118,21 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
   visitNgContent(ast: ast.NgContentAst, context: any): any {}
 
   visitEmbeddedTemplate(ast: ast.EmbeddedTemplateAst, context: any): any {
-    ast.directives.forEach(d => this.visit(d, context));
-    ast.variables.forEach(v => this.visit(v, context));
-    ast.children.forEach(e => this.visit(e, context));
-    ast.outputs.forEach(o => this.visit(o, context));
-    ast.attrs.forEach(a => this.visit(a, context));
-    ast.references.forEach(r => this.visit(r, context));
+    ast.directives.forEach(d => this.visit!(d, context));
+    ast.variables.forEach(v => this.visit!(v, context));
+    ast.children.forEach(e => this.visit!(e, context));
+    ast.outputs.forEach(o => this.visit!(o, context));
+    ast.attrs.forEach(a => this.visit!(a, context));
+    ast.references.forEach(r => this.visit!(r, context));
   }
 
   visitElement(element: ast.ElementAst, context: any): any {
-    element.references.forEach(r => this.visit(r, context));
-    element.inputs.forEach(i => this.visit(i, context));
-    element.outputs.forEach(o => this.visit(o, context));
-    element.attrs.forEach(a => this.visit(a, context));
-    element.children.forEach(e => this.visit(e, context));
-    element.directives.forEach(d => this.visit(d, context));
+    element.references.forEach(r => this.visit!(r, context));
+    element.inputs.forEach(i => this.visit!(i, context));
+    element.outputs.forEach(o => this.visit!(o, context));
+    element.attrs.forEach(a => this.visit!(a, context));
+    element.children.forEach(e => this.visit!(e, context));
+    element.directives.forEach(d => this.visit!(d, context));
   }
 
   visitReference(ast: ast.ReferenceAst, context: any): any {}
@@ -167,9 +167,9 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
   visitText(text: ast.TextAst, context: any): any {}
 
   visitDirective(ast: ast.DirectiveAst, context: any): any {
-    ast.inputs.forEach(o => this.visit(o, context));
-    ast.hostProperties.forEach(p => this.visit(p, context));
-    ast.hostEvents.forEach(e => this.visit(e, context));
+    ast.inputs.forEach(o => this.visit!(o, context));
+    ast.hostProperties.forEach(p => this.visit!(p, context));
+    ast.hostEvents.forEach(e => this.visit!(e, context));
   }
 
   visitDirectiveProperty(prop: ast.BoundDirectivePropertyAst, context: any): any {

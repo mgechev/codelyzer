@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import { Decorator } from 'typescript';
 
 import * as sass from 'node-sass';
 
@@ -770,14 +769,14 @@ describe('no-unused-css', () => {
   });
 
   it('should work with sass', () => {
-    Config.transformStyle = (source: string, url: string, d: Decorator) => {
+    Config.transformStyle = (source: string) => {
       const res = sass.renderSync({
         sourceMap: true,
         data: source,
         sourceMapEmbed: true
       });
       const code = res.css.toString();
-      const base64Map = code.match(/\/\*(.*?)\*\//)[1].replace('# sourceMappingURL=data:application/json;base64,', '');
+      const base64Map = code.match(/\/\*(.*?)\*\//)![1].replace('# sourceMappingURL=data:application/json;base64,', '');
       const map = JSON.parse(Buffer.from(base64Map, 'base64').toString('ascii'));
       return { code, source, map };
     };
@@ -809,7 +808,7 @@ describe('no-unused-css', () => {
       message: 'Unused styles',
       source
     });
-    Config.transformStyle = (code: string) => ({ code, map: null });
+    Config.transformStyle = code => ({ code, map: null });
   });
 
   describe('inconsistencies with template', () => {
@@ -866,7 +865,7 @@ describe('no-unused-css', () => {
           }
         },
         null
-      );
+      )!;
       const replacement = failures[0].getFix() as Replacement;
       expect(replacement.text).to.eq('');
       expect(replacement.start).to.eq(199);
@@ -874,14 +873,14 @@ describe('no-unused-css', () => {
     });
 
     it('should work with SASS', () => {
-      Config.transformStyle = (source: string, url: string, d: Decorator) => {
+      Config.transformStyle = source => {
         const res = sass.renderSync({
           sourceMap: true,
           data: source,
           sourceMapEmbed: true
         });
         const code = res.css.toString();
-        const base64Map = code.match(/\/\*(.*?)\*\//)[1].replace('# sourceMappingURL=data:application/json;base64,', '');
+        const base64Map = code.match(/\/\*(.*?)\*\//)![1].replace('# sourceMappingURL=data:application/json;base64,', '');
         const map = JSON.parse(Buffer.from(base64Map, 'base64').toString('ascii'));
         return { code, source, map };
       };
@@ -916,7 +915,7 @@ describe('no-unused-css', () => {
           line: 10,
           character: 18
         }
-      });
+      })!;
       Config.transformStyle = (code: string) => ({ code, map: null });
       const replacement = failures[0].getFix() as Replacement;
       expect(replacement.text).to.eq('');

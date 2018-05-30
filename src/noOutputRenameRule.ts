@@ -27,7 +27,7 @@ export const getFailureMessage = (): string => {
 };
 
 export class OutputMetadataWalker extends NgWalker {
-  private directiveSelectors: ReadonlySet<DirectiveMetadata['selector']>;
+  private directiveSelectors!: ReadonlySet<DirectiveMetadata['selector']>;
 
   visitNgDirective(metadata: DirectiveMetadata): void {
     this.directiveSelectors = new Set((metadata.selector || '').replace(/[\[\]\s]/g, '').split(','));

@@ -1,6 +1,4 @@
-import { Formatter } from './formatter-interface';
 import { RichEditor } from './rich-editor-interface';
-import { Reporter } from './reporter-interface';
 
 export interface LinterConfig {
   textEditor: RichEditor;
@@ -9,8 +7,7 @@ export interface LinterConfig {
 }
 
 export class Linter {
-  private worker: Worker;
-  private widgets: any[] = [];
+  private worker!: Worker;
   private errorId = 0;
 
   constructor(private config: LinterConfig) {}

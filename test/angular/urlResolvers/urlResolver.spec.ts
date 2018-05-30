@@ -4,7 +4,7 @@ import chai = require('chai');
 import { AbstractResolver } from '../../../src/angular/urlResolvers/abstractResolver';
 
 const getAst = (code: string) => {
-  return ts.createSourceFile('file.ts', code, ts.ScriptTarget.ES2015, true);
+  return ts.createSourceFile('file.ts', code, ts.ScriptTarget.ES5, true);
 };
 
 class DummyResolver extends AbstractResolver {
@@ -34,7 +34,7 @@ describe('urlResolver', () => {
       `;
       const ast = getAst(source);
       const resolver = new DummyResolver();
-      const template = resolver.getTemplate(last(ast.statements).decorators[0]);
+      const template = resolver.getTemplate(last(ast.statements).decorators![0]);
       (<any>chai).expect(template).eq('./foo/bar');
     });
 
@@ -47,7 +47,7 @@ describe('urlResolver', () => {
       `;
       const ast = getAst(source);
       const resolver = new DummyResolver();
-      const template = resolver.getTemplate(last(ast.statements).decorators[0]);
+      const template = resolver.getTemplate(last(ast.statements).decorators![0]);
       (<any>chai).expect(template).eq('./foo/bar');
     });
 
@@ -60,8 +60,8 @@ describe('urlResolver', () => {
       `;
       const ast = getAst(source);
       const resolver = new DummyResolver();
-      const template = resolver.getTemplate(last(ast.statements).decorators[0]);
-      (<any>chai).expect(template).eq(null);
+      const template = resolver.getTemplate(last(ast.statements).decorators![0]);
+      (<any>chai).expect(template).eq(undefined);
     });
 
     it('should not be able to resolve missing templateUrl', () => {
@@ -73,8 +73,8 @@ describe('urlResolver', () => {
       `;
       const ast = getAst(source);
       const resolver = new DummyResolver();
-      const template = resolver.getTemplate(last(ast.statements).decorators[0]);
-      (<any>chai).expect(template).eq(null);
+      const template = resolver.getTemplate(last(ast.statements).decorators![0]);
+      (<any>chai).expect(template).eq(undefined);
     });
 
     it('should not be able to resolve templateUrls when having missing object literal', () => {
@@ -84,7 +84,7 @@ describe('urlResolver', () => {
       `;
       const ast = getAst(source);
       const resolver = new DummyResolver();
-      const template = resolver.getTemplate(last(ast.statements).decorators[0]);
+      const template = resolver.getTemplate(last(ast.statements).decorators![0]);
       (<any>chai).expect(template).eq(null);
     });
 
@@ -95,7 +95,7 @@ describe('urlResolver', () => {
       `;
       const ast = getAst(source);
       const resolver = new DummyResolver();
-      const template = resolver.getTemplate(last(ast.statements).decorators[0]);
+      const template = resolver.getTemplate(last(ast.statements).decorators![0]);
       (<any>chai).expect(template).eq(null);
     });
   });
@@ -108,7 +108,7 @@ describe('urlResolver', () => {
       `;
       const ast = getAst(source);
       const resolver = new DummyResolver();
-      const styles = resolver.getStyles(last(ast.statements).decorators[0]);
+      const styles = resolver.getStyles(last(ast.statements).decorators![0]);
       chai.expect(styles).to.deep.equal([]);
     });
 
@@ -119,7 +119,7 @@ describe('urlResolver', () => {
       `;
       const ast = getAst(source);
       const resolver = new DummyResolver();
-      const styles = resolver.getStyles(last(ast.statements).decorators[0]);
+      const styles = resolver.getStyles(last(ast.statements).decorators![0]);
       chai.expect(styles).to.deep.equal([]);
     });
 
@@ -135,7 +135,7 @@ describe('urlResolver', () => {
       `;
       const ast = getAst(source);
       const resolver = new DummyResolver();
-      const styles = resolver.getStyles(last(ast.statements).decorators[0]);
+      const styles = resolver.getStyles(last(ast.statements).decorators![0]);
       chai.expect(styles).to.deep.equal(['./foo', './bar']);
     });
 
@@ -151,7 +151,7 @@ describe('urlResolver', () => {
       `;
       const ast = getAst(source);
       const resolver = new DummyResolver();
-      const styles = resolver.getStyles(last(ast.statements).decorators[0]);
+      const styles = resolver.getStyles(last(ast.statements).decorators![0]);
       chai.expect(styles).to.deep.equal(['./foo', './bar']);
     });
 
@@ -169,7 +169,7 @@ describe('urlResolver', () => {
       `;
       const ast = getAst(source);
       const resolver = new DummyResolver();
-      const styles = resolver.getStyles(last(ast.statements).decorators[0]);
+      const styles = resolver.getStyles(last(ast.statements).decorators![0]);
       chai.expect(styles).to.deep.equal(['./foo', './bar']);
     });
   });

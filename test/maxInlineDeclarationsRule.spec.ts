@@ -10,7 +10,7 @@ const {
 const filePath = `${__dirname}/../../test/fixtures/inlineTemplateMaxLines/foo.ts`;
 
 const getSourceFile = (code: string): SourceFile => {
-  return createSourceFile(filePath, code, ScriptTarget.ES5, true);
+  return createSourceFile(filePath, code, ScriptTarget.ES2015, true);
 };
 
 describe(ruleName, () => {

@@ -2,18 +2,9 @@ import { sprintf } from 'sprintf-js';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { NgWalker } from './angular/ngWalker';
+import { getInterfaceName } from './util/utils';
 
 import { DirectiveMetadata } from './angular/metadata';
-
-const getInterfaceName = (t: any): string => {
-  if (!t.expression) {
-    return '';
-  }
-  if (t.expression.name) {
-    return t.expression.name.text;
-  }
-  return t.expression.text;
-};
 
 const ValidatorSuffix = 'Validator';
 
@@ -49,26 +40,30 @@ export class Rule extends Lint.Rules.AbstractRule {
 
 export class ClassMetadataWalker extends NgWalker {
   protected visitNgDirective(metadata: DirectiveMetadata) {
-    let name = metadata.controller.name;
-    let className: string = name.text;
+    const name = metadata.controller.name!;
+    const className = name.text;
     const options = this.getOptions();
     const suffixes: string[] = options.length ? options : ['Directive'];
-    const heritageClauses = metadata.controller.heritageClauses;
+    const { heritageClauses } = metadata.controller;
+
     if (heritageClauses) {
       const i = heritageClauses.filter(h => h.token === ts.SyntaxKind.ImplementsKeyword);
+
       if (
         i.length !== 0 &&
         i[0].types
           .map(getInterfaceName)
-          .filter(name => !!name)
-          .some(name => name.endsWith(ValidatorSuffix))
+          .filter(x => !!x)
+          .some(x => x.endsWith(ValidatorSuffix))
       ) {
         suffixes.push(ValidatorSuffix);
       }
     }
+
     if (!Rule.validate(className, suffixes)) {
       this.addFailureAtNode(name, sprintf(Rule.FAILURE_STRING, className, suffixes.join(', ')));
     }
+
     super.visitNgDirective(metadata);
   }
 }

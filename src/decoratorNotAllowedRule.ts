@@ -26,11 +26,11 @@ export class Rule extends Lint.Rules.AbstractRule {
 }
 
 export class ClassMetadataWalker extends NgWalker {
-  className: string;
+  className!: string;
   isInjectable = false;
 
   protected visitNgInjectable(classDeclaration: ts.ClassDeclaration, decorator: ts.Decorator) {
-    this.className = classDeclaration.name.text;
+    this.className = classDeclaration.name!.text;
     this.isInjectable = true;
     super.visitNgInjectable(classDeclaration, decorator);
   }

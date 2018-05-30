@@ -13,9 +13,9 @@ const dummyMetadataFactory = (declaration: DirectiveDeclaration) => {
   return {
     inputs: declaration.inputs || [],
     outputs: declaration.outputs || [],
-    hostListeners: declaration.hostListeners || {},
-    hostProperties: declaration.hostProperties || {},
-    hostAttributes: declaration.hostAttributes || {},
+    hostListeners: declaration.hostListeners || [],
+    hostProperties: declaration.hostProperties || [],
+    hostAttributes: declaration.hostAttributes || [],
     isSummary: true,
     type: {
       diDeps: [],
@@ -45,7 +45,7 @@ class Console {
   warn(message: string) {}
 }
 
-let defaultDirectives = [];
+let defaultDirectives: DirectiveDeclaration[] = [];
 
 export const parseTemplate = (template: string, directives: DirectiveDeclaration[] = []) => {
   defaultDirectives = directives.map(d => dummyMetadataFactory(d));
@@ -91,7 +91,7 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
       );
     });
 
-  const interpolation = Config.interpolation;
+  const { interpolation } = Config;
 
   // Make sure it works with 2.2.x & 2.3.x
   const summaryKind = ((compiler as any).CompileSummaryKind || {}).Template;
@@ -131,7 +131,7 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
     value: '',
     identifier: null
   };
-  let result = null;
+  let result: any = null;
   try {
     SemVerDSL.lt('4.1.0', () => {
       result = tmplParser.tryParse(

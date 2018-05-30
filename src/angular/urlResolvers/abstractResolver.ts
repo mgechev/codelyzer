@@ -1,8 +1,6 @@
 import * as ts from 'typescript';
-import { current } from '../../util/syntaxKind';
+import { isPropertyAssignment } from 'typescript/lib/typescript';
 import { isSimpleTemplateString } from '../../util/utils';
-
-const kinds = current();
 
 export interface MetadataUrls {
   templateUrl: string;
@@ -10,64 +8,57 @@ export interface MetadataUrls {
 }
 
 export abstract class AbstractResolver {
-  abstract resolve(decorator: ts.Decorator): MetadataUrls;
+  abstract resolve(decorator: ts.Decorator): MetadataUrls | null;
 
-  protected getTemplateUrl(decorator: ts.Decorator): string {
+  protected getTemplateUrl(decorator: ts.Decorator): string | null {
     const arg = this.getDecoratorArgument(decorator);
+
     if (!arg) {
       return null;
     }
+
     const prop = arg.properties
-      .filter((p: ts.PropertyAssignment) => {
-        if ((<any>p.name).text === 'templateUrl' && isSimpleTemplateString(p.initializer)) {
-          return true;
-        }
-        return false;
-      })
+      .filter(p => (p.name as any).text === 'templateUrl' && isSimpleTemplateString((p as ts.PropertyAssignment).initializer))
       .pop();
-    if (prop) {
-      // We know that it's has an initializer because it's either
-      // a template string or a string literal.
-      return (<any>(<ts.PropertyAssignment>prop).initializer).text;
-    } else {
-      return null;
-    }
+
+    // We know that it's has an initializer because it's either
+    // a template string or a string literal.
+    return prop ? ((prop as ts.PropertyAssignment).initializer as any).text : undefined;
   }
 
   protected getStyleUrls(decorator: ts.Decorator): string[] {
     const arg = this.getDecoratorArgument(decorator);
+
     if (!arg) {
       return [];
     }
+
     const prop = arg.properties
-      .filter((p: ts.PropertyAssignment) => {
-        if ((<any>p.name).text === 'styleUrls' && p.initializer.kind === kinds.ArrayLiteralExpression) {
-          return true;
-        }
-        return false;
-      })
+      .filter(
+        p => (p.name as any).text === 'styleUrls' && isPropertyAssignment(p) && p.initializer.kind === ts.SyntaxKind.ArrayLiteralExpression
+      )
       .pop();
+
     if (prop) {
-      return (<ts.ArrayLiteralExpression>(<ts.PropertyAssignment>prop).initializer).elements
-        .filter((e: any) => {
-          return isSimpleTemplateString(e);
-        })
-        .map((e: any) => {
-          return e.text;
-        });
-    } else {
-      return [];
+      return ((prop as ts.PropertyAssignment).initializer as ts.ArrayLiteralExpression).elements
+        .filter(e => isSimpleTemplateString(e))
+        .map(e => (e as any).text);
     }
+
+    return [];
   }
 
-  protected getDecoratorArgument(decorator: ts.Decorator): ts.ObjectLiteralExpression {
+  protected getDecoratorArgument(decorator: ts.Decorator): ts.ObjectLiteralExpression | null {
     const expr = <ts.CallExpression>decorator.expression;
+
     if (expr && expr.arguments && expr.arguments.length) {
-      const arg = <ts.ObjectLiteralExpression>expr.arguments[0];
-      if (arg.kind === kinds.ObjectLiteralExpression && arg.properties) {
+      const arg = expr.arguments[0] as ts.ObjectLiteralExpression;
+
+      if (arg.properties && arg.kind === ts.SyntaxKind.ObjectLiteralExpression) {
         return arg;
       }
     }
+
     return null;
   }
 }

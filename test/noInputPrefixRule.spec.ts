@@ -2,7 +2,6 @@ import { getFailureMessage, Rule } from '../src/noInputPrefixRule';
 import { assertAnnotated, assertSuccess } from './testHelper';
 
 const {
-  FAILURE_STRING,
   metadata: { ruleName }
 } = Rule;
 

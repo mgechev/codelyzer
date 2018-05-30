@@ -57,7 +57,7 @@ const editor = new ErrorReportingEditor(
     theme: 'material',
     lineNumbers: true
   }) as Editor,
-  new PlainReporter(new HtmlFormatter(), document.getElementById('warnings-header'), document.getElementById('warnings'))
+  new PlainReporter(new HtmlFormatter(), document.getElementById('warnings-header')!, document.getElementById('warnings')!)
 );
 
 let unlocked = true;

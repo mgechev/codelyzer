@@ -65,8 +65,8 @@ class ImportDestructuringSpacingWalker extends RuleWalker {
       return;
     }
 
-    const totalLeadingSpaces = nodeText.match(/^\{(\s*)/)[1].length;
-    const totalTrailingSpaces = nodeText.match(/(\s*)}$/)[1].length;
+    const totalLeadingSpaces = nodeText.match(/^\{(\s*)/)![1].length;
+    const totalTrailingSpaces = nodeText.match(/(\s*)}$/)![1].length;
 
     if (totalLeadingSpaces === 1 && totalTrailingSpaces === 1) {
       return;

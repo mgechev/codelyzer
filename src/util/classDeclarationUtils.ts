@@ -1,18 +1,18 @@
 import * as ts from 'typescript';
-import { current } from './syntaxKind';
 import { FlatSymbolTable } from '../angular/templates/recursiveAngularExpressionVisitor';
-
-const SyntaxKind = current();
 
 export const getDeclaredProperties = (declaration: ts.ClassDeclaration) => {
   const m = declaration.members;
-  const ctr = m.filter((m: any) => m.kind === SyntaxKind.Constructor).pop();
+  const ctr = m.filter((m: any) => m.kind === ts.SyntaxKind.Constructor).pop();
   let params: any = [];
   if (ctr) {
-    params = (((<ts.ConstructorDeclaration>ctr).parameters || []) as any).filter((p: any) => p.kind === SyntaxKind.Parameter);
+    params = (((<ts.ConstructorDeclaration>ctr).parameters || []) as any).filter((p: any) => p.kind === ts.SyntaxKind.Parameter);
   }
   return m
-    .filter((m: any) => m.kind === SyntaxKind.PropertyDeclaration || m.kind === SyntaxKind.GetAccessor || m.kind === SyntaxKind.SetAccessor)
+    .filter(
+      (m: any) =>
+        m.kind === ts.SyntaxKind.PropertyDeclaration || m.kind === ts.SyntaxKind.GetAccessor || m.kind === ts.SyntaxKind.SetAccessor
+    )
     .concat(params);
 };
 
@@ -26,13 +26,13 @@ export const getDeclaredPropertyNames = (declaration: ts.ClassDeclaration) => {
 };
 
 export const getDeclaredMethods = (declaration: ts.ClassDeclaration) => {
-  return declaration.members.filter((m: any) => m.kind === SyntaxKind.MethodDeclaration);
+  return declaration.members.filter(m => m.kind === ts.SyntaxKind.MethodDeclaration);
 };
 
 export const getDeclaredMethodNames = (declaration: ts.ClassDeclaration) => {
   return getDeclaredMethods(declaration)
-    .map((d: any) => (<ts.Identifier>d.name).text)
-    .reduce((accum: FlatSymbolTable, m: string) => {
+    .map(d => (<ts.Identifier>d.name).text)
+    .reduce<FlatSymbolTable>((accum, m) => {
       accum[m] = true;
       return accum;
     }, {});

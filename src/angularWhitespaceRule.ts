@@ -17,8 +17,7 @@ const stickyFlagUsable = (() => {
   }
 })();
 
-const InterpolationOpen = Config.interpolation[0];
-const InterpolationClose = Config.interpolation[1];
+const [InterpolationOpen, InterpolationClose] = Config.interpolation;
 const InterpolationWhitespaceRe = new RegExp(`${InterpolationOpen}(\\s*)(.*?)(\\s*)${InterpolationClose}`, 'g');
 const SemicolonNoWhitespaceNotInSimpleQuoteRe = stickyFlagUsable
   ? new RegExp(`(?:[^';]|'[^']*'|;(?=\\s))+;(?=\\S)`, 'gy')
@@ -91,7 +90,7 @@ class InterpolationWhitespaceVisitor extends BasicTemplateAstVisitor implements 
   visitBoundText(text: ast.BoundTextAst, context: BasicTemplateAstVisitor): any {
     if (ExpTypes.ASTWithSource(text.value)) {
       // Note that will not be reliable for different interpolation symbols
-      const expr: any = (<any>text.value).source;
+      const expr = (text.value as any).source;
       const checkWhiteSpace = (
         subMatch: string,
         location: 'start' | 'end',
@@ -144,7 +143,7 @@ class SemicolonTemplateVisitor extends BasicTemplateAstVisitor implements Config
   visitDirectiveProperty(prop: ast.BoundDirectivePropertyAst, context: BasicTemplateAstVisitor): any {
     if (prop.sourceSpan) {
       const directive = prop.sourceSpan.toString();
-      const match = /^([^=]+=\s*)([^]*?)\s*$/.exec(directive);
+      const match = /^([^=]+=\s*)([^]*?)\s*$/.exec(directive)!;
       const rawExpression = match[2];
       const positionFix = match[1].length + 1;
       const expr = rawExpression.slice(1, -1).trim();
@@ -205,7 +204,7 @@ class PipeWhitespaceVisitor extends RecursiveAngularExpressionVisitor implements
     sf = context.getSourceFile().getFullText();
     exprText = sf.substring(exprStart, exprEnd);
 
-    const replacements = [];
+    const replacements: Lint.Fix = [];
     let parentheses = false;
     let leftBeginning: number;
     if (sf[exprEnd] === ')') {
