@@ -5,7 +5,6 @@ import { NgWalker } from './angular/ngWalker';
 import { SelectorValidator } from './util/selectorValidator';
 
 const OPTION_ATTRIBUTE = 'attribute';
-const OPTION_ELEMENT = 'element';
 const OPTION_CAMEL_CASE = 'camelCase';
 const OPTION_KEBAB_CASE = 'kebab-case';
 
@@ -44,10 +43,10 @@ export class Rule extends Lint.Rules.AbstractRule {
 
   static FAILURE_WITH_PREFIX = `The name of the Pipe decorator of class %s should be named ${OPTION_CAMEL_CASE} with prefix %s, however its value is "%s"`;
 
-  prefix: string;
-  hasPrefix: boolean;
-  private prefixChecker: Function;
-  private validator: Function;
+  prefix!: string;
+  hasPrefix!: boolean;
+  private prefixChecker!: Function;
+  private validator!: Function;
 
   constructor(options: Lint.IOptions) {
     super(options);
@@ -61,7 +60,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     }
     if (args.length > 1) {
       this.hasPrefix = true;
-      let prefixExpression: string = (args.slice(1) || []).join('|');
+      let prefixExpression = (args.slice(1) || []).join('|');
       this.prefix = (args.slice(1) || []).join(',');
       this.prefixChecker = SelectorValidator.prefix(prefixExpression, OPTION_CAMEL_CASE);
     }
@@ -97,7 +96,7 @@ export class ClassMetadataWalker extends NgWalker {
   }
 
   protected visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
-    let className = controller.name.text;
+    let className = controller.name!.text;
     this.validateProperties(className, decorator);
     super.visitNgPipe(controller, decorator);
   }

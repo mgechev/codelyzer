@@ -61,11 +61,7 @@ const lang = require('cssauron')({
       .map(b => b.name)
       .join(' ');
     const classAttr = node.attrs.filter(a => a.name.toLowerCase() === 'class').pop();
-    let staticClasses = '';
-    if (classAttr) {
-      staticClasses = classAttr.value + ' ';
-    }
-    return staticClasses + classBindings;
+    return classAttr ? `${classAttr.value} ${classBindings}` : classBindings;
   },
   parent(node: any) {
     return node.parentNode;
@@ -75,10 +71,8 @@ const lang = require('cssauron')({
   },
   attr(node: ElementAst, attr: string) {
     const targetAttr = node.attrs.filter(a => a.name === attr).pop();
-    if (targetAttr) {
-      return targetAttr.value;
-    }
-    return undefined;
+
+    return targetAttr ? targetAttr.value : undefined;
   }
 });
 
@@ -90,7 +84,7 @@ class ElementVisitor extends BasicTemplateAstVisitor {
       if (c instanceof ElementAst) {
         (<any>c).parentNode = ast;
       }
-      this.visit(c, fn);
+      this.visit!(c, fn);
     });
   }
 }
@@ -161,7 +155,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 }
 
 class UnusedCssVisitor extends BasicCssAstVisitor {
-  templateAst: TemplateAst;
+  templateAst!: TemplateAst;
 
   constructor(
     sourceFile: ts.SourceFile,
@@ -193,10 +187,10 @@ class UnusedCssVisitor extends BasicCssAstVisitor {
   }
 
   visitCssSelector(ast: CssSelectorAst) {
-    const parts = [];
+    const parts: string[] = [];
     for (let i = 0; i < ast.selectorParts.length; i += 1) {
       const c = ast.selectorParts[i];
-      c.strValue = c.strValue.split('::').shift();
+      c.strValue = c.strValue.split('::').shift()!;
       // Stop on /deep/ and >>>
       if (c.strValue.endsWith('/') || c.strValue.endsWith('>')) {
         parts.push(c.strValue);
@@ -212,13 +206,15 @@ class UnusedCssVisitor extends BasicCssAstVisitor {
     const strippedSelector = parts.map(s => s.replace(/\/|>$/, '').trim()).join(' ');
     const elementFilterVisitor = new ElementFilterVisitor(this.getSourceFile(), this._originalOptions, this.context, 0);
     const tokenized = CssSelectorTokenizer.parse(strippedSelector);
-    const selectorTypesCache = Object.keys(dynamicFilters).reduce((a: any, key: string) => {
+    const selectorTypesCache = Object.keys(dynamicFilters).reduce((a, key) => {
       a[key] = hasSelector(tokenized, key);
       return a;
     }, {});
+
     if (!elementFilterVisitor.shouldVisit(<ElementAst>this.templateAst, dynamicFilters, selectorTypesCache)) {
       return true;
     }
+
     let matchFound = false;
     const selector = (element: ElementAst) => {
       if (lang(strippedSelector)(element)) {
@@ -228,19 +224,19 @@ class UnusedCssVisitor extends BasicCssAstVisitor {
       return false;
     };
     const visitor = new ElementVisitor(this.getSourceFile(), this._originalOptions, this.context, 0);
-    visitor.visit(this.templateAst, selector);
+    visitor.visit!(this.templateAst, selector);
     return matchFound;
   }
 }
 
 // Finds the template and wrapes the parsed content into a root element
 export class UnusedCssNgVisitor extends NgWalker {
-  private templateAst: TemplateAst;
+  private templateAst!: TemplateAst;
 
   visitClassDeclaration(declaration: ts.ClassDeclaration) {
     const d = getComponentDecorator(declaration);
     if (d) {
-      const meta = <ComponentMetadata>this._metadataReader.read(declaration);
+      const meta = <ComponentMetadata>this._metadataReader!.read(declaration);
       this.visitNgComponent(meta);
       if (meta.template && meta.template.template) {
         try {
@@ -295,7 +291,7 @@ export class UnusedCssNgVisitor extends NgWalker {
       return;
     }
 
-    const file = this.getContextSourceFile(styleMetadata.url, styleMetadata.style.source);
+    const file = this.getContextSourceFile(styleMetadata.url!, styleMetadata.style.source!);
     const visitor = new UnusedCssVisitor(file, this._originalOptions, context, styleMetadata, baseStart);
     visitor.templateAst = this.templateAst;
     const d = getComponentDecorator(context.controller);

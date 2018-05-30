@@ -6,7 +6,7 @@ import { SourceMappingVisitor } from '../../src/angular/sourceMappingVisitor';
 import { getDecoratorPropertyInitializer } from '../../src/util/utils';
 
 const getAst = (code: string, file = 'file.ts') => {
-  return ts.createSourceFile(file, code, ts.ScriptTarget.ES2015, true);
+  return ts.createSourceFile(file, code, ts.ScriptTarget.ES5, true);
 };
 
 const fixture1 = `@Component({
@@ -29,14 +29,14 @@ describe('SourceMappingVisitor', () => {
   it('should map to correct position', () => {
     const ast = getAst(fixture1);
     const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
-    const styles = getDecoratorPropertyInitializer(last(classDeclaration.decorators), 'styles');
+    const styles = getDecoratorPropertyInitializer(last(classDeclaration.decorators!), 'styles');
     const styleNode = <ts.Node>styles.elements[0];
     const scss = (<any>styleNode).text;
     const result = renderSync({ outFile: '/tmp/bar', data: scss, sourceMap: true });
     const visitor = new SourceMappingVisitor(
       ast,
       {
-        disabledIntervals: null,
+        disabledIntervals: [],
         ruleArguments: [],
         ruleName: 'foo',
         ruleSeverity: 'warning'

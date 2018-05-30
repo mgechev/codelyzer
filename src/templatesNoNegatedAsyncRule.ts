@@ -26,7 +26,7 @@ class TemplateToNgTemplateVisitor extends RecursiveAngularExpressionVisitor {
       span: { end: spanEnd, start: spanStart }
     } = expr;
     const operator = this.codeWithMap.code.slice(endLeftSpan, startRightSpan);
-    const operatorStart = /^.*==/.exec(operator)[0].length - unstrictEqualityOperator.length;
+    const operatorStart = /^.*==/.exec(operator)![0].length - unstrictEqualityOperator.length;
 
     this.addFailureFromStartToEnd(spanStart, spanEnd, 'Async pipes must use strict equality `===` when comparing with `false`', [
       new Lint.Replacement(this.getSourcePosition(endLeftSpan) + operatorStart, unstrictEqualityOperator.length, '===')
@@ -45,7 +45,7 @@ class TemplateToNgTemplateVisitor extends RecursiveAngularExpressionVisitor {
 
     // Angular includes the whitespace after an expression, we want to trim that
     const expressionSource = this.codeWithMap.code.slice(spanStart, spanEnd);
-    const concreteWidth = spanEnd - spanStart - / *$/.exec(expressionSource)[0].length;
+    const concreteWidth = spanEnd - spanStart - / *$/.exec(expressionSource)![0].length;
 
     this.addFailureFromStartToEnd(spanStart, spanEnd, 'Async pipes can not be negated, use (observable | async) === false instead', [
       new Lint.Replacement(absoluteStart + concreteWidth, 1, ' === false '),

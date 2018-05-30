@@ -21,10 +21,10 @@ export class PlainReporter implements Reporter {
   }
 
   highlight(id: any) {
-    document.getElementById(id).classList.add('error-highlight');
+    document.getElementById(id)!.classList.add('error-highlight');
   }
 
   dropHighlight(id: any) {
-    document.getElementById(id).classList.remove('error-highlight');
+    document.getElementById(id)!.classList.remove('error-highlight');
   }
 }

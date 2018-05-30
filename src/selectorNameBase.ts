@@ -3,20 +3,18 @@ import { SelectorValidator } from './util/selectorValidator';
 import * as ts from 'typescript';
 import { sprintf } from 'sprintf-js';
 import * as compiler from '@angular/compiler';
-import { IOptions } from 'tslint';
-import SyntaxKind = require('./util/syntaxKind');
 
 export type SelectorType = 'element' | 'attribute';
 export type SelectorTypeInternal = 'element' | 'attrs';
 export type SelectorStyle = 'kebab-case' | 'camelCase';
 
 export abstract class SelectorRule extends Lint.Rules.AbstractRule {
-  handleType: string;
+  handleType!: string;
   prefixes: string[];
   types: SelectorTypeInternal[];
   style: SelectorStyle[];
 
-  constructor(options: IOptions) {
+  constructor(options: Lint.IOptions) {
     super(options);
     const args = this.getOptions().ruleArguments;
 
@@ -104,7 +102,7 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
 
   visitClassDeclaration(node: ts.ClassDeclaration) {
     if (node.decorators) {
-      (<ts.NodeArray<ts.Decorator>>node.decorators).forEach(this.validateDecorator.bind(this, node.name.text));
+      (<ts.NodeArray<ts.Decorator>>node.decorators).forEach(this.validateDecorator.bind(this, node.name!.text));
     }
     super.visitClassDeclaration(node);
   }
@@ -122,7 +120,7 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
   }
 
   private validateSelector(className: string, arg: ts.Node) {
-    if (arg.kind === SyntaxKind.current().ObjectLiteralExpression) {
+    if (arg.kind === ts.SyntaxKind.ObjectLiteralExpression) {
       (<ts.ObjectLiteralExpression>arg).properties
         .filter(prop => this.validateProperty(prop))
         .map(prop => (<any>prop).initializer)
@@ -151,8 +149,7 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
   }
 
   private isSupportedKind(kind: number): boolean {
-    const current = SyntaxKind.current();
-    return [current.StringLiteral, current.NoSubstitutionTemplateLiteral].some(kindType => kindType === kind);
+    return [ts.SyntaxKind.StringLiteral, ts.SyntaxKind.NoSubstitutionTemplateLiteral].some(kindType => kindType === kind);
   }
 
   private extractMainSelector(i: any) {

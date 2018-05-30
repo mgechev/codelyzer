@@ -29,7 +29,8 @@ const getReplacements = (text: ast.BoundEventAst, absolutePosition: number) => {
 class BananaInBoxTemplateVisitor extends BasicTemplateAstVisitor {
   visitEvent(prop: ast.BoundEventAst, context: any): any {
     if (prop.name) {
-      let error = null;
+      let error: string | null = null;
+
       if (InvalidSyntaxBoxRe.test(prop.name)) {
         error = 'Invalid binding syntax. Use [(expr)] instead';
       }

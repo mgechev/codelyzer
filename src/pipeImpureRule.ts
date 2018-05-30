@@ -2,7 +2,6 @@ import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { sprintf } from 'sprintf-js';
 import { NgWalker } from './angular/ngWalker';
-import SyntaxKind = require('./util/syntaxKind');
 
 export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
@@ -24,13 +23,13 @@ export class Rule extends Lint.Rules.AbstractRule {
 
 export class ClassMetadataWalker extends NgWalker {
   protected visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
-    this.validateProperties(controller.name.text, decorator);
+    this.validateProperties(controller.name!.text, decorator);
     super.visitNgPipe(controller, decorator);
   }
 
   private validateProperties(className: string, pipe: any) {
     let argument = this.extractArgument(pipe);
-    if (argument.kind === SyntaxKind.current().ObjectLiteralExpression) {
+    if (argument.kind === ts.SyntaxKind.ObjectLiteralExpression) {
       argument.properties.filter(n => n.name.text === 'pure').forEach(this.validateProperty.bind(this, className));
     }
   }

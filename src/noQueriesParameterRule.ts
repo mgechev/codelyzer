@@ -1,8 +1,8 @@
-import * as Lint from 'tslint';
+import { IOptions, IRuleMetadata } from 'tslint/lib';
 import { UsePropertyDecorator } from './propertyDecoratorBase';
 
 export class Rule extends UsePropertyDecorator {
-  static metadata: Lint.IRuleMetadata = {
+  static readonly metadata: IRuleMetadata = {
     description:
       'Use @ContentChild, @ContentChildren, @ViewChild or @ViewChildren instead of the `queries` property of ' +
       '`@Component` or `@Directive` metadata.',
@@ -18,14 +18,14 @@ export class Rule extends UsePropertyDecorator {
     typescriptOnly: true
   };
 
-  static FAILURE_STRING = 'Use @ContentChild, @ContentChildren, @ViewChild or @ViewChildren instead of the queries property';
+  static readonly FAILURE_STRING = 'Use @ContentChild, @ContentChildren, @ViewChild or @ViewChildren instead of the queries property';
 
-  constructor(options: Lint.IOptions) {
+  constructor(options: IOptions) {
     super(
       {
         decoratorName: ['ContentChild', 'ContentChildren', 'ViewChild', 'ViewChildren'],
-        propertyName: 'queries',
-        errorMessage: Rule.FAILURE_STRING
+        errorMessage: Rule.FAILURE_STRING,
+        propertyName: 'queries'
       },
       options
     );

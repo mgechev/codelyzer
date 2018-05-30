@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import * as tslint from 'tslint';
+import * as Lint from 'tslint';
 
 import { NgWalker } from '../../src/angular/ngWalker';
 import { BasicCssAstVisitor } from '../../src/angular/styles/basicCssAstVisitor';
@@ -20,13 +20,13 @@ describe('basicCssAstVisitor', () => {
       })
       class Baz {}
     `;
-    let ruleArgs: tslint.IOptions = {
+    let ruleArgs: Lint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null,
+      disabledIntervals: [],
       ruleSeverity: 'warning'
     };
-    let sf = ts.createSourceFile('foo', source, null);
+    let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
     (<any>chai)
       .expect(() => {
@@ -49,13 +49,13 @@ describe('basicCssAstVisitor', () => {
       })
       class Baz {}
     `;
-    let ruleArgs: tslint.IOptions = {
+    let ruleArgs: Lint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null,
+      disabledIntervals: [],
       ruleSeverity: 'warning'
     };
-    let sf = ts.createSourceFile('foo', source, null);
+    let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
     (<any>chai)
       .expect(() => {

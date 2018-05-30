@@ -81,7 +81,7 @@ export class CssToken {
 }
 
 export class CssLexer {
-  scan(text: string, trackComments: boolean = false): CssScanner {
+  scan(text: string, trackComments = false): CssScanner {
     return new CssScanner(text, trackComments);
   }
 }
@@ -118,19 +118,19 @@ function _trackWhitespace(mode: CssLexerMode) {
 }
 
 export class CssScanner {
-  peek: number;
+  peek!: number;
   peekPeek: number;
-  length: number = 0;
-  index: number = -1;
-  column: number = -1;
-  line: number = 0;
+  length = 0;
+  index = -1;
+  column = -1;
+  line = 0;
 
   /** @internal */
   _currentMode: CssLexerMode = CssLexerMode.BLOCK;
   /** @internal */
   _currentError: Error | null = null;
 
-  constructor(public input: string, private _trackComments: boolean = false) {
+  constructor(public input: string, private _trackComments = false) {
     this.length = this.input.length;
     this.peekPeek = this.peekAt(0);
     this.advance();
@@ -218,7 +218,7 @@ export class CssScanner {
       next = new CssToken(this.index, this.column, this.line, CssTokenType.EOF, 'end of file');
     }
 
-    let isMatchingType: boolean = false;
+    let isMatchingType = false;
     if (type == CssTokenType.IdentifierOrNumber) {
       // TODO (matsko): implement array traversal for lookup here
       isMatchingType = next.type == CssTokenType.Number || next.type == CssTokenType.Identifier;
@@ -476,10 +476,8 @@ export class CssScanner {
     return false;
   }
 
-  error(message: string, errorTokenValue: string | null = null, doNotAdvance: boolean = false): CssToken {
-    const index: number = this.index;
-    const column: number = this.column;
-    const line: number = this.line;
+  error(message: string, errorTokenValue: string | null = null, doNotAdvance = false): CssToken {
+    const { column, index, line } = this;
     errorTokenValue = errorTokenValue || String.fromCharCode(this.peek);
     const invalidToken = new CssToken(index, column, line, CssTokenType.Invalid, errorTokenValue);
     const errorMessage = generateErrorMessage(this.input, message, errorTokenValue, index, line, column);

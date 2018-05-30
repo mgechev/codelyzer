@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import * as tslint from 'tslint';
+import * as Lint from 'tslint';
 
 import { NgWalker } from '../../src/angular/ngWalker';
 import { RecursiveAngularExpressionVisitor } from '../../src/angular/templates/recursiveAngularExpressionVisitor';
@@ -32,13 +32,13 @@ describe('ngWalker', () => {
       @Injectable()
       class FooService {}
     `;
-    let ruleArgs: tslint.IOptions = {
+    let ruleArgs: Lint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null,
+      disabledIntervals: [],
       ruleSeverity: 'warning'
     };
-    let sf = ts.createSourceFile('foo', source, null);
+    let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
     let cmpSpy = chaiSpy.on(walker, 'visitNgComponent');
     let dirSpy = chaiSpy.on(walker, 'visitNgDirective');
@@ -65,19 +65,19 @@ describe('ngWalker', () => {
         foobar;
       }
     `;
-    let ruleArgs: tslint.IOptions = {
+    let ruleArgs: Lint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null,
+      disabledIntervals: [],
       ruleSeverity: 'warning'
     };
-    let sf = ts.createSourceFile('foo', source, null);
+    let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
     let outputsSpy = chaiSpy.on(walker, 'visitNgOutput');
     let inputsSpy = chaiSpy.on(walker, 'visitNgInput');
     walker.walk(sf);
-    (<any>chai.expect(outputsSpy).to.have.been).called();
-    (<any>chai.expect(inputsSpy).to.have.been).called();
+    (chai.expect(outputsSpy).to.have.been as any).called();
+    (chai.expect(inputsSpy).to.have.been as any).called();
   });
 
   it('should visit component templates', () => {
@@ -88,13 +88,13 @@ describe('ngWalker', () => {
       })
       class Baz {}
     `;
-    let ruleArgs: tslint.IOptions = {
+    let ruleArgs: Lint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null,
+      disabledIntervals: [],
       ruleSeverity: 'warning'
     };
-    let sf = ts.createSourceFile('foo', source, null);
+    let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs, {
       templateVisitorCtrl: BasicTemplateAstVisitor
     });
@@ -111,13 +111,13 @@ describe('ngWalker', () => {
       })
       class Baz {}
     `;
-    let ruleArgs: tslint.IOptions = {
+    let ruleArgs: Lint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null,
+      disabledIntervals: [],
       ruleSeverity: 'warning'
     };
-    let sf = ts.createSourceFile('foo', source, null);
+    let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
     let templateSpy = chaiSpy.on(RecursiveAngularExpressionVisitor.prototype, 'visitPropertyRead');
     walker.walk(sf);
@@ -133,13 +133,13 @@ describe('ngWalker', () => {
       })
       class Baz {}
     `;
-    let ruleArgs: tslint.IOptions = {
+    let ruleArgs: Lint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null,
+      disabledIntervals: [],
       ruleSeverity: 'warning'
     };
-    let sf = ts.createSourceFile('foo', source, null);
+    let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
     (<any>chai)
       .expect(() => {
@@ -159,13 +159,13 @@ describe('ngWalker', () => {
       })
       class Baz {}
     `;
-    let ruleArgs: tslint.IOptions = {
+    let ruleArgs: Lint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null,
+      disabledIntervals: [],
       ruleSeverity: 'warning'
     };
-    let sf = ts.createSourceFile('foo', source, null);
+    let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
     (<any>chai)
       .expect(() => {
@@ -185,13 +185,13 @@ describe('ngWalker', () => {
       })
       class Baz {}
     `;
-    let ruleArgs: tslint.IOptions = {
+    let ruleArgs: Lint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null,
+      disabledIntervals: [],
       ruleSeverity: 'warning'
     };
-    let sf = ts.createSourceFile('foo', source, null);
+    let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
     (<any>chai)
       .expect(() => {
@@ -210,13 +210,13 @@ describe('ngWalker', () => {
       })
       class Baz {}
     `;
-    let ruleArgs: tslint.IOptions = {
+    let ruleArgs: Lint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null,
+      disabledIntervals: [],
       ruleSeverity: 'warning'
     };
-    let sf = ts.createSourceFile('foo', source, null);
+    let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
     (<any>chai)
       .expect(() => {
@@ -232,13 +232,13 @@ describe('ngWalker', () => {
       @Component()
       class Baz {}
     `;
-    let ruleArgs: tslint.IOptions = {
+    let ruleArgs: Lint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null,
+      disabledIntervals: [],
       ruleSeverity: 'warning'
     };
-    let sf = ts.createSourceFile('foo', source, null);
+    let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
     (<any>chai)
       .expect(() => {
@@ -254,13 +254,13 @@ describe('ngWalker', () => {
       @Component
       class Baz {}
     `;
-    let ruleArgs: tslint.IOptions = {
+    let ruleArgs: Lint.IOptions = {
       ruleName: 'foo',
       ruleArguments: ['foo'],
-      disabledIntervals: null,
+      disabledIntervals: [],
       ruleSeverity: 'warning'
     };
-    let sf = ts.createSourceFile('foo', source, null);
+    let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
     (<any>chai)
       .expect(() => {
@@ -279,13 +279,13 @@ describe('ngWalker', () => {
         })
         class Baz {}
       `;
-      let ruleArgs: tslint.IOptions = {
+      let ruleArgs: Lint.IOptions = {
         ruleName: 'foo',
         ruleArguments: ['foo'],
-        disabledIntervals: null,
+        disabledIntervals: [],
         ruleSeverity: 'warning'
       };
-      let sf = ts.createSourceFile('foo', source, null);
+      let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
       let walker = new NgWalker(sf, ruleArgs);
       (<any>chai)
         .expect(() => {
@@ -303,13 +303,13 @@ describe('ngWalker', () => {
         })
         class Baz {}
       `;
-      let ruleArgs: tslint.IOptions = {
+      let ruleArgs: Lint.IOptions = {
         ruleName: 'foo',
         ruleArguments: ['foo'],
-        disabledIntervals: null,
+        disabledIntervals: [],
         ruleSeverity: 'warning'
       };
-      let sf = ts.createSourceFile('foo', source, null);
+      let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
       let walker = new NgWalker(sf, ruleArgs);
       (<any>chai)
         .expect(() => {
@@ -349,13 +349,13 @@ describe('ngWalker', () => {
           }
         }
       `;
-      let ruleArgs: tslint.IOptions = {
+      let ruleArgs: Lint.IOptions = {
         ruleName: 'foo',
         ruleArguments: ['foo'],
-        disabledIntervals: null,
+        disabledIntervals: [],
         ruleSeverity: 'warning'
       };
-      let sf = ts.createSourceFile('foo', source, null);
+      let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
       let walker = new NgWalker(sf, ruleArgs);
       (<any>chai)
         .expect(() => {

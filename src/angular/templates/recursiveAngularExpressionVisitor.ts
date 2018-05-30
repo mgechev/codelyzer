@@ -50,7 +50,7 @@ export class RecursiveAngularExpressionVisitor extends SourceMappingVisitor impl
   }
 
   visitFunctionCall(ast: e.FunctionCall, context: any): any {
-    ast.target.visit(this, context);
+    ast.target!.visit(this, context);
     this.visitAll(ast.args, context);
     return null;
   }
