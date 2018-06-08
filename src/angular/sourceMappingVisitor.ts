@@ -64,7 +64,7 @@ function computeLineAndCharacterOfPosition(lineStarts: number[], position: numbe
 }
 
 function computeLineStarts(text: string): number[] {
-  const result: number[] = new Array();
+  const result: number[] = [];
   let pos = 0;
   let lineStart = 0;
   while (pos < text.length) {
@@ -95,7 +95,7 @@ export class SourceMappingVisitor extends RuleWalker {
   parentAST: any;
   private consumer: SourceMapConsumer;
 
-  constructor(sourceFile: ts.SourceFile, options: IOptions, protected codeWithMap: CodeWithSourceMap, protected basePosition: number) {
+  constructor(sourceFile: ts.SourceFile, options: IOptions, public codeWithMap: CodeWithSourceMap, protected basePosition: number) {
     super(sourceFile, options);
     if (this.codeWithMap.map) {
       this.consumer = new SourceMapConsumer(this.codeWithMap.map);

@@ -2,7 +2,7 @@ import { sprintf } from 'sprintf-js';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { NgWalker } from './angular/ngWalker';
-import { getInterfaceName } from './util/utils';
+import { getSymbolName } from './util/utils';
 
 import { DirectiveMetadata } from './angular/metadata';
 
@@ -52,8 +52,8 @@ export class ClassMetadataWalker extends NgWalker {
       if (
         i.length !== 0 &&
         i[0].types
-          .map(getInterfaceName)
-          .filter(x => !!x)
+          .map(getSymbolName)
+          .filter(Boolean)
           .some(x => x.endsWith(ValidatorSuffix))
       ) {
         suffixes.push(ValidatorSuffix);

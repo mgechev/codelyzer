@@ -8,7 +8,7 @@ import * as spies from 'chai-spies';
 
 chai.use(spies);
 
-const chaiSpy = (<any>chai).spy;
+const chaiSpy = (chai as any).spy;
 
 describe('basicCssAstVisitor', () => {
   it('should use the default css walker by default', () => {
@@ -28,11 +28,11 @@ describe('basicCssAstVisitor', () => {
     };
     let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
-    (<any>chai)
+    chai
       .expect(() => {
         let templateSpy = chaiSpy.on(BasicCssAstVisitor.prototype, 'visitCssStyleSheet');
         walker.walk(sf);
-        (<any>chai.expect(templateSpy).to.have.been).called();
+        (chai.expect(templateSpy).to.have.been as any).called();
       })
       .not.to.throw();
   });
@@ -57,13 +57,13 @@ describe('basicCssAstVisitor', () => {
     };
     let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
-    (<any>chai)
+    chai
       .expect(() => {
         let selectorSpy = chaiSpy.on(BasicCssAstVisitor.prototype, 'visitCssSelector');
         let pseudoSelectorSpy = chaiSpy.on(BasicCssAstVisitor.prototype, 'visitCssPseudoSelector');
         walker.walk(sf);
-        (<any>chai.expect(selectorSpy).to.have.been).called();
-        (<any>chai.expect(pseudoSelectorSpy).to.have.been).called();
+        (chai.expect(selectorSpy).to.have.been as any).called();
+        (chai.expect(pseudoSelectorSpy).to.have.been as any).called();
       })
       .not.to.throw();
   });

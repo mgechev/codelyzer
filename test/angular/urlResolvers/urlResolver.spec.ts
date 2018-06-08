@@ -1,5 +1,5 @@
+import { expect } from 'chai';
 import * as ts from 'typescript';
-import chai = require('chai');
 
 import { AbstractResolver } from '../../../src/angular/urlResolvers/abstractResolver';
 
@@ -35,7 +35,7 @@ describe('urlResolver', () => {
       const ast = getAst(source);
       const resolver = new DummyResolver();
       const template = resolver.getTemplate(last(ast.statements).decorators![0]);
-      (<any>chai).expect(template).eq('./foo/bar');
+      expect(template).eq('./foo/bar');
     });
 
     it('should be able to resolve templateUrls set with template string', () => {
@@ -48,7 +48,7 @@ describe('urlResolver', () => {
       const ast = getAst(source);
       const resolver = new DummyResolver();
       const template = resolver.getTemplate(last(ast.statements).decorators![0]);
-      (<any>chai).expect(template).eq('./foo/bar');
+      expect(template).eq('./foo/bar');
     });
 
     it('should not be able to resolve templateUrls set with complex template string', () => {
@@ -61,7 +61,7 @@ describe('urlResolver', () => {
       const ast = getAst(source);
       const resolver = new DummyResolver();
       const template = resolver.getTemplate(last(ast.statements).decorators![0]);
-      (<any>chai).expect(template).eq(undefined);
+      expect(template).eq(undefined);
     });
 
     it('should not be able to resolve missing templateUrl', () => {
@@ -74,7 +74,7 @@ describe('urlResolver', () => {
       const ast = getAst(source);
       const resolver = new DummyResolver();
       const template = resolver.getTemplate(last(ast.statements).decorators![0]);
-      (<any>chai).expect(template).eq(undefined);
+      expect(template).eq(undefined);
     });
 
     it('should not be able to resolve templateUrls when having missing object literal', () => {
@@ -85,7 +85,7 @@ describe('urlResolver', () => {
       const ast = getAst(source);
       const resolver = new DummyResolver();
       const template = resolver.getTemplate(last(ast.statements).decorators![0]);
-      (<any>chai).expect(template).eq(null);
+      expect(template).eq(undefined);
     });
 
     it('should not be able to resolve templateUrls when having missing object literal', () => {
@@ -96,7 +96,7 @@ describe('urlResolver', () => {
       const ast = getAst(source);
       const resolver = new DummyResolver();
       const template = resolver.getTemplate(last(ast.statements).decorators![0]);
-      (<any>chai).expect(template).eq(null);
+      expect(template).eq(undefined);
     });
   });
 
@@ -109,7 +109,7 @@ describe('urlResolver', () => {
       const ast = getAst(source);
       const resolver = new DummyResolver();
       const styles = resolver.getStyles(last(ast.statements).decorators![0]);
-      chai.expect(styles).to.deep.equal([]);
+      expect(styles).to.deep.equal([]);
     });
 
     it('should not be able to resolve styleUrls when having missing object literal', () => {
@@ -120,7 +120,7 @@ describe('urlResolver', () => {
       const ast = getAst(source);
       const resolver = new DummyResolver();
       const styles = resolver.getStyles(last(ast.statements).decorators![0]);
-      chai.expect(styles).to.deep.equal([]);
+      expect(styles).to.deep.equal([]);
     });
 
     it('should be able to resolve styleUrls with string literal', () => {
@@ -136,7 +136,7 @@ describe('urlResolver', () => {
       const ast = getAst(source);
       const resolver = new DummyResolver();
       const styles = resolver.getStyles(last(ast.statements).decorators![0]);
-      chai.expect(styles).to.deep.equal(['./foo', './bar']);
+      expect(styles).to.deep.equal(['./foo', './bar']);
     });
 
     it('should be able to resolve styleUrls with string literal', () => {
@@ -152,7 +152,7 @@ describe('urlResolver', () => {
       const ast = getAst(source);
       const resolver = new DummyResolver();
       const styles = resolver.getStyles(last(ast.statements).decorators![0]);
-      chai.expect(styles).to.deep.equal(['./foo', './bar']);
+      expect(styles).to.deep.equal(['./foo', './bar']);
     });
 
     it('should ignore non-string literal urls', () => {
@@ -170,7 +170,7 @@ describe('urlResolver', () => {
       const ast = getAst(source);
       const resolver = new DummyResolver();
       const styles = resolver.getStyles(last(ast.statements).decorators![0]);
-      chai.expect(styles).to.deep.equal(['./foo', './bar']);
+      expect(styles).to.deep.equal(['./foo', './bar']);
     });
   });
 });

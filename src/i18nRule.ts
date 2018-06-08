@@ -108,40 +108,40 @@ class I18NTemplateVisitor extends BasicTemplateAstVisitor {
     new I18NTextVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart)
   ];
 
-  visit(a: any, context: any) {
-    super.visit!(a, context);
+  visit(node: ast.TemplateAst, context: BasicTemplateAstVisitor) {
+    super.visit!(node, context);
   }
 
-  visitAttr(attr: ast.AttrAst, context: any): any {
+  visitAttr(attr: ast.AttrAst, context: BasicTemplateAstVisitor): any {
     const options = this.getOptions();
     this.visitors
       .filter(v => options.indexOf(v.getCheckOption()) >= 0)
       .map(v => v.visitAttr(attr, this))
-      .filter(f => !!f)
+      .filter(Boolean)
       .forEach(f =>
         this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
       );
     super.visitAttr(attr, context);
   }
 
-  visitElement(element: ast.ElementAst, context: any): any {
+  visitElement(element: ast.ElementAst, context: BasicTemplateAstVisitor): any {
     const options = this.getOptions();
     this.visitors
       .filter(v => options.indexOf(v.getCheckOption()) >= 0)
       .map(v => v.visitElement(element, this))
-      .filter(f => !!f)
+      .filter(Boolean)
       .forEach(f =>
         this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
       );
     super.visitElement(element, context);
   }
 
-  visitText(text: ast.TextAst, context: any): any {
+  visitText(text: ast.TextAst, context: BasicTemplateAstVisitor): any {
     const options = this.getOptions();
     this.visitors
       .filter(v => options.indexOf(v.getCheckOption()) >= 0)
       .map(v => v.visitText(text, this))
-      .filter(f => !!f)
+      .filter(Boolean)
       .forEach(f =>
         this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
       );
@@ -153,7 +153,7 @@ class I18NTemplateVisitor extends BasicTemplateAstVisitor {
     this.visitors
       .filter(v => options.indexOf(v.getCheckOption()) >= 0)
       .map(v => v.visitBoundText(text, this))
-      .filter(f => !!f)
+      .filter(Boolean)
       .forEach(f =>
         this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
       );

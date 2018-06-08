@@ -35,6 +35,10 @@ export interface DirectiveDeclaration {
 
 let BUILD_TYPE = '<%= BUILD_TYPE %>';
 
+const transform = (code: string, extension: '.css' | '.html', url?: string): { code: string; url?: string } => {
+  return { code: !url || url.endsWith(extension) ? code : '', url };
+};
+
 export const Config: Config = {
   interpolation: ['{{', '}}'],
 
@@ -71,25 +75,13 @@ export const Config: Config = {
     return url;
   },
 
-  transformStyle(code: string, url?: string) {
-    if (!url || url.endsWith('.css')) {
-      return { code, url };
-    }
+  transformStyle: (code: string, url?: string) => transform(code, '.css', url),
 
-    return { code: '', url };
-  },
-
-  transformTemplate(code: string, url?: string) {
-    if (!url || url.endsWith('.html')) {
-      return { code, url };
-    }
-
-    return { code: '', url };
-  }
+  transformTemplate: (code: string, url?: string) => transform(code, '.html', url)
 };
 
 try {
   const root = require('app-root-path');
   const newConfig = require(root.path + '/.codelyzer');
   Object.assign(Config, newConfig);
-} catch (e) {}
+} catch {}

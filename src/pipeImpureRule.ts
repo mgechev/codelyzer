@@ -2,9 +2,10 @@ import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { sprintf } from 'sprintf-js';
 import { NgWalker } from './angular/ngWalker';
+import { getDecoratorArgument } from './util/utils';
 
 export class Rule extends Lint.Rules.AbstractRule {
-  public static metadata: Lint.IRuleMetadata = {
+  static readonly metadata: Lint.IRuleMetadata = {
     ruleName: 'pipe-impure',
     type: 'functionality',
     description: 'Pipes cannot be declared as impure.',
@@ -14,36 +15,33 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static FAILURE = 'Warning: impure pipe declared in class %s';
+  static readonly FAILURE_STRING = 'Warning: impure pipe declared in class %s';
 
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this.getOptions()));
   }
 }
 
 export class ClassMetadataWalker extends NgWalker {
   protected visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
-    this.validateProperties(controller.name!.text, decorator);
+    this.validatePipe(controller.name!.text, decorator);
     super.visitNgPipe(controller, decorator);
   }
 
-  private validateProperties(className: string, pipe: any) {
-    let argument = this.extractArgument(pipe);
-    if (argument.kind === ts.SyntaxKind.ObjectLiteralExpression) {
-      argument.properties.filter(n => n.name.text === 'pure').forEach(this.validateProperty.bind(this, className));
-    }
-  }
+  private validatePipe(className: string, decorator: ts.Decorator): void {
+    const argument = getDecoratorArgument(decorator)!;
+    const property = argument.properties.find(p => p.name!.getText() === 'pure');
 
-  private extractArgument(pipe: any) {
-    let baseExpr = <any>pipe.expression || {};
-    let args = baseExpr.arguments || [];
-    return args[0];
-  }
-
-  private validateProperty(className: string, property: any) {
-    const propValue = property.initializer.getText();
-    if (propValue === 'false') {
-      this.addFailureAtNode(property, sprintf(Rule.FAILURE, className));
+    if (!property) {
+      return;
     }
+
+    const propValue = ts.isPropertyAssignment(property) ? property.initializer.getText() : undefined;
+
+    if (!propValue || propValue !== 'false') {
+      return;
+    }
+
+    this.addFailureAtNode(property, sprintf(Rule.FAILURE_STRING, className));
   }
 }

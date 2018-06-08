@@ -3,6 +3,7 @@ import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { NgWalker } from './angular/ngWalker';
 import { SelectorValidator } from './util/selectorValidator';
+import { getDecoratorArgument } from './util/utils';
 
 const OPTION_ATTRIBUTE = 'attribute';
 const OPTION_CAMEL_CASE = 'camelCase';
@@ -102,29 +103,21 @@ export class ClassMetadataWalker extends NgWalker {
   }
 
   private validateProperties(className: string, pipe: ts.Decorator) {
-    let argument = this.extractArgument(pipe);
-    if (argument && argument.kind === ts.SyntaxKind.ObjectLiteralExpression) {
-      (<ts.ObjectLiteralExpression>argument).properties
-        .filter(n => n.name && (<ts.StringLiteral>n.name).text === 'name')
-        .forEach(this.validateProperty.bind(this, className));
-    }
-  }
+    const argument = getDecoratorArgument(pipe)!;
 
-  private extractArgument(pipe: ts.Decorator): ts.Expression | undefined {
-    const baseExpr = <ts.CallExpression>pipe.expression;
-    if (baseExpr.arguments) {
-      const args = baseExpr.arguments;
-      return args[0];
-    }
-    return undefined;
+    argument.properties
+      .filter(p => p.name && ts.isIdentifier(p.name) && p.name.text === 'name')
+      .forEach(this.validateProperty.bind(this, className));
   }
 
   private validateProperty(className: string, property: ts.Node) {
-    const init = (<ts.PropertyAssignment>property).initializer;
-    if (init && (<ts.StringLiteral>init).text) {
-      const propName = (<ts.StringLiteral>init).text;
+    const initializer = ts.isPropertyAssignment(property) ? property.initializer : undefined;
+
+    if (initializer && ts.isStringLiteral(initializer)) {
+      const propName = initializer.text;
       const isValidName = this.rule.validateName(propName);
       const isValidPrefix = this.rule.hasPrefix ? this.rule.validatePrefix(propName) : true;
+
       if (!isValidName || !isValidPrefix) {
         this.addFailureAtNode(property, this.getFailureMessage(className, propName));
       }

@@ -1,5 +1,5 @@
 import { IRuleMetadata, RuleFailure, Rules } from 'tslint/lib';
-import { SourceFile } from 'typescript/lib/typescript';
+import { isPropertyAccessExpression, SourceFile } from 'typescript/lib/typescript';
 import { ComponentMetadata } from './angular/metadata';
 import { NgWalker } from './angular/ngWalker';
 import { getDecoratorPropertyInitializer } from './util/utils';
@@ -31,7 +31,7 @@ class ViewEncapsulationWalker extends NgWalker {
   private validateComponent(metadata: ComponentMetadata): void {
     const encapsulation = getDecoratorPropertyInitializer(metadata.decorator, 'encapsulation');
 
-    if (!encapsulation || encapsulation.name.text !== 'None') {
+    if (!encapsulation || (isPropertyAccessExpression(encapsulation) && encapsulation.name.text !== 'None')) {
       return;
     }
 

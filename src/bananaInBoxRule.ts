@@ -27,7 +27,7 @@ const getReplacements = (text: ast.BoundEventAst, absolutePosition: number) => {
 };
 
 class BananaInBoxTemplateVisitor extends BasicTemplateAstVisitor {
-  visitEvent(prop: ast.BoundEventAst, context: any): any {
+  visitEvent(prop: ast.BoundEventAst, context: BasicTemplateAstVisitor): any {
     if (prop.name) {
       let error: string | null = null;
 
