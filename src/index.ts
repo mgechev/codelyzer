@@ -37,7 +37,7 @@ export { Rule as UsePipeDecoratorRule } from './usePipeDecoratorRule';
 export { Rule as UsePipeTransformInterfaceRule } from './usePipeTransformInterfaceRule';
 export { Rule as UseViewEncapsulationRule } from './useViewEncapsulationRule';
 
-export * from './angular/config';
+export * from './angular';
 
 // this file exists for tslint to resolve the rules directory
 export const rulesDirectory = '.';
