@@ -1,5 +1,5 @@
 import { createSourceFile, ScriptTarget, SourceFile } from 'typescript/lib/typescript';
-import { getStylesFailure, getTemplateFailure, PropertyPair, Rule } from '../src/maxInlineDeclarationsRule';
+import { getAnimationsFailure, getStylesFailure, getTemplateFailure, PropertyPair, Rule } from '../src/maxInlineDeclarationsRule';
 import { assertFailure, assertFailures, assertSuccess } from './testHelper';
 
 type PropertyPairArray = ReadonlyArray<PropertyPair>;
@@ -14,44 +14,65 @@ const getSourceFile = (code: string): SourceFile => {
 };
 
 describe(ruleName, () => {
-  describe('template', () => {
+  describe('animations', () => {
     describe('failure', () => {
       it('should fail when the number of lines exceeds the default lines limit', () => {
         const source = `
           @Component({
-            selector: 'foobar',
-            template: \`
-              <div>first line</div>
-              <div>second line</div>
-              <div>third line</div>
-              <div>fourth line</div>
-            \`
+            animations: [
+              \`
+                transformPanel: trigger('transformPanel',
+                  [
+                    state('void', style({opacity: 0, transform: 'scale(1, 0)'})),
+                    state('enter', style({opacity: 1, transform: 'scale(1, 1)'})),
+                    transition('void => enter', group([
+                      query('@fadeInCalendar', animateChild()),
+                      animate('400ms cubic-bezier(0.25, 0.8, 0.25, 1)')
+                    ])),
+                    transition('* => void', animate('100ms linear', style({opacity: 0})))
+                  ]
+                ),
+
+                fadeInCalendar: trigger('fadeInCalendar', [
+                  state('void', style({opacity: 0})),
+                  state('enter', style({opacity: 1})),
+                  transition('void => *', animate('400ms 100ms cubic-bezier(0.55, 0, 0.55, 0.2)'))
+                ]
+              \`;
+            ]
           })
           class Test {}
         `;
         assertFailure(ruleName, source, {
-          endPosition: { character: 13, line: 8 },
-          message: getTemplateFailure(4),
-          startPosition: { character: 22, line: 3 }
+          endPosition: { character: 15, line: 21 },
+          message: getAnimationsFailure(17),
+          startPosition: { character: 14, line: 3 }
         });
       });
 
       it('should fail when the number of lines exceeds a custom lines limit', () => {
         const source = `
           @Component({
-            selector: 'foobar',
-            template: '<div>first line</div>'
+            animations: [
+              \`
+                transformPanel: trigger('transformPanel',
+                  [
+                    state('void', style({opacity: 0, transform: 'scale(1, 0)'}))
+                  ]
+                )
+              \`
+            ]
           })
           class Test {}
         `;
-        const options: PropertyPairArray = [{ template: 0 }];
+        const options: PropertyPairArray = [{ animations: 2 }];
         assertFailure(
           ruleName,
           source,
           {
-            endPosition: { character: 45, line: 3 },
-            message: getTemplateFailure(1, options[0].template),
-            startPosition: { character: 22, line: 3 }
+            endPosition: { character: 15, line: 9 },
+            message: getAnimationsFailure(5, options[0].animations),
+            startPosition: { character: 14, line: 3 }
           },
           options
         );
@@ -62,8 +83,7 @@ describe(ruleName, () => {
       it('should succeed when the number of lines does not exceeds the default lines limit', () => {
         const source = `
           @Component({
-            selector: 'foobar',
-            template: '<div>just one line template</div>'
+            animations: ['state('void', style({opacity: 0, transform: 'scale(1, 0)'}))']
           })
           class Test {}
         `;
@@ -73,27 +93,13 @@ describe(ruleName, () => {
       it('should succeed when a negative limit is used and the number of lines does not exceeds the default lines limit', () => {
         const source = `
           @Component({
-            selector: 'foobar',
-            template: '<div>first line</div>'
+            animations: ['state('void', style({opacity: 0, transform: 'scale(1, 0)'}))']
           })
           class Test {}
         `;
-        const options: PropertyPairArray = [{ template: -5 }];
+        const options: PropertyPairArray = [{ animations: -5 }];
         assertSuccess(ruleName, source, options);
       });
-    });
-  });
-
-  describe('templateUrl', () => {
-    it('should succeed when the number of lines of a template file exceeds the default lines limit', () => {
-      const source = `
-        @Component({
-          selector: 'foobar',
-          templateUrl: './foobar.html'
-        })
-        class Test {}
-      `;
-      assertSuccess(ruleName, getSourceFile(source));
     });
   });
 
@@ -102,7 +108,6 @@ describe(ruleName, () => {
       it('should fail when the number of lines exceeds the default lines limit', () => {
         const source = `
           @Component({
-            selector: 'foobar',
             styles: [
               \`
                 div {
@@ -115,16 +120,15 @@ describe(ruleName, () => {
           class Test {}
         `;
         assertFailure(ruleName, source, {
-          endPosition: { character: 15, line: 9 },
+          endPosition: { character: 15, line: 8 },
           message: getStylesFailure(4),
-          startPosition: { character: 14, line: 4 }
+          startPosition: { character: 14, line: 3 }
         });
       });
 
       it('should fail when the sum of lines (from separate inline styles) exceeds the default lines limit', () => {
         const source = `
           @Component({
-            selector: 'foobar',
             styles: [
               \`
                 div {
@@ -145,14 +149,14 @@ describe(ruleName, () => {
         const message = getStylesFailure(8);
         assertFailures(ruleName, source, [
           {
-            endPosition: { character: 15, line: 9 },
+            endPosition: { character: 15, line: 8 },
             message,
-            startPosition: { character: 14, line: 4 }
+            startPosition: { character: 14, line: 3 }
           },
           {
-            endPosition: { character: 15, line: 15 },
+            endPosition: { character: 15, line: 14 },
             message,
-            startPosition: { character: 14, line: 10 }
+            startPosition: { character: 14, line: 9 }
           }
         ]);
       });
@@ -160,7 +164,6 @@ describe(ruleName, () => {
       it('should fail when the number of lines exceeds a custom lines limit', () => {
         const source = `
           @Component({
-            selector: 'foobar',
             styles: ['div { display: none; }']
           })
           class Test {}
@@ -170,9 +173,9 @@ describe(ruleName, () => {
           ruleName,
           source,
           {
-            endPosition: { character: 45, line: 3 },
+            endPosition: { character: 45, line: 2 },
             message: getStylesFailure(1, options[0].styles),
-            startPosition: { character: 21, line: 3 }
+            startPosition: { character: 21, line: 2 }
           },
           options
         );
@@ -183,7 +186,6 @@ describe(ruleName, () => {
       it('should succeed when the number of lines does not exceeds the default lines limit', () => {
         const source = `
           @Component({
-            selector: 'foobar',
             styles: ['div { display: none; }']
           })
           class Test {}
@@ -194,7 +196,6 @@ describe(ruleName, () => {
       it('should succeed when a negative limit is used and the number of lines does not exceeds the default lines limit', () => {
         const source = `
           @Component({
-            selector: 'foobar',
             styles: ['div { display: none; }']
           })
           class Test {}
@@ -209,7 +210,6 @@ describe(ruleName, () => {
     it('should succeed when the number of lines of a styles file exceeds the default lines limit', () => {
       const source = `
         @Component({
-          selector: 'foobar',
           styleUrls: ['./foobar.css']
         })
         class Test {}
@@ -222,8 +222,85 @@ describe(ruleName, () => {
     it('should succeed when neither the styles nor the template are present', () => {
       const source = `
         @Component({
-          selector: 'foobar',
           styleUrls: ['./foobar.scss'],
+          templateUrl: './foobar.html'
+        })
+        class Test {}
+      `;
+      assertSuccess(ruleName, getSourceFile(source));
+    });
+  });
+
+  describe('template', () => {
+    describe('failure', () => {
+      it('should fail when the number of lines exceeds the default lines limit', () => {
+        const source = `
+          @Component({
+            template: \`
+              <div>first line</div>
+              <div>second line</div>
+              <div>third line</div>
+              <div>fourth line</div>
+            \`
+          })
+          class Test {}
+        `;
+        assertFailure(ruleName, source, {
+          endPosition: { character: 13, line: 7 },
+          message: getTemplateFailure(4),
+          startPosition: { character: 22, line: 2 }
+        });
+      });
+
+      it('should fail when the number of lines exceeds a custom lines limit', () => {
+        const source = `
+          @Component({
+            template: '<div>first line</div>'
+          })
+          class Test {}
+        `;
+        const options: PropertyPairArray = [{ template: 0 }];
+        assertFailure(
+          ruleName,
+          source,
+          {
+            endPosition: { character: 45, line: 2 },
+            message: getTemplateFailure(1, options[0].template),
+            startPosition: { character: 22, line: 2 }
+          },
+          options
+        );
+      });
+    });
+
+    describe('success', () => {
+      it('should succeed when the number of lines does not exceeds the default lines limit', () => {
+        const source = `
+          @Component({
+            template: '<div>just one line template</div>'
+          })
+          class Test {}
+        `;
+        assertSuccess(ruleName, source);
+      });
+
+      it('should succeed when a negative limit is used and the number of lines does not exceeds the default lines limit', () => {
+        const source = `
+          @Component({
+            template: '<div>first line</div>'
+          })
+          class Test {}
+        `;
+        const options: PropertyPairArray = [{ template: -5 }];
+        assertSuccess(ruleName, source, options);
+      });
+    });
+  });
+
+  describe('templateUrl', () => {
+    it('should succeed when the number of lines of a template file exceeds the default lines limit', () => {
+      const source = `
+        @Component({
           templateUrl: './foobar.html'
         })
         class Test {}

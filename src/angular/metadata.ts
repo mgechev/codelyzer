@@ -1,5 +1,5 @@
-import * as ts from 'typescript';
 import { RawSourceMap } from 'source-map';
+import * as ts from 'typescript';
 
 export interface CodeWithSourceMap {
   code: string;
@@ -10,6 +10,10 @@ export interface CodeWithSourceMap {
 interface PropertyMetadata {
   node?: ts.Node;
   url?: string;
+}
+
+export interface AnimationMetadata extends PropertyMetadata {
+  animation: CodeWithSourceMap;
 }
 
 export interface StyleMetadata extends PropertyMetadata {
@@ -27,6 +31,7 @@ export class DirectiveMetadata {
 }
 
 export class ComponentMetadata extends DirectiveMetadata {
+  animations!: AnimationMetadata[];
   styles!: StyleMetadata[];
   template!: TemplateMetadata;
 }

@@ -9,11 +9,11 @@ import {
 } from '../util/astQuery';
 import { ifTrue, listToMaybe, Maybe, unwrapFirst } from '../util/function';
 import { logger } from '../util/logger';
-import { getInlineStyle, getTemplate } from '../util/ngQuery';
+import { getAnimations, getInlineStyle, getTemplate } from '../util/ngQuery';
 import { maybeNodeArray } from '../util/utils';
 import { Config } from './config';
 import { FileResolver } from './fileResolver/fileResolver';
-import { CodeWithSourceMap, ComponentMetadata, DirectiveMetadata, StyleMetadata, TemplateMetadata } from './metadata';
+import { AnimationMetadata, CodeWithSourceMap, ComponentMetadata, DirectiveMetadata, StyleMetadata, TemplateMetadata } from './metadata';
 import { AbstractResolver, MetadataUrls } from './urlResolvers/abstractResolver';
 import { PathResolver } from './urlResolvers/pathResolver';
 import { UrlResolver } from './urlResolvers/urlResolver';
@@ -71,10 +71,12 @@ export class MetadataReader {
     const expr = this.getDecoratorArgument(dec);
     const directiveMetadata = this.readDirectiveMetadata(d, dec);
     const external_M = expr.fmap(() => this._urlResolver!.resolve(dec));
+    const animations_M = external_M.bind(external => this.readComponentAnimationsMetadata(dec, external!));
     const style_M = external_M.bind(external => this.readComponentStylesMetadata(dec, external!));
     const template_M = external_M.bind(external => this.readComponentTemplateMetadata(dec, external!));
 
     return Object.assign(new ComponentMetadata(), directiveMetadata, {
+      animations: animations_M.unwrap(),
       styles: style_M.unwrap(),
       template: template_M.unwrap()
     });
@@ -82,6 +84,17 @@ export class MetadataReader {
 
   protected getDecoratorArgument(decorator: ts.Decorator): Maybe<ts.ObjectLiteralExpression | undefined> {
     return decoratorArgument(decorator).bind(ifTrue(hasProperties));
+  }
+
+  protected readComponentAnimationsMetadata(dec: ts.Decorator, external: MetadataUrls): Maybe<AnimationMetadata[] | undefined> {
+    return getAnimations(dec).fmap(inlineAnimations =>
+      inlineAnimations!.elements
+        .filter(inlineAnimation => isSimpleTemplateString(inlineAnimation))
+        .map<AnimationMetadata>(inlineAnimation => ({
+          animation: normalizeTransformed({ code: (inlineAnimation as ts.StringLiteral | ts.NoSubstitutionTemplateLiteral).text }),
+          node: inlineAnimation as ts.Node
+        }))
+    );
   }
 
   protected readComponentTemplateMetadata(dec: ts.Decorator, external: MetadataUrls): Maybe<TemplateMetadata | undefined> {
