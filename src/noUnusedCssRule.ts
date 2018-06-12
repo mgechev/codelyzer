@@ -7,40 +7,33 @@ import { BasicCssAstVisitor } from './angular/styles/basicCssAstVisitor';
 import { CssAst, CssSelectorAst, CssSelectorRuleAst } from './angular/styles/cssAst';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 import { parseTemplate } from './angular/templates/templateParser';
-import { getComponentDecorator, getDecoratorPropertyInitializer } from './util/utils';
+import { getComponentDecorator, getDecoratorPropertyInitializer, getSymbolName } from './util/utils';
 
 import { ComponentMetadata, StyleMetadata } from './angular/metadata';
 import { logger } from './util/logger';
 import { SemVerDSL } from './util/ngVersion';
 
-const CssSelectorTokenizer = require('css-selector-tokenizer');
+interface Strategy {
+  attribute(ast: ElementAst): boolean;
+  class(ast: ElementAst): boolean;
+  id(ast: ElementAst): boolean;
+}
 
-const getSymbolName = (t: any) => {
-  let expr = t;
-  if (t.expression) {
-    expr = t.expression;
-  }
-  if (t.expression && t.expression.name) {
-    expr = t.expression.name;
-  }
-  return expr.text;
-};
+const CssSelectorTokenizer = require('css-selector-tokenizer');
 
 const isEncapsulationEnabled = (encapsulation: any) => {
   if (!encapsulation) {
     return true;
-  } else {
-    // By default consider the encapsulation disabled
-    if (getSymbolName(encapsulation) !== 'ViewEncapsulation') {
-      return false;
-    } else {
-      const encapsulationType = encapsulation.name.text;
-      if (/^(Emulated|Native)$/.test(encapsulationType)) {
-        return true;
-      }
-    }
   }
-  return false;
+
+  // By default consider the encapsulation disabled
+  if (getSymbolName(encapsulation) !== 'ViewEncapsulation') {
+    return false;
+  }
+
+  const encapsulationType = encapsulation.name.text;
+
+  return /^(Emulated|Native)$/.test(encapsulationType);
 };
 
 // Initialize the selector accessors
@@ -60,7 +53,8 @@ const lang = require('cssauron')({
       .filter(b => b.type === PropertyBindingType.Class)
       .map(b => b.name)
       .join(' ');
-    const classAttr = node.attrs.filter(a => a.name.toLowerCase() === 'class').pop();
+    const classAttr = node.attrs.find(a => a.name.toLowerCase() === 'class');
+
     return classAttr ? `${classAttr.value} ${classBindings}` : classBindings;
   },
   parent(node: any) {
@@ -70,7 +64,7 @@ const lang = require('cssauron')({
     return node.children;
   },
   attr(node: ElementAst, attr: string) {
-    const targetAttr = node.attrs.filter(a => a.name === attr).pop();
+    const targetAttr = node.attrs.find(a => a.name === attr);
 
     return targetAttr ? targetAttr.value : undefined;
   }
@@ -82,7 +76,7 @@ class ElementVisitor extends BasicTemplateAstVisitor {
     fn(ast);
     ast.children.forEach(c => {
       if (c instanceof ElementAst) {
-        (<any>c).parentNode = ast;
+        (c as any).parentNode = ast;
       }
       this.visit!(c, fn);
     });
@@ -94,21 +88,18 @@ const hasSelector = (s: any, type: string) => {
   if (!s) {
     return false;
   }
-  if (s.type === 'selector' || s.type === 'selectors') {
-    return (s.nodes || []).some(n => hasSelector(n, type));
-  } else {
-    return s.type === type;
-  }
+
+  return s.type === 'selector' || s.type === 'selectors' ? (s.nodes || []).some(n => hasSelector(n, type)) : s.type === type;
 };
 
-const dynamicFilters = {
-  id(ast: ElementAst, selector: any) {
+const dynamicFilters: Strategy = {
+  id(ast: ElementAst) {
     return (ast.inputs || []).some(i => i.name === 'id');
   },
-  attribute(ast: ElementAst, selector: any) {
+  attribute(ast: ElementAst) {
     return (ast.inputs || []).some(i => i.type === PropertyBindingType.Attribute);
   },
-  class(ast: ElementAst, selector: any) {
+  class(ast: ElementAst) {
     return (ast.inputs || []).some(i => i.name === 'className' || i.name === 'ngClass');
   }
 };
@@ -118,7 +109,7 @@ const dynamicFilters = {
 // - If has selector by class and any of the elements has a dynamically set class we just skip it.
 // - If has selector by attribute and any of the elements has a dynamically set attribute we just skip it.
 class ElementFilterVisitor extends BasicTemplateAstVisitor {
-  shouldVisit(ast: ElementAst, strategies: any, selectorTypes: any): boolean {
+  shouldVisit(ast: ElementAst, strategies: Strategy, selectorTypes: object): boolean {
     return (
       Object.keys(strategies).every(s => {
         const strategy = strategies[s];
@@ -126,9 +117,9 @@ class ElementFilterVisitor extends BasicTemplateAstVisitor {
       }) &&
       (ast.children || []).every(
         c =>
-          (ast instanceof ElementAst && this.shouldVisit(<ElementAst>c, strategies, selectorTypes)) ||
+          (ast instanceof ElementAst && this.shouldVisit(c as ElementAst, strategies, selectorTypes)) ||
           (ast instanceof EmbeddedTemplateAst &&
-            (ast.children || []).every(c => this.shouldVisit(<ElementAst>c, strategies, selectorTypes)))
+            (ast.children || []).every(c => this.shouldVisit(c as ElementAst, strategies, selectorTypes)))
       )
     );
   }
@@ -211,7 +202,7 @@ class UnusedCssVisitor extends BasicCssAstVisitor {
       return a;
     }, {});
 
-    if (!elementFilterVisitor.shouldVisit(<ElementAst>this.templateAst, dynamicFilters, selectorTypesCache)) {
+    if (!elementFilterVisitor.shouldVisit(this.templateAst as ElementAst, dynamicFilters, selectorTypesCache)) {
       return true;
     }
 
@@ -252,7 +243,7 @@ export class UnusedCssNgVisitor extends NgWalker {
               [],
               false,
               [],
-              parseTemplate(meta.template.template.code),
+              parseTemplate(meta.template!.template.code),
               0,
               null,
               null
@@ -267,7 +258,7 @@ export class UnusedCssNgVisitor extends NgWalker {
               [],
               [],
               false,
-              parseTemplate(meta.template.template.code),
+              parseTemplate(meta.template!.template.code),
               0,
               null,
               null
@@ -294,7 +285,7 @@ export class UnusedCssNgVisitor extends NgWalker {
     const file = this.getContextSourceFile(styleMetadata.url!, styleMetadata.style.source!);
     const visitor = new UnusedCssVisitor(file, this._originalOptions, context, styleMetadata, baseStart);
     visitor.templateAst = this.templateAst;
-    const d = getComponentDecorator(context.controller);
+    const d = getComponentDecorator(context.controller)!;
     const encapsulation = getDecoratorPropertyInitializer(d, 'encapsulation');
     if (isEncapsulationEnabled(encapsulation)) {
       style.visit(visitor);

@@ -114,7 +114,9 @@ export class MaxInlineDeclarationsWalker extends NgWalker {
 
   private getInlineAnimationsLinesCount(metadata: ComponentMetadata): number {
     return (metadata.animations || []).reduce((previousValue, currentValue) => {
-      previousValue += this.getLinesCount(currentValue.animation.source);
+      if (currentValue && currentValue.animation) {
+        previousValue += this.getLinesCount(currentValue.animation.source);
+      }
 
       return previousValue;
     }, 0);
@@ -129,14 +131,14 @@ export class MaxInlineDeclarationsWalker extends NgWalker {
 
     const failureMessage = getAnimationsFailure(linesCount, this.animationsLinesLimit);
 
-    for (const animation of metadata.animations) {
-      this.addFailureAtNode(animation.node!, failureMessage);
+    for (const animation of metadata.animations!) {
+      this.addFailureAtNode(animation!.node!, failureMessage);
     }
   }
 
   private getInlineStylesLinesCount(metadata: ComponentMetadata): number {
     return (metadata.styles || []).reduce((previousValue, currentValue) => {
-      if (!currentValue.url) {
+      if (currentValue && !currentValue.url) {
         previousValue += this.getLinesCount(currentValue.style.source);
       }
 
@@ -153,13 +155,13 @@ export class MaxInlineDeclarationsWalker extends NgWalker {
 
     const failureMessage = getStylesFailure(linesCount, this.stylesLinesLimit);
 
-    for (const style of metadata.styles) {
-      this.addFailureAtNode(style.node!, failureMessage);
+    for (const style of metadata.styles!) {
+      this.addFailureAtNode(style!.node!, failureMessage);
     }
   }
 
   private getTemplateLinesCount(metadata: ComponentMetadata): number {
-    return this.hasInlineTemplate(metadata) ? this.getLinesCount(metadata.template.template.source) : 0;
+    return this.hasInlineTemplate(metadata) ? this.getLinesCount(metadata.template!.template.source) : 0;
   }
 
   private hasInlineTemplate(metadata: ComponentMetadata): boolean {
@@ -175,6 +177,6 @@ export class MaxInlineDeclarationsWalker extends NgWalker {
 
     const failureMessage = getTemplateFailure(linesCount, this.templateLinesLimit);
 
-    this.addFailureAtNode(metadata.template.node!, failureMessage);
+    this.addFailureAtNode(metadata.template!.node!, failureMessage);
   }
 }

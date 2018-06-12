@@ -1,10 +1,10 @@
+import { expect } from 'chai';
 import * as ts from 'typescript';
 import * as Lint from 'tslint';
 
 import { NgWalker } from '../../src/angular/ngWalker';
 import { getDeclaredMethodNames, getDeclaredPropertyNames } from '../../src/util/classDeclarationUtils';
 import { FlatSymbolTable } from '../../src/angular/templates/recursiveAngularExpressionVisitor';
-import chai = require('chai');
 
 describe('ngWalker', () => {
   it('should visit components and directives', () => {
@@ -34,7 +34,7 @@ describe('ngWalker', () => {
     let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new ClassUtilWalker(sf, ruleArgs);
     walker.walk(sf);
-    chai.expect(methods).to.deep.eq({ bar: true, baz: true });
-    chai.expect(properties).to.deep.eq({ foo: true });
+    expect(methods).to.deep.eq({ bar: true, baz: true });
+    expect(properties).to.deep.eq({ foo: true });
   });
 });

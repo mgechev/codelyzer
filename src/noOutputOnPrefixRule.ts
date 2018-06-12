@@ -2,6 +2,7 @@ import { sprintf } from 'sprintf-js';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { NgWalker } from './angular/ngWalker';
+import { getClassName } from './util/utils';
 
 export class Rule extends Lint.Rules.AbstractRule {
   static readonly metadata: Lint.IRuleMetadata = {
@@ -25,12 +26,20 @@ export class Rule extends Lint.Rules.AbstractRule {
 
 class OutputWalker extends NgWalker {
   protected visitNgOutput(property: ts.PropertyDeclaration, output: ts.Decorator, args: string[]) {
-    const className = (<any>property).parent.name.text;
-    const memberName = (<any>property.name).text as string;
-
-    if (memberName && memberName.startsWith('on') && !(memberName.length >= 3 && memberName[2] !== memberName[2].toUpperCase())) {
-      this.addFailureAtNode(property, sprintf(Rule.FAILURE_STRING, className, memberName));
-    }
+    this.validateOutput(property);
     super.visitNgOutput(property, output, args);
+  }
+
+  private validateOutput(property: ts.PropertyDeclaration): void {
+    const className = getClassName(property);
+    const memberName = property.name.getText();
+
+    if (!memberName || !/on((?![a-z])|(?=$))/.test(memberName)) {
+      return;
+    }
+
+    const failure = sprintf(Rule.FAILURE_STRING, className, memberName);
+
+    this.addFailureAtNode(property, failure);
   }
 }

@@ -8,7 +8,7 @@ import { ComponentMetadata } from '../metadata';
 import { RecursiveAngularExpressionVisitor } from './recursiveAngularExpressionVisitor';
 import { SourceMappingVisitor } from '../sourceMappingVisitor';
 
-const getExpressionDisplacement = (binding: any) => {
+const getExpressionDisplacement = (binding: ast.TemplateAst) => {
   let attrLen = 0;
   let valLen = 0;
   let totalLength = 0;
@@ -22,9 +22,8 @@ const getExpressionDisplacement = (binding: any) => {
     // the binding type. For event it is 0. (+1 because of the ".")
     let subBindingLen = 0;
     if (binding instanceof ast.BoundElementPropertyAst) {
-      let prop: ast.BoundElementPropertyAst = <ast.BoundElementPropertyAst>binding;
       // The length of the binding type
-      switch (prop.type) {
+      switch (binding.type) {
         case ast.PropertyBindingType.Animation:
           subBindingLen = 'animate'.length + 1;
           break;
@@ -108,7 +107,7 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
     protected templateStart: number,
     private expressionVisitorCtrl: RecursiveAngularExpressionVisitorCtr = RecursiveAngularExpressionVisitor
   ) {
-    super(sourceFile, _originalOptions, context.template.template, templateStart);
+    super(sourceFile, _originalOptions, context.template!.template, templateStart);
   }
 
   visit?(node: ast.TemplateAst, context: any): any {
@@ -148,8 +147,8 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
   }
 
   visitElementProperty(prop: ast.BoundElementPropertyAst, context: any): any {
-    const ast: any = (<e.ASTWithSource>prop.value).ast;
-    ast.interpolateExpression = (<any>prop.value).source;
+    const ast = (prop.value as e.ASTWithSource).ast;
+    (ast as any).interpolateExpression = (prop.value as any).source;
     this.visitNgTemplateAST(prop.value, this.templateStart + getExpressionDisplacement(prop), prop);
   }
 
@@ -158,8 +157,8 @@ export class BasicTemplateAstVisitor extends SourceMappingVisitor implements ast
   visitBoundText(text: ast.BoundTextAst, context: any): any {
     if (ExpTypes.ASTWithSource(text.value)) {
       // Note that will not be reliable for different interpolation symbols
-      const ast: any = (<e.ASTWithSource>text.value).ast;
-      ast.interpolateExpression = (<any>text.value).source;
+      const ast = (text.value as e.ASTWithSource).ast;
+      (ast as any).interpolateExpression = (text.value as any).source;
       this.visitNgTemplateAST(ast, this.templateStart + getExpressionDisplacement(text));
     }
   }

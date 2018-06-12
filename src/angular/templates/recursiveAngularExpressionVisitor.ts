@@ -13,7 +13,7 @@ export class RecursiveAngularExpressionVisitor extends SourceMappingVisitor impl
   public preDefinedVariables: FlatSymbolTable = {};
 
   constructor(sourceFile: ts.SourceFile, options: Lint.IOptions, protected context: ComponentMetadata, protected basePosition: number) {
-    super(sourceFile, options, context.template.template, basePosition);
+    super(sourceFile, options, context.template!.template, basePosition);
   }
 
   visit(ast: e.AST, context: any) {

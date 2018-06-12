@@ -925,7 +925,7 @@ describe('no-unused-css', () => {
   });
 
   describe('invalid CSS', () => {
-    it('should work with non-matching quotes', function() {
+    it('should work with non-matching quotes', () => {
       let source = `
         @Component({
           selector: 'div[some-component]',
@@ -946,7 +946,7 @@ describe('no-unused-css', () => {
       assertSuccess('no-unused-css', source);
     });
 
-    it('should work with invalid CSS', function() {
+    it('should work with invalid CSS', () => {
       let source = `
         @Component({
           selector: 'div[some-component]',

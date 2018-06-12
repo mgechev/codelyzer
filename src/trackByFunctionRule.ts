@@ -27,12 +27,12 @@ export const getFailureMessage = (): string => {
 };
 
 class TrackByFunctionTemplateVisitor extends BasicTemplateAstVisitor {
-  visitDirectiveProperty(prop: BoundDirectivePropertyAst, context: any): any {
+  visitDirectiveProperty(prop: BoundDirectivePropertyAst, context: BasicTemplateAstVisitor): any {
     this.validateDirective(prop, context);
     super.visitDirectiveProperty(prop, context);
   }
 
-  private validateDirective(prop: BoundDirectivePropertyAst, context: any): any {
+  private validateDirective(prop: BoundDirectivePropertyAst, context: BasicTemplateAstVisitor): any {
     const { templateName } = prop;
 
     if (templateName !== 'ngForOf') {
@@ -41,7 +41,7 @@ class TrackByFunctionTemplateVisitor extends BasicTemplateAstVisitor {
 
     const pattern = /trackBy\s*:|\[ngForTrackBy\]\s*=\s*['"].*['"]/;
 
-    if (pattern.test(context.codeWithMap.source)) {
+    if (pattern.test(context.codeWithMap.source!)) {
       return;
     }
 
@@ -60,7 +60,7 @@ class TrackByTemplateVisitor extends BasicTemplateAstVisitor {
     new TrackByFunctionTemplateVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart)
   ]);
 
-  visitDirectiveProperty(prop: BoundDirectivePropertyAst, context: any): any {
+  visitDirectiveProperty(prop: BoundDirectivePropertyAst, context: BasicTemplateAstVisitor): any {
     this.visitors.forEach(visitor => visitor.visitDirectiveProperty(prop, this));
 
     super.visitDirectiveProperty(prop, context);

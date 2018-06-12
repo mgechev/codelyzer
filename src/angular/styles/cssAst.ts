@@ -106,7 +106,7 @@ export class CssBlockDefinitionRuleAst extends CssBlockRuleAst {
     block: CssBlockAst
   ) {
     super(location, type, block);
-    const firstCssToken: CssToken = query.tokens[0];
+    const firstCssToken = query.tokens[0];
     this.name = new CssToken(firstCssToken.index, firstCssToken.column, firstCssToken.line, CssTokenType.Identifier, this.strValue);
   }
   visit(visitor: CssAstVisitor, context?: any): any {

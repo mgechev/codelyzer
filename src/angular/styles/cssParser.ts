@@ -518,7 +518,7 @@ export class CssParser {
         }
 
         // :host(a, b, c) {
-        this._parseSelectors(innerDelims).forEach((selector, index) => {
+        this._parseSelectors(innerDelims).forEach(selector => {
           innerSelectors.push(selector);
         });
       } else {
@@ -553,7 +553,7 @@ export class CssParser {
     const selectorCssTokens: CssToken[] = [];
     const pseudoSelectors: CssPseudoSelectorAst[] = [];
 
-    let previousToken: CssToken = undefined!;
+    let previousToken: CssToken | null = null!;
 
     const selectorPartDelimiters = delimiters | SPACE_DELIM_FLAG;
     let loopOverSelector = !characterContainsDelimiter(this._scanner!.peek, selectorPartDelimiters);
@@ -736,7 +736,7 @@ export class CssParser {
     const start = this._getScannerIndex();
 
     const tokens: CssToken[] = [];
-    let previous: CssToken = undefined!;
+    let previous: CssToken | null = null!;
     while (!characterContainsDelimiter(this._scanner!.peek, delimiters)) {
       let token: CssToken;
       if (previous != null && previous.type == CssTokenType.Identifier && this._scanner!.peek == chars.$LPAREN) {

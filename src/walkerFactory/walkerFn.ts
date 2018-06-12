@@ -22,7 +22,7 @@ export interface ComponentValidator {
 export function validate(syntaxKind: ts.SyntaxKind): F1<ValidateFn<ts.Node>, NodeValidator> {
   return validateFn => ({
     kind: 'Node',
-    validate: (node: ts.Node, options: WalkerOptions) => (node.kind === syntaxKind ? validateFn!(node, options) : Maybe.nothing)
+    validate: (node: ts.Node, options: WalkerOptions) => (node.kind === syntaxKind ? validateFn(node, options) : Maybe.nothing)
   });
 }
 

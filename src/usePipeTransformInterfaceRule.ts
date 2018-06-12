@@ -1,7 +1,7 @@
 import { sprintf } from 'sprintf-js';
 import { IRuleMetadata, RuleFailure, Rules, RuleWalker } from 'tslint/lib';
 import { ClassDeclaration, SourceFile, SyntaxKind } from 'typescript/lib/typescript';
-import { getDecoratorName, getInterfaceName } from './util/utils';
+import { getDecoratorName, getSymbolName } from './util/utils';
 
 export class Rule extends Rules.AbstractRule {
   static readonly metadata: IRuleMetadata = {
@@ -35,7 +35,7 @@ const hasPipeTransform = (node: ClassDeclaration): boolean => {
 
   const interfacesClauses = heritageClauses.filter(h => h.token === SyntaxKind.ImplementsKeyword);
 
-  return interfacesClauses.length > 0 && interfacesClauses[0].types.map(getInterfaceName).indexOf(Rule.PIPE_INTERFACE_NAME) !== -1;
+  return interfacesClauses.length > 0 && interfacesClauses[0].types.map(getSymbolName).indexOf(Rule.PIPE_INTERFACE_NAME) !== -1;
 };
 
 export class ClassMetadataWalker extends RuleWalker {

@@ -1,6 +1,7 @@
 import { sprintf } from 'sprintf-js';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
+import { getSymbolName } from './util/utils';
 
 export class Rule extends Lint.Rules.AbstractRule {
   static metadata: Lint.IRuleMetadata = {
@@ -35,19 +36,19 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
   }
 
   private validateInterfaces(node: ts.ClassDeclaration): void {
-    if (!node.heritageClauses) {
+    const { heritageClauses } = node;
+
+    if (!heritageClauses) {
       return;
     }
 
-    const interfacesClause = node.heritageClauses.find(h => h.token === ts.SyntaxKind.ImplementsKeyword);
+    const interfacesClauses = heritageClauses.find(h => h.token === ts.SyntaxKind.ImplementsKeyword);
 
-    if (!interfacesClause) {
+    if (!interfacesClauses) {
       return;
     }
 
-    const interfaces = interfacesClause.types.map<string>((t: any) => {
-      return t.expression.name ? t.expression.name.text : t.expression.text;
-    });
+    const interfaces = interfacesClauses.types.map(getSymbolName);
     const matchesAllHooks = lifecycleHooksMethods.every(l => interfaces.indexOf(l) !== -1);
 
     if (matchesAllHooks) {
@@ -56,10 +57,8 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
   }
 
   private validateMethods(node: ts.ClassDeclaration): void {
-    const methodNames = node.members.filter(m => m.kind === ts.SyntaxKind.MethodDeclaration).map(m => m.name!.getText());
-    const matchesAllHooks = lifecycleHooksMethods.every(l => {
-      return methodNames.indexOf(`${hooksPrefix}${l}`) !== -1;
-    });
+    const methodNames = node.members.filter(ts.isMethodDeclaration).map(m => m.name!.getText());
+    const matchesAllHooks = lifecycleHooksMethods.every(l => methodNames.indexOf(`${hooksPrefix}${l}`) !== -1);
 
     if (matchesAllHooks) {
       this.addFailureAtNode(node, sprintf(Rule.FAILURE_STRING, node.name!.text));

@@ -26,10 +26,10 @@ export class Rule extends Lint.Rules.AbstractRule {
     validate(ts.SyntaxKind.Constructor)(node => {
       return Maybe.lift(node.parent)
         .fmap(parent => {
-          if (parent!.kind === ts.SyntaxKind.ClassExpression && (parent!.parent as any).name) {
-            return (parent!.parent as any).name.text;
-          } else if (parent!.kind === ts.SyntaxKind.ClassDeclaration) {
-            return (parent as any).name!.text;
+          if (parent && ts.isClassExpression(parent) && (parent.parent as any).name) {
+            return (parent.parent as any).name.text;
+          } else if (parent && ts.isClassDeclaration(parent)) {
+            return parent.name!.text;
           }
         })
         .bind(parentName => {
@@ -38,7 +38,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 
             return Maybe.lift(p.decorators).bind(decorators => {
               // Check if any @Attribute
-              const decoratorsFailed = listToMaybe(decorators!.map(d => Rule.decoratorIsAttribute(d)));
+              const decoratorsFailed = listToMaybe(decorators.map(d => Rule.decoratorIsAttribute(d)));
 
               // We only care about 1 since we highlight the whole 'parameter'
               return (decoratorsFailed as any).fmap(() => new Failure(p, sprintf(Rule.FAILURE_STRING, parentName, text, text)));

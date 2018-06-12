@@ -1,8 +1,9 @@
-import * as Lint from 'tslint';
-import { SelectorValidator } from './util/selectorValidator';
-import * as ts from 'typescript';
-import { sprintf } from 'sprintf-js';
 import * as compiler from '@angular/compiler';
+import { sprintf } from 'sprintf-js';
+import * as Lint from 'tslint';
+import * as ts from 'typescript';
+import { SelectorValidator } from './util/selectorValidator';
+import { getDecoratorArgument, getDecoratorName } from './util/utils';
 
 export type SelectorType = 'element' | 'attribute';
 export type SelectorTypeInternal = 'element' | 'attrs';
@@ -88,7 +89,7 @@ export abstract class SelectorRule extends Lint.Rules.AbstractRule {
               }
               return prop;
             })
-            .filter(s => !!s)
+            .filter(Boolean)
         );
       })
     );
@@ -101,58 +102,56 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
   }
 
   visitClassDeclaration(node: ts.ClassDeclaration) {
-    if (node.decorators) {
-      (<ts.NodeArray<ts.Decorator>>node.decorators).forEach(this.validateDecorator.bind(this, node.name!.text));
-    }
+    ts.createNodeArray(node.decorators).forEach(this.validateDecorator.bind(this, node.name!.text));
     super.visitClassDeclaration(node);
   }
 
   private validateDecorator(className: string, decorator: ts.Decorator) {
-    let baseExpr = <any>decorator.expression || {};
-    let expr = baseExpr.expression || {};
-    let name = expr.text;
-    let args = baseExpr.arguments || [];
-    let arg = args[0];
+    const argument = getDecoratorArgument(decorator)!;
+    const name = getDecoratorName(decorator);
+
     // Do not run component rules for directives
     if (this.rule.handleType === name) {
-      this.validateSelector(className, arg);
+      this.validateSelector(className, argument);
     }
   }
 
   private validateSelector(className: string, arg: ts.Node) {
-    if (arg.kind === ts.SyntaxKind.ObjectLiteralExpression) {
-      (<ts.ObjectLiteralExpression>arg).properties
-        .filter(prop => this.validateProperty(prop))
-        .map(prop => (<any>prop).initializer)
-        .forEach(i => {
-          const selectors: compiler.CssSelector[] = this.extractMainSelector(i);
-          if (!this.rule.validateType(selectors)) {
-            let error = sprintf(this.rule.getTypeFailure(), className, this.rule.getOptions().ruleArguments[0]);
-            this.addFailureAtNode(i, error);
-          } else if (!this.rule.validateStyle(selectors)) {
-            let name = this.rule.getOptions().ruleArguments[2];
-            if (name === 'kebab-case') {
-              name += ' and include dash';
-            }
-            let error = sprintf(this.rule.getStyleFailure(), className, name);
-            this.addFailureAtNode(i, error);
-          } else if (!this.rule.validatePrefix(selectors)) {
-            let error = sprintf(this.rule.getPrefixFailure(this.rule.prefixes), className, this.rule.prefixes.join(', '));
-            this.addFailureAtNode(i, error);
-          }
-        });
+    if (!ts.isObjectLiteralExpression(arg)) {
+      return;
     }
+
+    arg.properties
+      .filter(prop => ts.isPropertyAssignment(prop) && this.validateProperty(prop))
+      .map(prop => (ts.isPropertyAssignment(prop) ? prop.initializer : undefined))
+      .filter(Boolean)
+      .forEach(i => {
+        const selectors = this.extractMainSelector(i as ts.StringLiteral);
+        let error: string | undefined;
+
+        if (!this.rule.validateType(selectors)) {
+          error = sprintf(this.rule.getTypeFailure(), className, this.rule.getOptions().ruleArguments[0]);
+        } else if (!this.rule.validateStyle(selectors)) {
+          let name = this.rule.getOptions().ruleArguments[2];
+          if (name === 'kebab-case') {
+            name += ' and include dash';
+          }
+          error = sprintf(this.rule.getStyleFailure(), className, name);
+        } else if (!this.rule.validatePrefix(selectors)) {
+          error = sprintf(this.rule.getPrefixFailure(this.rule.prefixes), className, this.rule.prefixes.join(', '));
+        }
+
+        if (error) {
+          this.addFailureAtNode(i!, error);
+        }
+      });
   }
 
-  private validateProperty(p: any) {
-    return (<any>p.name).text === 'selector' && p.initializer && this.isSupportedKind(p.initializer.kind);
+  private validateProperty(p: ts.PropertyAssignment): boolean {
+    return ts.isStringLiteralLike(p.initializer) && ts.isIdentifier(p.name) && p.name.text === 'selector';
   }
 
-  private isSupportedKind(kind: number): boolean {
-    return [ts.SyntaxKind.StringLiteral, ts.SyntaxKind.NoSubstitutionTemplateLiteral].some(kindType => kindType === kind);
-  }
-
-  private extractMainSelector(i: any) {
-    return compiler.CssSelector.parse(i.text);
+  private extractMainSelector(expression: ts.StringLiteral): compiler.CssSelector[] {
+    return compiler.CssSelector.parse(expression.text);
   }
 }

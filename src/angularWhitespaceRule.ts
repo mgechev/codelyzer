@@ -168,24 +168,24 @@ class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
     new SemicolonTemplateVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart)
   ];
 
-  visitBoundText(text: ast.BoundTextAst, context: any): any {
+  visitBoundText(text: ast.BoundTextAst, context: BasicTemplateAstVisitor): any {
     const options = this.getOptions();
     this.visitors
       .filter(v => options.indexOf(v.getCheckOption()) >= 0)
       .map(v => v.visitBoundText(text, this))
-      .filter(f => !!f)
+      .filter(Boolean)
       .forEach(f =>
         this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
       );
     super.visitBoundText(text, context);
   }
 
-  visitDirectiveProperty(prop: ast.BoundDirectivePropertyAst, context: any): any {
+  visitDirectiveProperty(prop: ast.BoundDirectivePropertyAst, context: BasicTemplateAstVisitor): any {
     const options = this.getOptions();
     this.visitors
       .filter(v => options.indexOf(v.getCheckOption()) >= 0)
       .map(v => v.visitDirectiveProperty(prop, this))
-      .filter(f => !!f)
+      .filter(Boolean)
       .forEach(f =>
         this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
       );
@@ -257,10 +257,6 @@ class PipeWhitespaceVisitor extends RecursiveAngularExpressionVisitor implements
   getCheckOption(): CheckOption {
     return 'check-pipe';
   }
-
-  protected isAsyncBinding(expr: any) {
-    return expr instanceof ast.BindingPipe && expr.name === 'async';
-  }
 }
 
 class TemplateExpressionVisitor extends RecursiveAngularExpressionVisitor {
@@ -268,13 +264,13 @@ class TemplateExpressionVisitor extends RecursiveAngularExpressionVisitor {
     new PipeWhitespaceVisitor(this.getSourceFile(), this.getOptions(), this.context, this.basePosition)
   ];
 
-  visitPipe(expr: ast.BindingPipe, context: any): any {
+  visitPipe(expr: ast.BindingPipe, context: BasicTemplateAstVisitor): any {
     const options = this.getOptions();
     this.visitors
       .map(v => v.addParentAST(this.parentAST))
       .filter(v => options.indexOf(v.getCheckOption()) >= 0)
       .map(v => v.visitPipe(expr, this))
-      .filter(f => !!f)
+      .filter(Boolean)
       .forEach(f =>
         this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
       );

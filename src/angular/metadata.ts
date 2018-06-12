@@ -25,13 +25,22 @@ export interface TemplateMetadata extends PropertyMetadata {
 }
 
 export class DirectiveMetadata {
-  controller!: ts.ClassDeclaration;
-  decorator!: ts.Decorator;
-  selector!: string;
+  constructor(
+    public readonly controller: ts.ClassDeclaration,
+    public readonly decorator: ts.Decorator,
+    public readonly selector?: string
+  ) {}
 }
 
 export class ComponentMetadata extends DirectiveMetadata {
-  animations!: AnimationMetadata[];
-  styles!: StyleMetadata[];
-  template!: TemplateMetadata;
+  constructor(
+    public readonly controller: ts.ClassDeclaration,
+    public readonly decorator: ts.Decorator,
+    public readonly selector?: string,
+    public readonly animations?: (AnimationMetadata | undefined)[],
+    public readonly styles?: (StyleMetadata | undefined)[],
+    public readonly template?: TemplateMetadata
+  ) {
+    super(controller, decorator, selector);
+  }
 }

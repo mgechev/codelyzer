@@ -53,7 +53,7 @@ class TemplateToNgTemplateVisitor extends RecursiveAngularExpressionVisitor {
     ]);
   }
 
-  protected isAsyncBinding(expr: any) {
+  protected isAsyncBinding(expr: ast.AST) {
     return expr instanceof ast.BindingPipe && expr.name === 'async';
   }
 }
