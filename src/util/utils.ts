@@ -1,37 +1,38 @@
 import * as ts from 'typescript';
-const SyntaxKind = require('./syntaxKind');
 
-// Lewenshtein algorithm
-export const stringDistance = (s: string, t: string, ls = s.length, lt = t.length) => {
-  let memo = {};
-  let currRowMemo;
-  let i: number;
-  let k: number;
-  for (k = 0; k <= lt; k += 1) {
-    memo[k] = k;
-  }
-  for (i = 1; i <= ls; i += 1) {
-    currRowMemo = [i];
-    for (k = 1; k <= lt; k += 1) {
-      currRowMemo[k] = Math.min(currRowMemo[k - 1] + 1, memo[k] + 1, memo[k - 1] + (s[i - 1] !== t[k - 1] ? 1 : 0));
-    }
-    memo = currRowMemo;
-  }
-  return memo[lt];
+export const isSimpleTemplateString = (e: any): e is ts.SyntaxKind.FirstTemplateToken | ts.StringLiteralLike => {
+  return ts.isStringLiteralLike(e) || e.kind === ts.SyntaxKind.FirstTemplateToken;
 };
 
-export const isSimpleTemplateString = (e: any) => {
-  return e.kind === ts.SyntaxKind.StringLiteral || e.kind === SyntaxKind.current().FirstTemplateToken;
+export const getClassName = (property: ts.PropertyDeclaration): string | undefined => {
+  const { parent } = property;
+  const identifier = parent && ts.isClassDeclaration(parent) ? parent.name : undefined;
+
+  return identifier && ts.isIdentifier(identifier) ? identifier.text : undefined;
+};
+
+export const getDecoratorArgument = (decorator: ts.Decorator): ts.ObjectLiteralExpression | undefined => {
+  const { expression } = decorator;
+
+  if (ts.isCallExpression(expression) && expression.arguments && expression.arguments.length > 0) {
+    const args = expression.arguments[0];
+
+    if (ts.isObjectLiteralExpression(args) && args.properties) {
+      return args;
+    }
+  }
+
+  return undefined;
 };
 
 export const getDecoratorPropertyInitializer = (decorator: ts.Decorator, name: string) => {
-  return (
-    (<ts.ObjectLiteralExpression>(<ts.CallExpression>decorator.expression).arguments[0]).properties
-      // .map(prop => ((prop.name as any).text === name) ? prop : null)
-      .filter(prop => (prop.name as any).text === name)
-      .map((prop: any) => prop.initializer)
-      .pop()
-  );
+  const args = ts.isCallExpression(decorator.expression) ? decorator.expression.arguments[0] : undefined;
+  const properties = ts.createNodeArray(args && ts.isObjectLiteralExpression(args) ? args.properties : undefined);
+
+  return properties
+    .filter(prop => prop.name && ts.isIdentifier(prop.name) && prop.name.text === name)
+    .map(prop => (ts.isPropertyAssignment(prop) ? prop.initializer : undefined))
+    .pop();
 };
 
 export const getDecoratorName = (decorator: ts.Decorator): string | undefined => {
@@ -41,32 +42,22 @@ export const getDecoratorName = (decorator: ts.Decorator): string | undefined =>
 };
 
 export const getComponentDecorator = (declaration: ts.ClassDeclaration) => {
-  return ([].slice.apply(declaration.decorators) || [])
-    .filter(d => {
-      if (
-        !(<ts.CallExpression>d.expression).arguments ||
-        !(<ts.CallExpression>d.expression).arguments.length ||
-        !(<ts.ObjectLiteralExpression>(<ts.CallExpression>d.expression).arguments[0]).properties
-      ) {
-        return false;
-      }
-      const name = getDecoratorName(d);
-      if (name === 'Component') {
-        return true;
-      }
-    })
-    .pop();
+  return ts.createNodeArray(declaration.decorators).find(d => {
+    return (
+      ts.isCallExpression(d.expression) &&
+      d.expression.arguments &&
+      d.expression.arguments.length > 0 &&
+      getDecoratorName(d) === 'Component'
+    );
+  });
 };
 
-export const getInterfaceName = (expression: ts.ExpressionWithTypeArguments): string => {
+export const getSymbolName = (expression: ts.ExpressionWithTypeArguments): string => {
   const { expression: childExpression } = expression;
 
   return ts.isPropertyAccessExpression(childExpression) ? childExpression.name.getText() : childExpression.getText();
 };
 
 export const maybeNodeArray = <T extends ts.Node>(nodes: ts.NodeArray<T>): ReadonlyArray<T> => {
-  if (!nodes) {
-    return [];
-  }
-  return nodes;
+  return nodes || [];
 };

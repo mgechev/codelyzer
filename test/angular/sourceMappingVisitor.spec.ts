@@ -1,6 +1,6 @@
-import * as ts from 'typescript';
-import chai = require('chai');
+import { expect } from 'chai';
 import { renderSync } from 'node-sass';
+import * as ts from 'typescript';
 
 import { SourceMappingVisitor } from '../../src/angular/sourceMappingVisitor';
 import { getDecoratorPropertyInitializer } from '../../src/util/utils';
@@ -28,10 +28,10 @@ const last = <T extends ts.Node>(nodes: ts.NodeArray<T>) => nodes[nodes.length -
 describe('SourceMappingVisitor', () => {
   it('should map to correct position', () => {
     const ast = getAst(fixture1);
-    const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
+    const classDeclaration = last(ast.statements);
     const styles = getDecoratorPropertyInitializer(last(classDeclaration.decorators!), 'styles');
-    const styleNode = <ts.Node>styles.elements[0];
-    const scss = (<any>styleNode).text;
+    const styleNode = (styles as ts.ArrayLiteralExpression).elements[0];
+    const scss = (styleNode as any).text;
     const result = renderSync({ outFile: '/tmp/bar', data: scss, sourceMap: true });
     const visitor = new SourceMappingVisitor(
       ast,
@@ -50,7 +50,7 @@ describe('SourceMappingVisitor', () => {
     );
     visitor.addFailureAt(0, 3, 'bar');
     const failure = visitor.getFailures()[0];
-    chai.expect(failure.getStartPosition().getPosition()).eq(34);
-    chai.expect(failure.getEndPosition().getPosition()).eq(38);
+    expect(failure.getStartPosition().getPosition()).eq(34);
+    expect(failure.getEndPosition().getPosition()).eq(38);
   });
 });

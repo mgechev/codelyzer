@@ -50,7 +50,7 @@ let defaultDirectives: DirectiveDeclaration[] = [];
 export const parseTemplate = (template: string, directives: DirectiveDeclaration[] = []) => {
   defaultDirectives = directives.map(d => dummyMetadataFactory(d));
 
-  const TemplateParser = <any>compiler.TemplateParser;
+  const TemplateParser = compiler.TemplateParser as any;
   const expressionParser = new compiler.Parser(new compiler.Lexer());
   const elementSchemaRegistry = new compiler.DomElementSchemaRegistry();
   const ngConsole = new Console();
@@ -131,7 +131,7 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
     value: '',
     identifier: null
   };
-  let result: any = null;
+  let result;
   try {
     SemVerDSL.lt('4.1.0', () => {
       result = tmplParser.tryParse(

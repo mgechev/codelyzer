@@ -1,16 +1,9 @@
 import * as ts from 'typescript';
-import {
-  callExpression,
-  decoratorArgument,
-  getStringInitializerFromProperty,
-  hasProperties,
-  isSimpleTemplateString,
-  withIdentifier
-} from '../util/astQuery';
+import { callExpression, decoratorArgument, getStringInitializerFromProperty, hasProperties, withIdentifier } from '../util/astQuery';
 import { ifTrue, listToMaybe, Maybe, unwrapFirst } from '../util/function';
 import { logger } from '../util/logger';
 import { getAnimations, getInlineStyle, getTemplate } from '../util/ngQuery';
-import { maybeNodeArray } from '../util/utils';
+import { isSimpleTemplateString, maybeNodeArray } from '../util/utils';
 import { Config } from './config';
 import { FileResolver } from './fileResolver/fileResolver';
 import { AnimationMetadata, CodeWithSourceMap, ComponentMetadata, DirectiveMetadata, StyleMetadata, TemplateMetadata } from './metadata';
@@ -60,38 +53,37 @@ export class MetadataReader {
       .bind(expr => getStringInitializerFromProperty('selector', expr!.properties))
       .fmap(initializer => initializer!.text);
 
-    return Object.assign(new DirectiveMetadata(), {
-      controller: d,
-      decorator: dec,
-      selector: selector.unwrap()
-    });
+    return new DirectiveMetadata(d, dec, selector.unwrap());
   }
 
   protected readComponentMetadata(d: ts.ClassDeclaration, dec: ts.Decorator): ComponentMetadata {
     const expr = this.getDecoratorArgument(dec);
     const directiveMetadata = this.readDirectiveMetadata(d, dec);
     const external_M = expr.fmap(() => this._urlResolver!.resolve(dec));
-    const animations_M = external_M.bind(external => this.readComponentAnimationsMetadata(dec, external!));
+    const animations_M = external_M.bind(() => this.readComponentAnimationsMetadata(dec));
     const style_M = external_M.bind(external => this.readComponentStylesMetadata(dec, external!));
     const template_M = external_M.bind(external => this.readComponentTemplateMetadata(dec, external!));
 
-    return Object.assign(new ComponentMetadata(), directiveMetadata, {
-      animations: animations_M.unwrap(),
-      styles: style_M.unwrap(),
-      template: template_M.unwrap()
-    });
+    return new ComponentMetadata(
+      directiveMetadata.controller,
+      directiveMetadata.decorator,
+      directiveMetadata.selector,
+      animations_M.unwrap(),
+      style_M.unwrap(),
+      template_M.unwrap()
+    );
   }
 
   protected getDecoratorArgument(decorator: ts.Decorator): Maybe<ts.ObjectLiteralExpression | undefined> {
     return decoratorArgument(decorator).bind(ifTrue(hasProperties));
   }
 
-  protected readComponentAnimationsMetadata(dec: ts.Decorator, external: MetadataUrls): Maybe<AnimationMetadata[] | undefined> {
+  protected readComponentAnimationsMetadata(dec: ts.Decorator): Maybe<(AnimationMetadata | undefined)[] | undefined> {
     return getAnimations(dec).fmap(inlineAnimations =>
       inlineAnimations!.elements
         .filter(inlineAnimation => isSimpleTemplateString(inlineAnimation))
         .map<AnimationMetadata>(inlineAnimation => ({
-          animation: normalizeTransformed({ code: (inlineAnimation as ts.StringLiteral | ts.NoSubstitutionTemplateLiteral).text }),
+          animation: normalizeTransformed({ code: (inlineAnimation as ts.StringLiteralLike).text }),
           node: inlineAnimation as ts.Node
         }))
     );
@@ -122,8 +114,8 @@ export class MetadataReader {
       .fmap(inlineStyles =>
         // Resolve Inline styles
         inlineStyles!.elements.filter(inlineStyle => isSimpleTemplateString(inlineStyle)).map<StyleMetadata>(inlineStyle => ({
-          node: inlineStyle as ts.Node,
-          style: normalizeTransformed(Config.transformStyle((inlineStyle as ts.StringLiteral | ts.NoSubstitutionTemplateLiteral).text))
+          node: inlineStyle,
+          style: normalizeTransformed(Config.transformStyle((inlineStyle as ts.StringLiteralLike).text))
         }))
       )
       .catch(() =>
@@ -148,7 +140,7 @@ export class MetadataReader {
   private _resolve(url: string): Maybe<string | undefined> {
     try {
       return Maybe.lift(this._fileResolver.resolve(url));
-    } catch (e) {
+    } catch {
       logger.info('Cannot read file' + url);
       return Maybe.nothing;
     }

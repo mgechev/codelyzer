@@ -3,6 +3,7 @@ import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { DirectiveMetadata } from './angular/metadata';
 import { NgWalker } from './angular/ngWalker';
+import { getClassName } from './util/utils';
 
 export class Rule extends Lint.Rules.AbstractRule {
   static readonly metadata: Lint.IRuleMetadata = {
@@ -47,13 +48,13 @@ export class InputMetadataWalker extends NgWalker {
   }
 
   private validateInput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
-    const className = (property.parent as ts.PropertyAccessExpression).name.getText();
-    const propertyName = property.name.getText();
+    const className = getClassName(property)!;
+    const memberName = property.name.getText();
 
-    if (args.length === 0 || this.canPropertyBeAliased(args[0], propertyName)) {
+    if (args.length === 0 || this.canPropertyBeAliased(args[0], memberName)) {
       return;
     }
 
-    this.addFailureAtNode(property, getFailureMessage(className, propertyName));
+    this.addFailureAtNode(property, getFailureMessage(className, memberName));
   }
 }

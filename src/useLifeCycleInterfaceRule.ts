@@ -1,7 +1,7 @@
 import { sprintf } from 'sprintf-js';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import { getInterfaceName } from './util/utils';
+import { getSymbolName } from './util/utils';
 
 export class Rule extends Lint.Rules.AbstractRule {
   static readonly metadata: Lint.IRuleMetadata = {
@@ -37,7 +37,7 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
   visitClassDeclaration(node: ts.ClassDeclaration) {
     const className = node.name!.text;
     const interfaces = this.extractInterfaces(node);
-    const methods = node.members.filter(m => m.kind === ts.SyntaxKind.MethodDeclaration);
+    const methods = node.members.filter(ts.isMethodDeclaration);
 
     this.validateMethods(methods, interfaces, className);
     super.visitClassDeclaration(node);
@@ -48,7 +48,7 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
     if (node.heritageClauses) {
       const interfacesClause = node.heritageClauses.filter(h => h.token === ts.SyntaxKind.ImplementsKeyword);
       if (interfacesClause.length !== 0) {
-        interfaces = interfacesClause[0].types.map(getInterfaceName);
+        interfaces = interfacesClause[0].types.map(getSymbolName);
       }
     }
     return interfaces;
