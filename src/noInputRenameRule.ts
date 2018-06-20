@@ -30,6 +30,48 @@ export const getFailureMessage = (className: string, propertyName: string): stri
   return sprintf(Rule.FAILURE_STRING, className, propertyName);
 };
 
+const kebabToCamelCase = (value: string) => value.replace(/-[a-zA-Z]/g, x => x[1].toUpperCase());
+
+// source: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques
+const whiteListAliases = new Set<string>([
+  'aria-activedescendant',
+  'aria-atomic',
+  'aria-autocomplete',
+  'aria-busy',
+  'aria-checked',
+  'aria-controls',
+  'aria-current',
+  'aria-describedby',
+  'aria-disabled',
+  'aria-dragged',
+  'aria-dropeffect',
+  'aria-expanded',
+  'aria-flowto',
+  'aria-haspopup',
+  'aria-hidden',
+  'aria-invalid',
+  'aria-label',
+  'aria-labelledby',
+  'aria-level',
+  'aria-live',
+  'aria-multiline',
+  'aria-multiselectable',
+  'aria-orientation',
+  'aria-owns',
+  'aria-posinset',
+  'aria-pressed',
+  'aria-readonly',
+  'aria-relevant',
+  'aria-required',
+  'aria-selected',
+  'aria-setsize',
+  'aria-sort',
+  'aria-valuemax',
+  'aria-valuemin',
+  'aria-valuenow',
+  'aria-valuetext'
+]);
+
 export class InputMetadataWalker extends NgWalker {
   private directiveSelectors!: ReadonlySet<DirectiveMetadata['selector']>;
 
@@ -44,7 +86,10 @@ export class InputMetadataWalker extends NgWalker {
   }
 
   private canPropertyBeAliased(propertyAlias: string, propertyName: string): boolean {
-    return !!(this.directiveSelectors && this.directiveSelectors.has(propertyAlias) && propertyAlias !== propertyName);
+    return !!(
+      (this.directiveSelectors && this.directiveSelectors.has(propertyAlias) && propertyAlias !== propertyName) ||
+      (whiteListAliases.has(propertyAlias) && propertyName === kebabToCamelCase(propertyAlias))
+    );
   }
 
   private validateInput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
