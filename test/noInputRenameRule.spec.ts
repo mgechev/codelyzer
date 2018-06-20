@@ -94,6 +94,23 @@ describe(ruleName, () => {
           source
         });
       });
+
+      it("should fail when an input alias is kebab-cased and whitelisted, but the property doesn't match the alias", () => {
+        const source = `
+          @Directive({
+            selector: 'foo'
+          })
+          class TestDirective {
+            @Input('aria-invalid') ariaBusy: string;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          }
+        `;
+        assertAnnotated({
+          message: getFailureMessage('TestDirective', 'ariaBusy'),
+          ruleName,
+          source
+        });
+      });
     });
   });
 
@@ -142,6 +159,18 @@ describe(ruleName, () => {
           })
           class TestDirective {
             @Input() foo: string;
+          }
+        `;
+        assertSuccess(ruleName, source);
+      });
+
+      it('should succeed when an input alias is kebab-cased and whitelisted', () => {
+        const source = `
+          @Directive({
+            selector: 'foo'
+          })
+          class TestDirective {
+            @Input('aria-label') ariaLabel: string;
           }
         `;
         assertSuccess(ruleName, source);
