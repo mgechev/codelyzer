@@ -18,10 +18,10 @@ export function getInlineStyle(dec: ts.Decorator): Maybe<ts.ArrayLiteralExpressi
   });
 }
 
-export function getTemplate(dec: ts.Decorator): Maybe<ts.StringLiteralLike | undefined> {
+export function getTemplate(dec: ts.Decorator): Maybe<ts.StringLiteral | undefined> {
   return decoratorArgument(dec).bind(expr => getStringInitializerFromProperty('template', expr!.properties));
 }
 
-export function getTemplateUrl(dec: ts.Decorator): Maybe<ts.StringLiteralLike | undefined> {
+export function getTemplateUrl(dec: ts.Decorator): Maybe<ts.StringLiteral | undefined> {
   return decoratorArgument(dec).bind(expr => getStringInitializerFromProperty('templateUrl', expr!.properties));
 }

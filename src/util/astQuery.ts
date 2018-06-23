@@ -29,13 +29,13 @@ export function getInitializer(p: ts.ObjectLiteralElement): Maybe<ts.Expression 
 export function getStringInitializerFromProperty(
   propertyName: string,
   ps: ts.NodeArray<ts.ObjectLiteralElement>
-): Maybe<ts.StringLiteralLike | undefined> {
+): Maybe<ts.StringLiteral | undefined> {
   const property = ps.find(p => isProperty(propertyName, p))!;
 
   return (
     getInitializer(property)
-      // A little wrinkle to return Maybe<ts.StringLiteralLike>
-      .fmap(expr => (expr && isSimpleTemplateString(expr) ? (expr as ts.StringLiteralLike) : undefined))
+      // A little wrinkle to return Maybe<ts.StringLiteral>
+      .fmap(expr => (expr && isSimpleTemplateString(expr) ? (expr as ts.StringLiteral) : undefined))
   );
 }
 

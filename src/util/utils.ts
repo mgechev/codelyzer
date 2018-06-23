@@ -1,7 +1,7 @@
 import * as ts from 'typescript';
 
-export const isSimpleTemplateString = (e: any): e is ts.SyntaxKind.FirstTemplateToken | ts.StringLiteralLike => {
-  return ts.isStringLiteralLike(e) || e.kind === ts.SyntaxKind.FirstTemplateToken;
+export const isSimpleTemplateString = (e: any): e is ts.SyntaxKind.FirstTemplateToken | ts.StringLiteral => {
+  return e.kind === ts.SyntaxKind.StringLiteral || e.kind === ts.SyntaxKind.FirstTemplateToken;
 };
 
 export const getClassName = (property: ts.PropertyDeclaration): string | undefined => {

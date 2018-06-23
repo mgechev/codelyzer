@@ -1,5 +1,6 @@
+import * as ts from 'typescript';
+
 import { IOptions, IRuleMetadata, Replacement, RuleFailure, Rules } from 'tslint/lib';
-import { isSameLine } from 'tsutils';
 import { Decorator, Node, PropertyAccessExpression, SourceFile } from 'typescript';
 import { NgWalker } from './angular/ngWalker';
 import { getDecoratorName } from './util/utils';
@@ -101,4 +102,8 @@ export class PreferInlineDecoratorWalker extends NgWalker {
     const fix = Replacement.deleteFromTo(decorator.getEnd(), propertyStartPos - 1);
     this.addFailureAt(decoratorStartPos, property.getWidth(), getFailureMessage(), fix);
   }
+}
+
+function isSameLine(sourceFile: ts.SourceFile, pos1: number, pos2: number) {
+  return ts.getLineAndCharacterOfPosition(sourceFile, pos1).line === ts.getLineAndCharacterOfPosition(sourceFile, pos2).line;
 }

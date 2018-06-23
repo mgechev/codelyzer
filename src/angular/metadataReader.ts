@@ -83,7 +83,7 @@ export class MetadataReader {
       inlineAnimations!.elements
         .filter(inlineAnimation => isSimpleTemplateString(inlineAnimation))
         .map<AnimationMetadata>(inlineAnimation => ({
-          animation: normalizeTransformed({ code: (inlineAnimation as ts.StringLiteralLike).text }),
+          animation: normalizeTransformed({ code: (inlineAnimation as ts.StringLiteral).text }),
           node: inlineAnimation as ts.Node
         }))
     );
@@ -115,7 +115,7 @@ export class MetadataReader {
         // Resolve Inline styles
         inlineStyles!.elements.filter(inlineStyle => isSimpleTemplateString(inlineStyle)).map<StyleMetadata>(inlineStyle => ({
           node: inlineStyle,
-          style: normalizeTransformed(Config.transformStyle((inlineStyle as ts.StringLiteralLike).text))
+          style: normalizeTransformed(Config.transformStyle((inlineStyle as ts.StringLiteral).text))
         }))
       )
       .catch(() =>
