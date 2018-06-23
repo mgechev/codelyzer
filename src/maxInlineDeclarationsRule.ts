@@ -66,7 +66,7 @@ export class Rule extends Rules.AbstractRule {
   }
 }
 
-type PropertyType = 'animations' | 'styles' | 'template';
+export type PropertyType = 'animations' | 'styles' | 'template';
 export type PropertyPair = { [key in PropertyType]?: number };
 
 const generateFailure = (type: PropertyType, limit: number, value: number): string => {

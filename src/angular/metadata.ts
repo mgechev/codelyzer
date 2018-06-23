@@ -7,7 +7,7 @@ export interface CodeWithSourceMap {
   source?: string;
 }
 
-interface PropertyMetadata {
+export interface PropertyMetadata {
   node?: ts.Node;
   url?: string;
 }

@@ -2,9 +2,10 @@ import { sprintf } from 'sprintf-js';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { ComponentMetadata } from './angular/metadata';
-import { Maybe } from './util/function';
+import { Maybe, F2 } from './util/function';
 import { Failure } from './walkerFactory/walkerFactory';
 import { all, validateComponent } from './walkerFactory/walkerFn';
+import { NgWalker } from '.';
 
 export class Rule extends Lint.Rules.AbstractRule {
   static readonly metadata: Lint.IRuleMetadata = {
@@ -27,7 +28,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 
   static readonly FAILURE_STRING = 'The name of the class %s should end with the suffix %s (https://angular.io/styleguide#style-02-03)';
 
-  static walkerBuilder = all(
+  static walkerBuilder: F2<ts.SourceFile, Lint.IOptions, NgWalker> = all(
     validateComponent((meta: ComponentMetadata, suffixList: string[] = []) =>
       Maybe.lift(meta.controller)
         .fmap(controller => controller.name)
