@@ -13,6 +13,8 @@
 * Build scripts are not cross-platform [#454](https://github.com/mgechev/codelyzer/issues/454) [204c8ef](https://github.com/mgechev/codelyzer/commit/204c8ef2f20498d216e0fd9b9f602cf216186158)
 * Turn on strict TS compilation mode [#629](https://github.com/mgechev/codelyzer/issues/629) [da0f553](https://github.com/mgechev/codelyzer/commit/da0f553fe7d580f38907f9baa9124cbc55e37c96)
 
+Credits to the codelyzer's [maintainers and contributors](https://github.com/mgechev/codelyzer#contributors).
+
 # 4.3.0
 
 ## New Rules
