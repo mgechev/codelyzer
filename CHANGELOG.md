@@ -1,3 +1,18 @@
+# 4.4.0
+
+## New Rules
+
+* Add no-queries-parameter rule [#572](https://github.com/mgechev/codelyzer/issues/572) [e9f4d23](https://github.com/mgechev/codelyzer/commit/e9f4d2303c5b95cf8623ac91b114c6428e832ef0)
+* [Feature Request] Enforce single line @Input decorator [#549](https://github.com/mgechev/codelyzer/issues/549) [5d5e21d](https://github.com/mgechev/codelyzer/commit/5d5e21d4e8cff3b4bb1afc88d23ac6e34fe28c83)
+
+## New Features
+
+* no-input-rename rule should allow aliasing dashed properties [#663](https://github.com/mgechev/codelyzer/issues/663) [2c905ab](https://github.com/mgechev/codelyzer/commit/2c905abd17aef1203f2726bf82ba805c3bfe9861)
+* export NgWalker for library users [#657](https://github.com/mgechev/codelyzer/issues/657) [b79ea58](https://github.com/mgechev/codelyzer/commit/b79ea5887235d4b38fe261fa34aba58c5d16a17f)
+* Upgrade TypeScript dependency to 2.7.2 [#583](https://github.com/mgechev/codelyzer/issues/583) [d4bf62d](https://github.com/mgechev/codelyzer/commit/d4bf62d8134075f0ed1f1fa3d83b5be9f7c1918d)
+* Build scripts are not cross-platform [#454](https://github.com/mgechev/codelyzer/issues/454) [204c8ef](https://github.com/mgechev/codelyzer/commit/204c8ef2f20498d216e0fd9b9f602cf216186158)
+* Turn on strict TS compilation mode [#629](https://github.com/mgechev/codelyzer/issues/629) [da0f553](https://github.com/mgechev/codelyzer/commit/da0f553fe7d580f38907f9baa9124cbc55e37c96)
+
 # 4.3.0
 
 ## New Rules
