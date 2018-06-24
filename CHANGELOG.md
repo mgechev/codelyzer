@@ -1,24 +1,39 @@
-# 4.4.1
+<a name="4.4.1"></a>
 
-## Bug Fixes
+# [4.4.1](https://github.com/mgechev/codelyzer/compare/4.4.0...4.4.1) (2018-06-23)
 
-* TypeError: ts.isStringLiteralLike is not a function [#669](https://github.com/mgechev/codelyzer/issues/669) [d922dcb](https://github.com/mgechev/codelyzer/commit/d922dcb5c7fdb6bb99efb8b6cb6000dfc0c12f1c)
-* prefer-inline-decorator is missing in v4.4 [#670](https://github.com/mgechev/codelyzer/issues/670) [d922dcb](https://github.com/mgechev/codelyzer/commit/d922dcb5c7fdb6bb99efb8b6cb6000dfc0c12f1c)
+### Bug Fixes
 
-# 4.4.0
+* regressions in 4.4.0 ([#671](https://github.com/mgechev/codelyzer/issues/671)) ([d922dcb](https://github.com/mgechev/codelyzer/commit/d922dcb)), closes [#669](https://github.com/mgechev/codelyzer/issues/669), [#670](https://github.com/mgechev/codelyzer/issues/670)
 
-## New Rules
+<a name="4.4.0"></a>
 
-* Add no-queries-parameter rule [#572](https://github.com/mgechev/codelyzer/issues/572) [e9f4d23](https://github.com/mgechev/codelyzer/commit/e9f4d2303c5b95cf8623ac91b114c6428e832ef0)
-* [Feature Request] Enforce single line @Input decorator [#549](https://github.com/mgechev/codelyzer/issues/549) [5d5e21d](https://github.com/mgechev/codelyzer/commit/5d5e21d4e8cff3b4bb1afc88d23ac6e34fe28c83)
+# [4.4.0](https://github.com/mgechev/codelyzer/compare/4.3.0...4.4.0) (2018-06-23)
 
-## New Features
+### Bug Fixes
 
-* no-input-rename rule should allow aliasing dashed properties [#663](https://github.com/mgechev/codelyzer/issues/663) [2c905ab](https://github.com/mgechev/codelyzer/commit/2c905abd17aef1203f2726bf82ba805c3bfe9861)
-* export NgWalker for library users [#657](https://github.com/mgechev/codelyzer/issues/657) [b79ea58](https://github.com/mgechev/codelyzer/commit/b79ea5887235d4b38fe261fa34aba58c5d16a17f)
-* Upgrade TypeScript dependency to 2.7.2 [#583](https://github.com/mgechev/codelyzer/issues/583) [d4bf62d](https://github.com/mgechev/codelyzer/commit/d4bf62d8134075f0ed1f1fa3d83b5be9f7c1918d)
-* Build scripts are not cross-platform [#454](https://github.com/mgechev/codelyzer/issues/454) [204c8ef](https://github.com/mgechev/codelyzer/commit/204c8ef2f20498d216e0fd9b9f602cf216186158)
-* Turn on strict TS compilation mode [#629](https://github.com/mgechev/codelyzer/issues/629) [da0f553](https://github.com/mgechev/codelyzer/commit/da0f553fe7d580f38907f9baa9124cbc55e37c96)
+* **no-input-prefix:** exact strings not being reported ([#597](https://github.com/mgechev/codelyzer/issues/597)) ([1ed8d8c](https://github.com/mgechev/codelyzer/commit/1ed8d8c))
+* **no-input-rename:** aria attributes not being allowed to be renamed ([#665](https://github.com/mgechev/codelyzer/issues/665)) ([2c905ab](https://github.com/mgechev/codelyzer/commit/2c905ab)), closes [#663](https://github.com/mgechev/codelyzer/issues/663)
+* **no-input-rename:** fix bugs ([#585](https://github.com/mgechev/codelyzer/issues/585)) ([75f9de6](https://github.com/mgechev/codelyzer/commit/75f9de6)), closes [#580](https://github.com/mgechev/codelyzer/issues/580)
+* **no-template-call-expression:** not being exported ([#582](https://github.com/mgechev/codelyzer/issues/582)) ([ad57552](https://github.com/mgechev/codelyzer/commit/ad57552)), closes [#577](https://github.com/mgechev/codelyzer/issues/577)
+* **no-life-cycle-call:** fix bugs ([#575](https://github.com/mgechev/codelyzer/issues/575)) ([4415cc2](https://github.com/mgechev/codelyzer/commit/4415cc2)), closes [#573](https://github.com/mgechev/codelyzer/issues/573)
+* **no-input-prefix:** not being able to check for multiple concurrent prefixes ([#590](https://github.com/mgechev/codelyzer/issues/590)) ([43d415a](https://github.com/mgechev/codelyzer/commit/43d415a)), closes [#589](https://github.com/mgechev/codelyzer/issues/589)
+* **no-output-rename:** not being reported for some cases ([#614](https://github.com/mgechev/codelyzer/issues/614)) ([5e34f41](https://github.com/mgechev/codelyzer/commit/5e34f41)), closes [#613](https://github.com/mgechev/codelyzer/issues/613)
+* **template-conditional-complexity:** not reporting failures for '[ngIf]' ([#611](https://github.com/mgechev/codelyzer/issues/611)) ([7fc3b09](https://github.com/mgechev/codelyzer/commit/7fc3b09)), closes [#607](https://github.com/mgechev/codelyzer/issues/607)
+* **template-cyclomatic-complexity:** not reporting failures for '[ngForOf]' and '[ngIf]' ([#612](https://github.com/mgechev/codelyzer/issues/612)) ([fedd331](https://github.com/mgechev/codelyzer/commit/fedd331)), closes [#609](https://github.com/mgechev/codelyzer/issues/609)
+* **trackBy-function:** not reporting failures for '[ngForOf]' ([#610](https://github.com/mgechev/codelyzer/issues/610)) ([af52912](https://github.com/mgechev/codelyzer/commit/af52912)), closes [#608](https://github.com/mgechev/codelyzer/issues/608)
+* some rules not considering options correctly ([#617](https://github.com/mgechev/codelyzer/issues/617)) ([bce0026](https://github.com/mgechev/codelyzer/commit/bce0026))
+
+### Features
+
+* **import-destructuring-spacing:** add fixer ([#595](https://github.com/mgechev/codelyzer/issues/595)) ([2acc27b](https://github.com/mgechev/codelyzer/commit/2acc27b))
+* **max-inline-declarations:** add option to limit animations lines ([#569](https://github.com/mgechev/codelyzer/issues/569)) ([25f3e16](https://github.com/mgechev/codelyzer/commit/25f3e16)), closes [#568](https://github.com/mgechev/codelyzer/issues/568)
+* **rule:** add no-queries-parameter rule ([#571](https://github.com/mgechev/codelyzer/issues/571)) ([e9f4d23](https://github.com/mgechev/codelyzer/commit/e9f4d23))
+* **rule:** add prefer-inline-decorator rule ([#586](https://github.com/mgechev/codelyzer/issues/586)) ([5d5e21d](https://github.com/mgechev/codelyzer/commit/5d5e21d)), closes [#549](https://github.com/mgechev/codelyzer/issues/549)
+* build scripts are not cross-platform [#581](https://github.com/mgechev/codelyzer/issues/581) [204c8ef](https://github.com/mgechev/codelyzer/commit/204c8ef), closes [#454](https://github.com/mgechev/codelyzer/issues/454)
+* upgrade TypeScript dependency to 2.7.2 [#584](https://github.com/mgechev/codelyzer/issues/584) [d4bf62d](https://github.com/mgechev/codelyzer/commit/d4bf62d), closes [#583](https://github.com/mgechev/codelyzer/issues/583)
+* turn on strict TS compilation mode ([#631](https://github.com/mgechev/codelyzer/issues/631)) ([da0f553](https://github.com/mgechev/codelyzer/commit/da0f553)), closes [#629](https://github.com/mgechev/codelyzer/issues/629)
+* externalizing template, css visitor abstractions and NgWalker ([#658](https://github.com/mgechev/codelyzer/issues/658)) ([b79ea58](https://github.com/mgechev/codelyzer/commit/b79ea58))
 
 Credits to the codelyzer's [maintainers and contributors](https://github.com/mgechev/codelyzer#contributors).
 
