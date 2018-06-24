@@ -34,7 +34,7 @@ class OutputWalker extends NgWalker {
     const className = getClassName(property);
     const memberName = property.name.getText();
 
-    if (!memberName || !/on((?![a-z])|(?=$))/.test(memberName)) {
+    if (!memberName || !/^on((?![a-z])|(?=$))/.test(memberName)) {
       return;
     }
 
