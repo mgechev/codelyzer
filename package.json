@@ -15,6 +15,7 @@
     "release": "npm run build && rimraf dist && tsc -p tsconfig-release.json && npm run copy:common && npm run prepare:package && cross-env BUILD_TYPE=prod npm run set:vars",
     "build": "rimraf dist && tsc && npm run format:check && npm run lint && npm t",
     "copy:common": "ncp README.md dist/README.md",
+    "precommit": "lint-staged && npm test",
     "prepare:package": "cat package.json | ts-node build/package.ts > dist/package.json",
     "test": "rimraf dist && tsc && ncp test/fixtures dist/test/fixtures && mocha dist/test --recursive",
     "test:watch": "rimraf dist && tsc && ncp test/fixtures dist/test/fixtures && cross-env BUILD_TYPE=dev npm run set:vars && mocha dist/test --watch --recursive",
