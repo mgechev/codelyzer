@@ -148,7 +148,7 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
   }
 
   private validateProperty(p: ts.PropertyAssignment): boolean {
-    return p.initializer.kind === ts.SyntaxKind.StringLiteral && ts.isIdentifier(p.name) && p.name.text === 'selector';
+    return ts.isStringLiteral(p.initializer) && ts.isIdentifier(p.name) && p.name.text === 'selector';
   }
 
   private extractMainSelector(expression: ts.StringLiteral): compiler.CssSelector[] {

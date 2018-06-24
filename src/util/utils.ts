@@ -1,7 +1,7 @@
 import * as ts from 'typescript';
 
 export const isSimpleTemplateString = (e: any): e is ts.SyntaxKind.FirstTemplateToken | ts.StringLiteral => {
-  return e.kind === ts.SyntaxKind.StringLiteral || e.kind === ts.SyntaxKind.FirstTemplateToken;
+  return ts.isStringLiteral(e) || e.kind === ts.SyntaxKind.FirstTemplateToken;
 };
 
 export const getClassName = (property: ts.PropertyDeclaration): string | undefined => {
@@ -60,4 +60,8 @@ export const getSymbolName = (expression: ts.ExpressionWithTypeArguments): strin
 
 export const maybeNodeArray = <T extends ts.Node>(nodes: ts.NodeArray<T>): ReadonlyArray<T> => {
   return nodes || [];
+};
+
+export const isSameLine = (sourceFile: ts.SourceFile, pos1: number, pos2: number) => {
+  return ts.getLineAndCharacterOfPosition(sourceFile, pos1).line === ts.getLineAndCharacterOfPosition(sourceFile, pos2).line;
 };
