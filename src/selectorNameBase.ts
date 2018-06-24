@@ -3,7 +3,7 @@ import { sprintf } from 'sprintf-js';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { SelectorValidator } from './util/selectorValidator';
-import { getDecoratorArgument, getDecoratorName } from './util/utils';
+import { getDecoratorArgument, getDecoratorName, isStringLiteralLike } from './util/utils';
 
 export type SelectorType = 'element' | 'attribute';
 export type SelectorTypeInternal = 'element' | 'attrs';
@@ -148,7 +148,7 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
   }
 
   private validateProperty(p: ts.PropertyAssignment): boolean {
-    return ts.isStringLiteral(p.initializer) && ts.isIdentifier(p.name) && p.name.text === 'selector';
+    return isStringLiteralLike(p.initializer) && ts.isIdentifier(p.name) && p.name.text === 'selector';
   }
 
   private extractMainSelector(expression: ts.StringLiteral): compiler.CssSelector[] {

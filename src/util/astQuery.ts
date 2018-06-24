@@ -1,6 +1,6 @@
 import * as ts from 'typescript';
 import { Maybe, ifTrue } from './function';
-import { isSimpleTemplateString } from './utils';
+import { isStringLiteralLike } from './utils';
 
 export function callExpression(dec?: ts.Decorator): Maybe<ts.CallExpression | undefined> {
   return Maybe.lift(dec!.expression).fmap(expr => (expr && ts.isCallExpression(expr) ? expr : undefined));
@@ -35,7 +35,7 @@ export function getStringInitializerFromProperty(
   return (
     getInitializer(property)
       // A little wrinkle to return Maybe<ts.StringLiteral>
-      .fmap(expr => (expr && isSimpleTemplateString(expr) ? (expr as ts.StringLiteral) : undefined))
+      .fmap(expr => (expr && isStringLiteralLike(expr) ? (expr as ts.StringLiteral) : undefined))
   );
 }
 

@@ -144,6 +144,7 @@ describe('component-selector-prefix', () => {
     });
   });
 });
+
 describe('component-selector-type', () => {
   describe('invalid component selectors', () => {
     it('should fail when component used as attribute', () => {
