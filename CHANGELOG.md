@@ -1,3 +1,10 @@
+# 4.4.1
+
+## Bug fixes
+
+* TypeError: ts.isStringLiteralLike is not a function [#669](https://github.com/mgechev/codelyzer/issues/669) [d922dcb](https://github.com/mgechev/codelyzer/commit/d922dcb5c7fdb6bb99efb8b6cb6000dfc0c12f1c)
+* prefer-inline-decorator is missing in v4.4 [#670](https://github.com/mgechev/codelyzer/issues/670) [d922dcb](https://github.com/mgechev/codelyzer/commit/d922dcb5c7fdb6bb99efb8b6cb6000dfc0c12f1c)
+
 # 4.4.0
 
 ## New Rules
