@@ -1,8 +1,9 @@
+import * as ts from 'typescript';
+
 import { IOptions, IRuleMetadata, Replacement, RuleFailure, Rules } from 'tslint/lib';
-import { isSameLine } from 'tsutils';
 import { Decorator, Node, PropertyAccessExpression, SourceFile } from 'typescript';
 import { NgWalker } from './angular/ngWalker';
-import { getDecoratorName } from './util/utils';
+import { getDecoratorName, isSameLine } from './util/utils';
 
 enum Decorators {
   ContentChild = 'ContentChild',

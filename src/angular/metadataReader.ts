@@ -3,7 +3,7 @@ import { callExpression, decoratorArgument, getStringInitializerFromProperty, ha
 import { ifTrue, listToMaybe, Maybe, unwrapFirst } from '../util/function';
 import { logger } from '../util/logger';
 import { getAnimations, getInlineStyle, getTemplate } from '../util/ngQuery';
-import { isSimpleTemplateString, maybeNodeArray } from '../util/utils';
+import { isStringLiteralLike, maybeNodeArray } from '../util/utils';
 import { Config } from './config';
 import { FileResolver } from './fileResolver/fileResolver';
 import { AnimationMetadata, CodeWithSourceMap, ComponentMetadata, DirectiveMetadata, StyleMetadata, TemplateMetadata } from './metadata';
@@ -80,12 +80,10 @@ export class MetadataReader {
 
   protected readComponentAnimationsMetadata(dec: ts.Decorator): Maybe<(AnimationMetadata | undefined)[] | undefined> {
     return getAnimations(dec).fmap(inlineAnimations =>
-      inlineAnimations!.elements
-        .filter(inlineAnimation => isSimpleTemplateString(inlineAnimation))
-        .map<AnimationMetadata>(inlineAnimation => ({
-          animation: normalizeTransformed({ code: (inlineAnimation as ts.StringLiteralLike).text }),
-          node: inlineAnimation as ts.Node
-        }))
+      inlineAnimations!.elements.filter(isStringLiteralLike).map<AnimationMetadata>(inlineAnimation => ({
+        animation: normalizeTransformed({ code: (inlineAnimation as ts.StringLiteral).text }),
+        node: inlineAnimation as ts.Node
+      }))
     );
   }
 
@@ -113,9 +111,9 @@ export class MetadataReader {
     return getInlineStyle(dec)
       .fmap(inlineStyles =>
         // Resolve Inline styles
-        inlineStyles!.elements.filter(inlineStyle => isSimpleTemplateString(inlineStyle)).map<StyleMetadata>(inlineStyle => ({
+        inlineStyles!.elements.filter(isStringLiteralLike).map<StyleMetadata>(inlineStyle => ({
           node: inlineStyle,
-          style: normalizeTransformed(Config.transformStyle((inlineStyle as ts.StringLiteralLike).text))
+          style: normalizeTransformed(Config.transformStyle((inlineStyle as ts.StringLiteral).text))
         }))
       )
       .catch(() =>
