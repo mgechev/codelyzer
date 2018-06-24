@@ -68,10 +68,8 @@ describe('no-output-on-prefix', () => {
       `;
       assertSuccess('no-output-on-prefix', source);
     });
-  });
 
-  describe('valid output property name', () => {
-    it("should succeed, when a output property containing 'on' suffix", () => {
+    it("should succeed, when an output property containing 'on' suffix", () => {
       const source = `
         @Component()
         class SelectComponent {
