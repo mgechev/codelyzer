@@ -68,5 +68,15 @@ describe('no-output-on-prefix', () => {
       `;
       assertSuccess('no-output-on-prefix', source);
     });
+
+    it("should succeed, when an output property containing 'on' suffix", () => {
+      const source = `
+        @Component()
+        class SelectComponent {
+          @Output() selectionChanged = new EventEmitter<any>();
+        }
+      `;
+      assertSuccess('no-output-on-prefix', source);
+    });
   });
 });
