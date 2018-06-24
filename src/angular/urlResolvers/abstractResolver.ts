@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import { getDecoratorArgument, isSimpleTemplateString } from '../../util/utils';
+import { getDecoratorArgument, isStringLiteralLike } from '../../util/utils';
 
 export interface MetadataUrls {
   templateUrl: string;
@@ -17,12 +17,12 @@ export abstract class AbstractResolver {
     }
 
     const prop = arg.properties.find(
-      p => (p.name as ts.StringLiteralLike).text === 'templateUrl' && isSimpleTemplateString((p as ts.PropertyAssignment).initializer)
+      p => (p.name as ts.StringLiteral).text === 'templateUrl' && isStringLiteralLike((p as ts.PropertyAssignment).initializer)
     );
 
     // We know that it's has an initializer because it's either
     // a template string or a string literal.
-    return prop ? ((prop as ts.PropertyAssignment).initializer as ts.StringLiteralLike).text : undefined;
+    return prop ? ((prop as ts.PropertyAssignment).initializer as ts.StringLiteral).text : undefined;
   }
 
   protected getStyleUrls(decorator: ts.Decorator): string[] {
@@ -38,8 +38,8 @@ export abstract class AbstractResolver {
 
     if (prop) {
       return ((prop as ts.PropertyAssignment).initializer as ts.ArrayLiteralExpression).elements
-        .filter(isSimpleTemplateString)
-        .map(e => (e as ts.StringLiteralLike).text);
+        .filter(isStringLiteralLike)
+        .map(e => (e as ts.StringLiteral).text);
     }
 
     return [];

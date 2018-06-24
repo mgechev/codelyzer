@@ -1,9 +1,5 @@
 import * as ts from 'typescript';
 
-export const isSimpleTemplateString = (e: any): e is ts.SyntaxKind.FirstTemplateToken | ts.StringLiteralLike => {
-  return ts.isStringLiteralLike(e) || e.kind === ts.SyntaxKind.FirstTemplateToken;
-};
-
 export const getClassName = (property: ts.PropertyDeclaration): string | undefined => {
   const { parent } = property;
   const identifier = parent && ts.isClassDeclaration(parent) ? parent.name : undefined;
@@ -60,4 +56,12 @@ export const getSymbolName = (expression: ts.ExpressionWithTypeArguments): strin
 
 export const maybeNodeArray = <T extends ts.Node>(nodes: ts.NodeArray<T>): ReadonlyArray<T> => {
   return nodes || [];
+};
+
+export const isSameLine = (sourceFile: ts.SourceFile, pos1: number, pos2: number) => {
+  return ts.getLineAndCharacterOfPosition(sourceFile, pos1).line === ts.getLineAndCharacterOfPosition(sourceFile, pos2).line;
+};
+
+export const isStringLiteralLike = (node: ts.Node) => {
+  return node.kind === ts.SyntaxKind.StringLiteral || node.kind === ts.SyntaxKind.NoSubstitutionTemplateLiteral;
 };
