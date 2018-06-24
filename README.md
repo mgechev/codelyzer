@@ -104,6 +104,8 @@ Create the following `tslint.json` file like:
     "prefer-output-readonly": true,
     "no-conflicting-life-cycle-hooks": true,
     "enforce-component-selector": true,
+    "no-queries-parameter": true,
+    "prefer-inline-decorator": true,
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
     "use-host-property-decorator": true,
@@ -163,6 +165,8 @@ Now create the following `tslint.json` file where your `node_modules` directory 
     "prefer-output-readonly": true,
     "no-conflicting-life-cycle-hooks": true,
     "enforce-component-selector": true,
+    "no-queries-parameter": true,
+    "prefer-inline-decorator": true,
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
     "use-host-property-decorator": true,
@@ -274,6 +278,8 @@ Below you can find a recommended configuration which is based on the [Angular St
   "prefer-output-readonly": true,
   "no-conflicting-life-cycle-hooks": true,
   "enforce-component-selector": true,
+  "no-queries-parameter": true,
+  "prefer-inline-decorator": true,
 
   // [ENABLED, "SUFFIX"]
   // Where "SUFFIX" is your custom suffix, for instance "Page" for Ionic 2 components.
@@ -315,6 +321,9 @@ Below you can find a recommended configuration which is based on the [Angular St
 | `prefer-output-readonly`               |     Stable     |
 | `enforce-component-selector`           |     Stable     |
 | `no-life-cycle-call`                   |     Stable     |
+| `no-template-call-expression`          |     Stable     |
+| `no-queries-parameter`                 |     Stable     |
+| `prefer-inline-decorator`              |     Stable     |
 | `no-conflicting-life-cycle-hooks`      | _Experimental_ |
 | `i18n`                                 | _Experimental_ |
 | `no-unused-css`                        | _Experimental_ |
