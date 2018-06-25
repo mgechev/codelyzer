@@ -1,3 +1,15 @@
+# Change Log
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+<a name="4.4.2"></a>
+
+## [4.4.2](https://github.com/mgechev/codelyzer/compare/4.4.1...4.4.2) (2018-06-25)
+
+### Bug Fixes
+
+* **no-output-on-prefix:** fix regular expression ([#674](https://github.com/mgechev/codelyzer/issues/674)) ([adc974a](https://github.com/mgechev/codelyzer/commit/adc974a))
+
 <a name="4.4.1"></a>
 
 # [4.4.1](https://github.com/mgechev/codelyzer/compare/4.4.0...4.4.1) (2018-06-23)
