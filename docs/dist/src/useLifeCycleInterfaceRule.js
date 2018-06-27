@@ -80,7 +80,7 @@ var ClassMetadataWalker = (function (_super) {
         methods.forEach(function (m) {
             var n = m.name.text;
             if (n && _this.isMethodValidHook(m, interfaces)) {
-                var hookName = n.substr(2, n.lenght);
+                var hookName = n.substr(2, n.length);
                 _this.addFailure(_this.createFailure(m.name.getStart(), m.name.getWidth(), sprintf_js_1.sprintf.apply(_this, [Rule.FAILURE, hookName, Rule.HOOKS_PREFIX + hookName, className])));
             }
         });
@@ -88,7 +88,7 @@ var ClassMetadataWalker = (function (_super) {
     ClassMetadataWalker.prototype.isMethodValidHook = function (m, interfaces) {
         var n = m.name.text;
         var isNg = n.substr(0, 2) === Rule.HOOKS_PREFIX;
-        var hookName = n.substr(2, n.lenght);
+        var hookName = n.substr(2, n.length);
         var isHook = Rule.LIFE_CYCLE_HOOKS_NAMES.indexOf(hookName) !== -1;
         var isNotIn = interfaces.indexOf(hookName) === -1;
         return isNg && isHook && isNotIn;
