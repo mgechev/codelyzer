@@ -272,6 +272,47 @@ describe('metadataReader', () => {
       }
     });
 
+    it('should pass url to Config.transformStyle when using styleUrls', () => {
+      let styleUrl = 'test.scss';
+      let invoked = false;
+      const bak = Config.transformStyle;
+
+      try {
+        Config.transformStyle = (code, url) => {
+          invoked = true;
+          expect(url).to.be.an('string');
+          expect(url!.endsWith('.scss')).eq(true);
+          return { code };
+        };
+
+        const code = `
+          @Component({
+            selector: 'foo',
+            moduleId: module.id,
+            templateUrl: 'foo.html',
+            styleUrls: ['${styleUrl}']
+          })
+          class Bar {}
+        `;
+
+        const reader = new MetadataReader(new FsFileResolver());
+        const ast = getAst(code, __dirname + '/../../test/fixtures/metadataReader/moduleid/foo.ts');
+        const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
+        expect(invoked).eq(false);
+        const metadata = reader.read(classDeclaration)!;
+        expect(metadata instanceof ComponentMetadata).eq(true);
+        expect(metadata.selector).eq('foo');
+        const m = <ComponentMetadata>metadata;
+        expect(m.template!.template.code.trim()).eq('<div></div>');
+        expect(m.template!.url!.endsWith('foo.html')).eq(true);
+        expect(m.styles![0]!.style.code).eq('');
+        expect(m.styles![0]!.url).to.be.an('string');
+        expect(invoked).eq(true);
+      } finally {
+        Config.transformStyle = bak;
+      }
+    });
+
     it('should work work with templates with "`"', () => {
       const code = `
         @Component({

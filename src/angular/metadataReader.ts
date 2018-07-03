@@ -125,7 +125,7 @@ export class MetadataReader {
             ) =>
               this._resolve(url).fmap<StyleMetadata>(style => ({
                 node: undefined,
-                style: normalizeTransformed(Config.transformStyle(style!)),
+                style: normalizeTransformed(Config.transformStyle(style!, url)),
                 url
               }))
             )
