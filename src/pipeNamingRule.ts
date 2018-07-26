@@ -11,7 +11,7 @@ const OPTION_KEBAB_CASE = 'kebab-case';
 
 export class Rule extends Lint.Rules.AbstractRule {
   static readonly metadata: Lint.IRuleMetadata = {
-    deprecationMessage: `You can name your pipes only ${OPTION_CAMEL_CASE}. If you try to use snake-case then your application will not compile.`,
+    deprecationMessage: `You can name your pipes only ${OPTION_CAMEL_CASE}. If you try to use snake-case then your application will not compile. For prefix validation use pipe-prefix rule.`,
     description: 'Enforce consistent case and prefix for pipes.',
     optionExamples: [
       [true, OPTION_CAMEL_CASE, 'myPrefix'],
