@@ -5,14 +5,14 @@ describe('pipe-prefix', () => {
     it('should fail when Pipe has no prefix ng', () => {
       let source = `
         @Pipe({
-          name: 'fooBar'
+          name: 'foo-bar'
           ~~~~~~~~~~~~~~~
         })
         class Test {}
       `;
       assertAnnotated({
         ruleName: 'pipe-prefix',
-        message: 'The name of the Pipe decorator of class Test should start with prefix ng, however its value is "fooBar"',
+        message: 'The name of the Pipe decorator of class Test should start with prefix ng, however its value is "foo-bar"',
         source,
         options: ['ng']
       });
@@ -21,14 +21,14 @@ describe('pipe-prefix', () => {
     it('should fail when Pipe has no prefix applying multiple prefixes', () => {
       let source = `
         @Pipe({
-          name: 'fooBar'
+          name: 'foo-bar'
           ~~~~~~~~~~~~~~~
         })
         class Test {}
       `;
       assertAnnotated({
         ruleName: 'pipe-prefix',
-        message: 'The name of the Pipe decorator of class Test should start' + ' with prefix ng,mg,sg, however its value is "fooBar"',
+        message: 'The name of the Pipe decorator of class Test should start' + ' with prefix ng,mg,sg, however its value is "foo-bar"',
         source,
         options: ['ng', 'mg', 'sg']
       });
