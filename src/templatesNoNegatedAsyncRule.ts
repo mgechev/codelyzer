@@ -1,78 +1,73 @@
-import * as Lint from 'tslint';
-import * as ts from 'typescript';
+import { IRuleMetadata, RuleFailure, Rules } from 'tslint';
+import { SourceFile } from 'typescript';
 import { NgWalker } from './angular/ngWalker';
 import { RecursiveAngularExpressionVisitor } from './angular/templates/recursiveAngularExpressionVisitor';
-import * as e from '@angular/compiler/src/expression_parser/ast';
-import * as ast from '@angular/compiler';
+import { Binary, PrefixNot } from '@angular/compiler/src/expression_parser/ast';
+import { AST, BindingPipe, LiteralPrimitive } from '@angular/compiler';
 
 const unstrictEqualityOperator = '==';
 
+const isAsyncBinding = (ast: AST): boolean => {
+  return ast instanceof BindingPipe && ast.name === 'async';
+};
+
 class TemplateToNgTemplateVisitor extends RecursiveAngularExpressionVisitor {
-  visitBinary(expr: e.Binary, context: any): any {
-    if (!this.isAsyncBinding(expr.left)) {
-      return super.visitBinary(expr, context);
-    }
-    if (!(expr.right instanceof ast.LiteralPrimitive) || expr.right.value !== false || expr.operation !== unstrictEqualityOperator) {
-      return super.visitBinary(expr, context);
-    }
-
-    const {
-      left: {
-        span: { end: endLeftSpan }
-      },
-      right: {
-        span: { start: startRightSpan }
-      },
-      span: { end: spanEnd, start: spanStart }
-    } = expr;
-    const operator = this.codeWithMap.code.slice(endLeftSpan, startRightSpan);
-    const operatorStart = /^.*==/.exec(operator)![0].length - unstrictEqualityOperator.length;
-
-    this.addFailureFromStartToEnd(spanStart, spanEnd, 'Async pipes must use strict equality `===` when comparing with `false`', [
-      new Lint.Replacement(this.getSourcePosition(endLeftSpan) + operatorStart, unstrictEqualityOperator.length, '===')
-    ]);
-    super.visitBinary(expr, context);
+  visitBinary(ast: Binary, context: any): any {
+    this.validateBinary(ast);
+    super.visitBinary(ast, context);
   }
 
-  visitPrefixNot(expr: e.PrefixNot, context: any): any {
-    if (!this.isAsyncBinding(expr.expression)) {
-      return super.visitPrefixNot(expr, context);
-    }
-    const {
-      span: { end: spanEnd, start: spanStart }
-    } = expr;
-    const absoluteStart = this.getSourcePosition(spanStart);
-
-    // Angular includes the whitespace after an expression, we want to trim that
-    const expressionSource = this.codeWithMap.code.slice(spanStart, spanEnd);
-    const concreteWidth = spanEnd - spanStart - / *$/.exec(expressionSource)![0].length;
-
-    this.addFailureFromStartToEnd(spanStart, spanEnd, 'Async pipes can not be negated, use (observable | async) === false instead', [
-      new Lint.Replacement(absoluteStart + concreteWidth, 1, ' === false '),
-      new Lint.Replacement(absoluteStart, 1, '')
-    ]);
+  visitPrefixNot(ast: PrefixNot, context: any): any {
+    this.validatePrefixNot(ast);
+    super.visitPrefixNot(ast, context);
   }
 
-  protected isAsyncBinding(expr: ast.AST) {
-    return expr instanceof ast.BindingPipe && expr.name === 'async';
+  private validateBinary(ast: Binary): void {
+    const { left, operation, right } = ast;
+
+    if (!isAsyncBinding(left) || !(right instanceof LiteralPrimitive) || right.value !== false || operation !== unstrictEqualityOperator) {
+      return;
+    }
+
+    this.generateFailure(ast, Rule.FAILURE_STRING_UNSTRICT_EQUALITY);
+  }
+
+  private validatePrefixNot(ast: PrefixNot): void {
+    const { expression } = ast;
+
+    if (!isAsyncBinding(expression)) {
+      return;
+    }
+
+    this.generateFailure(ast, Rule.FAILURE_STRING_NEGATED_PIPE);
+  }
+
+  private generateFailure(ast: Binary | PrefixNot, errorMessage: string): void {
+    const {
+      span: { end: spanEnd, start: spanStart }
+    } = ast;
+
+    this.addFailureFromStartToEnd(spanStart, spanEnd, errorMessage);
   }
 }
 
-export class Rule extends Lint.Rules.AbstractRule {
-  public static metadata: Lint.IRuleMetadata = {
-    ruleName: 'templates-no-negated-async',
-    type: 'functionality',
+export class Rule extends Rules.AbstractRule {
+  static readonly metadata: IRuleMetadata = {
     description: 'Ensures that strict equality is used when evaluating negations on async pipe output.',
+    options: null,
+    optionsDescription: 'Not configurable.',
     rationale:
       'Async pipe evaluate to `null` before the observable or promise emits, which can lead to layout thrashing as' +
       ' components load. Prefer strict `=== false` checks instead.',
-    options: null,
-    optionsDescription: 'Not configurable.',
-    typescriptOnly: true,
-    hasFix: true
+    ruleName: 'templates-no-negated-async',
+    type: 'functionality',
+    typescriptOnly: true
   };
 
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+  static readonly FAILURE_STRING_NEGATED_PIPE = 'Async pipes can not be negated, use (observable | async) === false instead';
+  static readonly FAILURE_STRING_UNSTRICT_EQUALITY = 'Async pipes must use strict equality `===` when comparing with `false`';
+
+  apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(
       new NgWalker(sourceFile, this.getOptions(), {
         expressionVisitorCtrl: TemplateToNgTemplateVisitor

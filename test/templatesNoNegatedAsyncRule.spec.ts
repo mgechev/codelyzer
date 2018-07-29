@@ -1,169 +1,182 @@
-import { assertSuccess, assertAnnotated } from './testHelper';
-import { Replacement } from 'tslint';
-import { expect } from 'chai';
+import { assertAnnotated, assertMultipleAnnotated, assertSuccess } from './testHelper';
+import { Rule } from '../src/templatesNoNegatedAsyncRule';
 
-describe('templates-no-negated-async', () => {
-  describe('invalid expressions', () => {
-    it('should fail when an async pipe is negated', () => {
-      let source = `
+const {
+  FAILURE_STRING_NEGATED_PIPE,
+  FAILURE_STRING_UNSTRICT_EQUALITY,
+  metadata: { ruleName }
+} = Rule;
+
+describe(ruleName, () => {
+  describe('failure', () => {
+    it('should fail if async pipe is negated', () => {
+      const source = `
         @Component({
-          selector: 'foobar',
+          selector: 'test',
           template: '{{ !(foo | async) }}'
                         ~~~~~~~~~~~~~~~
         })
         class Test {
-          constructor(public foo: Observable<Boolean>) {}
+          constructor(foo: Observable<Boolean>) {}
         }
       `;
       assertAnnotated({
-        ruleName: 'templates-no-negated-async',
-        message: 'Async pipes can not be negated, use (observable | async) === false instead',
+        message: FAILURE_STRING_NEGATED_PIPE,
+        ruleName: ruleName,
         source
       });
     });
 
-    it('should fail when an async pipe is including other pipes', () => {
-      let source = `
+    it('should fail if async pipe is the last pipe in the negated chain', () => {
+      const source = `
         @Component({
-          selector: 'foobar',
+          selector: 'test',
           template: '{{ !(foo | somethingElse | async) }}'
                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         })
         class Test {
-          constructor(public foo: Observable<Boolean>) {}
+          constructor(foo: Observable<Boolean>) {}
         }
       `;
       assertAnnotated({
-        ruleName: 'templates-no-negated-async',
-        message: 'Async pipes can not be negated, use (observable | async) === false instead',
+        message: FAILURE_STRING_NEGATED_PIPE,
+        ruleName: ruleName,
         source
       });
     });
 
-    it('should fail when an async pipe uses non-strict equality', () => {
-      let source = `
+    it('should fail if async pipe uses unstrict equality', () => {
+      const source = `
         @Component({
-          selector: 'foobar',
+          selector: 'test',
           template: '{{ (foo | async) == false }}'
                          ~~~~~~~~~~~~~~~~~~~~~~
         })
         class Test {
-          constructor(public foo: Observable<Boolean>) {}
+          constructor(foo: Observable<Boolean>) {}
         }
       `;
       assertAnnotated({
-        ruleName: 'templates-no-negated-async',
-        message: 'Async pipes must use strict equality `===` when comparing with `false`',
+        message: FAILURE_STRING_UNSTRICT_EQUALITY,
+        ruleName: ruleName,
         source
       });
     });
 
-    describe('fixes', () => {
-      it('fixes negated pipes', () => {
-        let source = `
-          @Component({
-            selector: 'foobar',
-            template: '{{ !(foo | async) }}'
-                          ~~~~~~~~~~~~~~~
-          })
-          class Test {}
-        `;
-        const failures = assertAnnotated({
-          ruleName: 'templates-no-negated-async',
-          message: 'Async pipes can not be negated, use (observable | async) === false instead',
-          source
-        });
-
-        const res = Replacement.applyAll(source, failures[0].getFix());
-        expect(res).to.eq(`
-          @Component({
-            selector: 'foobar',
-            template: '{{ (foo | async) === false }}'
-                          ~~~~~~~~~~~~~~~
-          })
-          class Test {}
-        `);
+    it('should fail if async pipe is negated using *ngIf', () => {
+      const source = `
+        @Component({
+          selector: 'test',
+          template: '<div *ngIf="!(a | async)"></div>'
+                                 ~~~~~~~~~~~~
+        })
+        class Test {
+          constructor(foo: Observable<Boolean>) {}
+        }
+      `;
+      assertAnnotated({
+        message: FAILURE_STRING_NEGATED_PIPE,
+        ruleName: ruleName,
+        source
       });
+    });
 
-      it('fixes un-strict equality', () => {
-        let source = `
-          @Component({
-            selector: 'foobar',
-            template: '{{ (foo | async) == false }}'
-                           ~~~~~~~~~~~~~~~~~~~~~~
-          })
-          class Test {}
-        `;
-        const failures = assertAnnotated({
-          ruleName: 'templates-no-negated-async',
-          message: 'Async pipes must use strict equality `===` when comparing with `false`',
-          source
-        });
+    it('should fail for multiple negated/unstrict equality async pipes', () => {
+      const source = `
+        @Component({
+          selector: 'test',
+          template: \`
+            <div *ngFor="let elem of [1, 2, 3]; trackBy: trackByFn">
+              {{ elem }}
+            </div>
 
-        const res = Replacement.applyAll(source, failures[0].getFix());
-        expect(res).to.eq(`
-          @Component({
-            selector: 'foobar',
-            template: '{{ (foo | async) === false }}'
-                           ~~~~~~~~~~~~~~~~~~~~~~
-          })
-          class Test {}
-        `);
+            <div *ngIf="!(foo | async)">
+                        ~~~~~~~~~~~~~~
+              {{ (foo | async) == false }}
+                  ^^^^^^^^^^^^^^^^^^^^^^
+              <div *ngIf="(foo | async) == false">
+                           #####################
+                works!
+              </div>
+            </div>
+          \`
+        })
+        class Test {
+          constructor(foo: Observable<Boolean>) {}
+        }
+      `;
+      assertMultipleAnnotated({
+        failures: [
+          {
+            char: '~',
+            msg: FAILURE_STRING_NEGATED_PIPE
+          },
+          {
+            char: '^',
+            msg: FAILURE_STRING_UNSTRICT_EQUALITY
+          },
+          {
+            char: '#',
+            msg: FAILURE_STRING_UNSTRICT_EQUALITY
+          }
+        ],
+        ruleName,
+        source
       });
     });
   });
 
-  describe('valid expressions', () => {
-    it('should succeed if an async pipe is not negated', () => {
-      let source = `
+  describe('success', () => {
+    it('should succeed if async pipe is not negated', () => {
+      const source = `
         @Component({
-          selector: 'foobar',
+          selector: 'test',
           template: '{{ (foo | async) }}'
         })
         class Test {
-          constructor(public foo: Observable<Boolean>) {}
+          constructor(foo: Observable<Boolean>) {}
         }
       `;
-      assertSuccess('templates-no-negated-async', source);
+      assertSuccess(ruleName, source);
     });
 
-    it('should succeed if an async pipe is not the last pipe in the negated chain', () => {
-      let source = `
+    it('should succeed if async pipe is not the last pipe in the negated chain', () => {
+      const source = `
         @Component({
-          selector: 'foobar',
-          template: '{{ !(foo | async | someOtherFilter) }}'
+          selector: 'test',
+          template: '{{ !(foo | async | somethingElse) }}'
         })
         class Test {
-          constructor(public foo: Observable<Boolean>) {}
+          constructor(foo: Observable<Boolean>) {}
         }
       `;
-      assertSuccess('templates-no-negated-async', source);
+      assertSuccess(ruleName, source);
     });
 
-    it('should succeed if an async pipe uses strict equality', () => {
-      let source = `
+    it('should succeed if async pipe uses strict equality', () => {
+      const source = `
         @Component({
-          selector: 'foobar',
+          selector: 'test',
           template: '{{ (foo | async) === false }}'
         })
         class Test {
-          constructor(public foo: Observable<Boolean>) {}
+          constructor(foo: Observable<Boolean>) {}
         }
       `;
-      assertSuccess('templates-no-negated-async', source);
+      assertSuccess(ruleName, source);
     });
 
     it('should succeed if any other pipe is negated', () => {
-      let source = `
+      const source = `
         @Component({
-          selector: 'foobar',
+          selector: 'test',
           template: '{{ !(foo | notAnAsyncPipe) }}'
         })
         class Test {
-          constructor(public foo: Observable<Boolean>) {}
+          constructor(foo: Observable<Boolean>) {}
         }
       `;
-      assertSuccess('templates-no-negated-async', source);
+      assertSuccess(ruleName, source);
     });
   });
 });
