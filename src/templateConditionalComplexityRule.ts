@@ -24,8 +24,9 @@ export class Rule extends Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = "The condition complexity (cost '%s') exceeded the defined limit (cost '%s'). The conditional expression should be moved into the component.";
   static readonly DEFAULT_MAX_COMPLEXITY = 3;
+  static readonly FAILURE_STRING =
+    "The condition complexity (cost '%s') exceeded the defined limit (cost '%s'). The conditional expression should be moved into the component.";
 
   apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(

@@ -48,7 +48,8 @@ export class Rule extends Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'Exceeds the maximum allowed inline lines for %s. Defined limit: %s / total lines: %s (https://angular.io/guide/styleguide#style-05-04)';
+  static readonly FAILURE_STRING =
+    'Exceeds the maximum allowed inline lines for %s. Defined limit: %s / total lines: %s (https://angular.io/guide/styleguide#style-05-04)';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(new MaxInlineDeclarationsWalker(sourceFile, this.getOptions()));

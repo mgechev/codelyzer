@@ -1,9 +1,9 @@
-import { IRuleMetadata, RuleFailure, Rules } from 'tslint';
+import { AST, BindingPipe, LiteralPrimitive } from '@angular/compiler';
+import { Binary, PrefixNot } from '@angular/compiler/src/expression_parser/ast';
+import { IRuleMetadata, RuleFailure, Rules, Utils } from 'tslint/lib';
 import { SourceFile } from 'typescript';
 import { NgWalker } from './angular/ngWalker';
 import { RecursiveAngularExpressionVisitor } from './angular/templates/recursiveAngularExpressionVisitor';
-import { Binary, PrefixNot } from '@angular/compiler/src/expression_parser/ast';
-import { AST, BindingPipe, LiteralPrimitive } from '@angular/compiler';
 
 const unstrictEqualityOperator = '==';
 
@@ -56,9 +56,10 @@ export class Rule extends Rules.AbstractRule {
     description: 'Ensures that strict equality is used when evaluating negations on async pipe output.',
     options: null,
     optionsDescription: 'Not configurable.',
-    rationale:
-      'Async pipe evaluate to `null` before the observable or promise emits, which can lead to layout thrashing as' +
-      ' components load. Prefer strict `=== false` checks instead.',
+    rationale: Utils.dedent`
+      Async pipe evaluate to \`null\` before the observable or promise emits, which can lead to layout thrashing as
+      components load. Prefer strict \`=== false\` checks instead.
+    `,
     ruleName: 'templates-no-negated-async',
     type: 'functionality',
     typescriptOnly: true

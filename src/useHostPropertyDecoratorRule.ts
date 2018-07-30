@@ -1,4 +1,4 @@
-import { IOptions, IRuleMetadata } from 'tslint/lib';
+import { IOptions, IRuleMetadata, Utils } from 'tslint/lib';
 import { UsePropertyDecorator } from './propertyDecoratorBase';
 
 export class Rule extends UsePropertyDecorator {
@@ -7,17 +7,19 @@ export class Rule extends UsePropertyDecorator {
     descriptionDetails: 'See more at https://angular.io/styleguide#style-06-03.',
     options: null,
     optionsDescription: 'Not configurable.',
-    rationale:
-      'The property associated with `@HostBinding` or the method associated with `@HostListener` ' +
-      "can be modified only in a single place: in the directive's class. If you use the `host` metadata " +
-      'property, you must modify both the property declaration inside the controller, and the metadata ' +
-      'associated with the directive.',
+    rationale: Utils.dedent`
+      The property associated with @HostBinding or the method associated with @HostListener
+      can be modified only in a single place: in the directive's class. If you use the host metadata
+      property, you must modify both the property declaration inside the controller, and the metadata
+      associated with the directive.
+    `,
     ruleName: 'use-host-property-decorator',
     type: 'style',
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'Use @HostBindings and @HostListeners instead of the host property (https://angular.io/styleguide#style-06-03)';
+  static readonly FAILURE_STRING =
+    'Use @HostBindings and @HostListeners instead of the host property (https://angular.io/styleguide#style-06-03)';
 
   constructor(options: IOptions) {
     super(

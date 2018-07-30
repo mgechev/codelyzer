@@ -17,9 +17,11 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'In the class "%s", the directive input property "%s" should not be renamed. ' +
-  'However, you should use an alias when the directive name is also an input property, and the directive name' +
-  " doesn't describe the property. In this last case, you can disable this rule with `tslint:disable-next-line:no-input-rename`.";
+  static readonly FAILURE_STRING = Lint.Utils.dedent`
+    In the class "%s", the directive input property "%s" should not be renamed.
+    However, you should use an alias when the directive name is also an input property, and the directive name
+    doesn't describe the property. In this last case, you can disable this rule with \`tslint:disable-next-line:no-input-rename\`.
+  `;
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new InputMetadataWalker(sourceFile, this.getOptions()));
