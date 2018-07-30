@@ -17,10 +17,8 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'In the constructor of class "%s",' +
-  ' the parameter "%s" uses the @Attribute decorator, ' +
-  'which is considered as a bad practice. Please,' +
-  ' consider construction of type "@Input() %s: string"';
+  static readonly FAILURE_STRING =
+    'In the constructor of class "%s", the parameter "%s" uses the @Attribute decorator, which is considered as a bad practice. Please, consider construction of type "@Input() %s: string"';
 
   private static readonly walkerBuilder = all(
     validate(ts.SyntaxKind.Constructor)(node => {

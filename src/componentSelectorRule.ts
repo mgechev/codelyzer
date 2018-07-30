@@ -9,9 +9,10 @@ const OPTION_KEBAB_CASE = 'kebab-case';
 export class Rule extends SelectorRule {
   static readonly metadata: IRuleMetadata = {
     description: 'Component selectors should follow given naming rules.',
-    descriptionDetails:
-      'See more at https://angular.io/styleguide#style-02-07, https://angular.io/styleguide#style-05-02, ' +
-      'and https://angular.io/styleguide#style-05-03.',
+    descriptionDetails: Utils.dedent`
+      See more at https://angular.io/styleguide#style-02-07, https://angular.io/styleguide#style-05-02,
+      and https://angular.io/styleguide#style-05-03.
+    `,
     optionExamples: [
       [true, OPTION_ELEMENT, 'my-prefix', OPTION_KEBAB_CASE],
       [true, OPTION_ELEMENT, ['ng', 'ngx'], OPTION_KEBAB_CASE],

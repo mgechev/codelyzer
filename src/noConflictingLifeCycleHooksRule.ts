@@ -9,10 +9,11 @@ export class Rule extends Lint.Rules.AbstractRule {
     descriptionDetails: 'See more at https://angular.io/api/core/DoCheck#description.',
     options: null,
     optionsDescription: 'Not configurable.',
-    rationale:
-      'A directive typically should not use both DoCheck and OnChanges to respond ' +
-      'to changes on the same input, as ngOnChanges will continue to be called when the ' +
-      'default change detector detects changes.',
+    rationale: Lint.Utils.dedent`
+      A directive typically should not use both DoCheck and OnChanges to respond
+      to changes on the same input, as ngOnChanges will continue to be called when the
+      default change detector detects changes.
+    `,
     ruleName: 'no-conflicting-life-cycle-hooks',
     type: 'maintainability',
     typescriptOnly: true

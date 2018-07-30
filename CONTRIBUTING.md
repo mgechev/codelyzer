@@ -3,12 +3,12 @@
 We would love for you to contribute to Codelyzer and help make it even better than it is
 today! As a contributor, here are the guidelines we would like you to follow:
 
-* [Question or Problem?](#question)
-* [Issues and Bugs](#issue)
-* [Feature Requests](#feature)
-* [Submission Guidelines](#submit)
-* [Coding Rules](#rules)
-* [Commit Message Guidelines](#commit)
+- [Question or Problem?](#question)
+- [Issues and Bugs](#issue)
+- [Feature Requests](#feature)
+- [Submission Guidelines](#submit)
+- [Coding Rules](#rules)
+- [Commit Message Guidelines](#commit)
 
 ## <a name="question"></a> Got a Question or Problem?
 
@@ -16,9 +16,9 @@ Please, do not open issues for the general support questions as we want to keep 
 
 StackOverflow is a much better place to ask questions since:
 
-* there are thousands of people willing to help on StackOverflow
-* questions and answers stay available for public viewing so your question / answer might help someone else
-* StackOverflow's voting system assures that the best answers are prominently visible.
+- there are thousands of people willing to help on StackOverflow
+- questions and answers stay available for public viewing so your question / answer might help someone else
+- StackOverflow's voting system assures that the best answers are prominently visible.
 
 To save your and our time we will be systematically closing all the issues that are requests for general support and redirecting people to StackOverflow.
 
@@ -37,10 +37,10 @@ Repository. If you would like to _implement_ a new feature, please submit an iss
 a proposal for your work first, to be sure that we can use it.
 Please consider what kind of change it is:
 
-* For a **Major Feature**, first open an issue and outline your proposal so that it can be
+- For a **Major Feature**, first open an issue and outline your proposal so that it can be
   discussed. This will also allow us to better coordinate our efforts, prevent duplication of work,
   and help you to craft the change so that it is successfully accepted into the project.
-* **Small Features** can be crafted and directly [submitted as a Pull Request](#submit-pr).
+- **Small Features** can be crafted and directly [submitted as a Pull Request](#submit-pr).
 
 Later, your issue will be closed and tagged with `votes needed`. The [top-👍 feature](https://github.com/mgechev/codelyzer/issues?utf8=%E2%9C%93&q=label%3A%22votes+needed%22+sort%3Areactions-%2B1-desc+) requests will be implemented.
 
@@ -52,10 +52,10 @@ Before you submit an issue, please search the issue tracker, maybe an issue for 
 
 We want to fix all the issues as soon as possible, but before fixing a bug we need to reproduce and confirm it. In order to reproduce bugs we will systematically ask you to provide a minimal reproduction scenario by providing a snippet which breaks any of the codelyzer rules. Also make sure that you list:
 
-* version of Codelyzer used
-* version of Angular used
-* 3rd-party libraries and their versions
-* and most importantly - a use-case that fails
+- version of Codelyzer used
+- version of Angular used
+- 3rd-party libraries and their versions
+- and most importantly - a use-case that fails
 
 You can file new issues by filling out our [new issue form](https://github.com/mgechev/codelyzer/issues/new).
 
@@ -69,17 +69,17 @@ If the fix that you want to submit is part of the metadata associated with any o
 
 Before you submit your Pull Request (PR) consider the following guidelines:
 
-* Search [GitHub](https://github.com/mgechev/codelyzer/pulls) for an open or closed PR
+- Search [GitHub](https://github.com/mgechev/codelyzer/pulls) for an open or closed PR
   that relates to your submission. You don't want to duplicate effort.
-* Make your changes in a new git branch:
+- Make your changes in a new git branch:
 
   ```shell
   git checkout -b my-fix-branch master
   ```
 
-* Create your patch, **including appropriate test cases**.
-* Follow our [Coding Rules](#rules).
-* Commit your changes using a descriptive commit message that follows our
+- Create your patch, **including appropriate test cases**.
+- Follow our [Coding Rules](#rules).
+- Commit your changes using a descriptive commit message that follows our
   [commit message conventions](#commit). Adherence to these conventions
   is necessary because release notes are automatically generated from these messages.
 
@@ -89,18 +89,18 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 
   Note: the optional commit `-a` command line option will automatically "add" and "rm" edited files.
 
-* Push your branch to GitHub:
+- Push your branch to GitHub:
 
   ```shell
   git push origin my-fix-branch
   ```
 
-* In GitHub, send a pull request to `codelyzer:master`.
-* If we suggest changes then:
+- In GitHub, send a pull request to `codelyzer:master`.
+- If we suggest changes then:
 
-  * Make the required updates.
-  * Re-run the Codelyzer test and lint suites to ensure tests are still passing and you're following the coding style.
-  * Rebase your branch and force push to your GitHub repository (this will update your Pull Request):
+  - Make the required updates.
+  - Re-run the Codelyzer test and lint suites to ensure tests are still passing and you're following the coding style.
+  - Rebase your branch and force push to your GitHub repository (this will update your Pull Request):
 
     ```shell
     git rebase master -i
@@ -114,25 +114,25 @@ That's it! Thank you for your contribution!
 After your pull request is merged, you can safely delete your branch and pull the changes
 from the main (upstream) repository:
 
-* Delete the remote branch on GitHub either through the GitHub web UI or your local shell as follows:
+- Delete the remote branch on GitHub either through the GitHub web UI or your local shell as follows:
 
   ```shell
   git push origin --delete my-fix-branch
   ```
 
-* Check out the master branch:
+- Check out the master branch:
 
   ```shell
   git checkout master -f
   ```
 
-* Delete the local branch:
+- Delete the local branch:
 
   ```shell
   git branch -D my-fix-branch
   ```
 
-* Update your master with the latest upstream version:
+- Update your master with the latest upstream version:
 
   ```shell
   git pull --ff upstream master
@@ -142,8 +142,8 @@ from the main (upstream) repository:
 
 To ensure consistency throughout the source code, keep these rules in mind as you are working:
 
-* All features or bug fixes **must be tested** by one or more specs (unit-tests).
-* We follow [Google's JavaScript Style Guide][js-style-guide].
+- All features or bug fixes **must be tested** by one or more specs (unit-tests).
+- We follow [Google's JavaScript Style Guide][js-style-guide].
 
 ## <a name="commit"></a> Commit Message Guidelines
 
@@ -191,16 +191,16 @@ If the commit reverts a previous commit, it should begin with `revert:`, followe
 
 Must be one of the following:
 
-* **feat**: A new feature
-* **fix**: A bug fix
-* **docs**: Documentation only changes
-* **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing
+- **feat**: A new feature
+- **fix**: A bug fix
+- **docs**: Documentation only changes
+- **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing
   semi-colons, etc)
-* **refactor**: A code change that neither fixes a bug nor adds a feature
-* **perf**: A code change that improves performance
-* **test**: Adding missing tests or correcting existing tests
-* **build**: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
-* **ci**: Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
+- **refactor**: A code change that neither fixes a bug nor adds a feature
+- **perf**: A code change that improves performance
+- **test**: Adding missing tests or correcting existing tests
+- **build**: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
+- **ci**: Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
 
 ### Scope
 
@@ -211,9 +211,9 @@ The scope could be anything specifying place of the commit change. For example
 
 The subject contains succinct description of the change:
 
-* use the imperative, present tense: "change" not "changed" nor "changes"
-* don't capitalize first letter
-* no dot (.) at the end
+- use the imperative, present tense: "change" not "changed" nor "changes"
+- don't capitalize first letter
+- no dot (.) at the end
 
 ### Body
 
