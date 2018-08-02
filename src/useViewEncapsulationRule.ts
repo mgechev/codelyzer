@@ -9,7 +9,6 @@ export class Rule extends Rules.AbstractRule {
     description: 'Disallows using of ViewEncapsulation.None.',
     options: null,
     optionsDescription: 'Not configurable.',
-    rationale: '',
     ruleName: 'use-view-encapsulation',
     type: 'maintainability',
     typescriptOnly: true

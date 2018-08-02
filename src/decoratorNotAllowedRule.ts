@@ -16,9 +16,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'In the class "%s" which have the "%s" decorator, the ' +
-  '"%s" decorator is not allowed. ' +
-  'Please, drop it.';
+  static readonly FAILURE_STRING = 'In the class "%s" which have the "%s" decorator, the "%s" decorator is not allowed. Please, drop it.';
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this.getOptions()));

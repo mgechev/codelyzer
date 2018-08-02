@@ -9,7 +9,7 @@ export class Rule extends UsePropertyDecorator {
     optionsDescription: 'Not configurable.',
     rationale: Utils.dedent`
       * It is easier and more readable to identify which properties in a class are inputs.
-      * If you ever need to rename the property name associated with \`@Input\`, you can modify it in a single place.
+      * If you ever need to rename the property name associated with @Input, you can modify it in a single place.
       * The metadata declaration attached to the directive is shorter and thus more readable.
       * Placing the decorator on the same line usually makes for shorter code and still easily identifies the property as an input.
     `,
@@ -18,7 +18,8 @@ export class Rule extends UsePropertyDecorator {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'Use the @Input property decorator instead of the inputs property (https://angular.io/styleguide#style-05-12)';
+  static readonly FAILURE_STRING =
+    'Use the @Input property decorator instead of the inputs property (https://angular.io/styleguide#style-05-12)';
 
   constructor(options: IOptions) {
     super(

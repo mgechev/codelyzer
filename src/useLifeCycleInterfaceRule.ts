@@ -15,7 +15,8 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'Implement life cycle hook interface %s for method %s in class %s (https://angular.io/styleguide#style-09-01)';
+  static readonly FAILURE_STRING =
+    'Implement life cycle hook interface %s for method %s in class %s (https://angular.io/styleguide#style-09-01)';
   static readonly HOOKS_PREFIX = 'ng';
   static readonly LIFE_CYCLE_HOOKS_NAMES: string[] = [
     'OnChanges',
@@ -61,7 +62,7 @@ export class ClassMetadataWalker extends Lint.RuleWalker {
 
       if (methodName && this.isMethodValidHook(methodName, interfaces)) {
         const hookName = methodName.slice(2);
-        this.addFailureAtNode(name, sprintf(Rule.FAILURE_STRING, hookName, Rule.HOOKS_PREFIX + hookName, className));
+        this.addFailureAtNode(name, sprintf(Rule.FAILURE_STRING, hookName, `${Rule.HOOKS_PREFIX}${hookName}`, className));
       }
     });
   }
