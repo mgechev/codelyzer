@@ -7,6 +7,7 @@ import { ExpTypes } from '../expressionTypes';
 import { ComponentMetadata } from '../metadata';
 import { RecursiveAngularExpressionVisitor } from './recursiveAngularExpressionVisitor';
 import { SourceMappingVisitor } from '../sourceMappingVisitor';
+import { PropertyBindingType } from '../propertyBindingType';
 
 const getExpressionDisplacement = (binding: ast.TemplateAst) => {
   let attrLen = 0;
@@ -23,17 +24,17 @@ const getExpressionDisplacement = (binding: ast.TemplateAst) => {
     let subBindingLen = 0;
     if (binding instanceof ast.BoundElementPropertyAst) {
       // The length of the binding type
-      switch (binding.type) {
-        case ast.PropertyBindingType.Animation:
+      switch (binding.type as any) {
+        case PropertyBindingType.Animation:
           subBindingLen = 'animate'.length + 1;
           break;
-        case ast.PropertyBindingType.Attribute:
+        case PropertyBindingType.Attribute:
           subBindingLen = 'attr'.length + 1;
           break;
-        case ast.PropertyBindingType.Class:
+        case PropertyBindingType.Class:
           subBindingLen = 'class'.length + 1;
           break;
-        case ast.PropertyBindingType.Style:
+        case PropertyBindingType.Style:
           subBindingLen = 'style'.length + 1;
           break;
       }

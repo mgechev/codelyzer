@@ -1,4 +1,4 @@
-import { ElementAst, EmbeddedTemplateAst, PropertyBindingType, TemplateAst } from '@angular/compiler';
+import { ElementAst, EmbeddedTemplateAst, TemplateAst } from '@angular/compiler';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 
@@ -12,6 +12,7 @@ import { getComponentDecorator, getDecoratorPropertyInitializer, getSymbolName }
 import { ComponentMetadata, StyleMetadata } from './angular/metadata';
 import { logger } from './util/logger';
 import { SemVerDSL } from './util/ngVersion';
+import { PropertyBindingType } from './angular/propertyBindingType';
 
 interface Strategy {
   attribute(ast: ElementAst): boolean;
@@ -50,7 +51,7 @@ const lang = require('cssauron')({
   },
   class(node: ElementAst) {
     const classBindings = (node.inputs || [])
-      .filter(b => b.type === PropertyBindingType.Class)
+      .filter(b => (b.type as any) === PropertyBindingType.Class)
       .map(b => b.name)
       .join(' ');
     const classAttr = node.attrs.find(a => a.name.toLowerCase() === 'class');
@@ -97,7 +98,7 @@ const dynamicFilters: Strategy = {
     return (ast.inputs || []).some(i => i.name === 'id');
   },
   attribute(ast: ElementAst) {
-    return (ast.inputs || []).some(i => i.type === PropertyBindingType.Attribute);
+    return (ast.inputs || []).some(i => (i.type as any) === PropertyBindingType.Attribute);
   },
   class(ast: ElementAst) {
     return (ast.inputs || []).some(i => i.name === 'className' || i.name === 'ngClass');
