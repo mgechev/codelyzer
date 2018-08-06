@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.4.3"></a>
+
+## [4.4.3](https://github.com/mgechev/codelyzer/compare/4.4.2...4.4.3) (2018-08-06)
+
+### Bug Fixes
+
+- url not passed to transformStyle when using styleUrls ([#686](https://github.com/mgechev/codelyzer/issues/686)) ([5a84041](https://github.com/mgechev/codelyzer/commit/5a84041))
+- **templates-no-negated-async:** not reporting failures for some cases ([#694](https://github.com/mgechev/codelyzer/issues/694)) ([2ffe2ea](https://github.com/mgechev/codelyzer/commit/2ffe2ea))
+
 <a name="4.4.2"></a>
 
 ## [4.4.2](https://github.com/mgechev/codelyzer/compare/4.4.1...4.4.2) (2018-06-25)
