@@ -47,7 +47,7 @@ export class Rule extends SelectorRule {
     },
     optionsDescription: Utils.dedent`
       Options accept three obligatory items as an array:
-      1. \`${OPTION_ELEMENT}\` or \`${OPTION_ATTRIBUTE}\` forces components either to be elements or attributes. It can be both (wrapped in an array, see example #4)
+      1. \`${OPTION_ELEMENT}\` or \`${OPTION_ATTRIBUTE}\` forces components to be used as either elements, attributes, or both (not recommended)
       2. A single prefix (string) or array of prefixes (strings) which have to be used in component selectors.
       3. \`${OPTION_KEBAB_CASE}\` or \`${OPTION_CAMEL_CASE}\` allows you to pick a case.
     `,
