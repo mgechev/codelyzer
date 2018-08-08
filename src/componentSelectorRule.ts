@@ -16,7 +16,8 @@ export class Rule extends SelectorRule {
     optionExamples: [
       [true, OPTION_ELEMENT, 'my-prefix', OPTION_KEBAB_CASE],
       [true, OPTION_ELEMENT, ['ng', 'ngx'], OPTION_KEBAB_CASE],
-      [true, OPTION_ATTRIBUTE, 'myPrefix', OPTION_CAMEL_CASE]
+      [true, OPTION_ATTRIBUTE, 'myPrefix', OPTION_CAMEL_CASE],
+      [true, [OPTION_ELEMENT, OPTION_ATTRIBUTE], 'myPrefix', OPTION_CAMEL_CASE]
     ],
     options: {
       items: [
@@ -46,7 +47,7 @@ export class Rule extends SelectorRule {
     },
     optionsDescription: Utils.dedent`
       Options accept three obligatory items as an array:
-      1. \`${OPTION_ELEMENT}\` or \`${OPTION_ATTRIBUTE}\` forces components either to be elements or attributes.
+      1. \`${OPTION_ELEMENT}\` or \`${OPTION_ATTRIBUTE}\` forces components either to be elements or attributes. It can be both (wrapped in an array, see example #4)
       2. A single prefix (string) or array of prefixes (strings) which have to be used in component selectors.
       3. \`${OPTION_KEBAB_CASE}\` or \`${OPTION_CAMEL_CASE}\` allows you to pick a case.
     `,
