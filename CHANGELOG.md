@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.4.4"></a>
+
+## [4.4.4](https://github.com/mgechev/codelyzer/compare/4.4.3...4.4.4) (2018-08-13)
+
+### Bug Fixes
+
+- errors not being displayed in the correct files ([#700](https://github.com/mgechev/codelyzer/issues/700)) ([db3cf5a](https://github.com/mgechev/codelyzer/commit/db3cf5a))
+
 <a name="4.4.3"></a>
 
 ## [4.4.3](https://github.com/mgechev/codelyzer/compare/4.4.2...4.4.3) (2018-08-06)

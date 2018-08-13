@@ -1,6 +1,6 @@
 {
   "name": "codelyzer",
-  "version": "4.4.3",
+  "version": "4.4.4",
   "description": "Linting for Angular applications, following angular.io/styleguide.",
   "main": "index.js",
   "scripts": {
