@@ -289,11 +289,8 @@ export class UnusedCssNgVisitor extends NgWalker {
     const encapsulation = getDecoratorPropertyInitializer(d, 'encapsulation');
     if (isEncapsulationEnabled(encapsulation)) {
       style.visit(visitor);
-      visitor
-        .getFailures()
-        .forEach(f =>
-          this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
-        );
+      // tslint:disable-next-line:deprecation
+      visitor.getFailures().forEach(f => this.addFailure(f));
     }
   }
 }
