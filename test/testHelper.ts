@@ -163,7 +163,7 @@ const parseInvalidSource = (source: string, message: string, specialChar = '~', 
  *
  * @param config
  */
-export function assertAnnotated(config: AssertConfig) {
+export function assertAnnotated(config: AssertConfig): RuleFailure[] | void {
   const { message, options, ruleName, source: sourceConfig } = config;
 
   if (message) {
@@ -230,25 +230,18 @@ export function assertFailure(
   fail: IExpectedFailure,
   options?: any,
   onlyNthFailure = 0
-): RuleFailure[] | undefined {
-  let result: LintResult;
+): RuleFailure[] {
+  const result = lint(ruleName, source, options);
 
-  try {
-    result = lint(ruleName, source, options);
+  assert(result.failures && result.failures.length > 0, 'no failures');
 
-    assert(result.failures && result.failures.length > 0, 'no failures');
+  const ruleFail = result.failures[onlyNthFailure];
 
-    const ruleFail = result.failures[onlyNthFailure];
+  assert.equal(fail.message, ruleFail.getFailure(), "error messages don't match");
+  assert.deepEqual(fail.startPosition, ruleFail.getStartPosition().getLineAndCharacter(), "start char doesn't match");
+  assert.deepEqual(fail.endPosition, ruleFail.getEndPosition().getLineAndCharacter(), "end char doesn't match");
 
-    assert.equal(fail.message, ruleFail.getFailure(), "error messages don't match");
-    assert.deepEqual(fail.startPosition, ruleFail.getStartPosition().getLineAndCharacter(), "start char doesn't match");
-    assert.deepEqual(fail.endPosition, ruleFail.getEndPosition().getLineAndCharacter(), "end char doesn't match");
-
-    return result ? result.failures : undefined;
-  } catch (e) {
-    console.log(e.stack);
-    return undefined;
-  }
+  return result.failures;
 }
 
 /**
@@ -261,12 +254,7 @@ export function assertFailure(
  * @param options
  */
 export function assertFailures(ruleName: string, source: string | SourceFile, fails: IExpectedFailure[], options?: any) {
-  let result;
-  try {
-    result = lint(ruleName, source, options);
-  } catch (e) {
-    console.log(e.stack);
-  }
+  const result = lint(ruleName, source, options);
 
   assert(result.failures && result.failures.length > 0, 'no failures');
   result.failures.forEach((ruleFail, index) => {
