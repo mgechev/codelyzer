@@ -169,7 +169,7 @@ class UnusedCssVisitor extends BasicCssAstVisitor {
         } = ast;
         // length + 1 because we want to drop the '}'
         const length = endOffset - startOffset + 1;
-        this.addFailureAt(startOffset, length, 'Unused styles', this.createReplacement(startOffset, length, ''));
+        this.addFailureAt(startOffset, length, 'Unused styles', Lint.Replacement.deleteText(startOffset - 1, length + 1));
       }
     } catch (e) {
       logger.error(e);

@@ -868,8 +868,8 @@ describe('no-unused-css', () => {
       )!;
       const replacement = failures[0].getFix() as Replacement;
       expect(replacement.text).to.eq('');
-      expect(replacement.start).to.eq(199);
-      expect(replacement.end).to.eq(246);
+      expect(replacement.start).to.eq(14);
+      expect(replacement.end).to.eq(62);
     });
 
     it('should work with SASS', () => {
@@ -919,8 +919,8 @@ describe('no-unused-css', () => {
       Config.transformStyle = (code: string) => ({ code, map: null });
       const replacement = failures[0].getFix() as Replacement;
       expect(replacement.text).to.eq('');
-      expect(replacement.start).to.eq(168);
-      expect(replacement.end).to.eq(271); // should be 276
+      expect(replacement.start).to.eq(-1);
+      expect(replacement.end).to.eq(29);
     });
   });
 
