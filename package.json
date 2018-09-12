@@ -63,8 +63,8 @@
   },
   "homepage": "https://github.com/mgechev/codelyzer#readme",
   "devDependencies": {
-    "@angular/compiler": "^6.1.0",
-    "@angular/core": "^6.1.0",
+    "@angular/compiler": "^7.0.0-beta.5",
+    "@angular/core": "^7.0.0-beta.5",
     "@commitlint/cli": "^7.0.0",
     "@commitlint/config-angular": "^7.0.1",
     "@types/chai": "^3.4.33",
@@ -95,8 +95,8 @@
     "zone.js": "^0.8.26"
   },
   "peerDependencies": {
-    "@angular/compiler": ">=2.3.1 <7.0.0 || >6.0.0-beta <7.0.0",
-    "@angular/core": ">=2.3.1 <7.0.0 || >6.0.0-beta <7.0.0",
+    "@angular/compiler": ">=2.3.1 <8.0.0 || >7.0.0-beta <8.0.0",
+    "@angular/core": ">=2.3.1 <8.0.0 || >7.0.0-beta <8.0.0",
     "tslint": "^5.0.0"
   },
   "dependencies": {
