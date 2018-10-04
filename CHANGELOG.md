@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.5.0"></a>
+
+# [4.5.0](https://github.com/mgechev/codelyzer/compare/4.4.4...4.5.0) (2018-10-04)
+
+### Bug Fixes
+
+- assertFailure catch exception throw by assert ([#703](https://github.com/mgechev/codelyzer/issues/703)) ([#704](https://github.com/mgechev/codelyzer/issues/704)) ([0bac287](https://github.com/mgechev/codelyzer/commit/0bac287))
+- **no-unused-css:** blank lines being left after fixing ([#701](https://github.com/mgechev/codelyzer/issues/701)) ([c69e2ae](https://github.com/mgechev/codelyzer/commit/c69e2ae))
+
+### Features
+
+- support Angular 7.0 ([#710](https://github.com/mgechev/codelyzer/issues/710)) ([5eb3064](https://github.com/mgechev/codelyzer/commit/5eb3064))
+
+<a name="4.5.0"></a>
+
+# [4.5.0](https://github.com/mgechev/codelyzer/compare/4.4.4...4.5.0) (2018-10-04)
+
+### Bug Fixes
+
+- assertFailure catch exception throw by assert ([#703](https://github.com/mgechev/codelyzer/issues/703)) ([#704](https://github.com/mgechev/codelyzer/issues/704)) ([0bac287](https://github.com/mgechev/codelyzer/commit/0bac287))
+- **no-unused-css:** blank lines being left after fixing ([#701](https://github.com/mgechev/codelyzer/issues/701)) ([c69e2ae](https://github.com/mgechev/codelyzer/commit/c69e2ae))
+
+### Features
+
+- support Angular 7.0 ([#710](https://github.com/mgechev/codelyzer/issues/710)) ([5eb3064](https://github.com/mgechev/codelyzer/commit/5eb3064))
+
 <a name="4.4.4"></a>
 
 ## [4.4.4](https://github.com/mgechev/codelyzer/compare/4.4.3...4.4.4) (2018-08-13)
