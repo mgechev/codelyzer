@@ -4,6 +4,9 @@ import { SourceFile } from 'typescript/lib/typescript';
 import { NgWalker } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 
+//current offSet into the template
+export let curOffSet = 0;
+
 export class Rule extends Rules.AbstractRule {
   static readonly metadata: IRuleMetadata = {
     description: 'Ensures a trackBy function is used.',
@@ -18,6 +21,7 @@ export class Rule extends Rules.AbstractRule {
   static readonly FAILURE_STRING = 'Missing trackBy function in ngFor directive';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
+    curOffSet = 0;
     return this.applyWithWalker(new NgWalker(sourceFile, this.getOptions(), { templateVisitorCtrl: TrackByTemplateVisitor }));
   }
 }
@@ -39,9 +43,10 @@ class TrackByFunctionTemplateVisitor extends BasicTemplateAstVisitor {
       return;
     }
 
-    const pattern = /trackBy\s*:|\[ngForTrackBy\]\s*=\s*['"].*['"]/;
+    const pattern = /\s*ngFor.*\s*trackBy\s*:|\[ngForTrackBy\]\s*=\s*['"].*['"]/;
 
-    if (pattern.test(context.codeWithMap.source!)) {
+    if (pattern.test(context.codeWithMap.source!.substr(curOffSet))) {
+      curOffSet = prop.sourceSpan.end.offset;
       return;
     }
 
@@ -51,6 +56,7 @@ class TrackByFunctionTemplateVisitor extends BasicTemplateAstVisitor {
         start: { offset: startOffset }
       }
     } = prop;
+
     context.addFailureFromStartToEnd(startOffset, endOffset, getFailureMessage());
   }
 }
