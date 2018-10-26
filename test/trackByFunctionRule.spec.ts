@@ -54,6 +54,26 @@ describe(ruleName, () => {
       assertAnnotated({ message: getFailureMessage(), ruleName, source });
     });
 
+    it('should fail when we have two ngFor and the second trackBy function is not present', () => {
+      const source = `
+       @Component({
+          template: \`
+          <div *ngFor="let item of [1, 2, 3]; trackBy: trackByFn">
+            {{ item }}
+           </div>
+          <ul>
+            <li *ngFor="let item of [1, 2, 3];">
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+               {{ item }}
+            </li>
+          </ul>
+        \`
+      })
+     class Bar {}
+     `;
+      assertAnnotated({ message: getFailureMessage(), ruleName, source });
+    });
+
     it('should fail when trackBy function is missing in multiple *ngFor', () => {
       const source = `
         @Component({
