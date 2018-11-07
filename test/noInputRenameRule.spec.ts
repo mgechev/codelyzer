@@ -111,6 +111,40 @@ describe(ruleName, () => {
           source
         });
       });
+
+      it("should fail when an input alias is prefixed by directive's selector, but the suffix does not match the property name", () => {
+        const source = `
+          @Directive({
+            selector: 'foo'
+          })
+          class TestDirective {
+            @Input('fooColor') colors: string;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          }
+        `;
+        assertAnnotated({
+          message: getFailureMessage('TestDirective', 'colors'),
+          ruleName,
+          source
+        });
+      });
+
+      it('should fail when an input alias is not strictly equal to the selector plus the property name', () => {
+        const source = `
+          @Directive({
+            selector: 'foo'
+          })
+          class TestDirective {
+            @Input('foocolor') color: string;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          }
+        `;
+        assertAnnotated({
+          message: getFailureMessage('TestDirective', 'color'),
+          ruleName,
+          source
+        });
+      });
     });
   });
 
@@ -164,6 +198,18 @@ describe(ruleName, () => {
         assertSuccess(ruleName, source);
       });
 
+      it('should succeed when a directive selector is also an input property with tag', () => {
+        const source = `
+          @Directive({
+            selector: 'foo[bar]'
+          })
+          class TestDirective {
+            @Input() bar: string;
+          }
+        `;
+        assertSuccess(ruleName, source);
+      });
+
       it('should succeed when an input alias is kebab-cased and whitelisted', () => {
         const source = `
           @Directive({
@@ -171,6 +217,18 @@ describe(ruleName, () => {
           })
           class TestDirective {
             @Input('aria-label') ariaLabel: string;
+          }
+        `;
+        assertSuccess(ruleName, source);
+      });
+
+      it('should succeed when an input alias is strictly equal to the selector plus the property name', () => {
+        const source = `
+          @Directive({
+            selector: 'foo'
+          })
+          class TestDirective {
+            @Input('fooColor') color: string;
           }
         `;
         assertSuccess(ruleName, source);

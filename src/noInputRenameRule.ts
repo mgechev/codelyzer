@@ -3,7 +3,7 @@ import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { DirectiveMetadata } from './angular/metadata';
 import { NgWalker } from './angular/ngWalker';
-import { getClassName } from './util/utils';
+import { getClassName, kebabToCamelCase, toTitleCase } from './util/utils';
 
 export class Rule extends Lint.Rules.AbstractRule {
   static readonly metadata: Lint.IRuleMetadata = {
@@ -31,8 +31,6 @@ export class Rule extends Lint.Rules.AbstractRule {
 export const getFailureMessage = (className: string, propertyName: string): string => {
   return sprintf(Rule.FAILURE_STRING, className, propertyName);
 };
-
-const kebabToCamelCase = (value: string) => value.replace(/-[a-zA-Z]/g, x => x[1].toUpperCase());
 
 // source: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques
 const whiteListAliases = new Set<string>([
@@ -75,26 +73,28 @@ const whiteListAliases = new Set<string>([
 ]);
 
 export class InputMetadataWalker extends NgWalker {
-  private directiveSelectors!: ReadonlySet<DirectiveMetadata['selector']>;
+  private directiveSelectors!: ReadonlyArray<DirectiveMetadata['selector']>;
 
   protected visitNgDirective(metadata: DirectiveMetadata): void {
-    this.directiveSelectors = new Set((metadata.selector || '').replace(/[\[\]\s]/g, '').split(','));
+    this.directiveSelectors = Array.from(new Set((metadata.selector || '').replace(/[\[\]\s]/g, '').split(',')));
     super.visitNgDirective(metadata);
   }
 
   protected visitNgInput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
-    this.validateInput(property, input, args);
+    this.validateInput(property, args);
     super.visitNgInput(property, input, args);
   }
 
   private canPropertyBeAliased(propertyAlias: string, propertyName: string): boolean {
     return !!(
-      (this.directiveSelectors && this.directiveSelectors.has(propertyAlias) && propertyAlias !== propertyName) ||
+      (propertyAlias !== propertyName &&
+        this.directiveSelectors &&
+        this.directiveSelectors.some(x => new RegExp(`^${x}((${toTitleCase(propertyName)}$)|(?=$))`).test(propertyAlias))) ||
       (whiteListAliases.has(propertyAlias) && propertyName === kebabToCamelCase(propertyAlias))
     );
   }
 
-  private validateInput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
+  private validateInput(property: ts.PropertyDeclaration, args: string[]) {
     const className = getClassName(property)!;
     const memberName = property.name.getText();
 
