@@ -87,7 +87,7 @@ process.chdir('./build');
 const ruleDocumentation: IDocumentation = {
   dataFileName: 'rules.json',
   exportName: 'Rule',
-  globPattern: '../dist/*Rule.js',
+  globPattern: '../dist/src/*Rule.js',
   nameMetadataKey: 'ruleName',
   pageGenerator: generateRuleFile,
   subDirectory: path.join(DOCS_DIR, 'rules')

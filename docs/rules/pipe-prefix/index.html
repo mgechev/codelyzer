@@ -1,0 +1,31 @@
+---
+description: Enforce consistent prefix for pipes.
+optionExamples:
+  - '[true, "myPrefix"]'
+  - '[true, "myPrefix", "myOtherPrefix"]'
+options:
+  items:
+    - type: string
+  minLength: 1
+  type: array
+optionsDescription: |-
+
+  * The list of arguments are supported prefixes (given as strings).
+      
+rationale: Consistent conventions make it easy to quickly identify and reference assets of different types.
+ruleName: pipe-prefix
+type: style
+typescriptOnly: true
+layout: rule
+title: 'Rule: pipe-prefix'
+optionsJSON: |-
+  {
+    "items": [
+      {
+        "type": "string"
+      }
+    ],
+    "minLength": 1,
+    "type": "array"
+  }
+---

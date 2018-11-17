@@ -1,0 +1,30 @@
+---
+description: >-
+  Checks cyclomatic complexity against a specified limit. It is a quantitative measure of the number of linearly independent paths through a
+  program's source code
+optionExamples:
+  - 'true'
+  - '[true, 6]'
+options:
+  items:
+    type: string
+  maxLength: 1
+  minLength: 0
+  type: array
+optionsDescription: Determine the maximum number of the cyclomatic complexity.
+rationale: Cyclomatic complexity over some threshold indicates that the logic should be moved outside the template.
+ruleName: template-cyclomatic-complexity
+type: maintainability
+typescriptOnly: true
+layout: rule
+title: 'Rule: template-cyclomatic-complexity'
+optionsJSON: |-
+  {
+    "items": {
+      "type": "string"
+    },
+    "maxLength": 1,
+    "minLength": 0,
+    "type": "array"
+  }
+---

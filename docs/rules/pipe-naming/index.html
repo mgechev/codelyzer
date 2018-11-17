@@ -1,30 +1,33 @@
 ---
-ruleName: pipe-naming
-type: style
+deprecationMessage: >-
+  You can name your pipes only camelCase. If you try to use snake-case then your application will not compile. For prefix validation use
+  pipe-prefix rule.
 description: Enforce consistent case and prefix for pipes.
-rationale: Consistent conventions make it easy to quickly identify and reference assets of different types.
+optionExamples:
+  - '[true, "camelCase", "myPrefix"]'
+  - '[true, "camelCase", "myPrefix", "myOtherPrefix"]'
+  - '[true, "kebab-case", "my-prefix"]'
 options:
-  type: array
   items:
     - enum:
         - kebab-case
         - attribute
     - type: string
-  minItems: 1
-optionExamples:
-  - '["camelCase", "myPrefix"]'
-  - '["camelCase", "myPrefix", "myOtherPrefix"]'
-  - '["kebab-case", "my-prefix"]'
+  minLength: 1
+  type: array
 optionsDescription: |-
 
-  * The first item in the array is `"kebab-case"` or `"camelCase"`, which allows you to pick a case.
+  * The first item in the array is `camelCase` or `kebab-case`, which allows you to pick a case.
   * The rest of the arguments are supported prefixes (given as strings). They are optional.
+      
+rationale: Consistent conventions make it easy to quickly identify and reference assets of different types.
+ruleName: pipe-naming
+type: style
 typescriptOnly: true
 layout: rule
 title: 'Rule: pipe-naming'
 optionsJSON: |-
   {
-    "type": "array",
     "items": [
       {
         "enum": [
@@ -36,6 +39,7 @@ optionsJSON: |-
         "type": "string"
       }
     ],
-    "minItems": 1
+    "minLength": 1,
+    "type": "array"
   }
 ---

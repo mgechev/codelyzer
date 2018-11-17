@@ -1,42 +1,46 @@
 ---
-ruleName: angular-whitespace
-type: style
 description: Ensures the proper formatting of Angular expressions.
-rationale: Having whitespace in the right places in an Angular expression makes the template more readable.
-optionsDescription: |-
-
-  Arguments may be optionally provided:
-  * `"check-interpolation"` checks for whitespace before and after the interpolation characters
-  * `"check-pipe"` checks for whitespace before and after a pipe
-  * `"check-semicolon"` checks for whitespace after semicolon
+hasFix: true
+optionExamples:
+  - '[true, "check-interpolation"]'
+  - '[true, "check-pipe"]'
+  - '[true, "check-semicolon"]'
+  - '[true, "check-interpolation", "check-pipe", "check-semicolon"]'
 options:
-  type: array
   items:
-    type: string
     enum:
       - check-interpolation
       - check-pipe
       - check-semicolon
-  minLength: 0
+    type: string
   maxLength: 3
-optionExamples:
-  - '[true, "check-interpolation"]'
+  minLength: 1
+  type: array
+optionsDescription: |-
+
+  One (or both) of the following arguments must be provided:
+  * `check-interpolation` - checks for whitespace before and after the interpolation characters.
+  * `check-pipe` - checks for whitespace before and after a pipe.
+  * `check-semicolon` - checks for whitespace after semicolon.
+      
+rationale: Having whitespace in the right places in an Angular expression makes the template more readable.
+ruleName: angular-whitespace
+type: style
 typescriptOnly: true
-hasFix: true
 layout: rule
 title: 'Rule: angular-whitespace'
 optionsJSON: |-
   {
-    "type": "array",
     "items": {
-      "type": "string",
       "enum": [
         "check-interpolation",
         "check-pipe",
         "check-semicolon"
-      ]
+      ],
+      "type": "string"
     },
-    "minLength": 0,
-    "maxLength": 3
+    "maxLength": 3,
+    "minLength": 1,
+    "type": "array"
   }
 ---

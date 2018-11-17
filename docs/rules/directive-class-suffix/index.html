@@ -1,25 +1,27 @@
 ---
-ruleName: directive-class-suffix
-type: style
 description: Classes decorated with @Directive must have suffix "Directive" (or custom) in their name.
 descriptionDetails: 'See more at https://angular.io/styleguide#style-02-03.'
-rationale: Consistent conventions make it easy to quickly identify and reference assets of different types.
-options:
-  type: array
-  items:
-    type: string
 optionExamples:
   - 'true'
   - '[true, "Directive", "MySuffix"]'
+options:
+  items:
+    type: string
+  minLength: 0
+  type: array
 optionsDescription: Supply a list of allowed component suffixes. Defaults to "Directive".
+rationale: Consistent conventions make it easy to quickly identify and reference assets of different types.
+ruleName: directive-class-suffix
+type: style
 typescriptOnly: true
 layout: rule
 title: 'Rule: directive-class-suffix'
 optionsJSON: |-
   {
-    "type": "array",
     "items": {
       "type": "string"
-    }
+    },
+    "minLength": 0,
+    "type": "array"
   }
 ---

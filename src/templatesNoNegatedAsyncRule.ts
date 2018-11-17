@@ -57,8 +57,8 @@ export class Rule extends Rules.AbstractRule {
     options: null,
     optionsDescription: 'Not configurable.',
     rationale: Utils.dedent`
-      Async pipe evaluate to \`null\` before the observable or promise emits, which can lead to layout thrashing as
-      components load. Prefer strict \`=== false\` checks instead.
+    Angular's async pipes emit null initially, prior to the observable emitting any values, or the promise resolving. This can cause negations, like 
+    *ngIf="!(myConditional | async)" to thrash the layout and cause expensive side-effects like firing off XHR requests for a component which should not be shown.
     `,
     ruleName: 'templates-no-negated-async',
     type: 'functionality',

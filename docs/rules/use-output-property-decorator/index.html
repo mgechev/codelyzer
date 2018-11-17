@@ -1,16 +1,17 @@
 ---
-ruleName: use-output-property-decorator
-type: style
 description: Use `@Output` decorator rather than the `outputs` property of `@Component` and `@Directive` metadata.
 descriptionDetails: 'See more at https://angular.io/styleguide#style-05-12.'
+options: null
+optionsDescription: Not configurable.
 rationale: |-
 
   * It is easier and more readable to identify which properties in a class are events.
-  * If you ever need to rename the event name associated with `@Output`, you can modify it in a single place.
+  * If you ever need to rename the event name associated with @Output, you can modify it in a single place.
   * The metadata declaration attached to the directive is shorter and thus more readable.
   * Placing the decorator on the same line usually makes for shorter code and still easily identifies the property as an output.
-options: null
-optionsDescription: Not configurable.
+      
+ruleName: use-output-property-decorator
+type: style
 typescriptOnly: true
 layout: rule
 title: 'Rule: use-output-property-decorator'

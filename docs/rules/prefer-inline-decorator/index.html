@@ -1,0 +1,49 @@
+---
+description: Ensures that decorators are on the same line as the property/method it decorates.
+descriptionDetails: 'See more at https://angular.io/guide/styleguide#style-05-12.'
+hasFix: true
+optionExamples:
+  - 'true'
+  - '[true, "HostListener"]'
+options:
+  items:
+    enum:
+      - ContentChild
+      - ContentChildren
+      - HostBinding
+      - HostListener
+      - Input
+      - Output
+      - ViewChild
+      - ViewChildren
+    type: string
+  maxLength: 8
+  minLength: 0
+  type: array
+optionsDescription: A list of blacklisted decorators.
+rationale: Placing the decorator on the same line usually makes for shorter code and still easily identifies the property/method.
+ruleName: prefer-inline-decorator
+type: style
+typescriptOnly: true
+layout: rule
+title: 'Rule: prefer-inline-decorator'
+optionsJSON: |-
+  {
+    "items": {
+      "enum": [
+        "ContentChild",
+        "ContentChildren",
+        "HostBinding",
+        "HostListener",
+        "Input",
+        "Output",
+        "ViewChild",
+        "ViewChildren"
+      ],
+      "type": "string"
+    },
+    "maxLength": 8,
+    "minLength": 0,
+    "type": "array"
+  }
+---

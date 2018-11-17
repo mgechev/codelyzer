@@ -1,0 +1,31 @@
+---
+description: Input names should not be prefixed by the configured disallowed prefixes.
+optionExamples:
+  - '[true, "can", "is", "should"]'
+options:
+  items:
+    - type: string
+  minLength: 1
+  type: array
+optionsDescription: Options accept a string array of disallowed input prefixes.
+rationale: |-
+
+  HTML attributes are not prefixed. It's considered best not to prefix Inputs.
+  * Example: 'enabled' is prefered over 'isEnabled'.
+      
+ruleName: no-input-prefix
+type: maintainability
+typescriptOnly: true
+layout: rule
+title: 'Rule: no-input-prefix'
+optionsJSON: |-
+  {
+    "items": [
+      {
+        "type": "string"
+      }
+    ],
+    "minLength": 1,
+    "type": "array"
+  }
+---
