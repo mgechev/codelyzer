@@ -45,6 +45,21 @@ describe(ruleName, () => {
         });
       });
 
+        it("should fail when a relative URL isn't prefixed by ./", () => {
+            const source = `
+                    @Component({
+                        styleUrls: ['./../foobar.css']
+                                    ~~~~~~~~~~~~~~~~~
+                    })
+                    class Test {}
+                    `;
+            assertAnnotated({
+                ruleName,
+                message: Rule.FAILURE_STRING,
+                source
+            });
+        });
+
       it("should fail when one relative URLs isn't prefixed by ./", () => {
         const source = `
                     @Component({
@@ -56,7 +71,7 @@ describe(ruleName, () => {
         assertAnnotated({
           ruleName,
           message: Rule.FAILURE_STRING,
-          source
+         source
         });
       });
     });
@@ -105,6 +120,21 @@ describe(ruleName, () => {
           source
         });
       });
+
+        it('should fail when a relative URL is prefixed by ../', () => {
+            const source = `
+                    @Component({
+                        templateUrl: '.././foobar.html'
+                                     ~~~~~~~~~~~~~~~~~~
+                   })
+                    class Test {}
+                    `;
+            assertAnnotated({
+                ruleName,
+                message: Rule.FAILURE_STRING,
+                source
+            });
+        });
     });
   });
 });

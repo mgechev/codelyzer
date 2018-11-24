@@ -6,7 +6,7 @@ import * as ts from 'typescript';
 export class Rule extends Rules.AbstractRule {
   static readonly metadata: IRuleMetadata = {
     description: "The ./ prefix is standard syntax for relative URLs; don't depend on Angular's current ability to do without that prefix.",
-    descriptionDetails: 'See more at https://angular.io/guide/styleguide#style-05-04.',
+    descriptionDetails: 'See more at https://angular.io/styleguide#style-05-04.',
     rationale: 'A component relative URL requires no change when you move the component files, as long as the files stay together.',
     ruleName: 'relative-url-prefix',
     options: null,
@@ -51,14 +51,14 @@ export class RelativePathExternalResourcesRuleWalker extends NgWalker {
   }
 
   private checkTemplateUrl(url: string, initializer: ts.StringLiteral) {
-    if (url && !/^.\/./i.test(url)) {
+    if (url && !/^\.\/[^\.\/|\.\.\/]/.test(url)) {
       this.addFailureAtNode(initializer, Rule.FAILURE_STRING);
     }
   }
 
   private checkStyleUrls(token: ts.StringLiteral) {
     if (token && token.text) {
-      if (!/^.\/./i.test(token.text)) {
+      if (!/^\.\/[^\.\/|\.\.\/]/.test(token.text)) {
         this.addFailureAtNode(token, Rule.FAILURE_STRING);
       }
     }
