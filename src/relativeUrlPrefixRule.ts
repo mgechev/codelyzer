@@ -15,7 +15,7 @@ export class Rule extends Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'The ./ prefix is standard syntax for relative URLs. (https://angular.io/guide/styleguide#style-05-04)';
+  static readonly FAILURE_STRING = 'The ./ prefix is standard syntax for relative URLs. (https://angular.io/styleguide#style-05-04)';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(new RelativePathExternalResourcesRuleWalker(sourceFile, this.getOptions()));
