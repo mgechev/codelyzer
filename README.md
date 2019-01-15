@@ -96,7 +96,6 @@ Create the following `tslint.json` file like:
 {
   "extends": ["codelyzer"],
   "rules": {
-    "angular-whitespace": [true, "check-interpolation", "check-semicolon"],
     "banana-in-box": true,
     "templates-no-negated-async": true,
     "directive-selector": [true, "attribute", "sg", "camelCase"],
@@ -158,7 +157,6 @@ Now create the following `tslint.json` file where your `node_modules` directory 
 {
   "rulesDirectory": ["node_modules/codelyzer"],
   "rules": {
-    "angular-whitespace": [true, "check-interpolation", "check-semicolon"],
     "banana-in-box": true,
     "templates-no-negated-async": true,
     "directive-selector": [true, "attribute", "sg", "camelCase"],
@@ -263,8 +261,6 @@ Below you can find a recommended configuration which is based on the [Angular St
   // [ENABLED, "attribute" | "element", "selectorPrefix" | ["listOfPrefixes"], "camelCase" | "kebab-case"]
   "directive-selector": [true, "attribute", ["dir-prefix1", "dir-prefix2"], "camelCase"],
   "component-selector": [true, "element", ["cmp-prefix1", "cmp-prefix2"], "kebab-case"],
-
-  "angular-whitespace": [true, "check-interpolation", "check-semicolon"],
 
   "use-input-property-decorator": true,
   "use-output-property-decorator": true,
