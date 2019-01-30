@@ -33,6 +33,8 @@ class TemplateVisitor extends BasicTemplateAstVisitor {
 }
 
 class ExpressionVisitor extends RecursiveAngularExpressionVisitor {
+  private allowedMethodNames = ['$any'];
+
   visitFunctionCall(node: e.FunctionCall, context: any) {
     this.addFailureFromStartToEnd(node.span.start, node.span.end, Rule.FAILURE_STRING);
 
@@ -40,7 +42,9 @@ class ExpressionVisitor extends RecursiveAngularExpressionVisitor {
   }
 
   visitMethodCall(node: e.MethodCall, context: any) {
-    this.addFailureFromStartToEnd(node.span.start, node.span.end, Rule.FAILURE_STRING);
+    if (this.allowedMethodNames.indexOf(node.name) === -1) {
+      this.addFailureFromStartToEnd(node.span.start, node.span.end, Rule.FAILURE_STRING);
+    }
 
     super.visitMethodCall(node, context);
   }
