@@ -39,6 +39,7 @@ export { Rule as UsePipeDecoratorRule } from './usePipeDecoratorRule';
 export { Rule as UsePipeTransformInterfaceRule } from './usePipeTransformInterfaceRule';
 export { Rule as UseViewEncapsulationRule } from './useViewEncapsulationRule';
 export { Rule as RelativePathExternalResourcesRule } from './relativeUrlPrefixRule';
+export { Rule as ComponentChangeDetectionRule } from './componentChangeDetectionRule';
 
 export * from './angular';
 
