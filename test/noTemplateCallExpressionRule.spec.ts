@@ -21,6 +21,16 @@ describe('no-template-call-expression', () => {
       `;
       assertSuccess('no-template-call-expression', source);
     });
+
+    it('should allow $any to wrap unknown variables', () => {
+      let source = `
+        @Component({
+          template: '{{$any(info)}}'
+        })
+        class Bar {}
+      `;
+      assertSuccess('no-template-call-expression', source);
+    });
   });
 
   describe('failure', () => {
