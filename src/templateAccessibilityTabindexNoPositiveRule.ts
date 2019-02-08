@@ -1,0 +1,51 @@
+import { ElementAst } from '@angular/compiler';
+import { IRuleMetadata, RuleFailure, Rules } from 'tslint/lib';
+import { SourceFile } from 'typescript/lib/typescript';
+import { NgWalker } from './angular/ngWalker';
+import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
+import { getAttributeValue } from './util/getAttributeValue';
+
+export class Rule extends Rules.AbstractRule {
+  static readonly metadata: IRuleMetadata = {
+    description: 'Ensures that the tab index is not positive',
+    options: null,
+    optionsDescription: 'Not configurable.',
+    rationale: 'positive values for tabidex attribute should be avoided because they mess up with the order of focus (AX_FOCUS_03)',
+    ruleName: 'template-accessibility-tabindex-no-positive',
+    type: 'functionality',
+    typescriptOnly: true
+  };
+
+  static readonly FAILURE_MESSAGE = 'Tabindex cannot be positive';
+
+  apply(sourceFile: SourceFile): RuleFailure[] {
+    return this.applyWithWalker(
+      new NgWalker(sourceFile, this.getOptions(), {
+        templateVisitorCtrl: TemplateAccessibilityTabindexNoPositiveVisitor
+      })
+    );
+  }
+}
+
+class TemplateAccessibilityTabindexNoPositiveVisitor extends BasicTemplateAstVisitor {
+  visitElement(ast: ElementAst, context: any): any {
+    this.validateElement(ast);
+    super.visitElement(ast, context);
+  }
+
+  private validateElement(element: ElementAst) {
+    let tabIndexValue = getAttributeValue(element, 'tabindex');
+    if (tabIndexValue) {
+      tabIndexValue = parseInt(tabIndexValue, 10);
+      if (tabIndexValue > 0) {
+        const {
+          sourceSpan: {
+            end: { offset: endOffset },
+            start: { offset: startOffset }
+          }
+        } = element;
+        this.addFailureFromStartToEnd(startOffset, endOffset, Rule.FAILURE_MESSAGE);
+      }
+    }
+  }
+}
