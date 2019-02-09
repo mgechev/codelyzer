@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
+- **rule:** add pipe-prefix rule ([#693](https://github.com/mgechev/codelyzer/issues/693)) ([71660ae](https://github.com/mgechev/codelyzer/commit/71660ae))
 - support Angular 7.0 ([#710](https://github.com/mgechev/codelyzer/issues/710)) ([5eb3064](https://github.com/mgechev/codelyzer/commit/5eb3064))
 
 <a name="4.4.4"></a>
@@ -42,7 +43,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 <a name="4.4.1"></a>
 
-# [4.4.1](https://github.com/mgechev/codelyzer/compare/4.4.0...4.4.1) (2018-06-23)
+## [4.4.1](https://github.com/mgechev/codelyzer/compare/4.4.0...4.4.1) (2018-06-23)
 
 ### Bug Fixes
 
