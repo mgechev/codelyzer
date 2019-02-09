@@ -328,7 +328,6 @@ Below you can find a recommended configuration which is based on the [Angular St
 | `no-unused-css`                        | _Experimental_ |
 | `template-conditional-complexity`      | _Experimental_ |
 | `angular-whitespace`                   |  _Deprecated_  |
-| `pipe-naming`                          |  _Deprecated_  |
 
 ## Disable a rule that validates Template or Styles
 
