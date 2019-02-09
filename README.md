@@ -121,7 +121,6 @@ Create the following `tslint.json` file like:
     "use-life-cycle-interface": true,
     "contextual-life-cycle": true,
     "trackBy-function": true,
-    "relative-url-prefix": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true,
@@ -182,7 +181,6 @@ Now create the following `tslint.json` file where your `node_modules` directory 
     "use-life-cycle-interface": true,
     "contextual-life-cycle": true,
     "trackBy-function": true,
-    "relative-url-prefix": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true,
@@ -280,7 +278,6 @@ Below you can find a recommended configuration which is based on the [Angular St
   "enforce-component-selector": true,
   "no-queries-parameter": true,
   "prefer-inline-decorator": true,
-  "relative-url-prefix": true,
   // [ENABLED, "SUFFIX"]
   // Where "SUFFIX" is your custom suffix, for instance "Page" for Ionic 2 components.
   "component-class-suffix": [true, "Component"],
@@ -325,7 +322,7 @@ Below you can find a recommended configuration which is based on the [Angular St
 | `no-queries-parameter`                 |     Stable     |
 | `prefer-inline-decorator`              |     Stable     |
 | `template-cyclomatic-complexity`       |     Stable     |
-| `relative-url-prefix`                  | _Experimental_ |
+| `pipe-prefix`                          | _Experimental_ |
 | `no-conflicting-life-cycle-hooks`      | _Experimental_ |
 | `i18n`                                 | _Experimental_ |
 | `no-unused-css`                        | _Experimental_ |
