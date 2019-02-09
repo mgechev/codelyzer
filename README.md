@@ -325,6 +325,7 @@ Below you can find a recommended configuration which is based on the [Angular St
 | `no-queries-parameter`                 |     Stable     |
 | `prefer-inline-decorator`              |     Stable     |
 | `template-cyclomatic-complexity`       |     Stable     |
+| `pipe-prefix`                          | _Experimental_ |
 | `relative-url-prefix`                  | _Experimental_ |
 | `no-conflicting-life-cycle-hooks`      | _Experimental_ |
 | `i18n`                                 | _Experimental_ |
