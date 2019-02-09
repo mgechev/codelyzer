@@ -23,7 +23,6 @@ export { Rule as NoQueriesParameterRule } from './noQueriesParameterRule';
 export { Rule as NoTemplateCallExpressionRule } from './noTemplateCallExpressionRule';
 export { Rule as NoUnusedCssRule } from './noUnusedCssRule';
 export { Rule as PipeImpureRule } from './pipeImpureRule';
-export { Rule as PipeNamingRule } from './pipeNamingRule';
 export { Rule as PipePrefixRule } from './pipePrefixRule';
 export { Rule as PreferInlineDecorator } from './preferInlineDecoratorRule';
 export { Rule as PreferOutputReadonlyRule } from './preferOutputReadonlyRule';
