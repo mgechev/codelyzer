@@ -7,16 +7,16 @@ import { getAttributeValue } from './util/getAttributeValue';
 
 export class Rule extends Rules.AbstractRule {
   static readonly metadata: IRuleMetadata = {
-    description: 'Ensures that the tab index is not positive',
+    description: 'Ensures that the tabindex attribute is not positive',
     options: null,
     optionsDescription: 'Not configurable.',
-    rationale: 'positive values for tabidex attribute should be avoided because they mess up with the order of focus (AX_FOCUS_03)',
+    rationale: 'positive values for tabindex attribute should be avoided because they mess up with the order of focus (AX_FOCUS_03)',
     ruleName: 'template-accessibility-tabindex-no-positive',
     type: 'functionality',
     typescriptOnly: true
   };
 
-  static readonly FAILURE_MESSAGE = 'Tabindex cannot be positive';
+  static readonly FAILURE_MESSAGE = 'tabindex attribute cannot be positive';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(
