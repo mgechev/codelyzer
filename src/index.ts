@@ -30,6 +30,7 @@ export { Rule as TemplateConditionalComplexityRule } from './templateConditional
 export { Rule as TemplateCyclomaticComplexityRule } from './templateCyclomaticComplexityRule';
 export { Rule as TemplateAccessibilityTabindexNoPositiveRule } from './templateAccessibilityTabindexNoPositiveRule';
 export { Rule as TemplateAccessibilityLabelForVisitor } from './templateAccessibilityLabelForRule';
+export { Rule as TemplatesAccessibilityAnchorContentRule } from './templateAccessibilityAnchorContentRule';
 export { Rule as TemplatesNoNegatedAsync } from './templatesNoNegatedAsyncRule';
 export { Rule as TemplateNoAutofocusRule } from './templateNoAutofocusRule';
 export { Rule as TrackByFunctionRule } from './trackByFunctionRule';
