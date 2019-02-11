@@ -31,6 +31,7 @@ export { Rule as TemplateCyclomaticComplexityRule } from './templateCyclomaticCo
 export { Rule as TemplateAccessibilityTabindexNoPositiveRule } from './templateAccessibilityTabindexNoPositiveRule';
 export { Rule as TemplateAccessibilityLabelForVisitor } from './templateAccessibilityLabelForRule';
 export { Rule as TemplatesNoNegatedAsync } from './templatesNoNegatedAsyncRule';
+export { Rule as TemplateNoAutofocusRule } from './templateNoAutofocusRule';
 export { Rule as TrackByFunctionRule } from './trackByFunctionRule';
 export { Rule as UseHostPropertyDecoratorRule } from './useHostPropertyDecoratorRule';
 export { Rule as UseInputPropertyDecoratorRule } from './useInputPropertyDecoratorRule';
