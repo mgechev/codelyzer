@@ -33,6 +33,7 @@ export { Rule as TemplateAccessibilityLabelForVisitor } from './templateAccessib
 export { Rule as TemplatesAccessibilityAnchorContentRule } from './templateAccessibilityAnchorContentRule';
 export { Rule as TemplatesNoNegatedAsync } from './templatesNoNegatedAsyncRule';
 export { Rule as TemplateNoAutofocusRule } from './templateNoAutofocusRule';
+export { Rule as TemplateMouseEventsHaveKeyEventsRule } from './templateMouseEventsHaveKeyEventsRule';
 export { Rule as TrackByFunctionRule } from './trackByFunctionRule';
 export { Rule as UseHostPropertyDecoratorRule } from './useHostPropertyDecoratorRule';
 export { Rule as UseInputPropertyDecoratorRule } from './useInputPropertyDecoratorRule';
