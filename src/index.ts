@@ -29,6 +29,7 @@ export { Rule as PreferOutputReadonlyRule } from './preferOutputReadonlyRule';
 export { Rule as TemplateConditionalComplexityRule } from './templateConditionalComplexityRule';
 export { Rule as TemplateCyclomaticComplexityRule } from './templateCyclomaticComplexityRule';
 export { Rule as TemplateAccessibilityTabindexNoPositiveRule } from './templateAccessibilityTabindexNoPositiveRule';
+export { Rule as TemplateNoAnyRule } from './templateNoAnyRule';
 export { Rule as TemplatesNoNegatedAsync } from './templatesNoNegatedAsyncRule';
 export { Rule as TrackByFunctionRule } from './trackByFunctionRule';
 export { Rule as UseHostPropertyDecoratorRule } from './useHostPropertyDecoratorRule';
