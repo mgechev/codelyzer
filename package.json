@@ -101,8 +101,10 @@
   },
   "dependencies": {
     "app-root-path": "^2.1.0",
+    "aria-query": "^3.0.0",
     "css-selector-tokenizer": "^0.7.0",
     "cssauron": "^1.4.0",
+    "damerau-levenshtein": "^1.0.4",
     "semver-dsl": "^1.0.1",
     "source-map": "^0.5.7",
     "sprintf-js": "^1.1.1"
