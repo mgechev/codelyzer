@@ -44,7 +44,6 @@ export { Rule as TemplateNoCallExpressionRule } from './templateNoCallExpression
 export { Rule as TemplateNoDistractingElementsRule } from './templateNoDistractingElementsRule';
 export { Rule as TemplateNoNegatedAsyncRule } from './templateNoNegatedAsyncRule';
 export { Rule as TemplateUseTrackByFunctionRule } from './templateUseTrackByFunctionRule';
-export { Rule as TemplatesAccessibilityAnchorContentRule } from './templateAccessibilityAnchorContentRule';
 export { Rule as UseComponentSelectorRule } from './useComponentSelectorRule';
 export { Rule as UseComponentViewEncapsulationRule } from './useComponentViewEncapsulationRule';
 export { Rule as UseLifecycleInterfaceRule } from './useLifecycleInterfaceRule';
