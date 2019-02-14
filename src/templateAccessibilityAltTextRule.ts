@@ -85,7 +85,6 @@ class TemplateAccessibilityAltTextVisitor extends BasicTemplateAstVisitor {
     const hasLabelInput = element.inputs.some(input => input.name === 'aria-label' || input.name === 'aria-labelledby');
     const hasAltAttr = element.attrs.some(attr => attr.name === 'alt');
     const hasAltInput = element.inputs.some(input => input.name === 'alt');
-    console.log(element);
     return hasAltAttr || hasAltInput || hasLabelAttr || hasLabelInput;
   }
 
