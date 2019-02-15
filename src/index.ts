@@ -39,6 +39,7 @@ export { Rule as TemplateAccessibilityTableScopeRule } from './templateAccessibi
 export { Rule as TemplateNoDistractingElementsRule } from './templateNoDistractingElementsRule';
 export { Rule as TemplatesNoNegatedAsync } from './templatesNoNegatedAsyncRule';
 export { Rule as TemplateNoAutofocusRule } from './templateNoAutofocusRule';
+export { Rule as TemplateMouseEventsHaveKeyEventsRule } from './templateMouseEventsHaveKeyEventsRule';
 export { Rule as TrackByFunctionRule } from './trackByFunctionRule';
 export { Rule as UseHostPropertyDecoratorRule } from './useHostPropertyDecoratorRule';
 export { Rule as UseInputPropertyDecoratorRule } from './useInputPropertyDecoratorRule';
