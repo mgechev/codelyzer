@@ -36,6 +36,7 @@ export { Rule as TemplatesAccessibilityAnchorContentRule } from './templateAcces
 export { Rule as TemplateClickEventsHaveKeyEventsRule } from './templateClickEventsHaveKeyEventsRule';
 export { Rule as TemplateAccessibilityAltTextRule } from './templateAccessibilityAltTextRule';
 export { Rule as TemplateAccessibilityTableScopeRule } from './templateAccessibilityTableScopeRule';
+export { Rule as TemplateNoDistractingElementsRule } from './templateNoDistractingElementsRule';
 export { Rule as TemplatesNoNegatedAsync } from './templatesNoNegatedAsyncRule';
 export { Rule as TemplateNoAutofocusRule } from './templateNoAutofocusRule';
 export { Rule as TrackByFunctionRule } from './trackByFunctionRule';
