@@ -53,12 +53,13 @@ class TemplateToNgTemplateVisitor extends RecursiveAngularExpressionVisitor {
 
 export class Rule extends Rules.AbstractRule {
   static readonly metadata: IRuleMetadata = {
+    deprecationMessage: '...',
     description: 'Ensures that strict equality is used when evaluating negations on async pipe output.',
     options: null,
     optionsDescription: 'Not configurable.',
     rationale: Utils.dedent`
-    Angular's async pipes emit null initially, prior to the observable emitting any values, or the promise resolving. This can cause negations, like 
-    *ngIf="!(myConditional | async)" to thrash the layout and cause expensive side-effects like firing off XHR requests for a component which should not be shown.
+      Angular's async pipes emit null initially, prior to the observable emitting any values, or the promise resolving. This can cause negations, like
+      *ngIf="!(myConditional | async)" to thrash the layout and cause expensive side-effects like firing off XHR requests for a component which should not be shown.
     `,
     ruleName: 'templates-no-negated-async',
     type: 'functionality',

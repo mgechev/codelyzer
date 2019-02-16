@@ -97,7 +97,6 @@ Create the following `tslint.json` file like:
   "extends": ["codelyzer"],
   "rules": {
     "banana-in-box": true,
-    "templates-no-negated-async": true,
     "directive-selector": [true, "attribute", "sg", "camelCase"],
     "component-selector": [true, "element", "sg", "kebab-case"],
     "max-inline-declarations": true,
@@ -157,7 +156,6 @@ Now create the following `tslint.json` file where your `node_modules` directory 
   "rulesDirectory": ["node_modules/codelyzer"],
   "rules": {
     "banana-in-box": true,
-    "templates-no-negated-async": true,
     "directive-selector": [true, "attribute", "sg", "camelCase"],
     "component-selector": [true, "element", "sg", "kebab-case"],
     "max-inline-declarations": true,
@@ -293,7 +291,6 @@ Below you can find a recommended configuration which is based on the [Angular St
 | `contextual-life-cycle`                |     Stable     |
 | `decorator-not-allowed`                |     Stable     |
 | `pipe-impure`                          |     Stable     |
-| `templates-no-negated-async`           |     Stable     |
 | `no-attribute-parameter-decorator`     |     Stable     |
 | `no-forward-ref`                       |     Stable     |
 | `no-input-prefix`                      |     Stable     |
@@ -328,6 +325,7 @@ Below you can find a recommended configuration which is based on the [Angular St
 | `no-unused-css`                        | _Experimental_ |
 | `template-conditional-complexity`      | _Experimental_ |
 | `angular-whitespace`                   |  _Deprecated_  |
+| `templates-no-negated-async`           |  _Deprecated_  |
 
 ## Disable a rule that validates Template or Styles
 
