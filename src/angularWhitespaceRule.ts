@@ -279,6 +279,7 @@ class TemplateExpressionVisitor extends RecursiveAngularExpressionVisitor {
 
 export class Rule extends Lint.Rules.AbstractRule {
   static readonly metadata: Lint.IRuleMetadata = {
+    deprecationMessage: 'Use a formatter like Prettier for formatting purposes.',
     description: 'Ensures the proper formatting of Angular expressions.',
     hasFix: true,
     optionExamples: [
