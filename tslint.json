@@ -2,6 +2,7 @@
   "rules": {
     "class-name": true,
     "deprecation": true,
+    "no-console": [true, "debug", "log", "info", "time", "timeEnd", "trace"],
     "member-ordering": [
       true,
       {
