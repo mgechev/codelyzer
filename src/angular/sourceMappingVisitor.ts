@@ -121,7 +121,7 @@ export class SourceMappingVisitor extends RuleWalker {
         absPos = { line: result.line - 1, character: result.column - 1 };
         pos = getPositionOfLineAndCharacter(this.codeWithMap.source!, absPos.line, absPos.character);
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     }
 

@@ -269,7 +269,7 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
         ).templateAst;
       });
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
   return result;
 };
