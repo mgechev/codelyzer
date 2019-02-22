@@ -1,8 +1,14 @@
 import { ElementAst } from '@angular/compiler';
+import { dom } from 'aria-query';
 import { IRuleMetadata, RuleFailure, Rules } from 'tslint/lib';
 import { SourceFile } from 'typescript/lib/typescript';
 import { NgWalker } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
+import { isInteractiveElement } from './util/isInteractiveElement';
+import { isPresentationRole } from './util/isPresentationRole';
+import { isHiddenFromScreenReader } from './util/isHiddenFromScreenReader';
+
+const domElements = new Set(dom.keys());
 
 export class Rule extends Rules.AbstractRule {
   static readonly metadata: IRuleMetadata = {
@@ -37,6 +43,21 @@ class TemplateClickEventsHaveKeyEventsVisitor extends BasicTemplateAstVisitor {
     if (!hasClick) {
       return;
     }
+
+    if (!domElements.has(el.name)) {
+      // Do not test components, as we do not know what
+      // low-level DOM element this maps to.
+      return;
+    }
+
+    if (isPresentationRole(el) || isHiddenFromScreenReader(el)) {
+      return;
+    }
+
+    if (isInteractiveElement(el)) {
+      return;
+    }
+
     const hasKeyEvent = el.outputs.some(output => output.name === 'keyup' || output.name === 'keydown' || output.name === 'keypress');
 
     if (hasKeyEvent) {
