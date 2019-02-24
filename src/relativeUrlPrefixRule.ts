@@ -1,7 +1,7 @@
 import { IOptions, IRuleMetadata, RuleFailure, Rules } from 'tslint/lib';
+import * as ts from 'typescript';
 import { SourceFile } from 'typescript/lib/typescript';
 import { NgWalker } from './angular/ngWalker';
-import * as ts from 'typescript';
 
 export class Rule extends Rules.AbstractRule {
   static readonly metadata: IRuleMetadata = {
@@ -18,11 +18,11 @@ export class Rule extends Rules.AbstractRule {
   static readonly FAILURE_STRING = 'The ./ prefix is standard syntax for relative URLs. (https://angular.io/styleguide#style-05-04)';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(new RelativePathExternalResourcesRuleWalker(sourceFile, this.getOptions()));
+    return this.applyWithWalker(new RelativeUrlPrefixWalker(sourceFile, this.getOptions()));
   }
 }
 
-export class RelativePathExternalResourcesRuleWalker extends NgWalker {
+class RelativeUrlPrefixWalker extends NgWalker {
   constructor(sourceFile: SourceFile, options: IOptions) {
     super(sourceFile, options);
   }
@@ -38,7 +38,6 @@ export class RelativePathExternalResourcesRuleWalker extends NgWalker {
             } else if (prop && prop.name.text === 'styleUrls') {
               if (prop.initializer.elements.length > 0) {
                 prop.initializer.elements.forEach(e => {
-                  const url = e.text;
                   this.checkStyleUrls(e);
                 });
               }
