@@ -1,28 +1,10 @@
-import * as ts from 'typescript';
-
-import { IOptions, IRuleMetadata, Replacement, RuleFailure, Rules } from 'tslint/lib';
-import { Decorator, Node, PropertyAccessExpression, SourceFile } from 'typescript';
+import { IOptions, IRuleMetadata, Replacement, RuleFailure } from 'tslint/lib';
+import { AbstractRule } from 'tslint/lib/rules';
+import { Decorator, isPropertyDeclaration, SourceFile } from 'typescript';
 import { NgWalker } from './angular/ngWalker';
-import { getDecoratorName, isSameLine } from './util/utils';
+import { decoratorKeys, Decorators, DECORATORS, getDecoratorName, isSameLine } from './util/utils';
 
-enum Decorators {
-  ContentChild = 'ContentChild',
-  ContentChildren = 'ContentChildren',
-  HostBinding = 'HostBinding',
-  HostListener = 'HostListener',
-  Input = 'Input',
-  Output = 'Output',
-  ViewChild = 'ViewChild',
-  ViewChildren = 'ViewChildren'
-}
-
-type DecoratorKeys = keyof typeof Decorators;
-
-const enumKeys = Object.keys(Decorators);
-
-export const decoratorKeys: ReadonlySet<string> = new Set(enumKeys);
-
-export class Rule extends Rules.AbstractRule {
+export class Rule extends AbstractRule {
   static readonly metadata: IRuleMetadata = {
     description: 'Ensures that decorators are on the same line as the property/method it decorates.',
     descriptionDetails: 'See more at https://angular.io/guide/styleguide#style-05-12.',
@@ -30,10 +12,10 @@ export class Rule extends Rules.AbstractRule {
     optionExamples: [true, [true, Decorators.HostListener]],
     options: {
       items: {
-        enum: enumKeys,
+        enum: decoratorKeys,
         type: 'string'
       },
-      maxLength: decoratorKeys.size,
+      maxLength: DECORATORS.size,
       minLength: 0,
       type: 'array'
     },
@@ -62,44 +44,44 @@ export class Rule extends Rules.AbstractRule {
   }
 }
 
-export const getFailureMessage = (): string => {
-  return Rule.FAILURE_STRING;
-};
-
 export class PreferInlineDecoratorWalker extends NgWalker {
-  private readonly blacklistedDecorators: typeof decoratorKeys;
+  private readonly blacklistedDecorators: ReadonlySet<string>;
 
   constructor(source: SourceFile, options: IOptions) {
     super(source, options);
-    this.blacklistedDecorators = new Set<string>(options.ruleArguments);
+    this.blacklistedDecorators = new Set(options.ruleArguments);
   }
 
-  protected visitMethodDecorator(decorator: Decorator) {
-    this.validateDecorator(decorator, decorator.parent!);
+  protected visitMethodDecorator(decorator: Decorator): void {
+    this.validateDecorator(decorator);
     super.visitMethodDecorator(decorator);
   }
 
-  protected visitPropertyDecorator(decorator: Decorator) {
-    this.validateDecorator(decorator, decorator.parent!);
+  protected visitPropertyDecorator(decorator: Decorator): void {
+    this.validateDecorator(decorator);
     super.visitPropertyDecorator(decorator);
   }
 
-  private validateDecorator(decorator: Decorator, property: Node) {
-    const decoratorName = getDecoratorName(decorator) as DecoratorKeys;
+  private validateDecorator(decorator: Decorator): void {
+    const decoratorName = getDecoratorName(decorator);
+
+    if (!decoratorName) return;
+
     const isDecoratorBlacklisted = this.blacklistedDecorators.has(decoratorName);
 
-    if (isDecoratorBlacklisted) {
-      return;
-    }
+    if (isDecoratorBlacklisted) return;
 
     const decoratorStartPos = decorator.getStart();
-    const propertyStartPos = (property as PropertyAccessExpression).name.getStart();
+    const { parent: property } = decorator;
 
-    if (isSameLine(this.getSourceFile(), decoratorStartPos, propertyStartPos)) {
-      return;
-    }
+    if (!property || !isPropertyDeclaration(property)) return;
+
+    const propertyStartPos = property.name.getStart();
+
+    if (isSameLine(this.getSourceFile(), decoratorStartPos, propertyStartPos)) return;
 
     const fix = Replacement.deleteFromTo(decorator.getEnd(), propertyStartPos - 1);
-    this.addFailureAt(decoratorStartPos, property.getWidth(), getFailureMessage(), fix);
+
+    this.addFailureAt(decoratorStartPos, property.getWidth(), Rule.FAILURE_STRING, fix);
   }
 }
