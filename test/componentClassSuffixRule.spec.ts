@@ -12,7 +12,7 @@ describe('component-class-suffix', () => {
       `;
       assertAnnotated({
         ruleName: 'component-class-suffix',
-        message: 'The name of the class Test should end with the suffix Component (https://angular.io/styleguide#style-02-03)',
+        message: 'The name of a component should end with the suffix Component (https://angular.io/styleguide#style-02-03)',
         source
       });
     });
@@ -73,7 +73,12 @@ describe('component-class-suffix', () => {
       assertSuccess('component-class-suffix', source);
     });
   });
-
+  describe('A class without name', () => {
+    it('should not broke the linter', () => {
+      let source = 'export default class {}';
+      assertSuccess('component-class-suffix', source);
+    });
+  });
   describe('changed suffix', () => {
     it('should succeed when different suffix is set', () => {
       let source = `
@@ -105,8 +110,7 @@ describe('component-class-suffix', () => {
       `;
       assertAnnotated({
         ruleName: 'component-class-suffix',
-        message:
-          'The name of the class TestPage should end with the suffix Component,View' + ' (https://angular.io/styleguide#style-02-03)',
+        message: 'The name of a component should end with the suffix Component,View' + ' (https://angular.io/styleguide#style-02-03)',
         source,
         options: ['Component', 'View']
       });
@@ -122,7 +126,7 @@ describe('component-class-suffix', () => {
       `;
       assertAnnotated({
         ruleName: 'component-class-suffix',
-        message: 'The name of the class TestPage should end with the suffix Component (https://angular.io/styleguide#style-02-03)',
+        message: 'The name of a component should end with the suffix Component (https://angular.io/styleguide#style-02-03)',
         source,
         options: ['Component']
       });
@@ -138,7 +142,7 @@ describe('component-class-suffix', () => {
       `;
       assertAnnotated({
         ruleName: 'component-class-suffix',
-        message: 'The name of the class TestDirective should end with the suffix Page (https://angular.io/styleguide#style-02-03)',
+        message: 'The name of a component should end with the suffix Page (https://angular.io/styleguide#style-02-03)',
         source,
         options: ['Page']
       });

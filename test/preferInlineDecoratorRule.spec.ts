@@ -170,6 +170,12 @@ describe(ruleName, () => {
       });
     });
   });
+  describe('A class without name', () => {
+    it('should not broke the linter', () => {
+      let source = 'export default class {}';
+      assertSuccess(ruleName, source);
+    });
+  });
 
   describe('replacements', () => {
     it('should fail if a property is not on the same line as its decorator', () => {

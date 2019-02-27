@@ -19,7 +19,7 @@ describe(ruleName, () => {
           }
         `;
         assertAnnotated({
-          message: getFailureMessage('TestComponent', 'label'),
+          message: getFailureMessage('label'),
           ruleName,
           source
         });
@@ -36,7 +36,7 @@ describe(ruleName, () => {
           }
         `;
         assertAnnotated({
-          message: getFailureMessage('TestComponent', 'label'),
+          message: getFailureMessage('label'),
           ruleName,
           source
         });
@@ -55,7 +55,7 @@ describe(ruleName, () => {
           }
         `;
         assertAnnotated({
-          message: getFailureMessage('TestDirective', 'label'),
+          message: getFailureMessage('label'),
           ruleName,
           source
         });
@@ -72,7 +72,7 @@ describe(ruleName, () => {
           }
         `;
         assertAnnotated({
-          message: getFailureMessage('TestDirective', 'label'),
+          message: getFailureMessage('label'),
           ruleName,
           source
         });
@@ -89,7 +89,7 @@ describe(ruleName, () => {
           }
         `;
         assertAnnotated({
-          message: getFailureMessage('TestDirective', 'label'),
+          message: getFailureMessage('label'),
           ruleName,
           source
         });
@@ -106,7 +106,7 @@ describe(ruleName, () => {
           }
         `;
         assertAnnotated({
-          message: getFailureMessage('TestDirective', 'ariaBusy'),
+          message: getFailureMessage('ariaBusy'),
           ruleName,
           source
         });
@@ -123,7 +123,7 @@ describe(ruleName, () => {
           }
         `;
         assertAnnotated({
-          message: getFailureMessage('TestDirective', 'colors'),
+          message: getFailureMessage('colors'),
           ruleName,
           source
         });
@@ -140,7 +140,7 @@ describe(ruleName, () => {
           }
         `;
         assertAnnotated({
-          message: getFailureMessage('TestDirective', 'color'),
+          message: getFailureMessage('color'),
           ruleName,
           source
         });
@@ -233,6 +233,12 @@ describe(ruleName, () => {
         `;
         assertSuccess(ruleName, source);
       });
+    });
+  });
+  describe('A class without name', () => {
+    it('should not broke the linter', () => {
+      let source = 'export default class {}';
+      assertSuccess(ruleName, source);
     });
   });
 });

@@ -19,7 +19,6 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
-            className: 'Test',
             decoratorName: Decorators.ContentChild,
             metadataType: MetadataTypes.Injectable
           }),
@@ -38,7 +37,6 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
-            className: 'Test',
             decoratorName: Decorators.ContentChildren,
             metadataType: MetadataTypes.Injectable
           }),
@@ -57,7 +55,6 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
-            className: 'Test',
             decoratorName: Decorators.HostBinding,
             metadataType: MetadataTypes.Injectable
           }),
@@ -79,7 +76,6 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
-            className: 'Test',
             decoratorName: Decorators.HostListener,
             metadataType: MetadataTypes.Injectable
           }),
@@ -98,7 +94,6 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
-            className: 'Test',
             decoratorName: Decorators.Input,
             metadataType: MetadataTypes.Injectable
           }),
@@ -117,7 +112,6 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
-            className: 'Test',
             decoratorName: Decorators.Output,
             metadataType: MetadataTypes.Injectable
           }),
@@ -136,7 +130,6 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
-            className: 'Test',
             decoratorName: Decorators.ViewChild,
             metadataType: MetadataTypes.Injectable
           }),
@@ -155,7 +148,6 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
-            className: 'Test',
             decoratorName: Decorators.ViewChildren,
             metadataType: MetadataTypes.Injectable
           }),
@@ -176,7 +168,6 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
-            className: 'Test',
             decoratorName: Decorators.ContentChild,
             metadataType: MetadataTypes.Pipe
           }),
@@ -195,7 +186,6 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
-            className: 'Test',
             decoratorName: Decorators.ContentChildren,
             metadataType: MetadataTypes.Pipe
           }),
@@ -214,7 +204,6 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
-            className: 'Test',
             decoratorName: Decorators.HostBinding,
             metadataType: MetadataTypes.Pipe
           }),
@@ -236,7 +225,6 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
-            className: 'Test',
             decoratorName: Decorators.HostListener,
             metadataType: MetadataTypes.Pipe
           }),
@@ -255,7 +243,6 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
-            className: 'Test',
             decoratorName: Decorators.Input,
             metadataType: MetadataTypes.Pipe
           }),
@@ -274,7 +261,6 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
-            className: 'Test',
             decoratorName: Decorators.Output,
             metadataType: MetadataTypes.Pipe
           }),
@@ -293,7 +279,6 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
-            className: 'Test',
             decoratorName: Decorators.ViewChild,
             metadataType: MetadataTypes.Pipe
           }),
@@ -312,7 +297,6 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
-            className: 'Test',
             decoratorName: Decorators.ViewChildren,
             metadataType: MetadataTypes.Pipe
           }),
@@ -337,7 +321,6 @@ describe(ruleName, () => {
           }
         `;
         const message = getFailureMessage({
-          className: 'Test',
           decoratorName: Decorators.Input,
           metadataType: MetadataTypes.Pipe
         });
@@ -552,6 +535,12 @@ describe(ruleName, () => {
           assertSuccess(ruleName, source);
         }
       );
+    });
+    describe('A class without name', () => {
+      it('should not broke the linter', () => {
+        let source = 'export default class {}';
+        assertSuccess(ruleName, source);
+      });
     });
   });
 });

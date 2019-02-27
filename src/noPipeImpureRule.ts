@@ -1,16 +1,9 @@
-import { sprintf } from 'sprintf-js';
 import { IRuleMetadata, RuleFailure } from 'tslint';
 import { AbstractRule } from 'tslint/lib/rules';
-import { ClassDeclaration, Decorator, SourceFile, SyntaxKind } from 'typescript';
+import { SourceFile, SyntaxKind } from 'typescript';
 import { NgWalker } from './angular/ngWalker';
-import { getClassName, getDecoratorPropertyInitializer } from './util/utils';
-
-interface FailureParameters {
-  readonly className: string;
-}
-
-export const getFailureMessage = (failureParameters: FailureParameters): string =>
-  sprintf(Rule.FAILURE_STRING, failureParameters.className);
+import { getDecoratorPropertyInitializer } from './util/utils';
+import { PipeMetadata } from './angular';
 
 export class Rule extends AbstractRule {
   static readonly metadata: IRuleMetadata = {
@@ -23,7 +16,7 @@ export class Rule extends AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'Impure pipe declared in class %s';
+  static readonly FAILURE_STRING = 'Impure pipes should be avoided';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this.getOptions()));
@@ -31,13 +24,13 @@ export class Rule extends AbstractRule {
 }
 
 export class ClassMetadataWalker extends NgWalker {
-  protected visitNgPipe(controller: ClassDeclaration, decorator: Decorator): void {
-    this.validatePipe(controller, decorator);
-    super.visitNgPipe(controller, decorator);
+  protected visitNgPipe(metadata: PipeMetadata): void {
+    this.validatePipe(metadata);
+    super.visitNgPipe(metadata);
   }
 
-  private validatePipe(controller: ClassDeclaration, decorator: Decorator): void {
-    const pureExpression = getDecoratorPropertyInitializer(decorator, 'pure');
+  private validatePipe(metadata: PipeMetadata): void {
+    const pureExpression = getDecoratorPropertyInitializer(metadata.decorator, 'pure');
 
     if (!pureExpression) return;
 
@@ -46,12 +39,6 @@ export class ClassMetadataWalker extends NgWalker {
 
     if (!parentExpression || isNotFalseLiteral) return;
 
-    const className = getClassName(controller);
-
-    if (!className) return;
-
-    const failure = getFailureMessage({ className });
-
-    this.addFailureAtNode(parentExpression, failure);
+    this.addFailureAtNode(parentExpression, Rule.FAILURE_STRING);
   }
 }

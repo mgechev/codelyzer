@@ -62,18 +62,18 @@ export class Rule extends SelectorRule {
 
   getPrefixFailure(prefixes: string[]): string {
     if (prefixes.length === 1) {
-      return 'The selector of the directive "%s" should have prefix "%s" (https://angular.io/styleguide#style-02-08)';
+      return 'The selector of a directive should have prefix "%s" (https://angular.io/styleguide#style-02-08)';
     } else {
-      return 'The selector of the directive "%s" should have one of the prefixes "%s" (https://angular.io/styleguide#style-02-08)';
+      return 'The selector of a directive should have one of the prefixes "%s" (https://angular.io/styleguide#style-02-08)';
     }
   }
 
   getStyleFailure(): string {
-    return 'The selector of the directive "%s" should be named %s (https://angular.io/styleguide#style-02-06)';
+    return 'The selector of a directive should be named %s (https://angular.io/styleguide#style-02-06)';
   }
 
   getTypeFailure(): string {
-    return 'The selector of the directive "%s" should be used as %s (https://angular.io/styleguide#style-02-06)';
+    return 'The selector of a directive should be used as %s (https://angular.io/styleguide#style-02-06)';
   }
 
   isEnabled(): boolean {

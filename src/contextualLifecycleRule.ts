@@ -4,7 +4,6 @@ import { AbstractRule } from 'tslint/lib/rules';
 import { ClassDeclaration, Decorator, SourceFile } from 'typescript';
 import { NgWalker } from './angular/ngWalker';
 import {
-  getClassName,
   getDecoratorName,
   isLifecycleMethod,
   isMetadataType,
@@ -14,15 +13,15 @@ import {
   MetadataTypeKeys,
   MetadataTypes
 } from './util/utils';
+import { InjectableMetadata, PipeMetadata } from './angular';
 
 interface FailureParameters {
-  readonly className: string;
   readonly metadataType: MetadataTypeKeys;
   readonly methodName: LifecycleMethodKeys;
 }
 
 export const getFailureMessage = (failureParameters: FailureParameters): string =>
-  sprintf(Rule.FAILURE_STRING, failureParameters.methodName, failureParameters.className, failureParameters.metadataType);
+  sprintf(Rule.FAILURE_STRING, failureParameters.methodName, failureParameters.metadataType);
 
 export class Rule extends AbstractRule {
   static readonly metadata: IRuleMetadata = {
@@ -37,7 +36,7 @@ export class Rule extends AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'The method "%s" is not allowed for class "%s" because it is decorated with "%s"';
+  static readonly FAILURE_STRING = 'The method "%s" is not allowed for a class decorated with "%s"';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(new ContextualLifecycleWalker(sourceFile, this.getOptions()));
@@ -45,21 +44,17 @@ export class Rule extends AbstractRule {
 }
 
 class ContextualLifecycleWalker extends NgWalker {
-  protected visitNgInjectable(controller: ClassDeclaration, decorator: Decorator): void {
-    this.validateDecorator(controller, decorator, METADATA_TYPE_LIFECYCLE_MAPPER.Injectable);
-    super.visitNgInjectable(controller, decorator);
+  visitNgInjectable(metadata: InjectableMetadata): void {
+    this.validateDecorator(metadata.controller, metadata.decorator, METADATA_TYPE_LIFECYCLE_MAPPER.Injectable);
+    super.visitNgInjectable(metadata);
   }
 
-  protected visitNgPipe(controller: ClassDeclaration, decorator: Decorator): void {
-    this.validateDecorator(controller, decorator, METADATA_TYPE_LIFECYCLE_MAPPER.Pipe);
-    super.visitNgPipe(controller, decorator);
+  visitNgPipe(metadata: PipeMetadata): void {
+    this.validateDecorator(metadata.controller, metadata.decorator, METADATA_TYPE_LIFECYCLE_MAPPER.Pipe);
+    super.visitNgPipe(metadata);
   }
 
   private validateDecorator(controller: ClassDeclaration, decorator: Decorator, allowedMethods: ReadonlySet<LifecycleMethodKeys>): void {
-    const className = getClassName(controller);
-
-    if (!className) return;
-
     const metadataType = getDecoratorName(decorator);
 
     if (!metadataType || !isMetadataType(metadataType)) return;
@@ -73,7 +68,7 @@ class ContextualLifecycleWalker extends NgWalker {
 
       if (!isLifecycleMethod(methodName) || allowedMethods.has(methodName)) continue;
 
-      const failure = getFailureMessage({ className, metadataType, methodName });
+      const failure = getFailureMessage({ metadataType, methodName });
 
       this.addFailureAtNode(member, failure);
     }

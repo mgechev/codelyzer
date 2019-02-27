@@ -79,4 +79,10 @@ describe(ruleName, () => {
       assertSuccess(ruleName, source);
     });
   });
+  describe('A class without name', () => {
+    it('should not broke the linter', () => {
+      const source = 'export default class {}';
+      assertSuccess(ruleName, source);
+    });
+  });
 });

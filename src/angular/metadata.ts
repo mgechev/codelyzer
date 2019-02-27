@@ -44,3 +44,15 @@ export class ComponentMetadata extends DirectiveMetadata {
     super(controller, decorator, selector);
   }
 }
+
+export class PipeMetadata {
+  constructor(public readonly controller: ts.ClassDeclaration, public readonly decorator: ts.Decorator, public readonly name?: string) {}
+}
+
+export class ModuleMetadata {
+  constructor(public readonly controller: ts.ClassDeclaration, public readonly decorator: ts.Decorator, public readonly id?: string) {}
+}
+
+export class InjectableMetadata {
+  constructor(public readonly controller: ts.ClassDeclaration, public readonly decorator: ts.Decorator) {}
+}

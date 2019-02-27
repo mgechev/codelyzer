@@ -1,8 +1,9 @@
-import { getFailureMessage, Rule } from '../src/noPipeImpureRule';
+import { Rule } from '../src/noPipeImpureRule';
 import { assertAnnotated, assertSuccess } from './testHelper';
 
 const {
-  metadata: { ruleName }
+  metadata: { ruleName },
+  FAILURE_STRING
 } = Rule;
 
 describe(ruleName, () => {
@@ -16,11 +17,8 @@ describe(ruleName, () => {
         })
         class Test {}
       `;
-      const message = getFailureMessage({
-        className: 'Test'
-      });
       assertAnnotated({
-        message,
+        message: FAILURE_STRING,
         ruleName,
         source
       });
@@ -46,6 +44,12 @@ describe(ruleName, () => {
         })
         class Test {}
       `;
+      assertSuccess(ruleName, source);
+    });
+  });
+  describe('A class without name', () => {
+    it('should not broke the linter', () => {
+      let source = 'export default class {}';
       assertSuccess(ruleName, source);
     });
   });

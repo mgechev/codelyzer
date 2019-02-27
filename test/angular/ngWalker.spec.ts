@@ -28,10 +28,6 @@ describe('ngWalker', () => {
         name: 'foo'
       })
       class FooPipe {}
-      @NgModule({})
-      class BarModule {}
-      @Injectable()
-      class FooService {}
     `;
     let ruleArgs: Lint.IOptions = {
       ruleName: 'foo',
@@ -44,14 +40,10 @@ describe('ngWalker', () => {
     let cmpSpy = chaiSpy.on(walker, 'visitNgComponent');
     let dirSpy = chaiSpy.on(walker, 'visitNgDirective');
     let pipeSpy = chaiSpy.on(walker, 'visitNgPipe');
-    let modSpy = chaiSpy.on(walker, 'visitNgModule');
-    let injSpy = chaiSpy.on(walker, 'visitNgInjectable');
     walker.walk(sf);
     (chai.expect(cmpSpy).to.have.been as any).called();
     (chai.expect(dirSpy).to.have.been as any).called();
     (chai.expect(pipeSpy).to.have.been as any).called();
-    (chai.expect(modSpy).to.have.been as any).called();
-    (chai.expect(injSpy).to.have.been as any).called();
   });
 
   it('should visit inputs and outputs with args', () => {

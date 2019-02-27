@@ -12,7 +12,7 @@ describe('directive-selector-name', () => {
       `;
       assertAnnotated({
         ruleName: 'directive-selector',
-        message: 'The selector of the directive "Test" should be named camelCase (https://angular.io/styleguide#style-02-06)',
+        message: 'The selector of a directive should be named camelCase (https://angular.io/styleguide#style-02-06)',
         source,
         options: ['attribute', 'sg', 'camelCase']
       });
@@ -54,7 +54,7 @@ describe('directive-selector-name', () => {
       `;
       assertAnnotated({
         ruleName: 'directive-selector',
-        message: 'The selector of the directive "Test" should be named camelCase (https://angular.io/styleguide#style-02-06)',
+        message: 'The selector of a directive should be named camelCase (https://angular.io/styleguide#style-02-06)',
         source,
         options: ['attribute', 'sg', 'camelCase']
       });
@@ -74,7 +74,7 @@ describe('directive-selector-prefix', () => {
       `;
       assertAnnotated({
         ruleName: 'directive-selector',
-        message: 'The selector of the directive "Test" should have prefix "sg" (https://angular.io/styleguide#style-02-08)',
+        message: 'The selector of a directive should have prefix "sg" (https://angular.io/styleguide#style-02-08)',
         source,
         options: ['attribute', 'sg', 'camelCase']
       });
@@ -90,7 +90,7 @@ describe('directive-selector-prefix', () => {
       `;
       assertAnnotated({
         ruleName: 'directive-selector',
-        message: 'The selector of the directive "Test" should have prefix "fo" (https://angular.io/styleguide#style-02-08)',
+        message: 'The selector of a directive should have prefix "fo" (https://angular.io/styleguide#style-02-08)',
         source,
         options: ['attribute', 'fo', 'camelCase']
       });
@@ -107,8 +107,7 @@ describe('directive-selector-prefix', () => {
       assertAnnotated({
         ruleName: 'directive-selector',
         message:
-          'The selector of the directive "Test" should have one of the prefixes "sg, ng, mg"' +
-          ' (https://angular.io/styleguide#style-02-08)',
+          'The selector of a directive should have one of the prefixes "sg, ng, mg"' + ' (https://angular.io/styleguide#style-02-08)',
         source,
         options: ['attribute', ['sg', 'ng', 'mg'], 'camelCase']
       });
@@ -125,8 +124,7 @@ describe('directive-selector-prefix', () => {
       assertAnnotated({
         ruleName: 'directive-selector',
         message:
-          'The selector of the directive "Test" should have one of the prefixes "sg, ng, mg"' +
-          ' (https://angular.io/styleguide#style-02-08)',
+          'The selector of a directive should have one of the prefixes "sg, ng, mg"' + ' (https://angular.io/styleguide#style-02-08)',
         source,
         options: ['attribute', ['sg', 'ng', 'mg'], 'camelCase']
       });
@@ -198,7 +196,7 @@ describe('directive-selector-type', () => {
       `;
       assertAnnotated({
         ruleName: 'directive-selector',
-        message: 'The selector of the directive "Test" should be used as attribute (https://angular.io/styleguide#style-02-06)',
+        message: 'The selector of a directive should be used as attribute (https://angular.io/styleguide#style-02-06)',
         source,
         options: ['attribute', 'sg', 'camelCase']
       });
@@ -216,7 +214,7 @@ describe('directive-selector-type', () => {
       `;
       assertAnnotated({
         ruleName: 'directive-selector',
-        message: 'The selector of the directive "Test" should be used as attribute (https://angular.io/styleguide#style-02-06)',
+        message: 'The selector of a directive should be used as attribute (https://angular.io/styleguide#style-02-06)',
         source,
         options: ['attribute', 'sg', 'camelCase']
       });
@@ -268,6 +266,12 @@ describe('directive-selector-type', () => {
         class Test {}
       `;
       assertSuccess('directive-selector', source, ['attribute', 'ng', 'camelCase']);
+    });
+  });
+  describe('A class without name', () => {
+    it('should not broke the linter', () => {
+      let source = 'export default class {}';
+      assertSuccess('directive-selector', source, ['attribute', 'sg', 'camelCase']);
     });
   });
 });

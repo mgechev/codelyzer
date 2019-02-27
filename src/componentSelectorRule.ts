@@ -69,18 +69,18 @@ export class Rule extends SelectorRule {
 
   getPrefixFailure(prefixes: string[]): string {
     if (prefixes.length === 1) {
-      return 'The selector of the component "%s" should have prefix "%s" (https://angular.io/styleguide#style-02-07)';
+      return 'The selector of a component should have prefix "%s" (https://angular.io/styleguide#style-02-07)';
     } else {
-      return 'The selector of the component "%s" should have one of the prefixes "%s" (https://angular.io/styleguide#style-02-07)';
+      return 'The selector of a component should have one of the prefixes "%s" (https://angular.io/styleguide#style-02-07)';
     }
   }
 
   getStyleFailure(): string {
-    return 'The selector of the component "%s" should be named %s (https://angular.io/styleguide#style-05-02)';
+    return 'The selector of a component should be named %s (https://angular.io/styleguide#style-05-02)';
   }
 
   getTypeFailure(): string {
-    return 'The selector of the component "%s" should be used as %s (https://angular.io/styleguide#style-05-03)';
+    return 'The selector of a component should be used as %s (https://angular.io/styleguide#style-05-03)';
   }
 
   isEnabled(): boolean {

@@ -12,7 +12,7 @@ describe('component-selector-prefix', () => {
       `;
       assertAnnotated({
         ruleName: 'component-selector',
-        message: 'The selector of the component "Test" should have prefix "sg" (https://angular.io/styleguide#style-02-07)',
+        message: 'The selector of a component should have prefix "sg" (https://angular.io/styleguide#style-02-07)',
         source,
         options: ['element', 'sg', 'kebab-case']
       });
@@ -29,8 +29,7 @@ describe('component-selector-prefix', () => {
       assertAnnotated({
         ruleName: 'component-selector',
         message:
-          'The selector of the component "Test" should have one of the prefixes "sg, mg, ng"' +
-          ' (https://angular.io/styleguide#style-02-07)',
+          'The selector of a component should have one of the prefixes "sg, mg, ng"' + ' (https://angular.io/styleguide#style-02-07)',
         source,
         options: ['element', ['sg', 'mg', 'ng'], 'kebab-case']
       });
@@ -46,8 +45,7 @@ describe('component-selector-prefix', () => {
       assertAnnotated({
         ruleName: 'component-selector',
         message:
-          'The selector of the component "Test" should have one of the prefixes "sg, mg, ng"' +
-          ' (https://angular.io/styleguide#style-02-07)',
+          'The selector of a component should have one of the prefixes "sg, mg, ng"' + ' (https://angular.io/styleguide#style-02-07)',
         source,
         options: ['element', ['sg', 'mg', 'ng'], 'kebab-case']
       });
@@ -65,15 +63,11 @@ describe('component-selector-prefix', () => {
         failures: [
           {
             char: '~',
-            msg:
-              'The selector of the component "TestOne" should have one of the prefixes "fo, mg, ng"' +
-              ' (https://angular.io/styleguide#style-02-07)'
+            msg: 'The selector of a component should have one of the prefixes "fo, mg, ng"' + ' (https://angular.io/styleguide#style-02-07)'
           },
           {
             char: '^',
-            msg:
-              'The selector of the component "TestTwo" should have one of the prefixes "fo, mg, ng"' +
-              ' (https://angular.io/styleguide#style-02-07)'
+            msg: 'The selector of a component should have one of the prefixes "fo, mg, ng"' + ' (https://angular.io/styleguide#style-02-07)'
           }
         ],
         source,
@@ -157,7 +151,7 @@ describe('component-selector-type', () => {
       `;
       assertAnnotated({
         ruleName: 'component-selector',
-        message: 'The selector of the component "Test" should be used as element (https://angular.io/styleguide#style-05-03)',
+        message: 'The selector of a component should be used as element (https://angular.io/styleguide#style-05-03)',
         source,
         options: ['element', ['sg', 'ng'], 'kebab-case']
       });
@@ -173,7 +167,7 @@ describe('component-selector-type', () => {
       `;
       assertAnnotated({
         ruleName: 'component-selector',
-        message: 'The selector of the component "Test" should be used as element (https://angular.io/styleguide#style-05-03)',
+        message: 'The selector of a component should be used as element (https://angular.io/styleguide#style-05-03)',
         source,
         options: ['element', ['sg', 'ng'], 'kebab-case']
       });
@@ -235,9 +229,7 @@ describe('component-selector-name', () => {
       `;
       assertAnnotated({
         ruleName: 'component-selector',
-        message:
-          'The selector of the component "Test" should be named kebab-case and include dash ' +
-          '(https://angular.io/styleguide#style-05-02)',
+        message: 'The selector of a component should be named kebab-case and include dash ' + '(https://angular.io/styleguide#style-05-02)',
         source,
         options: ['element', 'sg', 'kebab-case']
       });
@@ -253,9 +245,7 @@ describe('component-selector-name', () => {
       `;
       assertAnnotated({
         ruleName: 'component-selector',
-        message:
-          'The selector of the component "Test" should be named kebab-case and include dash ' +
-          '(https://angular.io/styleguide#style-05-02)',
+        message: 'The selector of a component should be named kebab-case and include dash ' + '(https://angular.io/styleguide#style-05-02)',
         source,
         options: ['element', 'sg', 'kebab-case']
       });
@@ -296,6 +286,12 @@ describe('component-selector-name', () => {
         })
         class Test {}
       `;
+      assertSuccess('component-selector', source, ['attribute', 'sg', 'camelCase']);
+    });
+  });
+  describe('A class without name', () => {
+    it('should not broke the linter', () => {
+      let source = 'export default class {}';
       assertSuccess('component-selector', source, ['attribute', 'sg', 'camelCase']);
     });
   });

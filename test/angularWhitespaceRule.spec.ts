@@ -1074,4 +1074,10 @@ describe('angular-whitespace multiple checks', () => {
       `);
     });
   });
+  describe('A class without name', () => {
+    it('should not broke the linter', () => {
+      let source = 'export default class {}';
+      assertSuccess('angular-whitespace', source, ['check-interpolation', 'check-pipe']);
+    });
+  });
 });

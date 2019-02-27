@@ -63,4 +63,10 @@ describe('use-pipe-decorator', () => {
       assertSuccess('use-pipe-decorator', source);
     });
   });
+  describe('A class without name', () => {
+    it('should not broke the linter', () => {
+      let source = 'export default class {}';
+      assertSuccess('use-pipe-decorator', source);
+    });
+  });
 });

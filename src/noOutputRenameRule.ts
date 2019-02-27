@@ -22,10 +22,6 @@ export class Rule extends Rules.AbstractRule {
   }
 }
 
-export const getFailureMessage = (): string => {
-  return Rule.FAILURE_STRING;
-};
-
 export class OutputMetadataWalker extends NgWalker {
   private directiveSelectors!: ReadonlySet<DirectiveMetadata['selector']>;
 
@@ -50,6 +46,6 @@ export class OutputMetadataWalker extends NgWalker {
       return;
     }
 
-    this.addFailureAtNode(property, getFailureMessage());
+    this.addFailureAtNode(property, Rule.FAILURE_STRING);
   }
 }

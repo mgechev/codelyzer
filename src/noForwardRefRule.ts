@@ -4,15 +4,7 @@ import { AbstractRule } from 'tslint/lib/rules';
 import { CallExpression, isClassDeclaration, isVariableStatement, SourceFile } from 'typescript/lib/typescript';
 import { getNextToLastParentNode } from './util/utils';
 
-interface FailureParameters {
-  readonly className: string;
-  readonly message: typeof Rule.FAILURE_STRING_CLASS | typeof Rule.FAILURE_STRING_VARIABLE;
-}
-
 export const FORWARD_REF = 'forwardRef';
-
-export const getFailureMessage = (failureParameters: FailureParameters): string =>
-  sprintf(failureParameters.message, failureParameters.className);
 
 export class Rule extends AbstractRule {
   static metadata: IRuleMetadata = {
@@ -25,7 +17,7 @@ export class Rule extends AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING_CLASS = `Avoid using \`${FORWARD_REF}\` in class "%s"`;
+  static readonly FAILURE_STRING_CLASS = `Avoid using \`${FORWARD_REF}\` in a class`;
   static readonly FAILURE_STRING_VARIABLE = `Avoid using \`${FORWARD_REF}\` in variable "%s"`;
 
   apply(sourceFile: SourceFile): RuleFailure[] {
@@ -46,15 +38,9 @@ export class NoForwardRefWalker extends RuleWalker {
     let failure: ReturnType<typeof sprintf>;
 
     if (isVariableStatement(nextToLastParent)) {
-      failure = getFailureMessage({
-        className: nextToLastParent.declarationList.declarations[0].name.getText(),
-        message: Rule.FAILURE_STRING_VARIABLE
-      });
+      failure = Rule.FAILURE_STRING_VARIABLE;
     } else if (isClassDeclaration(nextToLastParent) && nextToLastParent.name) {
-      failure = getFailureMessage({
-        className: nextToLastParent.name.text,
-        message: Rule.FAILURE_STRING_CLASS
-      });
+      failure = Rule.FAILURE_STRING_CLASS;
     } else {
       return;
     }

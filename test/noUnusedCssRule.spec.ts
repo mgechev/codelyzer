@@ -967,4 +967,10 @@ describe('no-unused-css', () => {
       assertSuccess('no-unused-css', source);
     });
   });
+  describe('A class without name', () => {
+    it('should not broke the linter', () => {
+      let source = 'export default class {}';
+      assertSuccess('no-unused-css', source);
+    });
+  });
 });

@@ -29,7 +29,7 @@ describe('no-attribute-parameter-decorator', () => {
       assertAnnotated({
         ruleName: 'no-attribute-parameter-decorator',
         message:
-          'In the constructor of class "ButtonComponent", the parameter "label" uses the @Attribute decorator, ' +
+          'In the constructor of a directive, the parameter "label" uses the @Attribute decorator, ' +
           'which is considered as a bad practice. Please, consider construction of type "@Input() label: string"',
         source
       });
@@ -47,7 +47,7 @@ describe('no-attribute-parameter-decorator', () => {
       assertAnnotated({
         ruleName: 'no-attribute-parameter-decorator',
         message:
-          'In the constructor of class "SampleTestCase", the parameter "label" uses the @Attribute decorator, ' +
+          'In the constructor of a directive, the parameter "label" uses the @Attribute decorator, ' +
           'which is considered as a bad practice. Please, consider construction of type "@Input() label: string"',
         source
       });
@@ -72,6 +72,12 @@ describe('no-attribute-parameter-decorator', () => {
           };
         }
       `;
+      assertSuccess('no-attribute-parameter-decorator', source);
+    });
+  });
+  describe('A class without name', () => {
+    it('should not broke the linter', () => {
+      let source = 'export default class {}';
       assertSuccess('no-attribute-parameter-decorator', source);
     });
   });

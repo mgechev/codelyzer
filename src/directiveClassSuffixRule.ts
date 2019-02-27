@@ -27,7 +27,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'The name of the class %s should end with the suffix %s (https://angular.io/styleguide#style-02-03)';
+  static readonly FAILURE_STRING = 'The name of a directive should end with the suffix %s (https://angular.io/styleguide#style-02-03)';
 
   static validate(className: string, suffixes: string[]): boolean {
     return suffixes.some(s => className.endsWith(s));
@@ -61,7 +61,7 @@ export class ClassMetadataWalker extends NgWalker {
     }
 
     if (!Rule.validate(className, suffixes)) {
-      this.addFailureAtNode(name, sprintf(Rule.FAILURE_STRING, className, suffixes.join(', ')));
+      this.addFailureAtNode(name, sprintf(Rule.FAILURE_STRING, suffixes.join(', ')));
     }
 
     super.visitNgDirective(metadata);

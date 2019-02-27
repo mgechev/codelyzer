@@ -12,7 +12,7 @@ describe('no-output-on-prefix', () => {
       `;
       assertAnnotated({
         ruleName: 'no-output-on-prefix',
-        message: 'In the class "ButtonComponent", the output property "onChange" should not be prefixed with on',
+        message: 'The output property "onChange" should not be prefixed with on',
         source
       });
     });
@@ -27,7 +27,7 @@ describe('no-output-on-prefix', () => {
       `;
       assertAnnotated({
         ruleName: 'no-output-on-prefix',
-        message: 'In the class "ButtonDirective", the output property "onChange" should not be prefixed with on',
+        message: 'The output property "onChange" should not be prefixed with on',
         source
       });
     });
@@ -42,7 +42,7 @@ describe('no-output-on-prefix', () => {
       `;
       assertAnnotated({
         ruleName: 'no-output-on-prefix',
-        message: 'In the class "ButtonDirective", the output property "on" should not be prefixed with on',
+        message: 'The output property "on" should not be prefixed with on',
         source
       });
     });
@@ -76,6 +76,12 @@ describe('no-output-on-prefix', () => {
           @Output() selectionChanged = new EventEmitter<any>();
         }
       `;
+      assertSuccess('no-output-on-prefix', source);
+    });
+  });
+  describe('A class without name', () => {
+    it('should not broke the linter', () => {
+      let source = 'export default class {}';
       assertSuccess('no-output-on-prefix', source);
     });
   });

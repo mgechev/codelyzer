@@ -15,13 +15,12 @@ import {
 } from './util/utils';
 
 interface FailureParameters {
-  readonly className: string;
   readonly decoratorName: DecoratorKeys;
   readonly metadataType: MetadataTypes;
 }
 
 export const getFailureMessage = (failureParameters: FailureParameters): string =>
-  sprintf(Rule.FAILURE_STRING, failureParameters.decoratorName, failureParameters.className, failureParameters.metadataType);
+  sprintf(Rule.FAILURE_STRING, failureParameters.decoratorName, failureParameters.metadataType);
 
 export class Rule extends AbstractRule {
   static readonly metadata: IRuleMetadata = {
@@ -36,7 +35,7 @@ export class Rule extends AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'The decorator "%s" is not allowed for class "%s" because it is decorated with "%s"';
+  static readonly FAILURE_STRING = 'The decorator "%s" is not allowed for a class decorated with "%s"';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(new ContextualDecoratorWalker(sourceFile, this.getOptions()));
@@ -74,8 +73,7 @@ export class ContextualDecoratorWalker extends NgWalker {
 
     if (!allowedDecorators || allowedDecorators.has(decoratorName)) return;
 
-    const className = klass.name.getText();
-    const failure = getFailureMessage({ className, decoratorName, metadataType });
+    const failure = getFailureMessage({ decoratorName, metadataType });
 
     this.addFailureAtNode(decorator, failure);
   }

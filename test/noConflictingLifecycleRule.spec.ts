@@ -1,4 +1,4 @@
-import { getFailureMessage, Rule } from '../src/noConflictingLifecycleRule';
+import { Rule } from '../src/noConflictingLifecycleRule';
 import { assertFailures, assertSuccess, IExpectedFailure } from './testHelper';
 
 const {
@@ -20,19 +20,13 @@ const failures: IExpectedFailure = {
 const interfaceFailures: IExpectedFailure[] = [
   {
     ...failures,
-    message: getFailureMessage({
-      className: 'Test',
-      message: FAILURE_STRING_INTERFACE_HOOK
-    })
+    message: FAILURE_STRING_INTERFACE_HOOK
   }
 ];
 const methodFailures: IExpectedFailure[] = [
   {
     ...failures,
-    message: getFailureMessage({
-      className: 'Test',
-      message: FAILURE_STRING_METHOD_HOOK
-    })
+    message: FAILURE_STRING_METHOD_HOOK
   }
 ];
 
@@ -117,6 +111,12 @@ describe(ruleName, () => {
           ngOnChanges() {}
         }
       `;
+      assertSuccess(ruleName, source);
+    });
+  });
+  describe('A class without name', () => {
+    it('should not broke the linter', () => {
+      let source = 'export default class {}';
       assertSuccess(ruleName, source);
     });
   });

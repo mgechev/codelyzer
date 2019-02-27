@@ -6,7 +6,17 @@ import { getAnimations, getInlineStyle, getTemplate } from '../util/ngQuery';
 import { isStringLiteralLike, maybeNodeArray } from '../util/utils';
 import { Config } from './config';
 import { FileResolver } from './fileResolver/fileResolver';
-import { AnimationMetadata, CodeWithSourceMap, ComponentMetadata, DirectiveMetadata, StyleMetadata, TemplateMetadata } from './metadata';
+import {
+  AnimationMetadata,
+  CodeWithSourceMap,
+  ComponentMetadata,
+  DirectiveMetadata,
+  InjectableMetadata,
+  ModuleMetadata,
+  PipeMetadata,
+  StyleMetadata,
+  TemplateMetadata
+} from './metadata';
 import { AbstractResolver, MetadataUrls } from './urlResolvers/abstractResolver';
 import { PathResolver } from './urlResolvers/pathResolver';
 import { UrlResolver } from './urlResolvers/urlResolver';
@@ -45,7 +55,34 @@ export class MetadataReader {
       )
     );
 
-    return directiveMetadata || componentMetadata || undefined;
+    const pipeMetadata = unwrapFirst<PipeMetadata | undefined>(
+      maybeNodeArray(d.decorators!).map(dec =>
+        Maybe.lift(dec)
+          .bind(callExpression)
+          .bind(withIdentifier('Pipe') as any)
+          .fmap(() => this.readPipeMetadata(d, dec))
+      )
+    );
+
+    const moduleMetadata = unwrapFirst<ModuleMetadata | undefined>(
+      maybeNodeArray(d.decorators!).map(dec =>
+        Maybe.lift(dec)
+          .bind(callExpression)
+          .bind(withIdentifier('Module') as any)
+          .fmap(() => this.readModuleMetadata(d, dec))
+      )
+    );
+
+    const injectableMetadata = unwrapFirst<InjectableMetadata | undefined>(
+      maybeNodeArray(d.decorators!).map(dec =>
+        Maybe.lift(dec)
+          .bind(callExpression)
+          .bind(withIdentifier('Injectable') as any)
+          .fmap(() => this.readInjectableMetadata(d, dec))
+      )
+    );
+
+    return directiveMetadata || componentMetadata || pipeMetadata || moduleMetadata || injectableMetadata || undefined;
   }
 
   protected readDirectiveMetadata(d: ts.ClassDeclaration, dec: ts.Decorator): DirectiveMetadata {
@@ -54,6 +91,26 @@ export class MetadataReader {
       .fmap(initializer => initializer!.text);
 
     return new DirectiveMetadata(d, dec, selector.unwrap());
+  }
+
+  protected readPipeMetadata(d: ts.ClassDeclaration, dec: ts.Decorator): DirectiveMetadata {
+    const name = this.getDecoratorArgument(dec)
+      .bind(expr => getStringInitializerFromProperty('name', expr!.properties))
+      .fmap(initializer => initializer!.text);
+
+    return new PipeMetadata(d, dec, name.unwrap());
+  }
+
+  protected readModuleMetadata(d: ts.ClassDeclaration, dec: ts.Decorator): DirectiveMetadata {
+    const id = this.getDecoratorArgument(dec)
+      .bind(expr => getStringInitializerFromProperty('id', expr!.properties))
+      .fmap(initializer => initializer!.text);
+
+    return new ModuleMetadata(d, dec, id.unwrap());
+  }
+
+  protected readInjectableMetadata(d: ts.ClassDeclaration, dec: ts.Decorator): DirectiveMetadata {
+    return new InjectableMetadata(d, dec);
   }
 
   protected readComponentMetadata(d: ts.ClassDeclaration, dec: ts.Decorator): ComponentMetadata {

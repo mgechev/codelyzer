@@ -18,7 +18,6 @@ describe(ruleName, () => {
           }
         `;
         const message = getFailureMessage({
-          className: 'Test',
           metadataType: MetadataTypes.Injectable,
           methodName: LifecycleMethods.ngAfterContentChecked
         });
@@ -38,7 +37,6 @@ describe(ruleName, () => {
           }
         `;
         const message = getFailureMessage({
-          className: 'Test',
           metadataType: MetadataTypes.Injectable,
           methodName: LifecycleMethods.ngAfterContentInit
         });
@@ -58,7 +56,6 @@ describe(ruleName, () => {
           }
         `;
         const message = getFailureMessage({
-          className: 'Test',
           metadataType: MetadataTypes.Injectable,
           methodName: LifecycleMethods.ngAfterViewChecked
         });
@@ -78,7 +75,6 @@ describe(ruleName, () => {
           }
         `;
         const message = getFailureMessage({
-          className: 'Test',
           metadataType: MetadataTypes.Injectable,
           methodName: LifecycleMethods.ngAfterViewInit
         });
@@ -98,7 +94,6 @@ describe(ruleName, () => {
           }
         `;
         const message = getFailureMessage({
-          className: 'Test',
           metadataType: MetadataTypes.Injectable,
           methodName: LifecycleMethods.ngDoCheck
         });
@@ -118,7 +113,6 @@ describe(ruleName, () => {
           }
         `;
         const message = getFailureMessage({
-          className: 'Test',
           metadataType: MetadataTypes.Injectable,
           methodName: LifecycleMethods.ngOnChanges
         });
@@ -138,7 +132,6 @@ describe(ruleName, () => {
           }
         `;
         const message = getFailureMessage({
-          className: 'Test',
           metadataType: MetadataTypes.Injectable,
           methodName: LifecycleMethods.ngOnInit
         });
@@ -160,7 +153,6 @@ describe(ruleName, () => {
           }
         `;
         const message = getFailureMessage({
-          className: 'Test',
           metadataType: MetadataTypes.Pipe,
           methodName: LifecycleMethods.ngAfterContentChecked
         });
@@ -180,7 +172,6 @@ describe(ruleName, () => {
           }
         `;
         const message = getFailureMessage({
-          className: 'Test',
           metadataType: MetadataTypes.Pipe,
           methodName: LifecycleMethods.ngAfterContentInit
         });
@@ -200,7 +191,6 @@ describe(ruleName, () => {
           }
         `;
         const message = getFailureMessage({
-          className: 'Test',
           metadataType: MetadataTypes.Pipe,
           methodName: LifecycleMethods.ngAfterViewChecked
         });
@@ -220,7 +210,6 @@ describe(ruleName, () => {
           }
         `;
         const message = getFailureMessage({
-          className: 'Test',
           metadataType: MetadataTypes.Pipe,
           methodName: LifecycleMethods.ngAfterViewInit
         });
@@ -240,7 +229,6 @@ describe(ruleName, () => {
           }
         `;
         const message = getFailureMessage({
-          className: 'Test',
           metadataType: MetadataTypes.Pipe,
           methodName: LifecycleMethods.ngDoCheck
         });
@@ -260,7 +248,6 @@ describe(ruleName, () => {
           }
         `;
         const message = getFailureMessage({
-          className: 'Test',
           metadataType: MetadataTypes.Pipe,
           methodName: LifecycleMethods.ngOnChanges
         });
@@ -280,7 +267,6 @@ describe(ruleName, () => {
           }
         `;
         const message = getFailureMessage({
-          className: 'Test',
           metadataType: MetadataTypes.Pipe,
           methodName: LifecycleMethods.ngOnInit
         });
@@ -312,7 +298,6 @@ describe(ruleName, () => {
           }
         `;
           const message = getFailureMessage({
-            className: 'Test',
             metadataType: MetadataTypes.Pipe,
             methodName: LifecycleMethods.ngDoCheck
           });
@@ -542,6 +527,12 @@ describe(ruleName, () => {
           assertSuccess(ruleName, source);
         }
       );
+    });
+    describe('A class without name', () => {
+      it('should not broke the linter', () => {
+        let source = 'export default class {}';
+        assertSuccess(ruleName, source);
+      });
     });
   });
 });

@@ -6,7 +6,6 @@ import { NgWalker } from './angular/ngWalker';
 import { getClassName } from './util/utils';
 
 interface FailureParameters {
-  readonly className: string;
   readonly propertyName: string;
 }
 
@@ -186,7 +185,7 @@ const nativeEventNames: ReadonlySet<string> = new Set([
 ]);
 
 export const getFailureMessage = (failureParameters: FailureParameters): string =>
-  sprintf(Rule.FAILURE_STRING, failureParameters.className, failureParameters.propertyName);
+  sprintf(Rule.FAILURE_STRING, failureParameters.propertyName);
 
 export class Rule extends AbstractRule {
   static readonly metadata: IRuleMetadata = {
@@ -199,7 +198,7 @@ export class Rule extends AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'In the class "%s", the output property "%s" should not be named or renamed as a native event';
+  static readonly FAILURE_STRING = 'The output property "%s" should not be named or renamed as a native event';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(new NoOutputNativeWalker(sourceFile, this.getOptions()));
@@ -222,7 +221,7 @@ class NoOutputNativeWalker extends NgWalker {
 
     if (!outputName || !nativeEventNames.has(outputName)) return;
 
-    const failure = getFailureMessage({ className, propertyName });
+    const failure = getFailureMessage({ propertyName });
 
     this.addFailureAtNode(property, failure);
   }

@@ -2,7 +2,6 @@ import { sprintf } from 'sprintf-js';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { NgWalker } from './angular/ngWalker';
-import { getClassName } from './util/utils';
 
 export class Rule extends Lint.Rules.AbstractRule {
   static readonly metadata: Lint.IRuleMetadata = {
@@ -17,7 +16,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'In the class "%s", the output property "%s" should not be prefixed with on';
+  static readonly FAILURE_STRING = 'The output property "%s" should not be prefixed with on';
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new OutputWalker(sourceFile, this.getOptions()));
@@ -31,14 +30,13 @@ class OutputWalker extends NgWalker {
   }
 
   private validateOutput(property: ts.PropertyDeclaration): void {
-    const className = getClassName(property);
     const memberName = property.name.getText();
 
     if (!memberName || !/^on((?![a-z])|(?=$))/.test(memberName)) {
       return;
     }
 
-    const failure = sprintf(Rule.FAILURE_STRING, className, memberName);
+    const failure = sprintf(Rule.FAILURE_STRING, memberName);
 
     this.addFailureAtNode(property, failure);
   }

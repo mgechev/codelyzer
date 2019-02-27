@@ -3,7 +3,7 @@ import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { DirectiveMetadata } from './angular/metadata';
 import { NgWalker } from './angular/ngWalker';
-import { getClassName, kebabToCamelCase, toTitleCase } from './util/utils';
+import { kebabToCamelCase, toTitleCase } from './util/utils';
 
 export class Rule extends Lint.Rules.AbstractRule {
   static readonly metadata: Lint.IRuleMetadata = {
@@ -18,7 +18,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   };
 
   static readonly FAILURE_STRING = Lint.Utils.dedent`
-    In the class "%s", the directive input property "%s" should not be renamed.
+    The directive input property "%s" should not be renamed.
     However, you should use an alias when the directive name is also an input property, and the directive name
     doesn't describe the property. In this last case, you can disable this rule with \`tslint:disable-next-line:no-input-rename\`.
   `;
@@ -28,8 +28,8 @@ export class Rule extends Lint.Rules.AbstractRule {
   }
 }
 
-export const getFailureMessage = (className: string, propertyName: string): string => {
-  return sprintf(Rule.FAILURE_STRING, className, propertyName);
+export const getFailureMessage = (propertyName: string): string => {
+  return sprintf(Rule.FAILURE_STRING, propertyName);
 };
 
 // source: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques
@@ -95,13 +95,12 @@ export class InputMetadataWalker extends NgWalker {
   }
 
   private validateInput(property: ts.PropertyDeclaration, args: string[]) {
-    const className = getClassName(property)!;
     const memberName = property.name.getText();
 
     if (args.length === 0 || this.canPropertyBeAliased(args[0], memberName)) {
       return;
     }
 
-    this.addFailureAtNode(property, getFailureMessage(className, memberName));
+    this.addFailureAtNode(property, getFailureMessage(memberName));
   }
 }

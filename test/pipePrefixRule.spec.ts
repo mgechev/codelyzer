@@ -12,7 +12,7 @@ describe('pipe-prefix', () => {
       `;
       assertAnnotated({
         ruleName: 'pipe-prefix',
-        message: 'The name of the Pipe decorator of class Test should start with prefix ng, however its value is "foo-bar"',
+        message: 'The name of a Pipe decorator should start with prefix ng, however its value is "foo-bar"',
         source,
         options: ['ng']
       });
@@ -28,7 +28,7 @@ describe('pipe-prefix', () => {
       `;
       assertAnnotated({
         ruleName: 'pipe-prefix',
-        message: 'The name of the Pipe decorator of class Test should start' + ' with prefix ng,mg,sg, however its value is "foo-bar"',
+        message: 'The name of a Pipe decorator should start' + ' with prefix ng,mg,sg, however its value is "foo-bar"',
         source,
         options: ['ng', 'mg', 'sg']
       });
@@ -99,6 +99,12 @@ describe('pipe-prefix', () => {
         class Test {}
       `;
       assertSuccess('pipe-prefix', source, ['ng']);
+    });
+  });
+  describe('A class without name', () => {
+    it('should not broke the linter', () => {
+      let source = 'export default class {}';
+      assertSuccess('pipe-prefix', source);
     });
   });
 });

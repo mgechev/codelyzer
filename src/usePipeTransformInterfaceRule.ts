@@ -1,7 +1,7 @@
 import { sprintf } from 'sprintf-js';
 import { IRuleMetadata, RuleFailure, Rules, RuleWalker } from 'tslint/lib';
 import { ClassDeclaration, SourceFile, SyntaxKind } from 'typescript/lib/typescript';
-import { getDecoratorName, getSymbolName } from './util/utils';
+import { getClassName, getDecoratorName, getSymbolName } from './util/utils';
 
 export class Rule extends Rules.AbstractRule {
   static readonly metadata: IRuleMetadata = {
@@ -45,10 +45,13 @@ export class ClassMetadataWalker extends RuleWalker {
   }
 
   private validateClassDeclaration(node: ClassDeclaration) {
+    const className = getClassName(node);
+    if (!className) return;
+
     if (!hasPipe(node) || hasPipeTransform(node)) {
       return;
     }
 
-    this.addFailureAtNode(node, sprintf(Rule.FAILURE_STRING, node.name!.text));
+    this.addFailureAtNode(node, sprintf(Rule.FAILURE_STRING, className));
   }
 }

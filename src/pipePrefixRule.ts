@@ -4,6 +4,7 @@ import * as ts from 'typescript';
 import { NgWalker } from './angular/ngWalker';
 import { SelectorValidator } from './util/selectorValidator';
 import { getDecoratorArgument } from './util/utils';
+import { PipeMetadata } from './angular';
 
 export class Rule extends Lint.Rules.AbstractRule {
   static readonly metadata: Lint.IRuleMetadata = {
@@ -27,7 +28,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static FAILURE_STRING = `The name of the Pipe decorator of class %s should start with prefix %s, however its value is "%s"`;
+  static FAILURE_STRING = `The name of a Pipe decorator should start with prefix %s, however its value is "%s"`;
 
   prefix: string;
   private prefixChecker: Function;
@@ -69,21 +70,18 @@ export class ClassMetadataWalker extends NgWalker {
     super(sourceFile, rule.getOptions());
   }
 
-  protected visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
-    let className = controller.name!.text;
-    this.validateProperties(className, decorator);
-    super.visitNgPipe(controller, decorator);
+  protected visitNgPipe(metadata: PipeMetadata) {
+    this.validateProperties(metadata.decorator);
+    super.visitNgPipe(metadata);
   }
 
-  private validateProperties(className: string, pipe: ts.Decorator) {
+  private validateProperties(pipe: ts.Decorator) {
     const argument = getDecoratorArgument(pipe)!;
 
-    argument.properties
-      .filter(p => p.name && ts.isIdentifier(p.name) && p.name.text === 'name')
-      .forEach(this.validateProperty.bind(this, className));
+    argument.properties.filter(p => p.name && ts.isIdentifier(p.name) && p.name.text === 'name').forEach(this.validateProperty.bind(this));
   }
 
-  private validateProperty(className: string, property: ts.Node) {
+  private validateProperty(property: ts.Node) {
     const initializer = ts.isPropertyAssignment(property) ? property.initializer : undefined;
 
     if (initializer && ts.isStringLiteral(initializer)) {
@@ -91,7 +89,7 @@ export class ClassMetadataWalker extends NgWalker {
       const isValid = this.rule.validatePrefix(propName);
 
       if (!isValid) {
-        this.addFailureAtNode(property, sprintf(Rule.FAILURE_STRING, className, this.rule.prefix, propName));
+        this.addFailureAtNode(property, sprintf(Rule.FAILURE_STRING, this.rule.prefix, propName));
       }
     }
   }

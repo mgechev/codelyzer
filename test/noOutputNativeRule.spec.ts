@@ -17,7 +17,6 @@ describe(ruleName, () => {
           }
         `;
         const message = getFailureMessage({
-          className: 'Test',
           propertyName: 'change'
         });
         assertAnnotated({
@@ -36,7 +35,6 @@ describe(ruleName, () => {
           }
         `;
         const message = getFailureMessage({
-          className: 'Test',
           propertyName: '_change'
         });
         assertAnnotated({
@@ -57,7 +55,6 @@ describe(ruleName, () => {
           }
         `;
         const message = getFailureMessage({
-          className: 'Test',
           propertyName: 'change'
         });
         assertAnnotated({
@@ -76,7 +73,6 @@ describe(ruleName, () => {
           }
         `;
         const message = getFailureMessage({
-          className: 'Test',
           propertyName: '_change'
         });
         assertAnnotated({
@@ -131,6 +127,12 @@ describe(ruleName, () => {
         `;
         assertSuccess(ruleName, source);
       });
+    });
+  });
+  describe('A class without name', () => {
+    it('should not broke the linter', () => {
+      let source = 'export default class {}';
+      assertSuccess(ruleName, source);
     });
   });
 });

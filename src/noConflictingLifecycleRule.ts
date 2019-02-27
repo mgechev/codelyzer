@@ -1,4 +1,3 @@
-import { sprintf } from 'sprintf-js';
 import { IRuleMetadata, RuleFailure, RuleWalker } from 'tslint';
 import { AbstractRule } from 'tslint/lib/rules';
 import { dedent } from 'tslint/lib/utils';
@@ -13,16 +12,8 @@ import {
   LifecycleMethods
 } from './util/utils';
 
-interface FailureParameters {
-  readonly className: string;
-  readonly message: typeof Rule.FAILURE_STRING_INTERFACE_HOOK | typeof Rule.FAILURE_STRING_METHOD_HOOK;
-}
-
 const LIFECYCLE_INTERFACES: ReadonlyArray<LifecycleInterfaceKeys> = [LifecycleInterfaces.DoCheck, LifecycleInterfaces.OnChanges];
 const LIFECYCLE_METHODS: ReadonlyArray<LifecycleMethodKeys> = [LifecycleMethods.ngDoCheck, LifecycleMethods.ngOnChanges];
-
-export const getFailureMessage = (failureParameters: FailureParameters): string =>
-  sprintf(failureParameters.message, failureParameters.className);
 
 export class Rule extends AbstractRule {
   static metadata: IRuleMetadata = {
@@ -41,10 +32,10 @@ export class Rule extends AbstractRule {
   };
 
   static readonly FAILURE_STRING_INTERFACE_HOOK = dedent`
-    Implementing ${LifecycleInterfaces.DoCheck} and ${LifecycleInterfaces.OnChanges} in class %s is not recommended
+    Implementing ${LifecycleInterfaces.DoCheck} and ${LifecycleInterfaces.OnChanges} in a directive is not recommended
   `;
   static readonly FAILURE_STRING_METHOD_HOOK = dedent`
-    Declaring ${LifecycleMethods.ngDoCheck} and ${LifecycleMethods.ngOnChanges} method in class %s is not recommended
+    Declaring ${LifecycleMethods.ngDoCheck} and ${LifecycleMethods.ngOnChanges} method in a directive is not recommended
   `;
 
   apply(sourceFile: SourceFile): RuleFailure[] {
@@ -68,10 +59,7 @@ class ClassMetadataWalker extends RuleWalker {
 
     if (!className || !hasConflictingLifecycle) return;
 
-    const failure = getFailureMessage({
-      className,
-      message: Rule.FAILURE_STRING_INTERFACE_HOOK
-    });
+    const failure = Rule.FAILURE_STRING_INTERFACE_HOOK;
 
     this.addFailureAtNode(node, failure);
   }
@@ -83,10 +71,7 @@ class ClassMetadataWalker extends RuleWalker {
 
     if (!className || !hasConflictingLifecycle) return;
 
-    const failure = getFailureMessage({
-      className,
-      message: Rule.FAILURE_STRING_METHOD_HOOK
-    });
+    const failure = Rule.FAILURE_STRING_METHOD_HOOK;
 
     this.addFailureAtNode(node, failure);
   }

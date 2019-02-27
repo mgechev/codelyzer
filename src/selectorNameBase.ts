@@ -3,7 +3,7 @@ import { sprintf } from 'sprintf-js';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { SelectorValidator } from './util/selectorValidator';
-import { getDecoratorArgument, getDecoratorName, isStringLiteralLike } from './util/utils';
+import { getClassName, getDecoratorArgument, getDecoratorName, isStringLiteralLike } from './util/utils';
 
 export type SelectorType = 'element' | 'attribute';
 export type SelectorTypeInternal = 'element' | 'attrs';
@@ -102,21 +102,27 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
   }
 
   visitClassDeclaration(node: ts.ClassDeclaration) {
-    ts.createNodeArray(node.decorators).forEach(this.validateDecorator.bind(this, node.name!.text));
+    // Since selectorValidator is only used for @Component and @Directive, we assume that the class must have a name
+    const className = getClassName(node);
+    if (!className) {
+      super.visitClassDeclaration(node);
+      return null;
+    }
+    ts.createNodeArray(node.decorators).forEach(this.validateDecorator.bind(this));
     super.visitClassDeclaration(node);
   }
 
-  private validateDecorator(className: string, decorator: ts.Decorator) {
+  private validateDecorator(decorator: ts.Decorator) {
     const argument = getDecoratorArgument(decorator)!;
     const name = getDecoratorName(decorator);
 
     // Do not run component rules for directives
     if (this.rule.handleType === name) {
-      this.validateSelector(className, argument);
+      this.validateSelector(argument);
     }
   }
 
-  private validateSelector(className: string, arg: ts.Node) {
+  private validateSelector(arg: ts.Node) {
     if (!ts.isObjectLiteralExpression(arg)) {
       return;
     }
@@ -130,15 +136,15 @@ export class SelectorValidatorWalker extends Lint.RuleWalker {
         let error: string | undefined;
 
         if (!this.rule.validateType(selectors)) {
-          error = sprintf(this.rule.getTypeFailure(), className, this.rule.getOptions().ruleArguments[0]);
+          error = sprintf(this.rule.getTypeFailure(), this.rule.getOptions().ruleArguments[0]);
         } else if (!this.rule.validateStyle(selectors)) {
           let name = this.rule.getOptions().ruleArguments[2];
           if (name === 'kebab-case') {
             name += ' and include dash';
           }
-          error = sprintf(this.rule.getStyleFailure(), className, name);
+          error = sprintf(this.rule.getStyleFailure(), name);
         } else if (!this.rule.validatePrefix(selectors)) {
-          error = sprintf(this.rule.getPrefixFailure(this.rule.prefixes), className, this.rule.prefixes.join(', '));
+          error = sprintf(this.rule.getPrefixFailure(this.rule.prefixes), this.rule.prefixes.join(', '));
         }
 
         if (error) {

@@ -26,7 +26,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'The name of the class %s should end with the suffix %s (https://angular.io/styleguide#style-02-03)';
+  static readonly FAILURE_STRING = 'The name of a component should end with the suffix %s (https://angular.io/styleguide#style-02-03)';
 
   static walkerBuilder: F2<ts.SourceFile, Lint.IOptions, NgWalker> = all(
     validateComponent((meta: ComponentMetadata, suffixList: string[] = []) =>
@@ -38,7 +38,7 @@ export class Rule extends Lint.Rules.AbstractRule {
           const suffixes = suffixList.length > 0 ? suffixList : ['Component'];
 
           if (!Rule.validate(text, suffixes)) {
-            failures.push(new Failure(name!, sprintf(Rule.FAILURE_STRING, text, suffixes)));
+            failures.push(new Failure(name!, sprintf(Rule.FAILURE_STRING, suffixes)));
           }
 
           return failures;

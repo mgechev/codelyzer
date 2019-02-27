@@ -4,7 +4,6 @@ import { AbstractRule } from 'tslint/lib/rules';
 import { ClassDeclaration, SourceFile } from 'typescript';
 import { getDeclaredMethods } from './util/classDeclarationUtils';
 import {
-  getClassName,
   getDeclaredLifecycleInterfaces,
   isLifecycleMethod,
   LifecycleInterfaceKeys,
@@ -13,7 +12,6 @@ import {
 } from './util/utils';
 
 interface FailureParameters {
-  readonly className: string;
   readonly interfaceName: LifecycleInterfaceKeys;
   readonly methodName: LifecycleMethodKeys;
 }
@@ -21,7 +19,7 @@ interface FailureParameters {
 const STYLE_GUIDE_LINK = 'https://angular.io/styleguide#style-09-01';
 
 export const getFailureMessage = (failureParameters: FailureParameters): string =>
-  sprintf(Rule.FAILURE_STRING, failureParameters.interfaceName, failureParameters.methodName, failureParameters.className);
+  sprintf(Rule.FAILURE_STRING, failureParameters.interfaceName, failureParameters.methodName);
 
 export class Rule extends AbstractRule {
   static readonly metadata: IRuleMetadata = {
@@ -35,7 +33,7 @@ export class Rule extends AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = `Implement lifecycle interface %s for method %s in class %s (${STYLE_GUIDE_LINK})`;
+  static readonly FAILURE_STRING = `Implement lifecycle interface %s for method %s in this class (${STYLE_GUIDE_LINK})`;
 
   apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this.getOptions()));
@@ -49,10 +47,6 @@ class ClassMetadataWalker extends RuleWalker {
   }
 
   private validateClassDeclaration(node: ClassDeclaration): void {
-    const className = getClassName(node);
-
-    if (!className) return;
-
     const declaredLifecycleInterfaces = getDeclaredLifecycleInterfaces(node);
     const declaredMethods = getDeclaredMethods(node);
 
@@ -67,7 +61,7 @@ class ClassMetadataWalker extends RuleWalker {
 
       if (isMethodImplemented) continue;
 
-      const failure = getFailureMessage({ className, interfaceName, methodName });
+      const failure = getFailureMessage({ interfaceName, methodName });
 
       this.addFailureAtNode(methodProperty, failure);
     }

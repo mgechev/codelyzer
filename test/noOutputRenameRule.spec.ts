@@ -1,8 +1,9 @@
-import { getFailureMessage, Rule } from '../src/noOutputRenameRule';
+import { Rule } from '../src/noOutputRenameRule';
 import { assertAnnotated, assertSuccess } from './testHelper';
 
 const {
-  metadata: { ruleName }
+  metadata: { ruleName },
+  FAILURE_STRING
 } = Rule;
 
 describe(ruleName, () => {
@@ -18,7 +19,7 @@ describe(ruleName, () => {
         }
       `;
       assertAnnotated({
-        message: getFailureMessage(),
+        message: FAILURE_STRING,
         ruleName,
         source
       });
@@ -34,7 +35,7 @@ describe(ruleName, () => {
           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         }
       `;
-      assertAnnotated({ message: getFailureMessage(), ruleName, source });
+      assertAnnotated({ message: FAILURE_STRING, ruleName, source });
     });
 
     it("should fail when the directive's selector matches exactly both property name and the alias", () => {
@@ -47,7 +48,7 @@ describe(ruleName, () => {
           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         }
       `;
-      assertAnnotated({ message: getFailureMessage(), ruleName, source });
+      assertAnnotated({ message: FAILURE_STRING, ruleName, source });
     });
   });
 
@@ -73,6 +74,12 @@ describe(ruleName, () => {
             @Output('foo') bar = new EventEmitter<void>();
           }
         `;
+      assertSuccess(ruleName, source);
+    });
+  });
+  describe('A class without name', () => {
+    it('should not broke the linter', () => {
+      let source = 'export default class {}';
       assertSuccess(ruleName, source);
     });
   });
