@@ -1,5 +1,4 @@
 export { Rule as AngularWhitespaceRule } from './angularWhitespaceRule';
-export { Rule as ComponentChangeDetectionRule } from './componentChangeDetectionRule';
 export { Rule as ComponentClassSuffixRule } from './componentClassSuffixRule';
 export { Rule as ComponentSelectorRule } from './componentSelectorRule';
 export { Rule as ContextualDecoratorRule } from './contextualDecoratorRule';
@@ -25,6 +24,7 @@ export { Rule as NoQueriesMetadataPropertyRule } from './noQueriesMetadataProper
 export { Rule as NoUnusedCssRule } from './noUnusedCssRule';
 export { Rule as PipePrefixRule } from './pipePrefixRule';
 export { Rule as PreferInlineDecoratorRule } from './preferInlineDecoratorRule';
+export { Rule as PreferOnPushComponentChangeDetectionRule } from './preferOnPushComponentChangeDetectionRule';
 export { Rule as PreferOutputReadonlyRule } from './preferOutputReadonlyRule';
 export { Rule as RelativeUrlPrefixRule } from './relativeUrlPrefixRule';
 export { Rule as TemplateAccessibilityAltTextRule } from './templateAccessibilityAltTextRule';

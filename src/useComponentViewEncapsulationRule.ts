@@ -1,13 +1,15 @@
-import { IRuleMetadata, RuleFailure, Rules } from 'tslint/lib';
+import { IRuleMetadata, RuleFailure } from 'tslint/lib';
 import { AbstractRule } from 'tslint/lib/rules';
 import { isPropertyAccessExpression, SourceFile } from 'typescript/lib/typescript';
 import { ComponentMetadata } from './angular/metadata';
 import { NgWalker } from './angular/ngWalker';
 import { getDecoratorPropertyInitializer } from './util/utils';
 
+const NONE = 'None';
+
 export class Rule extends AbstractRule {
   static readonly metadata: IRuleMetadata = {
-    description: 'Disallows using of ViewEncapsulation.None.',
+    description: `Disallows using ViewEncapsulation.${NONE}.`,
     options: null,
     optionsDescription: 'Not configurable.',
     ruleName: 'use-component-view-encapsulation',
@@ -15,7 +17,7 @@ export class Rule extends AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'Using "ViewEncapsulation.None" makes your styles global, which may have an unintended effect';
+  static readonly FAILURE_STRING = `Using ViewEncapsulation.${NONE} makes your styles global, which may have an unintended effect`;
 
   apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(new ViewEncapsulationWalker(sourceFile, this.getOptions()));
@@ -29,12 +31,12 @@ class ViewEncapsulationWalker extends NgWalker {
   }
 
   private validateComponent(metadata: ComponentMetadata): void {
-    const encapsulation = getDecoratorPropertyInitializer(metadata.decorator, 'encapsulation');
+    const encapsulationExpression = getDecoratorPropertyInitializer(metadata.decorator, 'encapsulation');
 
-    if (!encapsulation || (isPropertyAccessExpression(encapsulation) && encapsulation.name.text !== 'None')) {
+    if (!encapsulationExpression || (isPropertyAccessExpression(encapsulationExpression) && encapsulationExpression.name.text !== NONE)) {
       return;
     }
 
-    this.addFailureAtNode(encapsulation, Rule.FAILURE_STRING);
+    this.addFailureAtNode(encapsulationExpression, Rule.FAILURE_STRING);
   }
 }
