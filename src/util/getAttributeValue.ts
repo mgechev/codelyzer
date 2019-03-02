@@ -1,4 +1,5 @@
-import { ElementAst } from '@angular/compiler';
+import { ElementAst, ASTWithSource, LiteralPrimitive } from '@angular/compiler';
+import { PROPERTY } from './isHiddenFromScreenReader';
 
 export const getAttributeValue = (element: ElementAst, property: string) => {
   const attr = element.attrs.find(attr => attr.name === property);
@@ -6,7 +7,13 @@ export const getAttributeValue = (element: ElementAst, property: string) => {
   if (attr) {
     return attr.value;
   }
-  if (input) {
-    return (<any>input.value).ast.value;
+  if (!input || !(input.value instanceof ASTWithSource)) {
+    return undefined;
   }
+
+  if (input.value.ast instanceof LiteralPrimitive) {
+    return input.value.ast.value;
+  }
+
+  return PROPERTY;
 };
