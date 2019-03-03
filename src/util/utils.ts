@@ -105,13 +105,16 @@ export const getDecoratorArgument = (decorator: Decorator): ObjectLiteralExpress
 };
 
 export const getDecoratorPropertyInitializer = (decorator: Decorator, name: string): Expression | undefined => {
-  const args = isCallExpression(decorator.expression) ? decorator.expression.arguments[0] : undefined;
-  const properties = createNodeArray(args && isObjectLiteralExpression(args) ? args.properties : undefined);
+  const args = getDecoratorArgument(decorator);
 
-  return properties
-    .filter(prop => prop.name && isIdentifier(prop.name) && prop.name.text === name)
-    .map(prop => (isPropertyAssignment(prop) ? prop.initializer : undefined))
-    .pop();
+  if (!args || !isObjectLiteralExpression(args)) return undefined;
+
+  const properties = createNodeArray(args.properties);
+  const property = properties.find(prop => !!(prop.name && prop.name.getText() === name));
+
+  if (!property || !isPropertyAssignment(property)) return undefined;
+
+  return property.initializer;
 };
 
 export const getDecoratorName = (decorator: Decorator): string | undefined =>
