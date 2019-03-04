@@ -1,12 +1,12 @@
 export { Rule as AngularWhitespaceRule } from './angularWhitespaceRule';
 export { Rule as ComponentClassSuffixRule } from './componentClassSuffixRule';
+export { Rule as ComponentMaxInlineDeclarationsRule } from './componentMaxInlineDeclarationsRule';
 export { Rule as ComponentSelectorRule } from './componentSelectorRule';
 export { Rule as ContextualDecoratorRule } from './contextualDecoratorRule';
 export { Rule as ContextualLifecycleRule } from './contextualLifecycleRule';
 export { Rule as DirectiveClassSuffixRule } from './directiveClassSuffixRule';
 export { Rule as DirectiveSelectorRule } from './directiveSelectorRule';
 export { Rule as ImportDestructuringSpacingRule } from './importDestructuringSpacingRule';
-export { Rule as MaxInlineDeclarationsRule } from './maxInlineDeclarationsRule';
 export { Rule as NoAttributeParameterDecoratorRule } from './noAttributeParameterDecoratorRule';
 export { Rule as NoConflictingLifecycleRule } from './noConflictingLifecycleRule';
 export { Rule as NoForwardRefRule } from './noForwardRefRule';

@@ -1,5 +1,7 @@
 import { sprintf } from 'sprintf-js';
-import { IOptions, IRuleMetadata, RuleFailure, Rules, Utils } from 'tslint/lib';
+import { IOptions, IRuleMetadata, RuleFailure } from 'tslint/lib';
+import { AbstractRule } from 'tslint/lib/rules';
+import { dedent } from 'tslint/lib/utils';
 import { SourceFile } from 'typescript/lib/typescript';
 import { CodeWithSourceMap, ComponentMetadata } from './angular/metadata';
 import { NgWalker } from './angular/ngWalker';
@@ -10,11 +12,24 @@ const DEFAULT_TEMPLATE_LIMIT: number = 3;
 const OPTION_ANIMATIONS = 'animations';
 const OPTION_STYLES = 'styles';
 const OPTION_TEMPLATE = 'template';
+const STYLE_GUIDE_LINK = 'https://angular.io/guide/styleguide#style-05-04.';
 
-export class Rule extends Rules.AbstractRule {
+export type PropertyType = 'animations' | 'styles' | 'template';
+export type PropertyPair = { [key in PropertyType]?: number };
+
+const generateFailure = (type: PropertyType, limit: number, value: number): string => sprintf(Rule.FAILURE_STRING, type, limit, value);
+
+export const getAnimationsFailure = (value: number, limit = DEFAULT_ANIMATIONS_LIMIT): string =>
+  generateFailure(OPTION_ANIMATIONS, limit, value);
+
+export const getStylesFailure = (value: number, limit = DEFAULT_STYLES_LIMIT): string => generateFailure(OPTION_STYLES, limit, value);
+
+export const getTemplateFailure = (value: number, limit = DEFAULT_TEMPLATE_LIMIT): string => generateFailure(OPTION_TEMPLATE, limit, value);
+
+export class Rule extends AbstractRule {
   static readonly metadata: IRuleMetadata = {
     description: 'Disallows having too many lines in inline template and styles. Forces separate template or styles file creation.',
-    descriptionDetails: 'See more at https://angular.io/guide/styleguide#style-05-04.',
+    descriptionDetails: `See more at ${STYLE_GUIDE_LINK}.`,
     optionExamples: [true, [true, { [OPTION_ANIMATIONS]: 20, [OPTION_STYLES]: 8, [OPTION_TEMPLATE]: 5 }]],
     options: {
       items: {
@@ -35,7 +50,7 @@ export class Rule extends Rules.AbstractRule {
       minLength: 0,
       type: 'array'
     },
-    optionsDescription: Utils.dedent`
+    optionsDescription: dedent`
       It can take an optional object with the properties '${OPTION_ANIMATIONS}', '${OPTION_STYLES}' and '${OPTION_TEMPLATE}':
       * \`${OPTION_ANIMATIONS}\` - number > 0 defining the maximum allowed inline lines for animations. Defaults to ${DEFAULT_ANIMATIONS_LIMIT}.
       * \`${OPTION_STYLES}\` - number > 0 defining the maximum allowed inline lines for styles. Defaults to ${DEFAULT_STYLES_LIMIT}.
@@ -43,13 +58,12 @@ export class Rule extends Rules.AbstractRule {
     `,
     rationale:
       "Large, inline templates and styles obscure the component's purpose and implementation, reducing readability and maintainability.",
-    ruleName: 'max-inline-declarations',
+    ruleName: 'component-max-inline-declarations',
     type: 'maintainability',
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING =
-    'Exceeds the maximum allowed inline lines for %s. Defined limit: %s / total lines: %s (https://angular.io/guide/styleguide#style-05-04)';
+  static readonly FAILURE_STRING = `Exceeds the maximum allowed inline lines for %s. Defined limit: %s / total lines: %s (${STYLE_GUIDE_LINK})`;
 
   apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(new MaxInlineDeclarationsWalker(sourceFile, this.getOptions()));
@@ -66,25 +80,6 @@ export class Rule extends Rules.AbstractRule {
     return super.isEnabled() && length >= minLength && length <= maxLength;
   }
 }
-
-export type PropertyType = 'animations' | 'styles' | 'template';
-export type PropertyPair = { [key in PropertyType]?: number };
-
-const generateFailure = (type: PropertyType, limit: number, value: number): string => {
-  return sprintf(Rule.FAILURE_STRING, type, limit, value);
-};
-
-export const getAnimationsFailure = (value: number, limit = DEFAULT_ANIMATIONS_LIMIT): string => {
-  return generateFailure(OPTION_ANIMATIONS, limit, value);
-};
-
-export const getStylesFailure = (value: number, limit = DEFAULT_STYLES_LIMIT): string => {
-  return generateFailure(OPTION_STYLES, limit, value);
-};
-
-export const getTemplateFailure = (value: number, limit = DEFAULT_TEMPLATE_LIMIT): string => {
-  return generateFailure(OPTION_TEMPLATE, limit, value);
-};
 
 export class MaxInlineDeclarationsWalker extends NgWalker {
   private readonly animationsLinesLimit = DEFAULT_ANIMATIONS_LIMIT;
@@ -126,9 +121,7 @@ export class MaxInlineDeclarationsWalker extends NgWalker {
   private validateInlineAnimations(metadata: ComponentMetadata): void {
     const linesCount = this.getInlineAnimationsLinesCount(metadata);
 
-    if (linesCount <= this.animationsLinesLimit) {
-      return;
-    }
+    if (linesCount <= this.animationsLinesLimit) return;
 
     const failureMessage = getAnimationsFailure(linesCount, this.animationsLinesLimit);
 
@@ -150,9 +143,7 @@ export class MaxInlineDeclarationsWalker extends NgWalker {
   private validateInlineStyles(metadata: ComponentMetadata): void {
     const linesCount = this.getInlineStylesLinesCount(metadata);
 
-    if (linesCount <= this.stylesLinesLimit) {
-      return;
-    }
+    if (linesCount <= this.stylesLinesLimit) return;
 
     const failureMessage = getStylesFailure(linesCount, this.stylesLinesLimit);
 
@@ -172,9 +163,7 @@ export class MaxInlineDeclarationsWalker extends NgWalker {
   private validateInlineTemplate(metadata: ComponentMetadata): void {
     const linesCount = this.getTemplateLinesCount(metadata);
 
-    if (linesCount <= this.templateLinesLimit) {
-      return;
-    }
+    if (linesCount <= this.templateLinesLimit) return;
 
     const failureMessage = getTemplateFailure(linesCount, this.templateLinesLimit);
 
