@@ -338,9 +338,9 @@ describe('failure', () => {
           source,
           options: ['check-interpolation']
         });
+        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
 
-        const res = Replacement.applyAll(source, [].concat.apply([], failures.map(f => f.getFix())));
-        expect(res).to.eq(`
+        expect(replacement).to.eq(`
           @Component({
             template: \`
               <div>  {{ foo }}   </div>
@@ -373,9 +373,9 @@ describe('failure', () => {
           source,
           options: ['check-interpolation']
         });
+        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
 
-        const res = Replacement.applyAll(source, [].concat.apply([], failures.map(f => f.getFix())));
-        expect(res).to.eq(`
+        expect(replacement).to.eq(`
           @Component({
             template: \`
               <div>
@@ -416,9 +416,9 @@ describe('failure', () => {
           source,
           options: ['check-interpolation']
         });
+        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
 
-        const res = Replacement.applyAll(source, [].concat.apply([], failures.map(f => f.getFix())));
-        expect(res).to.eq(`
+        expect(replacement).to.eq(`
           @Component({
             template: \`
               <div>
@@ -452,8 +452,11 @@ describe('failure', () => {
           options: ['check-interpolation']
         });
 
-        const res = Replacement.applyAll(source, failures[0].getFix());
-        expect(res).to.eq(`
+        if (!Array.isArray(failures)) return;
+
+        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+
+        expect(replacement).to.eq(`
           @Component({
             template: \`
               <div>  {{ foo }}   </div>
@@ -483,9 +486,9 @@ describe('failure', () => {
           source,
           options: ['check-interpolation']
         });
+        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
 
-        const res = Replacement.applyAll(source, [].concat.apply([], failures.map(f => f.getFix())));
-        expect(res).to.eq(`
+        expect(replacement).to.eq(`
           @Component({
             template: \`
               <div>{{ foo }}</div>
@@ -584,8 +587,11 @@ describe('failure', () => {
           options: ['check-semicolon']
         });
 
-        const res = Replacement.applyAll(source, failures[0].getFix());
-        expect(res).to.eq(`
+        if (!Array.isArray(failures)) return;
+
+        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+
+        expect(replacement).to.eq(`
           @Component({
             template: \` <div *ngIf="codelyzer; awesome"></div>
                                               ~~
@@ -611,8 +617,11 @@ describe('failure', () => {
           options: ['check-semicolon']
         });
 
-        const res = Replacement.applyAll(source, failures[0].getFix());
-        expect(res).to.eq(`
+        if (!Array.isArray(failures)) return;
+
+        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+
+        expect(replacement).to.eq(`
           @Component({
             template: \` <div *ngIf="date | date:'mm;ss'; fails"></div>
                                                         ~~
@@ -638,8 +647,11 @@ describe('failure', () => {
           options: ['check-semicolon']
         });
 
-        const res = Replacement.applyAll(source, failures[0].getFix());
-        expect(res).to.eq(`
+        if (!Array.isArray(failures)) return;
+
+        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+
+        expect(replacement).to.eq(`
           @Component({
             template: \` <div *ngFor="let item of list; trackBy trackById; let $index=index">{{ item.title }}</div>
                                                       ~~
@@ -668,9 +680,9 @@ describe('failure', () => {
           source,
           options: ['check-semicolon']
         });
+        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
 
-        const res = Replacement.applyAll(source, [].concat.apply([], failures.map(f => f.getFix())));
-        expect(res).to.eq(`
+        expect(replacement).to.eq(`
           @Component({
             template: \` <div *ngIf="date | date:'fullDate'; let dateString; else errorDate">{{ dateString }}</div>
                                                            ~~             ^^
@@ -701,8 +713,9 @@ describe('failure', () => {
           options: ['check-semicolon']
         });
 
-        const res = Replacement.applyAll(source, [].concat.apply([], failures.map(f => f.getFix())));
-        expect(res).to.eq(`
+        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+
+        expect(replacement).to.eq(`
           @Component({
             template: \` <div *ngIf='date | date:"fullDate"; let dateString; else errorDate'>{{ dateString }}</div>
                                                            ~~             ^^
@@ -730,8 +743,11 @@ describe('failure', () => {
           options: ['check-semicolon']
         });
 
-        const res = Replacement.applyAll(source, failures[0].getFix());
-        expect(res).to.eq(`
+        if (!Array.isArray(failures)) return;
+
+        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+
+        expect(replacement).to.eq(`
           @Component({
             template: \` <div *ngIf="date | date:'fullDate'; let dateString; else errorDate;">{{ dateString }}</div>
                                                                            ~~
@@ -759,8 +775,11 @@ describe('failure', () => {
           options: ['check-semicolon']
         });
 
-        const res = Replacement.applyAll(source, failures[0].getFix());
-        expect(res).to.eq(`
+        if (!Array.isArray(failures)) return;
+
+        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+
+        expect(replacement).to.eq(`
           @Component({
             template: \` <div *ngIf='date | date:"fullDate"; let dateString; else errorDate;'>{{ dateString }}</div>
                                                                            ~~
@@ -795,8 +814,11 @@ describe('pipes', () => {
       options: ['check-pipe']
     });
 
-    const res = Replacement.applyAll(source, failures[0].getFix());
-    expect(res).to.eq(`
+    if (!Array.isArray(failures)) return;
+
+    const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+
+    expect(replacement).to.eq(`
       @Component({
         selector: 'foo',
         template: \`
@@ -830,8 +852,11 @@ describe('pipes', () => {
       options: ['check-pipe']
     });
 
-    const res = Replacement.applyAll(source, failures[0].getFix());
-    expect(res).to.eq(`
+    if (!Array.isArray(failures)) return;
+
+    const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+
+    expect(replacement).to.eq(`
       @Component({
         selector: 'foo',
         template: \`
@@ -865,8 +890,11 @@ describe('pipes', () => {
       options: ['check-pipe']
     });
 
-    const res = Replacement.applyAll(source, failures[0].getFix());
-    expect(res).to.eq(`
+    if (!Array.isArray(failures)) return;
+
+    const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+
+    expect(replacement).to.eq(`
       @Component({
         selector: 'foo',
         template: \`
@@ -900,8 +928,11 @@ describe('pipes', () => {
       options: ['check-pipe']
     });
 
-    const res = Replacement.applyAll(source, failures[0].getFix());
-    expect(res).to.eq(`
+    if (!Array.isArray(failures)) return;
+
+    const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+
+    expect(replacement).to.eq(`
       @Component({
         selector: 'foo',
         template: \`
@@ -937,9 +968,9 @@ describe('pipes', () => {
       source,
       options: ['check-pipe']
     });
-    const fixes = [].concat.apply([], failures.map(f => f.getFix()));
-    const res = Replacement.applyAll(source, fixes);
-    expect(res).to.eq(`
+    const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+
+    expect(replacement).to.eq(`
       @Component({
         selector: 'foo',
         template: \`
@@ -973,8 +1004,11 @@ describe('pipes', () => {
       options: ['check-pipe']
     });
 
-    const res = Replacement.applyAll(source, failures[0].getFix());
-    expect(res).to.eq(`
+    if (!Array.isArray(failures)) return;
+
+    const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+
+    expect(replacement).to.eq(`
       @Component({
         selector: 'foo',
         template: \`
@@ -1010,8 +1044,11 @@ describe('pipes', () => {
       options: ['check-pipe']
     });
 
-    const res = Replacement.applyAll(source, failures[0].getFix());
-    expect(res).to.eq(`
+    if (!Array.isArray(failures)) return;
+
+    const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+
+    expect(replacement).to.eq(`
       @Component({
         selector: 'foo',
         template: \`
@@ -1061,9 +1098,9 @@ describe('angular-whitespace multiple checks', () => {
         source,
         options: ['check-interpolation', 'check-pipe']
       });
+      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
 
-      const res = Replacement.applyAll(source, [].concat.apply([], failures.map(f => f.getFix())));
-      expect(res).to.eq(`
+      expect(replacement).to.eq(`
         @Component({
           template: \`
             <h4>{{ title | translate }}</h4>

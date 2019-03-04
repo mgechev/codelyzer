@@ -26,11 +26,11 @@ export class Rule extends AbstractRule {
   static readonly FAILURE_STRING = 'The selector of the component "%s" is mandatory';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(new UseComponentSelectorValidatorWalker(sourceFile, this.getOptions()));
+    return this.applyWithWalker(new UseComponentSelectorWalker(sourceFile, this.getOptions()));
   }
 }
 
-class UseComponentSelectorValidatorWalker extends NgWalker {
+class UseComponentSelectorWalker extends NgWalker {
   protected visitNgComponent(metadata: ComponentMetadata): void {
     this.validateComponent(metadata);
     super.visitNgComponent(metadata);
