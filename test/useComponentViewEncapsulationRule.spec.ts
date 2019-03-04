@@ -13,7 +13,7 @@ describe(ruleName, () => {
         @Component({
           encapsulation: ViewEncapsulation.None,
                          ~~~~~~~~~~~~~~~~~~~~~~
-          selector: 'sg-foo-bar',
+          selector: 'app-foo-bar',
         })
         export class Test {}
       `;
@@ -26,22 +26,33 @@ describe(ruleName, () => {
   });
 
   describe('success', () => {
-    it('should succeed if ViewEncapsulation.Native is set', () => {
+    it('should succeed if ViewEncapsulation.Emulated is set', () => {
       const source = `
         @Component({
-          encapsulation: ViewEncapsulation.Native,
-          selector: 'sg-foo-bar'
+          encapsulation: ViewEncapsulation.Emulated,
+          selector: 'app-foo-bar'
         })
         export class Test {}
       `;
       assertSuccess(ruleName, source);
     });
 
-    it('should succeed if ViewEncapsulation.Emulated is set', () => {
+    it('should succeed if ViewEncapsulation.Native is set', () => {
       const source = `
         @Component({
-          encapsulation: ViewEncapsulation.Emulated,
-          selector: 'sg-foo-bar'
+          encapsulation: ViewEncapsulation.Native,
+          selector: 'app-foo-bar'
+        })
+        export class Test {}
+      `;
+      assertSuccess(ruleName, source);
+    });
+
+    it('should succeed if ViewEncapsulation.ShadowDom is set', () => {
+      const source = `
+        @Component({
+          encapsulation: ViewEncapsulation.ShadowDom,
+          selector: 'app-foo-bar'
         })
         export class Test {}
       `;
@@ -51,7 +62,7 @@ describe(ruleName, () => {
     it('should succeed if no ViewEncapsulation is explicitly set', () => {
       const source = `
         @Component({
-          selector: 'sg-foo-bar'
+          selector: 'app-foo-bar'
         })
         export class Test {}
       `;
