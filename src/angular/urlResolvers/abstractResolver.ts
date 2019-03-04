@@ -1,47 +1,27 @@
-import * as ts from 'typescript';
-import { getDecoratorArgument, isStringLiteralLike } from '../../util/utils';
+import { Decorator, isArrayLiteralExpression } from 'typescript';
+import { getDecoratorPropertyInitializer, isStringLiteralLike } from '../../util/utils';
 
 export interface MetadataUrls {
-  templateUrl: string;
-  styleUrls: string[];
+  readonly styleUrls: string[];
+  readonly templateUrl: string;
 }
 
 export abstract class AbstractResolver {
-  abstract resolve(decorator: ts.Decorator): MetadataUrls | null;
+  abstract resolve(decorator: Decorator): MetadataUrls | null;
 
-  protected getTemplateUrl(decorator: ts.Decorator): string | undefined {
-    const arg = getDecoratorArgument(decorator);
+  protected getTemplateUrl(decorator: Decorator): MetadataUrls['templateUrl'] | undefined {
+    const templateUrlExpression = getDecoratorPropertyInitializer(decorator, 'templateUrl');
 
-    if (!arg) {
-      return undefined;
-    }
+    if (!templateUrlExpression || !isStringLiteralLike(templateUrlExpression)) return undefined;
 
-    const prop = arg.properties.find(
-      p => (p.name as ts.StringLiteral).text === 'templateUrl' && isStringLiteralLike((p as ts.PropertyAssignment).initializer)
-    );
-
-    // We know that it's has an initializer because it's either
-    // a template string or a string literal.
-    return prop ? ((prop as ts.PropertyAssignment).initializer as ts.StringLiteral).text : undefined;
+    return templateUrlExpression.text;
   }
 
-  protected getStyleUrls(decorator: ts.Decorator): string[] {
-    const arg = getDecoratorArgument(decorator);
+  protected getStyleUrls(decorator: Decorator): MetadataUrls['styleUrls'] {
+    const styleUrlsExpression = getDecoratorPropertyInitializer(decorator, 'styleUrls');
 
-    if (!arg) {
-      return [];
-    }
+    if (!styleUrlsExpression || !isArrayLiteralExpression(styleUrlsExpression)) return [];
 
-    const prop = arg.properties.find(
-      p => (p.name as any).text === 'styleUrls' && ts.isPropertyAssignment(p) && ts.isArrayLiteralExpression(p.initializer)
-    );
-
-    if (prop) {
-      return ((prop as ts.PropertyAssignment).initializer as ts.ArrayLiteralExpression).elements
-        .filter(isStringLiteralLike)
-        .map(e => (e as ts.StringLiteral).text);
-    }
-
-    return [];
+    return styleUrlsExpression.elements.filter(isStringLiteralLike).map(element => element.text);
   }
 }

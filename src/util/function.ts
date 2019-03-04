@@ -26,7 +26,7 @@ export class Maybe<T> {
     return t0.bind(_t0 => t1.fmap(_t1 => [_t0, _t1] as [T0, T1]));
   }
 
-  private constructor(private t: T | undefined) {}
+  private constructor(private readonly t: T | undefined) {}
 
   bind<R>(fn: F1<T, Maybe<R>>): Maybe<R | undefined> {
     return nullOrUndef(this.t) ? Maybe.nothing : fn(this.t);
@@ -36,11 +36,11 @@ export class Maybe<T> {
     return this.bind(t => Maybe.lift(fn(t!)));
   }
 
-  get isNothing() {
+  get isNothing(): boolean {
     return nullOrUndef(this.t);
   }
 
-  get isSomething() {
+  get isSomething(): boolean {
     return !nullOrUndef(this.t);
   }
 
@@ -59,7 +59,7 @@ export class Maybe<T> {
 
 export function unwrapFirst<T>(ts: Maybe<T>[]): T | undefined {
   const f = ts.find((t: Maybe<T>) => t.isSomething);
-  if (!!f) {
+  if (f) {
     return f.unwrap();
   }
   return undefined;

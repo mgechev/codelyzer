@@ -1,7 +1,7 @@
-import * as ts from 'typescript';
-import { RuleWalker, RuleFailure, IOptions, Fix, Replacement } from 'tslint';
-import { CodeWithSourceMap } from './metadata';
 import { SourceMapConsumer } from 'source-map';
+import { Fix, IOptions, Replacement, RuleFailure, RuleWalker } from 'tslint';
+import * as ts from 'typescript';
+import { CodeWithSourceMap } from './metadata';
 
 const LineFeed = 0x0a;
 const CarriageReturn = 0x0d;
@@ -39,7 +39,7 @@ function binarySearch<T>(array: T[], value: T, comparer?: (v1: T, v2: T) => numb
 }
 
 // Apply caching and do not recompute every time
-function getLineAndCharacterOfPosition(sourceFile: string, position: number) {
+function getLineAndCharacterOfPosition(sourceFile: string, position: number): ts.LineAndCharacter {
   return computeLineAndCharacterOfPosition(computeLineStarts(sourceFile), position);
 }
 
@@ -52,14 +52,14 @@ function computePositionOfLineAndCharacter(lineStarts: number[], line: number, c
   return lineStarts[line] + character;
 }
 
-function computeLineAndCharacterOfPosition(lineStarts: number[], position: number) {
+function computeLineAndCharacterOfPosition(lineStarts: number[], position: number): ts.LineAndCharacter {
   let lineNumber = binarySearch(lineStarts, position);
   if (lineNumber < 0) {
     lineNumber = ~lineNumber - 1;
   }
   return {
-    line: lineNumber,
-    character: position - lineStarts[lineNumber]
+    character: position - lineStarts[lineNumber],
+    line: lineNumber
   };
 }
 
@@ -91,9 +91,10 @@ function computeLineStarts(text: string): number[] {
   return result;
 }
 
+// tslint:disable-next-line: deprecation
 export class SourceMappingVisitor extends RuleWalker {
   parentAST: any;
-  private consumer: SourceMapConsumer;
+  private readonly consumer: SourceMapConsumer;
 
   constructor(sourceFile: ts.SourceFile, options: IOptions, public codeWithMap: CodeWithSourceMap, protected basePosition: number) {
     super(sourceFile, options);
@@ -113,7 +114,7 @@ export class SourceMappingVisitor extends RuleWalker {
     return super.createReplacement(start, length, replacement);
   }
 
-  getSourcePosition(pos: number) {
+  getSourcePosition(pos: number): number {
     if (this.consumer) {
       try {
         let absPos = getLineAndCharacterOfPosition(this.codeWithMap.code, pos);
@@ -136,7 +137,7 @@ export class SourceMappingVisitor extends RuleWalker {
     return this;
   }
 
-  private getMappedInterval(start: number, length: number) {
+  private getMappedInterval(start: number, length: number): { length: number; start: number } {
     let end = start + length;
     start = this.getSourcePosition(start);
     end = this.getSourcePosition(end);

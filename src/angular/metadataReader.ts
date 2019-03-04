@@ -1,9 +1,9 @@
 import * as ts from 'typescript';
-import { callExpression, decoratorArgument, getStringInitializerFromProperty, hasProperties, withIdentifier } from '../util/astQuery';
+import { callExpression, decoratorArgument, hasProperties, withIdentifier } from '../util/astQuery';
 import { ifTrue, listToMaybe, Maybe, unwrapFirst } from '../util/function';
 import { logger } from '../util/logger';
 import { getAnimations, getInlineStyle, getTemplate } from '../util/ngQuery';
-import { isStringLiteralLike, maybeNodeArray } from '../util/utils';
+import { getDecoratorPropertyInitializer, isStringLiteralLike, maybeNodeArray } from '../util/utils';
 import { Config } from './config';
 import { FileResolver } from './fileResolver/fileResolver';
 import { AnimationMetadata, CodeWithSourceMap, ComponentMetadata, DirectiveMetadata, StyleMetadata, TemplateMetadata } from './metadata';
@@ -11,7 +11,7 @@ import { AbstractResolver, MetadataUrls } from './urlResolvers/abstractResolver'
 import { PathResolver } from './urlResolvers/pathResolver';
 import { UrlResolver } from './urlResolvers/urlResolver';
 
-const normalizeTransformed = (t: CodeWithSourceMap) => {
+const normalizeTransformed = (t: CodeWithSourceMap): CodeWithSourceMap => {
   if (!t.map) {
     t.source = t.code;
   }
@@ -22,8 +22,8 @@ const normalizeTransformed = (t: CodeWithSourceMap) => {
  * For async implementation https://gist.github.com/mgechev/6f2245c0dfb38539cc606ea9211ecb37
  */
 export class MetadataReader {
-  constructor(private _fileResolver: FileResolver, private _urlResolver?: AbstractResolver) {
-    this._urlResolver = this._urlResolver || new UrlResolver(new PathResolver());
+  constructor(private readonly fileResolver: FileResolver, private readonly urlResolver?: AbstractResolver) {
+    this.urlResolver = this.urlResolver || new UrlResolver(new PathResolver());
   }
 
   read(d: ts.ClassDeclaration): DirectiveMetadata | undefined {
@@ -49,17 +49,16 @@ export class MetadataReader {
   }
 
   protected readDirectiveMetadata(d: ts.ClassDeclaration, dec: ts.Decorator): DirectiveMetadata {
-    const selector = this.getDecoratorArgument(dec)
-      .bind(expr => getStringInitializerFromProperty('selector', expr!.properties))
-      .fmap(initializer => initializer!.text);
+    const selectorExpression = getDecoratorPropertyInitializer(dec, 'selector');
+    const selector = selectorExpression && isStringLiteralLike(selectorExpression) ? selectorExpression.text : undefined;
 
-    return new DirectiveMetadata(d, dec, selector.unwrap());
+    return new DirectiveMetadata(d, dec, selector);
   }
 
   protected readComponentMetadata(d: ts.ClassDeclaration, dec: ts.Decorator): ComponentMetadata {
     const expr = this.getDecoratorArgument(dec);
     const directiveMetadata = this.readDirectiveMetadata(d, dec);
-    const external_M = expr.fmap(() => this._urlResolver!.resolve(dec));
+    const external_M = expr.fmap(() => this.urlResolver!.resolve(dec));
     const animations_M = external_M.bind(() => this.readComponentAnimationsMetadata(dec));
     const style_M = external_M.bind(external => this.readComponentStylesMetadata(dec, external!));
     const template_M = external_M.bind(external => this.readComponentTemplateMetadata(dec, external!));
@@ -137,7 +136,7 @@ export class MetadataReader {
 
   private _resolve(url: string): Maybe<string | undefined> {
     try {
-      return Maybe.lift(this._fileResolver.resolve(url));
+      return Maybe.lift(this.fileResolver.resolve(url));
     } catch {
       logger.info('Cannot read file' + url);
       return Maybe.nothing;

@@ -1,17 +1,32 @@
 import { assert } from 'chai';
-import { ILinterOptions, IOptions, Linter, LintResult, RuleFailure } from 'tslint/lib';
+import { ILinterOptions, IOptions, IRuleMetadata, Linter, LintResult, RuleFailure } from 'tslint/lib';
 import { SourceFile } from 'typescript/lib/typescript';
-import { loadRules, convertRuleOptions } from './utils';
+import { convertRuleOptions, loadRules } from './utils';
 
-interface ISourcePosition {
-  line: number;
-  character: number;
+interface Failure {
+  readonly char: string;
+  readonly msg: string;
 }
 
-export interface IExpectedFailure {
-  message: string;
-  startPosition: ISourcePosition;
-  endPosition: ISourcePosition;
+interface SourcePosition {
+  readonly character: number;
+  readonly line: number;
+}
+
+export interface ExpectedFailure {
+  readonly endPosition: SourcePosition;
+  readonly message: string;
+  readonly startPosition: SourcePosition;
+}
+
+export interface AssertConfig extends Pick<IRuleMetadata, 'ruleName'> {
+  readonly message?: string;
+  readonly options?: any;
+  readonly source: string;
+}
+
+export interface AssertMultipleConfigs extends Pick<AssertConfig, 'options' | 'ruleName' | 'source'> {
+  readonly failures: ReadonlyArray<Failure>;
 }
 
 /**
@@ -27,59 +42,44 @@ export interface IExpectedFailure {
  * @param options additional options for the lint rule
  * @returns {LintResult} the result of linting
  */
-function lint(ruleName: string, source: string | SourceFile, options: any): LintResult {
-  let configuration = {
+const lint = (ruleName: AssertConfig['ruleName'], source: string | SourceFile, ruleArguments: AssertConfig['options'] = []): LintResult => {
+  const rulesMap = new Map<string, Partial<IOptions>>([[ruleName, { ruleName, ruleArguments, disabledIntervals: [] }]]);
+  const rulesDirectory = './dist/src';
+  const configuration = {
     extends: [],
-    rules: new Map<string, Partial<IOptions>>(),
     jsRules: new Map<string, Partial<IOptions>>(),
+    rules: rulesMap,
     rulesDirectory: []
   };
-  if (!options) {
-    options = [];
-  }
-  const ops: Partial<IOptions> = { ruleName, ruleArguments: options, disabledIntervals: [] };
-  configuration.rules.set(ruleName, ops);
   const linterOptions: ILinterOptions = {
+    fix: false,
     formatter: 'json',
-    rulesDirectory: './dist/src',
     formattersDirectory: undefined,
-    fix: false
+    rulesDirectory
   };
+  const linter = new Linter(linterOptions, undefined);
 
-  let linter = new Linter(linterOptions, undefined);
   if (typeof source === 'string') {
     linter.lint('file.ts', source, configuration);
-  } else {
-    const rules = loadRules(convertRuleOptions(configuration.rules), linterOptions.rulesDirectory, false);
-    const res = [].concat.apply([], rules.map(r => r.apply(source))) as RuleFailure[];
-    const errCount = res.filter(r => !r.getRuleSeverity || r.getRuleSeverity() === 'error').length;
 
-    return {
-      errorCount: errCount,
-      warningCount: res.length - errCount,
-      output: '',
-      format: '',
-      fixes: [].concat.apply(res.map(r => r.getFix())),
-      failures: res
-    };
+    return linter.getResult();
   }
 
-  return linter.getResult();
-}
+  const rules = loadRules(convertRuleOptions(rulesMap), rulesDirectory, false);
+  const failures = rules.reduce<RuleFailure[]>((previousValue, currentValue) => previousValue.concat(currentValue.apply(source)), []);
+  const errorCount = failures.filter(r => !r.getRuleSeverity || r.getRuleSeverity() === 'error').length;
+  const fixes = ([] as RuleFailure[]).concat.apply(failures.map(r => r.getFix()));
+  const warningCount = failures.length - errorCount;
 
-export interface AssertConfig {
-  ruleName: string;
-  source: string;
-  options?: any;
-  message?: string;
-}
-
-export interface AssertMultipleConfigs {
-  ruleName: string;
-  source: string;
-  options?: any;
-  failures: { char: string; msg: string }[];
-}
+  return {
+    errorCount,
+    failures,
+    fixes,
+    format: '',
+    output: '',
+    warningCount
+  };
+};
 
 /**
  * When testing a failure, we also test to see if the linter will report the correct place where
@@ -109,51 +109,54 @@ export interface AssertMultipleConfigs {
  *                   failures where there are multiple invalid characters.
  * @returns {{source: string, failure: {message: string, startPosition: null, endPosition: any}}}
  */
-const parseInvalidSource = (source: string, message: string, specialChar = '~', otherChars: string[] = []) => {
-  otherChars.forEach(char => source.replace(new RegExp(char, 'g'), ' '));
-
-  let start;
-  let end;
+const parseInvalidSource = (
+  source: AssertConfig['source'],
+  message: ExpectedFailure['message'],
+  specialChar = '~'
+): { failure: ExpectedFailure; source: AssertConfig['source'] } => {
+  let startPosition;
   let line = 0;
   let col = 0;
   let lastCol = 0;
   let lastLine = 0;
 
   for (let i = 0; i < source.length; i += 1) {
-    if (source[i] === specialChar && source[i - 1] !== '/' && start === undefined) {
-      start = {
-        line: line - 1,
-        character: col
+    const currentSource = source[i];
+    const previousSource = source[i - 1];
+
+    if (currentSource === specialChar && previousSource !== '/' && startPosition === undefined) {
+      startPosition = {
+        character: col,
+        line: line - 1
       };
     }
 
-    if (source[i] === '\n') {
+    if (currentSource === '\n') {
       col = 0;
       line += 1;
     } else {
       col += 1;
     }
 
-    if (source[i] === specialChar && source[i - 1] !== '/') {
+    if (currentSource === specialChar && previousSource !== '/') {
       lastCol = col;
       lastLine = line - 1;
     }
   }
 
-  end = {
-    line: lastLine,
-    character: lastCol
+  const endPosition: SourcePosition = {
+    character: lastCol,
+    line: lastLine
   };
-
-  source = source.replace(new RegExp(specialChar, 'g'), '');
+  const newSource = source.replace(new RegExp(specialChar, 'g'), '');
 
   return {
-    source,
     failure: {
+      endPosition,
       message,
-      startPosition: start,
-      endPosition: end
-    }
+      startPosition
+    },
+    source: newSource
   };
 };
 
@@ -163,7 +166,7 @@ const parseInvalidSource = (source: string, message: string, specialChar = '~', 
  *
  * @param config
  */
-export function assertAnnotated(config: AssertConfig): RuleFailure[] | void {
+export const assertAnnotated = (config: AssertConfig): RuleFailure[] | void => {
   const { message, options, ruleName, source: sourceConfig } = config;
 
   if (message) {
@@ -173,44 +176,35 @@ export function assertAnnotated(config: AssertConfig): RuleFailure[] | void {
   }
 
   return assertSuccess(ruleName, sourceConfig, options);
-}
+};
 
 /**
  * Helper function which asserts multiple annotated failures.
  * @param configs
  */
-export function assertMultipleAnnotated(configs: AssertMultipleConfigs): RuleFailure[] {
+export const assertMultipleAnnotated = (configs: AssertMultipleConfigs): RuleFailure[] => {
   const { failures, options, ruleName, source } = configs;
 
-  return [].concat.apply(
-    [],
-    failures
-      .map((failure, index) => {
-        const otherCharacters = failures.map(message => message.char).filter(x => x !== failure.char);
+  return failures.reduce<RuleFailure[]>((previousValue, currentValue, index) => {
+    const { failure: parsedFailure, source: parsedSource } = parseInvalidSource(source, currentValue.msg, currentValue.char);
+    const { character: parsedFailureEndChar, line: parsedFailureEndLine } = parsedFailure.endPosition;
+    const { character: parsedFailureStartChar, line: parsedFailureStartLine } = parsedFailure.startPosition;
 
-        if (!failure.msg) {
-          assertSuccess(ruleName, source, options);
+    const newFailures = assertFailure(ruleName, parsedSource, parsedFailure, options, index).filter(ruleFailure => {
+      const { character: ruleFailureEndChar, line: ruleFailureEndLine } = ruleFailure.getEndPosition().getLineAndCharacter();
+      const { character: ruleFailureStartChar, line: ruleFailureStartLine } = ruleFailure.getStartPosition().getLineAndCharacter();
 
-          return null;
-        }
+      return (
+        ruleFailureEndChar === parsedFailureEndChar &&
+        ruleFailureEndLine === parsedFailureEndLine &&
+        ruleFailureStartChar === parsedFailureStartChar &&
+        ruleFailureStartLine === parsedFailureStartLine
+      );
+    });
 
-        const { failure: parsedFailure, source: parsedSource } = parseInvalidSource(source, failure.msg, failure.char, otherCharacters);
-
-        return (assertFailure(ruleName, parsedSource, parsedFailure, options, index) || []).filter(f => {
-          const { character: startChar, line: startLine } = f.getStartPosition().getLineAndCharacter();
-          const { character: endChar, line: endLine } = f.getEndPosition().getLineAndCharacter();
-
-          return (
-            startChar === parsedFailure.startPosition.character &&
-            startLine === parsedFailure.endPosition.line &&
-            endChar === parsedFailure.endPosition.character &&
-            endLine === parsedFailure.endPosition.line
-          );
-        });
-      })
-      .filter(r => r !== null)
-  );
-}
+    return previousValue.concat(newFailures);
+  }, []);
+};
 
 /**
  * A helper function used in specs to assert a failure (meaning that the code contains a lint error).
@@ -224,16 +218,16 @@ export function assertMultipleAnnotated(configs: AssertMultipleConfigs): RuleFai
  *                       This is 0-based index of the error that will be tested for. 0 by default.
  * @returns {any}
  */
-export function assertFailure(
-  ruleName: string,
+export const assertFailure = (
+  ruleName: AssertConfig['ruleName'],
   source: string | SourceFile,
-  fail: IExpectedFailure,
-  options?: any,
+  fail: ExpectedFailure,
+  options?: AssertConfig['options'],
   onlyNthFailure = 0
-): RuleFailure[] {
+): RuleFailure[] => {
   const result = lint(ruleName, source, options);
 
-  assert(result.failures && result.failures.length > 0, 'no failures');
+  assert(result.failures.length > 0, 'no failures');
 
   const ruleFail = result.failures[onlyNthFailure];
 
@@ -242,7 +236,7 @@ export function assertFailure(
   assert.deepEqual(fail.endPosition, ruleFail.getEndPosition().getLineAndCharacter(), "end char doesn't match");
 
   return result.failures;
-}
+};
 
 /**
  * A helper function used in specs to assert more than one failure.
@@ -253,16 +247,22 @@ export function assertFailure(
  * @param fails
  * @param options
  */
-export function assertFailures(ruleName: string, source: string | SourceFile, fails: IExpectedFailure[], options?: any) {
+export const assertFailures = (
+  ruleName: AssertConfig['ruleName'],
+  source: string | SourceFile,
+  fails: ExpectedFailure[],
+  options?: AssertConfig['options']
+): void => {
   const result = lint(ruleName, source, options);
 
-  assert(result.failures && result.failures.length > 0, 'no failures');
+  assert(result.failures.length > 0, 'no failures');
+
   result.failures.forEach((ruleFail, index) => {
     assert.equal(fails[index].message, ruleFail.getFailure(), "error messages don't match");
     assert.deepEqual(fails[index].startPosition, ruleFail.getStartPosition().getLineAndCharacter(), "start char doesn't match");
     assert.deepEqual(fails[index].endPosition, ruleFail.getEndPosition().getLineAndCharacter(), "end char doesn't match");
   });
-}
+};
 
 /**
  * A helper function used in specs to assert a success (meaning that there are no lint errors).
@@ -271,7 +271,8 @@ export function assertFailures(ruleName: string, source: string | SourceFile, fa
  * @param source
  * @param options
  */
-export function assertSuccess(ruleName: string, source: string | SourceFile, options?: any) {
+export const assertSuccess = (ruleName: AssertConfig['ruleName'], source: string | SourceFile, options?: AssertConfig['options']): void => {
   const result = lint(ruleName, source, options);
-  assert.isTrue(result && result.failures.length === 0);
-}
+
+  assert.isTrue(result.failures.length === 0);
+};
