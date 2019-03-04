@@ -5,12 +5,7 @@ import { SourceFile } from 'typescript';
 import { ComponentMetadata } from './angular/metadata';
 import { NgWalker } from './angular/ngWalker';
 
-interface FailureParameters {
-  readonly className: string;
-}
-
-export const getFailureMessage = (failureParameters: FailureParameters): string =>
-  sprintf(Rule.FAILURE_STRING, failureParameters.className);
+export const getFailureMessage = (): string => sprintf(Rule.FAILURE_STRING);
 
 export class Rule extends AbstractRule {
   static readonly metadata: IRuleMetadata = {
@@ -23,7 +18,7 @@ export class Rule extends AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'The selector of the component "%s" is mandatory';
+  static readonly FAILURE_STRING = 'A component must have a selector';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(new UseComponentSelectorValidatorWalker(sourceFile, this.getOptions()));
@@ -45,7 +40,7 @@ class UseComponentSelectorValidatorWalker extends NgWalker {
 
     if (metadataSelector || !controllerName) return;
 
-    const failure = getFailureMessage({ className: controllerName.text });
+    const failure = getFailureMessage();
 
     this.addFailureAtNode(metadataDecorator, failure);
   }

@@ -19,7 +19,7 @@ describe(ruleName, () => {
           }
         `;
         assertAnnotated({
-          message: getFailureMessage('label'),
+          message: getFailureMessage(),
           ruleName,
           source
         });
@@ -36,7 +36,7 @@ describe(ruleName, () => {
           }
         `;
         assertAnnotated({
-          message: getFailureMessage('label'),
+          message: getFailureMessage(),
           ruleName,
           source
         });
@@ -55,7 +55,7 @@ describe(ruleName, () => {
           }
         `;
         assertAnnotated({
-          message: getFailureMessage('label'),
+          message: getFailureMessage(),
           ruleName,
           source
         });
@@ -72,7 +72,7 @@ describe(ruleName, () => {
           }
         `;
         assertAnnotated({
-          message: getFailureMessage('label'),
+          message: getFailureMessage(),
           ruleName,
           source
         });
@@ -89,7 +89,7 @@ describe(ruleName, () => {
           }
         `;
         assertAnnotated({
-          message: getFailureMessage('label'),
+          message: getFailureMessage(),
           ruleName,
           source
         });
@@ -106,7 +106,7 @@ describe(ruleName, () => {
           }
         `;
         assertAnnotated({
-          message: getFailureMessage('ariaBusy'),
+          message: getFailureMessage(),
           ruleName,
           source
         });
@@ -123,7 +123,7 @@ describe(ruleName, () => {
           }
         `;
         assertAnnotated({
-          message: getFailureMessage('colors'),
+          message: getFailureMessage(),
           ruleName,
           source
         });
@@ -140,7 +140,7 @@ describe(ruleName, () => {
           }
         `;
         assertAnnotated({
-          message: getFailureMessage('color'),
+          message: getFailureMessage(),
           ruleName,
           source
         });

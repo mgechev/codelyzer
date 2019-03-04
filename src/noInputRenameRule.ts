@@ -18,7 +18,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   };
 
   static readonly FAILURE_STRING = Lint.Utils.dedent`
-    The directive input property "%s" should not be renamed.
+    The directive input property should not be renamed.
     However, you should use an alias when the directive name is also an input property, and the directive name
     doesn't describe the property. In this last case, you can disable this rule with \`tslint:disable-next-line:no-input-rename\`.
   `;
@@ -28,8 +28,8 @@ export class Rule extends Lint.Rules.AbstractRule {
   }
 }
 
-export const getFailureMessage = (propertyName: string): string => {
-  return sprintf(Rule.FAILURE_STRING, propertyName);
+export const getFailureMessage = (): string => {
+  return sprintf(Rule.FAILURE_STRING);
 };
 
 // source: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques
@@ -101,6 +101,6 @@ export class InputMetadataWalker extends NgWalker {
       return;
     }
 
-    this.addFailureAtNode(property, getFailureMessage(memberName));
+    this.addFailureAtNode(property, getFailureMessage());
   }
 }

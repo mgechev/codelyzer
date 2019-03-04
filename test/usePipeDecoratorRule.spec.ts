@@ -12,7 +12,7 @@ describe('use-pipe-decorator', () => {
       `;
       assertAnnotated({
         ruleName: 'use-pipe-decorator',
-        message: 'The NewPipe class implements the PipeTransform interface, so it should use the @Pipe decorator',
+        message: 'A class which implements the PipeTransform interface should use the @Pipe decorator',
         source
       });
     });
@@ -26,7 +26,7 @@ describe('use-pipe-decorator', () => {
       `;
       assertAnnotated({
         ruleName: 'use-pipe-decorator',
-        message: 'The Test class implements the PipeTransform interface, so it should use the @Pipe decorator',
+        message: 'A class which implements the PipeTransform interface should use the @Pipe decorator',
         source
       });
     });
@@ -41,7 +41,7 @@ describe('use-pipe-decorator', () => {
       `;
       assertAnnotated({
         ruleName: 'use-pipe-decorator',
-        message: 'The Test class implements the PipeTransform interface, so it should use the @Pipe decorator',
+        message: 'A class which implements the PipeTransform interface should use the @Pipe decorator',
         source
       });
     });

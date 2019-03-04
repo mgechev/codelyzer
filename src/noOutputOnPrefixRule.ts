@@ -16,7 +16,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'The output property "%s" should not be prefixed with on';
+  static readonly FAILURE_STRING = 'Output property should not be prefixed with on';
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new OutputWalker(sourceFile, this.getOptions()));

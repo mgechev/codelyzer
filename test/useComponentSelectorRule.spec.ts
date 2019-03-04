@@ -13,9 +13,7 @@ describe(ruleName, () => {
         ~~~~~~~~~~~~
         class Test {}
       `;
-      const message = getFailureMessage({
-        className: 'Test'
-      });
+      const message = getFailureMessage();
       assertAnnotated({
         message,
         ruleName,
@@ -32,9 +30,7 @@ describe(ruleName, () => {
         ~~
         class Test {}
       `;
-      const message = getFailureMessage({
-        className: 'Test'
-      });
+      const message = getFailureMessage();
       assertAnnotated({
         message,
         ruleName,
@@ -51,9 +47,7 @@ describe(ruleName, () => {
         ~~
         class Test {}
       `;
-      const message = getFailureMessage({
-        className: 'Test'
-      });
+      const message = getFailureMessage();
       assertAnnotated({
         message,
         ruleName,
@@ -70,9 +64,7 @@ describe(ruleName, () => {
         ~~
         class Test {}
       `;
-      const message = getFailureMessage({
-        className: 'Test'
-      });
+      const message = getFailureMessage();
       assertAnnotated({
         message,
         ruleName,

@@ -28,7 +28,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static FAILURE_STRING = `The name of a Pipe decorator should start with prefix %s, however its value is "%s"`;
+  static FAILURE_STRING = `The name of a Pipe decorator should start with prefix %s`;
 
   prefix: string;
   private prefixChecker: Function;
@@ -89,7 +89,7 @@ export class ClassMetadataWalker extends NgWalker {
       const isValid = this.rule.validatePrefix(propName);
 
       if (!isValid) {
-        this.addFailureAtNode(property, sprintf(Rule.FAILURE_STRING, this.rule.prefix, propName));
+        this.addFailureAtNode(property, sprintf(Rule.FAILURE_STRING, this.rule.prefix));
       }
     }
   }

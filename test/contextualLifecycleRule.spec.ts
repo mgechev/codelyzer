@@ -17,10 +17,7 @@ describe(ruleName, () => {
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           }
         `;
-        const message = getFailureMessage({
-          metadataType: MetadataTypes.Injectable,
-          methodName: LifecycleMethods.ngAfterContentChecked
-        });
+        const message = getFailureMessage(MetadataTypes.Injectable);
         assertAnnotated({
           message,
           ruleName,
@@ -36,10 +33,7 @@ describe(ruleName, () => {
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           }
         `;
-        const message = getFailureMessage({
-          metadataType: MetadataTypes.Injectable,
-          methodName: LifecycleMethods.ngAfterContentInit
-        });
+        const message = getFailureMessage(MetadataTypes.Injectable);
         assertAnnotated({
           message,
           ruleName,
@@ -55,10 +49,7 @@ describe(ruleName, () => {
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           }
         `;
-        const message = getFailureMessage({
-          metadataType: MetadataTypes.Injectable,
-          methodName: LifecycleMethods.ngAfterViewChecked
-        });
+        const message = getFailureMessage(MetadataTypes.Injectable);
         assertAnnotated({
           message,
           ruleName,
@@ -74,10 +65,7 @@ describe(ruleName, () => {
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           }
         `;
-        const message = getFailureMessage({
-          metadataType: MetadataTypes.Injectable,
-          methodName: LifecycleMethods.ngAfterViewInit
-        });
+        const message = getFailureMessage(MetadataTypes.Injectable);
         assertAnnotated({
           message,
           ruleName,
@@ -93,10 +81,7 @@ describe(ruleName, () => {
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           }
         `;
-        const message = getFailureMessage({
-          metadataType: MetadataTypes.Injectable,
-          methodName: LifecycleMethods.ngDoCheck
-        });
+        const message = getFailureMessage(MetadataTypes.Injectable);
         assertAnnotated({
           message,
           ruleName,
@@ -112,10 +97,7 @@ describe(ruleName, () => {
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           }
         `;
-        const message = getFailureMessage({
-          metadataType: MetadataTypes.Injectable,
-          methodName: LifecycleMethods.ngOnChanges
-        });
+        const message = getFailureMessage(MetadataTypes.Injectable);
         assertAnnotated({
           message,
           ruleName,
@@ -131,10 +113,7 @@ describe(ruleName, () => {
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           }
         `;
-        const message = getFailureMessage({
-          metadataType: MetadataTypes.Injectable,
-          methodName: LifecycleMethods.ngOnInit
-        });
+        const message = getFailureMessage(MetadataTypes.Injectable);
         assertAnnotated({
           message,
           ruleName,
@@ -152,10 +131,7 @@ describe(ruleName, () => {
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           }
         `;
-        const message = getFailureMessage({
-          metadataType: MetadataTypes.Pipe,
-          methodName: LifecycleMethods.ngAfterContentChecked
-        });
+        const message = getFailureMessage(MetadataTypes.Pipe);
         assertAnnotated({
           message,
           ruleName,
@@ -171,10 +147,7 @@ describe(ruleName, () => {
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           }
         `;
-        const message = getFailureMessage({
-          metadataType: MetadataTypes.Pipe,
-          methodName: LifecycleMethods.ngAfterContentInit
-        });
+        const message = getFailureMessage(MetadataTypes.Pipe);
         assertAnnotated({
           message,
           ruleName,
@@ -190,10 +163,7 @@ describe(ruleName, () => {
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           }
         `;
-        const message = getFailureMessage({
-          metadataType: MetadataTypes.Pipe,
-          methodName: LifecycleMethods.ngAfterViewChecked
-        });
+        const message = getFailureMessage(MetadataTypes.Pipe);
         assertAnnotated({
           message,
           ruleName,
@@ -209,10 +179,7 @@ describe(ruleName, () => {
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           }
         `;
-        const message = getFailureMessage({
-          metadataType: MetadataTypes.Pipe,
-          methodName: LifecycleMethods.ngAfterViewInit
-        });
+        const message = getFailureMessage(MetadataTypes.Pipe);
         assertAnnotated({
           message,
           ruleName,
@@ -228,10 +195,7 @@ describe(ruleName, () => {
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           }
         `;
-        const message = getFailureMessage({
-          metadataType: MetadataTypes.Pipe,
-          methodName: LifecycleMethods.ngDoCheck
-        });
+        const message = getFailureMessage(MetadataTypes.Pipe);
         assertAnnotated({
           message,
           ruleName,
@@ -247,10 +211,7 @@ describe(ruleName, () => {
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           }
         `;
-        const message = getFailureMessage({
-          metadataType: MetadataTypes.Pipe,
-          methodName: LifecycleMethods.ngOnChanges
-        });
+        const message = getFailureMessage(MetadataTypes.Pipe);
         assertAnnotated({
           message,
           ruleName,
@@ -266,10 +227,7 @@ describe(ruleName, () => {
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           }
         `;
-        const message = getFailureMessage({
-          metadataType: MetadataTypes.Pipe,
-          methodName: LifecycleMethods.ngOnInit
-        });
+        const message = getFailureMessage(MetadataTypes.Pipe);
         assertAnnotated({
           message,
           ruleName,
@@ -297,10 +255,7 @@ describe(ruleName, () => {
             }
           }
         `;
-          const message = getFailureMessage({
-            metadataType: MetadataTypes.Pipe,
-            methodName: LifecycleMethods.ngDoCheck
-          });
+          const message = getFailureMessage(MetadataTypes.Pipe);
           assertAnnotated({
             message,
             ruleName,

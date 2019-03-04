@@ -12,7 +12,7 @@ describe('no-output-on-prefix', () => {
       `;
       assertAnnotated({
         ruleName: 'no-output-on-prefix',
-        message: 'The output property "onChange" should not be prefixed with on',
+        message: 'Output property should not be prefixed with on',
         source
       });
     });
@@ -27,7 +27,7 @@ describe('no-output-on-prefix', () => {
       `;
       assertAnnotated({
         ruleName: 'no-output-on-prefix',
-        message: 'The output property "onChange" should not be prefixed with on',
+        message: 'Output property should not be prefixed with on',
         source
       });
     });
@@ -42,7 +42,7 @@ describe('no-output-on-prefix', () => {
       `;
       assertAnnotated({
         ruleName: 'no-output-on-prefix',
-        message: 'The output property "on" should not be prefixed with on',
+        message: 'Output property should not be prefixed with on',
         source
       });
     });

@@ -12,7 +12,7 @@ describe('pipe-prefix', () => {
       `;
       assertAnnotated({
         ruleName: 'pipe-prefix',
-        message: 'The name of a Pipe decorator should start with prefix ng, however its value is "foo-bar"',
+        message: 'The name of a Pipe decorator should start with prefix ng',
         source,
         options: ['ng']
       });
@@ -28,7 +28,7 @@ describe('pipe-prefix', () => {
       `;
       assertAnnotated({
         ruleName: 'pipe-prefix',
-        message: 'The name of a Pipe decorator should start' + ' with prefix ng,mg,sg, however its value is "foo-bar"',
+        message: 'The name of a Pipe decorator should start' + ' with prefix ng,mg,sg',
         source,
         options: ['ng', 'mg', 'sg']
       });

@@ -15,13 +15,7 @@ import {
 } from './util/utils';
 import { InjectableMetadata, PipeMetadata } from './angular';
 
-interface FailureParameters {
-  readonly metadataType: MetadataTypeKeys;
-  readonly methodName: LifecycleMethodKeys;
-}
-
-export const getFailureMessage = (failureParameters: FailureParameters): string =>
-  sprintf(Rule.FAILURE_STRING, failureParameters.methodName, failureParameters.metadataType);
+export const getFailureMessage = (metadataType: MetadataTypeKeys): string => sprintf(Rule.FAILURE_STRING, metadataType);
 
 export class Rule extends AbstractRule {
   static readonly metadata: IRuleMetadata = {
@@ -36,7 +30,7 @@ export class Rule extends AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'The method "%s" is not allowed for a class decorated with "%s"';
+  static readonly FAILURE_STRING = 'This method is not allowed for a class decorated with "%s"';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(new ContextualLifecycleWalker(sourceFile, this.getOptions()));
@@ -68,7 +62,7 @@ class ContextualLifecycleWalker extends NgWalker {
 
       if (!isLifecycleMethod(methodName) || allowedMethods.has(methodName)) continue;
 
-      const failure = getFailureMessage({ metadataType, methodName });
+      const failure = getFailureMessage(metadataType);
 
       this.addFailureAtNode(member, failure);
     }

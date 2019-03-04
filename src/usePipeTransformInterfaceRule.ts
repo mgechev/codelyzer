@@ -14,7 +14,7 @@ export class Rule extends Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'The %s class has the Pipe decorator, so it should implement the PipeTransform interface';
+  static readonly FAILURE_STRING = 'A class which has the Pipe decorator should implement the PipeTransform interface';
   static readonly PIPE_INTERFACE_NAME = 'PipeTransform';
 
   apply(sourceFile: SourceFile): RuleFailure[] {

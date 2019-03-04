@@ -198,7 +198,7 @@ export class Rule extends AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'The output property "%s" should not be named or renamed as a native event';
+  static readonly FAILURE_STRING = 'Output property should not be named or renamed as a native event';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(new NoOutputNativeWalker(sourceFile, this.getOptions()));

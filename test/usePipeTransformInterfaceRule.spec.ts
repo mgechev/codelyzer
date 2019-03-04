@@ -13,7 +13,7 @@ describe('use-pipe-transform-interface', () => {
       `;
       assertAnnotated({
         ruleName: 'use-pipe-transform-interface',
-        message: 'The NewPipe class has the Pipe decorator, so it should implement the PipeTransform interface',
+        message: 'A class which has the Pipe decorator should implement the PipeTransform interface',
         source
       });
     });
