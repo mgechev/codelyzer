@@ -1,12 +1,12 @@
 import { IOptions, IRuleMetadata } from 'tslint/lib';
 import { dedent } from 'tslint/lib/utils';
-import { UsePropertyDecorator } from './propertyDecoratorBase';
+import { MetadataPropertyBase } from './metadataPropertyBase';
 import { Decorators } from './util/utils';
 
 const METADATA_PROPERTY_NAME = 'outputs';
 const STYLE_GUIDE_LINK = 'https://angular.io/styleguide#style-05-12';
 
-export class Rule extends UsePropertyDecorator {
+export class Rule extends MetadataPropertyBase {
   static readonly metadata: IRuleMetadata = {
     description: `Disallows usage of the \`${METADATA_PROPERTY_NAME}\` metadata property.`,
     descriptionDetails: `See more at ${STYLE_GUIDE_LINK}.`,
@@ -29,7 +29,6 @@ export class Rule extends UsePropertyDecorator {
   constructor(options: IOptions) {
     super(
       {
-        decoratorName: Decorators.Output,
         errorMessage: Rule.FAILURE_STRING,
         propertyName: METADATA_PROPERTY_NAME
       },
