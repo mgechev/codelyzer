@@ -24,7 +24,8 @@ export class Rule extends AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING_NEGATED_PIPE = 'Async pipes can not be negated, use (observable | async) === false instead';
+  static readonly FAILURE_STRING_NEGATED_PIPE =
+    'Async pipes should not be negated. Use (observable | async) === (false | null | undefined) to check its value instead';
   static readonly FAILURE_STRING_UNSTRICT_EQUALITY = 'Async pipes must use strict equality `===` when comparing with `false`';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
