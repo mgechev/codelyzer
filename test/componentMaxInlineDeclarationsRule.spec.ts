@@ -1,5 +1,5 @@
 import { createSourceFile, ScriptTarget, SourceFile } from 'typescript/lib/typescript';
-import { getAnimationsFailure, getStylesFailure, getTemplateFailure, PropertyPair, Rule } from '../src/maxInlineDeclarationsRule';
+import { getAnimationsFailure, getStylesFailure, getTemplateFailure, PropertyPair, Rule } from '../src/componentMaxInlineDeclarationsRule';
 import { assertFailure, assertFailures, assertSuccess } from './testHelper';
 
 type PropertyPairArray = ReadonlyArray<PropertyPair>;
@@ -9,14 +9,12 @@ const {
 } = Rule;
 const filePath = `${__dirname}/../../test/fixtures/inlineTemplateMaxLines/foo.ts`;
 
-const getSourceFile = (code: string): SourceFile => {
-  return createSourceFile(filePath, code, ScriptTarget.ES2015, true);
-};
+const getSourceFile = (code: string): SourceFile => createSourceFile(filePath, code, ScriptTarget.ES2015, true);
 
 describe(ruleName, () => {
   describe('animations', () => {
     describe('failure', () => {
-      it('should fail when the number of lines exceeds the default lines limit', () => {
+      it('should fail if the number of lines exceeds the default lines limit', () => {
         const source = `
           @Component({
             animations: [
@@ -50,7 +48,7 @@ describe(ruleName, () => {
         });
       });
 
-      it('should fail when the number of lines exceeds a custom lines limit', () => {
+      it('should fail if the number of lines exceeds a custom lines limit', () => {
         const source = `
           @Component({
             animations: [
@@ -80,7 +78,7 @@ describe(ruleName, () => {
     });
 
     describe('success', () => {
-      it('should succeed when the number of lines does not exceeds the default lines limit', () => {
+      it('should succeed if the number of lines does not exceeds the default lines limit', () => {
         const source = `
           @Component({
             animations: ['state('void', style({opacity: 0, transform: 'scale(1, 0)'}))']
@@ -90,7 +88,7 @@ describe(ruleName, () => {
         assertSuccess(ruleName, source);
       });
 
-      it('should succeed when a negative limit is used and the number of lines does not exceeds the default lines limit', () => {
+      it('should succeed if a negative limit is used and the number of lines does not exceeds the default lines limit', () => {
         const source = `
           @Component({
             animations: ['state('void', style({opacity: 0, transform: 'scale(1, 0)'}))']
@@ -105,7 +103,7 @@ describe(ruleName, () => {
 
   describe('styles', () => {
     describe('failure', () => {
-      it('should fail when the number of lines exceeds the default lines limit', () => {
+      it('should fail if the number of lines exceeds the default lines limit', () => {
         const source = `
           @Component({
             styles: [
@@ -126,7 +124,7 @@ describe(ruleName, () => {
         });
       });
 
-      it('should fail when the sum of lines (from separate inline styles) exceeds the default lines limit', () => {
+      it('should fail if the sum of lines (from separate inline styles) exceeds the default lines limit', () => {
         const source = `
           @Component({
             styles: [
@@ -161,7 +159,7 @@ describe(ruleName, () => {
         ]);
       });
 
-      it('should fail when the number of lines exceeds a custom lines limit', () => {
+      it('should fail if the number of lines exceeds a custom lines limit', () => {
         const source = `
           @Component({
             styles: ['div { display: none; }']
@@ -183,7 +181,7 @@ describe(ruleName, () => {
     });
 
     describe('success', () => {
-      it('should succeed when the number of lines does not exceeds the default lines limit', () => {
+      it('should succeed if the number of lines does not exceeds the default lines limit', () => {
         const source = `
           @Component({
             styles: ['div { display: none; }']
@@ -193,7 +191,7 @@ describe(ruleName, () => {
         assertSuccess(ruleName, source);
       });
 
-      it('should succeed when a negative limit is used and the number of lines does not exceeds the default lines limit', () => {
+      it('should succeed if a negative limit is used and the number of lines does not exceeds the default lines limit', () => {
         const source = `
           @Component({
             styles: ['div { display: none; }']
@@ -207,7 +205,7 @@ describe(ruleName, () => {
   });
 
   describe('styleUrls', () => {
-    it('should succeed when the number of lines of a styles file exceeds the default lines limit', () => {
+    it('should succeed if the number of lines of a styles file exceeds the default lines limit', () => {
       const source = `
         @Component({
           styleUrls: ['./foobar.css']
@@ -233,7 +231,7 @@ describe(ruleName, () => {
 
   describe('template', () => {
     describe('failure', () => {
-      it('should fail when the number of lines exceeds the default lines limit', () => {
+      it('should fail if the number of lines exceeds the default lines limit', () => {
         const source = `
           @Component({
             template: \`
@@ -252,7 +250,7 @@ describe(ruleName, () => {
         });
       });
 
-      it('should fail when the number of lines exceeds a custom lines limit', () => {
+      it('should fail if the number of lines exceeds a custom lines limit', () => {
         const source = `
           @Component({
             template: '<div>first line</div>'
@@ -274,7 +272,7 @@ describe(ruleName, () => {
     });
 
     describe('success', () => {
-      it('should succeed when the number of lines does not exceeds the default lines limit', () => {
+      it('should succeed if the number of lines does not exceeds the default lines limit', () => {
         const source = `
           @Component({
             template: '<div>just one line template</div>'
@@ -284,7 +282,7 @@ describe(ruleName, () => {
         assertSuccess(ruleName, source);
       });
 
-      it('should succeed when a negative limit is used and the number of lines does not exceeds the default lines limit', () => {
+      it('should succeed if a negative limit is used and the number of lines does not exceeds the default lines limit', () => {
         const source = `
           @Component({
             template: '<div>first line</div>'
@@ -298,7 +296,7 @@ describe(ruleName, () => {
   });
 
   describe('templateUrl', () => {
-    it('should succeed when the number of lines of a template file exceeds the default lines limit', () => {
+    it('should succeed if the number of lines of a template file exceeds the default lines limit', () => {
       const source = `
         @Component({
           templateUrl: './foobar.html'
