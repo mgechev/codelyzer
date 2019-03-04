@@ -1,9 +1,8 @@
-import { getFailureMessage, Rule } from '../src/noForwardRefRule';
+import { Rule } from '../src/noForwardRefRule';
 import { assertAnnotated, assertSuccess } from './testHelper';
 
 const {
-  FAILURE_STRING_CLASS,
-  FAILURE_STRING_VARIABLE,
+  FAILURE_STRING,
   metadata: { ruleName }
 } = Rule;
 
@@ -22,12 +21,8 @@ describe(ruleName, () => {
           }
           export class TestService {}
         `;
-        const message = getFailureMessage({
-          className: 'Test',
-          message: FAILURE_STRING_CLASS
-        });
         assertAnnotated({
-          message,
+          message: FAILURE_STRING,
           ruleName,
           source
         });
@@ -48,12 +43,8 @@ describe(ruleName, () => {
           })
           export class TagsValueAccessor {}
         `;
-        const message = getFailureMessage({
-          className: 'TagsValueAccessor',
-          message: FAILURE_STRING_CLASS
-        });
         assertAnnotated({
-          message,
+          message: FAILURE_STRING,
           ruleName,
           source
         });
@@ -75,12 +66,8 @@ describe(ruleName, () => {
           })
           export class TagsValueAccessor {}
         `;
-        const message = getFailureMessage({
-          className: 'TAGS_VALUE_ACCESSOR',
-          message: FAILURE_STRING_VARIABLE
-        });
         assertAnnotated({
-          message,
+          message: FAILURE_STRING,
           ruleName,
           source
         });
