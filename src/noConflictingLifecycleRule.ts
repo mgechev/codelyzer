@@ -1,10 +1,9 @@
 import { sprintf } from 'sprintf-js';
-import { IRuleMetadata, RuleFailure, RuleWalker } from 'tslint';
+import { IRuleMetadata, RuleFailure, WalkContext } from 'tslint';
 import { AbstractRule } from 'tslint/lib/rules';
 import { dedent } from 'tslint/lib/utils';
-import { ClassDeclaration, SourceFile } from 'typescript';
+import { ClassDeclaration, forEachChild, isClassDeclaration, Node, SourceFile } from 'typescript';
 import {
-  getClassName,
   getDeclaredLifecycleInterfaces,
   getDeclaredLifecycleMethods,
   LifecycleInterfaceKeys,
@@ -14,15 +13,13 @@ import {
 } from './util/utils';
 
 interface FailureParameters {
-  readonly className: string;
   readonly message: typeof Rule.FAILURE_STRING_INTERFACE_HOOK | typeof Rule.FAILURE_STRING_METHOD_HOOK;
 }
 
 const LIFECYCLE_INTERFACES: ReadonlyArray<LifecycleInterfaceKeys> = [LifecycleInterfaces.DoCheck, LifecycleInterfaces.OnChanges];
 const LIFECYCLE_METHODS: ReadonlyArray<LifecycleMethodKeys> = [LifecycleMethods.ngDoCheck, LifecycleMethods.ngOnChanges];
 
-export const getFailureMessage = (failureParameters: FailureParameters): string =>
-  sprintf(failureParameters.message, failureParameters.className);
+export const getFailureMessage = (failureParameters: FailureParameters): string => sprintf(failureParameters.message);
 
 export class Rule extends AbstractRule {
   static metadata: IRuleMetadata = {
@@ -41,53 +38,58 @@ export class Rule extends AbstractRule {
   };
 
   static readonly FAILURE_STRING_INTERFACE_HOOK = dedent`
-    Implementing ${LifecycleInterfaces.DoCheck} and ${LifecycleInterfaces.OnChanges} in class %s is not recommended
+    Implementing ${LifecycleInterfaces.DoCheck} and ${LifecycleInterfaces.OnChanges} in a class is not recommended
   `;
   static readonly FAILURE_STRING_METHOD_HOOK = dedent`
-    Declaring ${LifecycleMethods.ngDoCheck} and ${LifecycleMethods.ngOnChanges} method in class %s is not recommended
+    Declaring ${LifecycleMethods.ngDoCheck} and ${LifecycleMethods.ngOnChanges} method in a class is not recommended
   `;
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this.getOptions()));
+    return this.applyWithFunction(sourceFile, walk);
   }
 }
 
-class ClassMetadataWalker extends RuleWalker {
-  visitClassDeclaration(node: ClassDeclaration): void {
-    this.validateInterfaces(node);
-    this.validateMethods(node);
-    super.visitClassDeclaration(node);
-  }
+const validateClassDeclaration = (context: WalkContext<void>, node: ClassDeclaration): void => {
+  validateInterfaces(context, node);
+  validateMethods(context, node);
+};
 
-  private validateInterfaces(node: ClassDeclaration): void {
-    const className = getClassName(node);
-    const declaredLifecycleInterfaces = getDeclaredLifecycleInterfaces(node);
-    const hasConflictingLifecycle = LIFECYCLE_INTERFACES.every(
-      lifecycleInterface => declaredLifecycleInterfaces.indexOf(lifecycleInterface) !== -1
-    );
+const validateInterfaces = (context: WalkContext<void>, node: ClassDeclaration): void => {
+  const declaredLifecycleInterfaces = getDeclaredLifecycleInterfaces(node);
+  const hasConflictingLifecycle = LIFECYCLE_INTERFACES.every(
+    lifecycleInterface => declaredLifecycleInterfaces.indexOf(lifecycleInterface) !== -1
+  );
 
-    if (!className || !hasConflictingLifecycle) return;
+  if (!hasConflictingLifecycle) return;
 
-    const failure = getFailureMessage({
-      className,
-      message: Rule.FAILURE_STRING_INTERFACE_HOOK
-    });
+  const failure = getFailureMessage({
+    message: Rule.FAILURE_STRING_INTERFACE_HOOK
+  });
 
-    this.addFailureAtNode(node, failure);
-  }
+  context.addFailureAtNode(node, failure);
+};
 
-  private validateMethods(node: ClassDeclaration): void {
-    const className = getClassName(node);
-    const declaredLifecycleMethods = getDeclaredLifecycleMethods(node);
-    const hasConflictingLifecycle = LIFECYCLE_METHODS.every(lifecycleMethod => declaredLifecycleMethods.indexOf(lifecycleMethod) !== -1);
+const validateMethods = (context: WalkContext<void>, node: ClassDeclaration): void => {
+  const declaredLifecycleMethods = getDeclaredLifecycleMethods(node);
+  const hasConflictingLifecycle = LIFECYCLE_METHODS.every(lifecycleMethod => declaredLifecycleMethods.indexOf(lifecycleMethod) !== -1);
 
-    if (!className || !hasConflictingLifecycle) return;
+  if (!hasConflictingLifecycle) return;
 
-    const failure = getFailureMessage({
-      className,
-      message: Rule.FAILURE_STRING_METHOD_HOOK
-    });
+  const failure = getFailureMessage({
+    message: Rule.FAILURE_STRING_METHOD_HOOK
+  });
 
-    this.addFailureAtNode(node, failure);
-  }
-}
+  context.addFailureAtNode(node, failure);
+};
+
+const walk = (context: WalkContext<void>): void => {
+  const { sourceFile } = context;
+
+  const callback = (node: Node): void => {
+    if (isClassDeclaration(node)) validateClassDeclaration(context, node);
+
+    forEachChild(node, callback);
+  };
+
+  forEachChild(sourceFile, callback);
+};
