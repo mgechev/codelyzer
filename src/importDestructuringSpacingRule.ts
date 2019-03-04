@@ -1,9 +1,10 @@
-import { Fix, IOptions, IRuleMetadata, Replacement, RuleFailure, Rules, RuleWalker } from 'tslint/lib';
-import { NamedImports, SourceFile } from 'typescript/lib/typescript';
+import { IRuleMetadata, Replacement, RuleFailure, WalkContext } from 'tslint/lib';
+import { AbstractRule } from 'tslint/lib/rules';
+import { forEachChild, isNamedImports, NamedImports, Node, SourceFile } from 'typescript/lib/typescript';
 
-export class Rule extends Rules.AbstractRule {
+export class Rule extends AbstractRule {
   static readonly metadata: IRuleMetadata = {
-    description: 'Ensure consistent and tidy imports.',
+    description: 'Ensures imports are consistent and tidy.',
     hasFix: true,
     options: null,
     optionsDescription: 'Not configurable.',
@@ -16,64 +17,62 @@ export class Rule extends Rules.AbstractRule {
   static readonly FAILURE_STRING = "Import statement's curly braces must be spaced exactly by a space to the right and a space to the left";
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(new ImportDestructuringSpacingWalker(sourceFile, this.getOptions()));
+    return this.applyWithFunction(sourceFile, walk);
   }
 }
 
-export const getFailureMessage = (): string => {
-  return Rule.FAILURE_STRING;
+const BLANK_MULTILINE_PATTERN = /^\{\s*\}$|\n/;
+const LEADING_SPACES_PATTERN = /^\{(\s*)/;
+const TRAILING_SPACES_PATTERN = /(\s*)}$/;
+
+const isBlankOrMultilineImport = (value: string): boolean => BLANK_MULTILINE_PATTERN.test(value);
+
+const getReplacements = (node: NamedImports, totalLeadingSpaces: number, totalTrailingSpaces: number): Replacement[] => {
+  const nodeStartPos = node.getStart();
+  const nodeEndPos = node.getEnd();
+  const replacements: Replacement[] = [];
+  const textToAppend = ' ';
+
+  if (totalLeadingSpaces === 0) {
+    replacements.push(Replacement.appendText(nodeStartPos + 1, textToAppend));
+  } else if (totalLeadingSpaces > 1) {
+    replacements.push(Replacement.deleteText(nodeStartPos + 1, totalLeadingSpaces - 1));
+  }
+
+  if (totalTrailingSpaces === 0) {
+    replacements.push(Replacement.appendText(nodeEndPos - 1, textToAppend));
+  } else if (totalTrailingSpaces > 1) {
+    replacements.push(Replacement.deleteText(nodeEndPos - totalTrailingSpaces, totalTrailingSpaces - 1));
+  }
+
+  return replacements;
 };
 
-const isBlankOrMultilineImport = (value: string): boolean => {
-  return value.indexOf('\n') !== -1 || /^\{\s*\}$/.test(value);
+const validateNamedImports = (context: WalkContext<void>, node: NamedImports): void => {
+  const nodeText = node.getText();
+
+  if (isBlankOrMultilineImport(nodeText)) return;
+
+  const leadingSpacesMatches = nodeText.match(LEADING_SPACES_PATTERN);
+  const trailingSpacesMatches = nodeText.match(TRAILING_SPACES_PATTERN);
+  const totalLeadingSpaces = leadingSpacesMatches ? leadingSpacesMatches[1].length : 1;
+  const totalTrailingSpaces = trailingSpacesMatches ? trailingSpacesMatches[1].length : 1;
+
+  if (totalLeadingSpaces === 1 && totalTrailingSpaces === 1) return;
+
+  const replacements = getReplacements(node, totalLeadingSpaces, totalTrailingSpaces);
+
+  context.addFailureAtNode(node, Rule.FAILURE_STRING, replacements);
 };
 
-class ImportDestructuringSpacingWalker extends RuleWalker {
-  constructor(sourceFile: SourceFile, options: IOptions) {
-    super(sourceFile, options);
-  }
+const walk = (context: WalkContext<void>): void => {
+  const { sourceFile } = context;
 
-  protected visitNamedImports(node: NamedImports): void {
-    this.validateNamedImports(node);
-    super.visitNamedImports(node);
-  }
+  const callback = (node: Node): void => {
+    if (isNamedImports(node)) validateNamedImports(context, node);
 
-  private getFix(node: NamedImports, totalLeadingSpaces: number, totalTrailingSpaces: number): Fix {
-    const nodeStartPos = node.getStart();
-    const nodeEndPos = node.getEnd();
-    const fix: Fix = [];
+    forEachChild(node, callback);
+  };
 
-    if (totalLeadingSpaces === 0) {
-      fix.push(Replacement.appendText(nodeStartPos + 1, ' '));
-    } else if (totalLeadingSpaces > 1) {
-      fix.push(Replacement.deleteText(nodeStartPos + 1, totalLeadingSpaces - 1));
-    }
-
-    if (totalTrailingSpaces === 0) {
-      fix.push(Replacement.appendText(nodeEndPos - 1, ' '));
-    } else if (totalTrailingSpaces > 1) {
-      fix.push(Replacement.deleteText(nodeEndPos - totalTrailingSpaces, totalTrailingSpaces - 1));
-    }
-
-    return fix;
-  }
-
-  private validateNamedImports(node: NamedImports): void {
-    const nodeText = node.getText();
-
-    if (isBlankOrMultilineImport(nodeText)) {
-      return;
-    }
-
-    const totalLeadingSpaces = nodeText.match(/^\{(\s*)/)![1].length;
-    const totalTrailingSpaces = nodeText.match(/(\s*)}$/)![1].length;
-
-    if (totalLeadingSpaces === 1 && totalTrailingSpaces === 1) {
-      return;
-    }
-
-    const fix = this.getFix(node, totalLeadingSpaces, totalTrailingSpaces);
-
-    this.addFailureAtNode(node, getFailureMessage(), fix);
-  }
-}
+  forEachChild(sourceFile, callback);
+};
