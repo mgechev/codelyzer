@@ -1,11 +1,11 @@
 import { sprintf } from 'sprintf-js';
 import { IRuleMetadata, RuleFailure } from 'tslint';
 import { AbstractRule } from 'tslint/lib/rules';
-import { camelize, dedent } from 'tslint/lib/utils';
+import { , dedent } from 'tslint/lib/utils';
 import { Decorator, PropertyDeclaration, SourceFile } from 'typescript';
 import { DirectiveMetadata } from './angular/metadata';
 import { NgWalker } from './angular/ngWalker';
-import { getClassName, toTitleCase } from './util/utils';
+import { getClassName, kebabToCamelCase, toTitleCase } from './util/utils';
 
 export class Rule extends AbstractRule {
   static readonly metadata: IRuleMetadata = {
@@ -92,7 +92,7 @@ export class InputMetadataWalker extends NgWalker {
       (propertyAlias !== propertyName &&
         this.directiveSelectors &&
         this.directiveSelectors.some(x => new RegExp(`^${x}((${toTitleCase(propertyName)}$)|(?=$))`).test(propertyAlias))) ||
-      (whiteListAliases.has(propertyAlias) && propertyName === camelize(propertyAlias))
+      (whiteListAliases.has(propertyAlias) && propertyName === kebabToCamelCase(propertyAlias))
     );
   }
 

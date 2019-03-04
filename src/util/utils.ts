@@ -194,13 +194,15 @@ export const getDeclaredLifecycleMethods = (node: ClassDeclaration): ReadonlyArr
     .map(m => m.name.getText())
     .filter(isLifecycleMethod) as ReadonlyArray<LifecycleMethodKeys>;
 
-export const maybeNodeArray = <T extends Node>(nodes: NodeArray<T>): ReadonlyArray<T> => nodes || [];
+export const kebabToCamelCase = (value: string) => value.replace(/-[a-zA-Z]/g, x => x[1].toUpperCase());
 
 export const isSameLine = (sourceFile: SourceFile, pos1: number, pos2: number): boolean =>
   getLineAndCharacterOfPosition(sourceFile, pos1).line === getLineAndCharacterOfPosition(sourceFile, pos2).line;
 
 export const isStringLiteralLike = (node: Node): node is StringLiteral | NoSubstitutionTemplateLiteral =>
   isStringLiteral(node) || isNoSubstitutionTemplateLiteral(node);
+
+export const maybeNodeArray = <T extends Node>(nodes: NodeArray<T>): ReadonlyArray<T> => nodes || [];
 
 // Regex below matches any Unicode word and compatible with ES5. In ES2018 the same result
 // can be achieved by using /\p{L}\S*/gu and also known as Unicode Property Escapes
