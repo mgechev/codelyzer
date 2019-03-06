@@ -7,7 +7,7 @@ export { Rule as ContextualLifecycleRule } from './contextualLifecycleRule';
 export { Rule as DirectiveClassSuffixRule } from './directiveClassSuffixRule';
 export { Rule as DirectiveSelectorRule } from './directiveSelectorRule';
 export { Rule as ImportDestructuringSpacingRule } from './importDestructuringSpacingRule';
-export { Rule as NoAttributeParameterDecoratorRule } from './noAttributeParameterDecoratorRule';
+export { Rule as NoAttributeDecoratorRule } from './noAttributeDecoratorRule';
 export { Rule as NoConflictingLifecycleRule } from './noConflictingLifecycleRule';
 export { Rule as NoForwardRefRule } from './noForwardRefRule';
 export { Rule as NoHostMetadataPropertyRule } from './noHostMetadataPropertyRule';
