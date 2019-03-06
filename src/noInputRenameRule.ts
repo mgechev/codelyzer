@@ -1,7 +1,7 @@
 import { sprintf } from 'sprintf-js';
 import { IRuleMetadata, RuleFailure } from 'tslint';
 import { AbstractRule } from 'tslint/lib/rules';
-import { , dedent } from 'tslint/lib/utils';
+import { dedent } from 'tslint/lib/utils';
 import { Decorator, PropertyDeclaration, SourceFile } from 'typescript';
 import { DirectiveMetadata } from './angular/metadata';
 import { NgWalker } from './angular/ngWalker';
