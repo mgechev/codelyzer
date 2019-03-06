@@ -1,59 +1,94 @@
-import { assertSuccess, assertAnnotated } from './testHelper';
+import { Rule } from '../src/usePipeTransformInterfaceRule';
+import { assertAnnotated, assertSuccess } from './testHelper';
 
-describe('use-pipe-transform-interface', () => {
-  describe('invalid declaration of pipe', () => {
-    it('should fail, when a Pipe is declared without implementing the PipeTransform interface', () => {
-      let source = `
-        @Pipe({name: 'fetch'})
+const {
+  FAILURE_STRING,
+  metadata: { ruleName }
+} = Rule;
+
+describe(ruleName, () => {
+  describe('failure', () => {
+    it('should fail if a class is decorated with @Pipe and has no interface implemented', () => {
+      const source = `
+        @Pipe({ name: 'test' })
         ~~~~~~~~~~~~~~~~~~~~~~
-        export class NewPipe {
-          transform(url: string): any {}
+        export class TestPipe {
+          transform(value: string) {}
         }
         ~
       `;
       assertAnnotated({
-        ruleName: 'use-pipe-transform-interface',
-        message: 'The NewPipe class has the Pipe decorator, so it should implement the PipeTransform interface',
+        message: FAILURE_STRING,
+        ruleName,
+        source
+      });
+    });
+
+    it('should fail if a class is decorated with @Pipe and does not implement the PipeTransform interface', () => {
+      const source = `
+        @Pipe({ name: 'test' })
+        ~~~~~~~~~~~~~~~~~~~~~~
+        export class TestPipe implements AnInterface {
+          transform(value: string) {}
+        }
+        ~
+      `;
+      assertAnnotated({
+        message: FAILURE_STRING,
+        ruleName,
+        source
+      });
+    });
+
+    it('should fail if a class is decorated with @Pipe and other decorator and does not implement the PipeTransform interface', () => {
+      const source = `
+        @OtherDecorator()
+        ~~~~~~~~~~~~~~~~~
+        @Pipe({ name: 'test' })
+        export class TestPipe implements AnInterface {
+          transform(value: string) {}
+        }
+        ~
+      `;
+      assertAnnotated({
+        message: FAILURE_STRING,
+        ruleName,
         source
       });
     });
   });
 
-  describe('valid use of Pipe with the implementation of the PipeTransform interface', () => {
-    it('should succeed when Pipe is declared properly', () => {
-      let source = `
-        @Pipe({name: 'fetch'})
-        export class NewPipe implements PipeTransform {
-          transform(url: string): any {}
+  describe('success', () => {
+    it('should succeed if a class is decorated with @Pipe and implements the PipeTransform interface', () => {
+      const source = `
+        @Pipe({ name: 'test' })
+        export class TestPipe implements PipeTransform {
+          transform(value: string) {}
         }
       `;
-      assertSuccess('use-pipe-transform-interface', source);
+      assertSuccess(ruleName, source);
     });
 
-    it('should succeed when Pipe is declared properly', () => {
-      let source = `
-        @Pipe({name: 'fetch'})
-        export class NewPipe implements ng.PipeTransform {
-          transform(url: string): any {}
+    it('should succeed if a class is decorated with @Pipe and other decorator and implements the PipeTransform interface', () => {
+      const source = `
+        @OtherDecorator()
+        @Pipe({ name: 'test' })
+        export class TestPipe implements PipeTransform {
+          transform(value: string) {}
+        }
+        ~
+      `;
+      assertSuccess(ruleName, source);
+    });
+
+    it('should succeed if a class is decorated with @Pipe and implements the PipeTransform interface using namespace', () => {
+      const source = `
+        @Pipe({ name: 'test' })
+        export class TestPipe implements ng.PipeTransform {
+          transform(value: string) {}
         }
       `;
-      assertSuccess('use-pipe-transform-interface', source);
-    });
-  });
-
-  describe('valid use of empty class', () => {
-    it('should succeed, when Pipe is not used', () => {
-      let source = 'class App {}';
-      assertSuccess('use-pipe-transform-interface', source);
-    });
-  });
-
-  describe('valid use with @Injectable', () => {
-    it('should succeed, when Pipe is not used', () => {
-      let source = `@Injectable
-        class App {}
-      `;
-      assertSuccess('use-pipe-transform-interface', source);
+      assertSuccess(ruleName, source);
     });
   });
 });

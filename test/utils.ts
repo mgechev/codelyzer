@@ -1,6 +1,7 @@
+import { existsSync } from 'fs';
+import { join, resolve } from 'path';
 import { IOptions, IRule } from 'tslint';
-import * as fs from 'fs';
-import * as path from 'path';
+import { arrayify, camelize, find } from 'tslint/lib/utils';
 
 export function convertRuleOptions(ruleConfiguration: Map<string, Partial<IOptions>>): IOptions[] {
   const output: IOptions[] = [];
@@ -18,10 +19,6 @@ export function convertRuleOptions(ruleConfiguration: Map<string, Partial<IOptio
 
 const cachedRules = new Map<string, any | 'not-found'>();
 
-export function camelize(stringWithHyphens: string): string {
-  return stringWithHyphens.replace(/-(.)/g, (_, nextLetter) => (nextLetter as string).toUpperCase());
-}
-
 function transformName(name: string): string {
   // camelize strips out leading and trailing underscores and dashes, so make sure they aren't passed to camelize
   // the regex matches the groups (leading underscores and dashes)(other characters)(trailing underscores and dashes)
@@ -37,8 +34,8 @@ function transformName(name: string): string {
  * @param ruleName - A name of a rule in filename format. ex) "someLintRule"
  */
 function loadRule(directory: string, ruleName: string): any | 'not-found' {
-  const fullPath = path.join(directory, ruleName);
-  if (fs.existsSync(`${fullPath}.js`)) {
+  const fullPath = join(directory, ruleName);
+  if (existsSync(`${fullPath}.js`)) {
     const ruleModule = require(fullPath) as { Rule: any } | undefined;
     if (ruleModule !== undefined) {
       return ruleModule.Rule;
@@ -47,29 +44,19 @@ function loadRule(directory: string, ruleName: string): any | 'not-found' {
   return 'not-found';
 }
 
-export function getRelativePath(directory?: string | null, relativeTo?: string) {
+export function getRelativePath(directory?: string | null, relativeTo?: string): string | undefined {
   if (directory !== null && directory !== undefined) {
     const basePath = relativeTo !== undefined ? relativeTo : process.cwd();
 
-    return path.resolve(basePath, directory);
+    return resolve(basePath, directory);
   }
 
   return undefined;
 }
 
-export function arrayify<T>(arg?: T | T[]): T[] {
-  if (Array.isArray(arg)) {
-    return arg;
-  } else if (arg !== null && arg !== undefined) {
-    return [arg];
-  }
-
-  return [];
-}
-
 function loadCachedRule(directory: string, ruleName: string, isCustomPath?: boolean): any | undefined {
   // use cached value if available
-  const fullPath = path.join(directory, ruleName);
+  const fullPath = join(directory, ruleName);
   const cachedRule = cachedRules.get(fullPath);
   if (cachedRule !== undefined) {
     return cachedRule === 'not-found' ? undefined : cachedRule;
@@ -79,7 +66,7 @@ function loadCachedRule(directory: string, ruleName: string, isCustomPath?: bool
   let absolutePath: string | undefined = directory;
   if (isCustomPath) {
     absolutePath = getRelativePath(directory);
-    if (absolutePath !== undefined && !fs.existsSync(absolutePath)) {
+    if (absolutePath !== undefined && !existsSync(absolutePath)) {
       throw new Error(`Could not find custom rule directory: ${directory}`);
     }
   }
@@ -88,17 +75,6 @@ function loadCachedRule(directory: string, ruleName: string, isCustomPath?: bool
 
   cachedRules.set(fullPath, Rule);
   return Rule === 'not-found' ? undefined : Rule;
-}
-
-export function find<T, U>(inputs: T[], getResult: (t: T) => U | undefined): U | undefined {
-  for (const element of inputs) {
-    const result = getResult(element);
-    if (result !== undefined) {
-      return result;
-    }
-  }
-
-  return undefined;
 }
 
 function findRule(name: string, rulesDirectories?: string | string[]): any | undefined {

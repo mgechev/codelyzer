@@ -1,12 +1,14 @@
 import { sprintf } from 'sprintf-js';
-import * as Lint from 'tslint';
-import * as ts from 'typescript';
+import { IRuleMetadata, RuleFailure } from 'tslint';
+import { AbstractRule } from 'tslint/lib/rules';
+import { dedent } from 'tslint/lib/utils';
+import { Decorator, PropertyDeclaration, SourceFile } from 'typescript';
 import { DirectiveMetadata } from './angular/metadata';
 import { NgWalker } from './angular/ngWalker';
 import { getClassName, kebabToCamelCase, toTitleCase } from './util/utils';
 
-export class Rule extends Lint.Rules.AbstractRule {
-  static readonly metadata: Lint.IRuleMetadata = {
+export class Rule extends AbstractRule {
+  static readonly metadata: IRuleMetadata = {
     description: 'Disallows renaming directive inputs by providing a string to the decorator.',
     descriptionDetails: 'See more at https://angular.io/styleguide#style-05-13.',
     options: null,
@@ -17,13 +19,13 @@ export class Rule extends Lint.Rules.AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = Lint.Utils.dedent`
+  static readonly FAILURE_STRING = dedent`
     In the class "%s", the directive input property "%s" should not be renamed.
     However, you should use an alias when the directive name is also an input property, and the directive name
     doesn't describe the property. In this last case, you can disable this rule with \`tslint:disable-next-line:no-input-rename\`.
   `;
 
-  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(new InputMetadataWalker(sourceFile, this.getOptions()));
   }
 }
@@ -80,7 +82,7 @@ export class InputMetadataWalker extends NgWalker {
     super.visitNgDirective(metadata);
   }
 
-  protected visitNgInput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {
+  protected visitNgInput(property: PropertyDeclaration, input: Decorator, args: string[]): void {
     this.validateInput(property, args);
     super.visitNgInput(property, input, args);
   }
@@ -94,13 +96,11 @@ export class InputMetadataWalker extends NgWalker {
     );
   }
 
-  private validateInput(property: ts.PropertyDeclaration, args: string[]) {
+  private validateInput(property: PropertyDeclaration, args: string[]): void {
     const className = getClassName(property)!;
     const memberName = property.name.getText();
 
-    if (args.length === 0 || this.canPropertyBeAliased(args[0], memberName)) {
-      return;
-    }
+    if (args.length === 0 || this.canPropertyBeAliased(args[0], memberName)) return;
 
     this.addFailureAtNode(property, getFailureMessage(className, memberName));
   }

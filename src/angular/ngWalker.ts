@@ -39,6 +39,7 @@ export interface NgWalkerConfig {
   templateVisitorCtrl?: TemplateAstVisitorCtr;
 }
 
+// tslint:disable-next-line: deprecation
 export class NgWalker extends Lint.RuleWalker {
   constructor(
     sourceFile: ts.SourceFile,

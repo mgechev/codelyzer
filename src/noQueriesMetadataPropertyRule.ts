@@ -1,10 +1,10 @@
 import { IOptions, IRuleMetadata } from 'tslint/lib';
-import { UsePropertyDecorator } from './propertyDecoratorBase';
+import { MetadataPropertyBase } from './metadataPropertyBase';
 import { Decorators } from './util/utils';
 
 const METADATA_PROPERTY_NAME = 'queries';
 
-export class Rule extends UsePropertyDecorator {
+export class Rule extends MetadataPropertyBase {
   static readonly metadata: IRuleMetadata = {
     description: `Disallows usage of the \`${METADATA_PROPERTY_NAME}\` metadata property.`,
     options: null,
@@ -24,7 +24,6 @@ export class Rule extends UsePropertyDecorator {
   constructor(options: IOptions) {
     super(
       {
-        decoratorName: [Decorators.ContentChild, Decorators.ContentChildren, Decorators.ViewChild, Decorators.ViewChildren],
         errorMessage: Rule.FAILURE_STRING,
         propertyName: METADATA_PROPERTY_NAME
       },

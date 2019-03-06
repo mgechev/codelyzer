@@ -17,7 +17,6 @@ describe(ruleName, () => {
         }
       `;
       const message = getFailureMessage({
-        className: 'Test',
         interfaceName: LifecycleInterfaces.OnInit,
         methodName: LifecycleMethods.ngOnInit
       });
@@ -39,7 +38,6 @@ describe(ruleName, () => {
         }
       `;
       const message = getFailureMessage({
-        className: 'Test',
         interfaceName: LifecycleInterfaces.OnDestroy,
         methodName: LifecycleMethods.ngOnDestroy
       });
@@ -65,7 +63,6 @@ describe(ruleName, () => {
             line: 2
           },
           message: getFailureMessage({
-            className: 'Test',
             interfaceName: LifecycleInterfaces.OnInit,
             methodName: LifecycleMethods.ngOnInit
           }),
@@ -80,7 +77,6 @@ describe(ruleName, () => {
             line: 4
           },
           message: getFailureMessage({
-            className: 'Test',
             interfaceName: LifecycleInterfaces.OnDestroy,
             methodName: LifecycleMethods.ngOnDestroy
           }),
@@ -103,7 +99,6 @@ describe(ruleName, () => {
         }
       `;
       const message = getFailureMessage({
-        className: 'Test',
         interfaceName: LifecycleInterfaces.OnDestroy,
         methodName: LifecycleMethods.ngOnDestroy
       });

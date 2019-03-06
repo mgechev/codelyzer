@@ -1,6 +1,12 @@
+import { OPTION_STYLE_CAMEL_CASE, OPTION_STYLE_KEBAB_CASE, SelectorStyle } from '../selectorPropertyBase';
+
 export const SelectorValidator = {
   attribute(selector: string): boolean {
     return selector.length !== 0;
+  },
+
+  camelCase(selector: string): boolean {
+    return /^[a-zA-Z0-9\[\]]+$/.test(selector);
   },
 
   element(selector: string): boolean {
@@ -11,31 +17,23 @@ export const SelectorValidator = {
     return /^[a-z0-9\-]+\-[a-z0-9\-]+$/.test(selector);
   },
 
-  camelCase(selector: string): boolean {
-    return /^[a-zA-Z0-9\[\]]+$/.test(selector);
-  },
-
-  prefix(prefix: string, selectorType: string): Function {
+  prefix(prefix: string, selectorStyle: SelectorStyle): (selector: string) => boolean {
     const regex = new RegExp(`^\\[?(${prefix})`);
 
-    return (selector: string) => {
-      if (!prefix) {
-        return true;
-      }
+    return selector => {
+      if (!prefix) return true;
 
-      if (!regex.test(selector)) {
-        return false;
-      }
+      if (!regex.test(selector)) return false;
 
       const suffix = selector.replace(regex, '');
 
-      if (selectorType === 'camelCase') {
+      if (selectorStyle === OPTION_STYLE_CAMEL_CASE) {
         return !suffix || suffix[0] === suffix[0].toUpperCase();
-      } else if (selectorType === 'kebab-case') {
+      } else if (selectorStyle === OPTION_STYLE_KEBAB_CASE) {
         return !suffix || suffix[0] === '-';
       }
 
-      throw Error('Invalid selector type');
+      throw Error('Invalid selector style!');
     };
   }
 };

@@ -190,13 +190,14 @@ describe(ruleName, () => {
       if (!Array.isArray(failures)) return;
 
       const replacement = Replacement.applyFixes(source, failures.map(x => x.getFix()!));
-
-      expect(replacement).to.eq(`
+      const expectedSource = `
         class Test {
           @Output()          test = new EventEmitter<void>();
           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         }
-      `);
+      `;
+
+      expect(replacement).to.eq(expectedSource);
     });
   });
 });

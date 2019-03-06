@@ -1,18 +1,8 @@
-import { sprintf } from 'sprintf-js';
-import { IRuleMetadata, RuleFailure, RuleWalker } from 'tslint/lib';
+import { IRuleMetadata, RuleFailure, WalkContext } from 'tslint/lib';
 import { AbstractRule } from 'tslint/lib/rules';
-import { CallExpression, isClassDeclaration, isVariableStatement, SourceFile } from 'typescript/lib/typescript';
-import { getNextToLastParentNode } from './util/utils';
-
-interface FailureParameters {
-  readonly className: string;
-  readonly message: typeof Rule.FAILURE_STRING_CLASS | typeof Rule.FAILURE_STRING_VARIABLE;
-}
+import { CallExpression, forEachChild, isCallExpression, Node, SourceFile } from 'typescript/lib/typescript';
 
 export const FORWARD_REF = 'forwardRef';
-
-export const getFailureMessage = (failureParameters: FailureParameters): string =>
-  sprintf(failureParameters.message, failureParameters.className);
 
 export class Rule extends AbstractRule {
   static metadata: IRuleMetadata = {
@@ -25,40 +15,27 @@ export class Rule extends AbstractRule {
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING_CLASS = `Avoid using \`${FORWARD_REF}\` in class "%s"`;
-  static readonly FAILURE_STRING_VARIABLE = `Avoid using \`${FORWARD_REF}\` in variable "%s"`;
+  static readonly FAILURE_STRING = `Avoid using \`${FORWARD_REF}\``;
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(new NoForwardRefWalker(sourceFile, this.getOptions()));
+    return this.applyWithFunction(sourceFile, walk);
   }
 }
 
-export class NoForwardRefWalker extends RuleWalker {
-  visitCallExpression(node: CallExpression): void {
-    this.validateCallExpression(node);
-    super.visitCallExpression(node);
-  }
+const validateCallExpression = (context: WalkContext<void>, node: CallExpression): void => {
+  if (node.expression.getText() !== FORWARD_REF) return;
 
-  private validateCallExpression(node: CallExpression): void {
-    if (node.expression.getText() !== FORWARD_REF) return;
+  context.addFailureAtNode(node, Rule.FAILURE_STRING);
+};
 
-    const nextToLastParent = getNextToLastParentNode(node);
-    let failure: ReturnType<typeof sprintf>;
+const walk = (context: WalkContext<void>): void => {
+  const { sourceFile } = context;
 
-    if (isVariableStatement(nextToLastParent)) {
-      failure = getFailureMessage({
-        className: nextToLastParent.declarationList.declarations[0].name.getText(),
-        message: Rule.FAILURE_STRING_VARIABLE
-      });
-    } else if (isClassDeclaration(nextToLastParent) && nextToLastParent.name) {
-      failure = getFailureMessage({
-        className: nextToLastParent.name.text,
-        message: Rule.FAILURE_STRING_CLASS
-      });
-    } else {
-      return;
-    }
+  const callback = (node: Node): void => {
+    if (isCallExpression(node)) validateCallExpression(context, node);
 
-    this.addFailureAtNode(node, failure);
-  }
-}
+    forEachChild(node, callback);
+  };
+
+  forEachChild(sourceFile, callback);
+};

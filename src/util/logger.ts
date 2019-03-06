@@ -1,23 +1,24 @@
 import { Config, LogLevel } from '../angular/config';
 
+// tslint:disable: no-console
 export class Logger {
-  constructor(private level: number) {}
+  constructor(private readonly level: number) {}
 
-  error(...msg: string[]) {
+  error(...msg: string[]): void {
     if (this.level & LogLevel.Error) {
-      console.error.apply(console, msg);
+      console.error.apply(console, [msg]);
     }
   }
 
-  info(...msg: string[]) {
+  info(...msg: string[]): void {
     if (this.level && LogLevel.Info) {
-      console.info.apply(console, msg);
+      console.info.apply(console, [msg]);
     }
   }
 
-  debug(...msg: string[]) {
+  debug(...msg: string[]): void {
     if (this.level && LogLevel.Debug) {
-      console.log.apply(console, msg);
+      console.log.apply(console, [msg]);
     }
   }
 }

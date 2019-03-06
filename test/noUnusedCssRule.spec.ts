@@ -1,10 +1,8 @@
 import { expect } from 'chai';
-
-import * as sass from 'node-sass';
-
-import { assertFailure, assertSuccess, assertAnnotated } from './testHelper';
-import { Config } from '../src/angular/config';
+import { renderSync } from 'node-sass';
 import { Replacement } from 'tslint';
+import { Config } from '../src/angular/config';
+import { assertAnnotated, assertFailure, assertSuccess } from './testHelper';
 
 describe('no-unused-css', () => {
   describe('valid cases', () => {
@@ -770,12 +768,12 @@ describe('no-unused-css', () => {
 
   it('should work with sass', () => {
     Config.transformStyle = (source: string) => {
-      const res = sass.renderSync({
+      const result = renderSync({
         sourceMap: true,
         data: source,
         sourceMapEmbed: true
       });
-      const code = res.css.toString();
+      const code = result.css.toString();
       const base64Map = code.match(/\/\*(.*?)\*\//)![1].replace('# sourceMappingURL=data:application/json;base64,', '');
       const map = JSON.parse(Buffer.from(base64Map, 'base64').toString('ascii'));
       return { code, source, map };
@@ -808,7 +806,7 @@ describe('no-unused-css', () => {
       message: 'Unused styles',
       source
     });
-    Config.transformStyle = code => ({ code, map: null });
+    Config.transformStyle = code => ({ code, map: undefined });
   });
 
   describe('inconsistencies with template', () => {
@@ -874,12 +872,12 @@ describe('no-unused-css', () => {
 
     it('should work with SASS', () => {
       Config.transformStyle = source => {
-        const res = sass.renderSync({
+        const result = renderSync({
           sourceMap: true,
           data: source,
           sourceMapEmbed: true
         });
-        const code = res.css.toString();
+        const code = result.css.toString();
         const base64Map = code.match(/\/\*(.*?)\*\//)![1].replace('# sourceMappingURL=data:application/json;base64,', '');
         const map = JSON.parse(Buffer.from(base64Map, 'base64').toString('ascii'));
         return { code, source, map };
@@ -916,7 +914,7 @@ describe('no-unused-css', () => {
           character: 18
         }
       })!;
-      Config.transformStyle = (code: string) => ({ code, map: null });
+      Config.transformStyle = (code: string) => ({ code, map: undefined });
       const replacement = failures[0].getFix() as Replacement;
       expect(replacement.text).to.eq('');
       expect(replacement.start).to.eq(-1);

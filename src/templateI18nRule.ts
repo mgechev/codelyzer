@@ -1,10 +1,11 @@
 import { ASTWithSource, AttrAst, BoundTextAst, ElementAst, Interpolation, TemplateAst, TextAst } from '@angular/compiler';
 import { IRuleMetadata, RuleFailure } from 'tslint';
 import { AbstractRule } from 'tslint/lib/rules';
-import { dedent } from 'tslint/lib/utils';
+import { arrayify, dedent } from 'tslint/lib/utils';
 import { SourceFile } from 'typescript';
 import { NgWalker } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
+import { isNotNullOrUndefined } from './util/is-not-null-or-undefined';
 
 const OPTION_CHECK_ID = 'check-id';
 const OPTION_CHECK_TEXT = 'check-text';
@@ -77,9 +78,12 @@ export class Rule extends AbstractRule {
         }
       }
     } = Rule;
-    const { length } = this.ruleArguments.filter(ruleArgument => enumItems.indexOf(ruleArgument) !== -1);
+    const { length: argumentsLength } = this.ruleArguments;
+    const optionArgument = arrayify(this.ruleArguments).filter(isNotNullOrUndefined);
+    const argumentsLengthInRange = argumentsLength >= minLength && argumentsLength <= maxLength;
+    const isOptionArgumentValid = optionArgument.length > 0 && optionArgument.every(argument => enumItems.indexOf(argument) !== -1);
 
-    return super.isEnabled() && length >= minLength && length <= maxLength;
+    return super.isEnabled() && argumentsLengthInRange && isOptionArgumentValid;
   }
 }
 

@@ -1,12 +1,12 @@
 import { getFailureMessage, Rule } from '../src/noConflictingLifecycleRule';
-import { assertFailures, assertSuccess, IExpectedFailure } from './testHelper';
+import { assertFailures, assertSuccess, ExpectedFailure } from './testHelper';
 
 const {
   FAILURE_STRING_INTERFACE_HOOK,
   FAILURE_STRING_METHOD_HOOK,
   metadata: { ruleName }
 } = Rule;
-const failures: IExpectedFailure = {
+const failures: ExpectedFailure = {
   endPosition: {
     character: 9,
     line: 4
@@ -17,20 +17,18 @@ const failures: IExpectedFailure = {
     line: 1
   }
 };
-const interfaceFailures: IExpectedFailure[] = [
+const interfaceFailures: ExpectedFailure[] = [
   {
     ...failures,
     message: getFailureMessage({
-      className: 'Test',
       message: FAILURE_STRING_INTERFACE_HOOK
     })
   }
 ];
-const methodFailures: IExpectedFailure[] = [
+const methodFailures: ExpectedFailure[] = [
   {
     ...failures,
     message: getFailureMessage({
-      className: 'Test',
       message: FAILURE_STRING_METHOD_HOOK
     })
   }

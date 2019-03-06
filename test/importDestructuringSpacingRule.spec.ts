@@ -1,9 +1,10 @@
 import { expect } from 'chai';
 import { Replacement } from 'tslint/lib';
-import { getFailureMessage, Rule } from '../src/importDestructuringSpacingRule';
+import { Rule } from '../src/importDestructuringSpacingRule';
 import { assertAnnotated, assertSuccess } from './testHelper';
 
 const {
+  FAILURE_STRING,
   metadata: { ruleName }
 } = Rule;
 
@@ -15,7 +16,7 @@ describe(ruleName, () => {
                ~~~~~
       `;
       assertAnnotated({
-        message: getFailureMessage(),
+        message: FAILURE_STRING,
         ruleName,
         source
       });
@@ -26,7 +27,11 @@ describe(ruleName, () => {
       import {Foo,Bar} from './foo'
              ~~~~~~~~~
       `;
-      assertAnnotated({ message: getFailureMessage(), ruleName, source });
+      assertAnnotated({
+        message: FAILURE_STRING,
+        ruleName,
+        source
+      });
     });
 
     it('should fail when there are no trailing spaces', () => {
@@ -35,7 +40,7 @@ describe(ruleName, () => {
                ~~~~~~
       `;
       assertAnnotated({
-        message: getFailureMessage(),
+        message: FAILURE_STRING,
         ruleName,
         source
       });
@@ -47,88 +52,10 @@ describe(ruleName, () => {
                ~~~~~~
       `;
       assertAnnotated({
-        message: getFailureMessage(),
+        message: FAILURE_STRING,
         ruleName,
         source
       });
-    });
-  });
-
-  describe('failure with replacements', () => {
-    it('should fail and apply proper replacements when there are no spaces', () => {
-      const source = `
-        import {Foo} from './foo';
-               ~~~~~
-      `;
-      const failures = assertAnnotated({ message: getFailureMessage(), ruleName, source });
-
-      if (!Array.isArray(failures)) {
-        return;
-      }
-
-      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
-
-      expect(replacement).to.eq(`
-        import { Foo } from './foo';
-               ~~~~~
-      `);
-    });
-
-    it('should fail and apply proper replacements when there is more than one leading space', () => {
-      const source = `
-        import {     Bar, BarFoo, Foo } from './foo';
-               ~~~~~~~~~~~~~~~~~~~~~~~~
-      `;
-      const failures = assertAnnotated({ message: getFailureMessage(), ruleName, source });
-
-      if (!Array.isArray(failures)) {
-        return;
-      }
-
-      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
-
-      expect(replacement).to.eq(`
-        import { Bar, BarFoo, Foo } from './foo';
-               ~~~~~~~~~~~~~~~~~~~~~~~~
-      `);
-    });
-
-    it('should fail and apply proper replacements when there is more than one trailing space', () => {
-      const source = `
-        import { Bar, BarFoo, Foo     } from './foo';
-               ~~~~~~~~~~~~~~~~~~~~~~~~
-      `;
-      const failures = assertAnnotated({ message: getFailureMessage(), ruleName, source });
-
-      if (!Array.isArray(failures)) {
-        return;
-      }
-
-      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
-
-      expect(replacement).to.eq(`
-        import { Bar, BarFoo, Foo } from './foo';
-               ~~~~~~~~~~~~~~~~~~~~~~~~
-      `);
-    });
-
-    it('should fail and apply proper replacements when there is more than one space left and right', () => {
-      const source = `
-        import {     Bar, BarFoo, Foo     } from './foo';
-               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      `;
-      const failures = assertAnnotated({ message: getFailureMessage(), ruleName, source });
-
-      if (!Array.isArray(failures)) {
-        return;
-      }
-
-      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
-
-      expect(replacement).to.eq(`
-        import { Bar, BarFoo, Foo } from './foo';
-               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      `);
     });
   });
 
@@ -191,6 +118,88 @@ describe(ruleName, () => {
         } from './foo';
       `;
       assertSuccess(ruleName, source);
+    });
+  });
+
+  describe('replacements', () => {
+    it('should apply replacements when there are no spaces', () => {
+      const source = `
+        import {Foo} from './foo';
+               ~~~~~
+      `;
+      const failures = assertAnnotated({ message: FAILURE_STRING, ruleName, source });
+
+      if (!Array.isArray(failures)) return;
+
+      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+      const expectedSource = `
+        import { Foo } from './foo';
+               ~~~~~
+      `;
+
+      expect(replacement).to.eq(expectedSource);
+    });
+
+    it('should apply replacements when there is more than one leading space', () => {
+      const source = `
+        import {     Bar, BarFoo, Foo } from './foo';
+               ~~~~~~~~~~~~~~~~~~~~~~~~
+      `;
+      const failures = assertAnnotated({
+        message: FAILURE_STRING,
+        ruleName,
+        source
+      });
+
+      if (!Array.isArray(failures)) return;
+
+      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+      const expectedSource = `
+        import { Bar, BarFoo, Foo } from './foo';
+               ~~~~~~~~~~~~~~~~~~~~~~~~
+      `;
+
+      expect(replacement).to.eq(expectedSource);
+    });
+
+    it('should apply replacements when there is more than one trailing space', () => {
+      const source = `
+        import { Bar, BarFoo, Foo     } from './foo';
+               ~~~~~~~~~~~~~~~~~~~~~~~~
+      `;
+      const failures = assertAnnotated({
+        message: FAILURE_STRING,
+        ruleName,
+        source
+      });
+
+      if (!Array.isArray(failures)) return;
+
+      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+      const expectedSource = `
+        import { Bar, BarFoo, Foo } from './foo';
+               ~~~~~~~~~~~~~~~~~~~~~~~~
+      `;
+
+      expect(replacement).to.eq(expectedSource);
+    });
+
+    it('should apply replacements when there is more than one space left and right', () => {
+      const source = `
+        import {     Bar, BarFoo, Foo     } from './foo';
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      `;
+      const failures = assertAnnotated({ message: FAILURE_STRING, ruleName, source });
+
+      if (!Array.isArray(failures)) return;
+
+      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+      const expectedSource = `
+        import { Bar, BarFoo, Foo } from './foo';
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      `;
+
+      expect(replacement).to.eq(expectedSource);
     });
   });
 });

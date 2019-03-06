@@ -121,8 +121,7 @@ describe(ruleName, () => {
       if (!Array.isArray(failures)) return;
 
       const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
-
-      expect(replacement).to.eq(`
+      const expectedSource = `
         @Component({
           template: \`
             <input type="text" name="foo" [(ngModel)]="foo">
@@ -130,7 +129,9 @@ describe(ruleName, () => {
           \`
         })
         class Test {}
-      `);
+      `;
+
+      expect(replacement).to.eq(expectedSource);
     });
 
     it('should fail if there are multiple brackets inside the parentheses', () => {
@@ -165,8 +166,7 @@ describe(ruleName, () => {
         source
       });
       const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
-
-      expect(replacement).to.eq(`
+      const expectedSource = `
         @Component({
           template: \`
             <app-item [(bar)]="bar" [(item)]="item" [(test)]="test"></app-item>
@@ -177,7 +177,9 @@ describe(ruleName, () => {
           \`
         })
         class Test {}
-      `);
+      `;
+
+      expect(replacement).to.eq(expectedSource);
     });
   });
 });
