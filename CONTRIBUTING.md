@@ -205,7 +205,7 @@ Must be one of the following:
 ### Scope
 
 The scope could be anything specifying place of the commit change. For example
-`ngWalker`, `useLifeCycleInterface`, etc.
+`ngWalker`, `useLifecycleInterface`, etc.
 
 ### Subject
 

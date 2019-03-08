@@ -96,38 +96,38 @@ Create the following `tslint.json` file like:
 {
   "extends": ["codelyzer"],
   "rules": {
-    "banana-in-box": true,
-    "templates-no-negated-async": true,
-    "directive-selector": [true, "attribute", "sg", "camelCase"],
-    "component-selector": [true, "element", "sg", "kebab-case"],
-    "max-inline-declarations": true,
-    "no-life-cycle-call": true,
-    "prefer-output-readonly": true,
-    "no-conflicting-life-cycle-hooks": true,
-    "enforce-component-selector": true,
-    "no-queries-parameter": true,
-    "prefer-inline-decorator": true,
-    "use-input-property-decorator": true,
-    "use-output-property-decorator": true,
-    "use-host-property-decorator": true,
-    "use-view-encapsulation": true,
-    "no-attribute-parameter-decorator": true,
-    "no-output-named-after-standard-event": true,
-    "no-input-rename": true,
-    "no-output-rename": true,
-    "no-output-on-prefix": true,
-    "no-forward-ref": true,
-    "no-unused-css": true,
-    "use-life-cycle-interface": true,
-    "contextual-life-cycle": true,
-    "trackBy-function": true,
-    "use-pipe-transform-interface": true,
     "component-class-suffix": true,
+    "component-max-inline-declarations": true,
+    "component-selector": [true, "element", "sg", "kebab-case"],
+    "contextual-lifecycle": true,
     "directive-class-suffix": true,
-    "pipe-impure": true,
-    "i18n": [true, "check-id", "check-text"],
+    "directive-selector": [true, "attribute", "sg", "camelCase"],
+    "no-attribute-decorator": true,
+    "no-conflicting-lifecycle": true,
+    "no-forward-ref": true,
+    "no-host-metadata-property": true,
+    "no-input-rename": true,
+    "no-inputs-metadata-property": true,
+    "no-lifecycle-call": true,
+    "no-output-native": true,
+    "no-output-on-prefix": true,
+    "no-output-rename": true,
+    "no-outputs-metadata-property": true,
+    "no-pipe-impure": true,
+    "no-queries-metadata-property": true,
+    "no-unused-css": true,
+    "prefer-inline-decorator": true,
+    "prefer-output-readonly": true,
+    "template-banana-in-box": true,
+    "template-conditional-complexity": [true, 4],
     "template-cyclomatic-complexity": [true, 5],
-    "template-conditional-complexity": [true, 4]
+    "template-i18n": [true, "check-id", "check-text"],
+    "template-no-negated-async": true,
+    "template-use-track-by-function": true,
+    "use-component-selector": true,
+    "use-component-view-encapsulation": true,
+    "use-lifecycle-interface": true,
+    "use-pipe-transform-interface": true
   }
 }
 ```
@@ -156,38 +156,38 @@ Now create the following `tslint.json` file where your `node_modules` directory 
 {
   "rulesDirectory": ["node_modules/codelyzer"],
   "rules": {
-    "banana-in-box": true,
-    "templates-no-negated-async": true,
-    "directive-selector": [true, "attribute", "sg", "camelCase"],
-    "component-selector": [true, "element", "sg", "kebab-case"],
-    "max-inline-declarations": true,
-    "no-life-cycle-call": true,
-    "prefer-output-readonly": true,
-    "no-conflicting-life-cycle-hooks": true,
-    "enforce-component-selector": true,
-    "no-queries-parameter": true,
-    "prefer-inline-decorator": true,
-    "use-input-property-decorator": true,
-    "use-output-property-decorator": true,
-    "use-host-property-decorator": true,
-    "use-view-encapsulation": true,
-    "no-attribute-parameter-decorator": true,
-    "no-output-named-after-standard-event": true,
-    "no-input-rename": true,
-    "no-output-rename": true,
-    "no-output-on-prefix": true,
-    "no-forward-ref": true,
-    "no-unused-css": true,
-    "use-life-cycle-interface": true,
-    "contextual-life-cycle": true,
-    "trackBy-function": true,
-    "use-pipe-transform-interface": true,
     "component-class-suffix": true,
+    "component-max-inline-declarations": true,
+    "component-selector": [true, "element", "sg", "kebab-case"],
+    "contextual-lifecycle": true,
     "directive-class-suffix": true,
-    "pipe-impure": true,
-    "i18n": [true, "check-id", "check-text"],
+    "directive-selector": [true, "attribute", "sg", "camelCase"],
+    "no-attribute-decorator": true,
+    "no-conflicting-lifecycle": true,
+    "no-forward-ref": true,
+    "no-host-metadata-property": true,
+    "no-input-rename": true,
+    "no-inputs-metadata-property": true,
+    "no-lifecycle-call": true,
+    "no-output-native": true,
+    "no-output-on-prefix": true,
+    "no-output-rename": true,
+    "no-outputs-metadata-property": true,
+    "no-pipe-impure": true,
+    "no-queries-metadata-property": true,
+    "no-unused-css": true,
+    "prefer-inline-decorator": true,
+    "prefer-output-readonly": true,
+    "template-banana-in-box": true,
+    "template-conditional-complexity": [true, 4],
     "template-cyclomatic-complexity": [true, 5],
-    "template-conditional-complexity": [true, 4]
+    "template-i18n": [true, "check-id", "check-text"],
+    "template-no-negated-async": true,
+    "template-use-track-by-function": true,
+    "use-component-selector": true,
+    "use-component-view-encapsulation": true,
+    "use-lifecycle-interface": true,
+    "use-pipe-transform-interface": true
   }
 }
 ```
@@ -257,29 +257,21 @@ Below you can find a recommended configuration which is based on the [Angular St
 {
   // The rule have the following arguments:
   // [ENABLED, "attribute" | "element", "selectorPrefix" | ["listOfPrefixes"], "camelCase" | "kebab-case"]
-  "directive-selector": [true, "attribute", ["dir-prefix1", "dir-prefix2"], "camelCase"],
   "component-selector": [true, "element", ["cmp-prefix1", "cmp-prefix2"], "kebab-case"],
+  "directive-selector": [true, "attribute", ["dir-prefix1", "dir-prefix2"], "camelCase"],
 
-  "use-input-property-decorator": true,
-  "use-output-property-decorator": true,
-  "use-host-property-decorator": true,
-  "no-attribute-parameter-decorator": true,
+  "component-max-inline-declarations": true,
+  "no-host-metadata-property": true,
   "no-input-rename": true,
+  "no-inputs-metadata-property": true,
   "no-output-on-prefix": true,
   "no-output-rename": true,
-  "no-forward-ref": true,
-  "use-life-cycle-interface": true,
-  "use-pipe-transform-interface": true,
-  "no-output-named-after-standard-event": true,
-  "max-inline-declarations": true,
-  "no-life-cycle-call": true,
-  "prefer-output-readonly": true,
-  "no-conflicting-life-cycle-hooks": true,
-  "enforce-component-selector": true,
-  "no-queries-parameter": true,
+  "no-outputs-metadata-property": true,
+  "no-queries-metadata-property": true,
   "prefer-inline-decorator": true,
-  // [ENABLED, "SUFFIX"]
-  // Where "SUFFIX" is your custom suffix, for instance "Page" for Ionic 2 components.
+  "use-lifecycle-interface": true,
+  // [ENABLED, "Suffix" | ["listOfSuffixes"]]
+  // Where "Suffix" is/are your custom(s) suffix(s), for instance "Page" for Ionic components.
   "component-class-suffix": [true, "Component"],
   "directive-class-suffix": [true, "Directive"]
 }
@@ -287,47 +279,59 @@ Below you can find a recommended configuration which is based on the [Angular St
 
 ## Rules Status
 
-| Rule                                   |     Status     |
-| -------------------------------------- | :------------: |
-| `banana-in-box`                        |     Stable     |
-| `contextual-life-cycle`                |     Stable     |
-| `decorator-not-allowed`                |     Stable     |
-| `pipe-impure`                          |     Stable     |
-| `templates-no-negated-async`           |     Stable     |
-| `no-attribute-parameter-decorator`     |     Stable     |
-| `no-forward-ref`                       |     Stable     |
-| `no-input-prefix`                      |     Stable     |
-| `no-input-rename`                      |     Stable     |
-| `no-output-on-prefix`                  |     Stable     |
-| `no-output-rename`                     |     Stable     |
-| `use-life-cycle-interface`             |     Stable     |
-| `use-pipe-decorator`                   |     Stable     |
-| `use-pipe-transform-interface`         |     Stable     |
-| `use-view-encapsulation`               |     Stable     |
-| `component-class-suffix`               |     Stable     |
-| `component-selector`                   |     Stable     |
-| `directive-class-suffix`               |     Stable     |
-| `directive-selector`                   |     Stable     |
-| `use-host-property-decorator`          |     Stable     |
-| `use-input-property-decorator`         |     Stable     |
-| `use-output-property-decorator`        |     Stable     |
-| `trackBy-function`                     |     Stable     |
-| `import-destructuring-spacing`         |     Stable     |
-| `no-output-named-after-standard-event` |     Stable     |
-| `max-inline-declarations`              |     Stable     |
-| `prefer-output-readonly`               |     Stable     |
-| `enforce-component-selector`           |     Stable     |
-| `no-life-cycle-call`                   |     Stable     |
-| `no-template-call-expression`          |     Stable     |
-| `no-queries-parameter`                 |     Stable     |
-| `prefer-inline-decorator`              |     Stable     |
-| `template-cyclomatic-complexity`       |     Stable     |
-| `pipe-prefix`                          | _Experimental_ |
-| `no-conflicting-life-cycle-hooks`      | _Experimental_ |
-| `i18n`                                 | _Experimental_ |
-| `no-unused-css`                        | _Experimental_ |
-| `template-conditional-complexity`      | _Experimental_ |
-| `angular-whitespace`                   |  _Deprecated_  |
+| Rule                                          |     Status     |
+| --------------------------------------------- | :------------: |
+| `component-class-suffix`                      |     Stable     |
+| `component-max-inline-declarations`           |     Stable     |
+| `component-selector`                          |     Stable     |
+| `contextual-decorator`                        |     Stable     |
+| `contextual-lifecycle`                        |     Stable     |
+| `directive-class-suffix`                      |     Stable     |
+| `directive-selector`                          |     Stable     |
+| `import-destructuring-spacing`                |     Stable     |
+| `no-attribute-decorator`                      |     Stable     |
+| `no-forward-ref`                              |     Stable     |
+| `no-host-metadata-property`                   |     Stable     |
+| `no-input-prefix`                             |     Stable     |
+| `no-input-rename`                             |     Stable     |
+| `no-inputs-metadata-property`                 |     Stable     |
+| `no-lifecycle-call`                           |     Stable     |
+| `no-output-native`                            |     Stable     |
+| `no-output-on-prefix`                         |     Stable     |
+| `no-output-rename`                            |     Stable     |
+| `no-outputs-metadata-property`                |     Stable     |
+| `no-pipe-impure`                              |     Stable     |
+| `no-queries-metadata-property`                |     Stable     |
+| `prefer-inline-decorator`                     |     Stable     |
+| `prefer-output-readonly`                      |     Stable     |
+| `template-banana-in-box`                      |     Stable     |
+| `template-cyclomatic-complexity`              |     Stable     |
+| `template-no-call-expression`                 |     Stable     |
+| `template-no-negated-async`                   |     Stable     |
+| `template-use-track-by-function`              |     Stable     |
+| `use-component-selector`                      |     Stable     |
+| `use-component-view-encapsulation`            |     Stable     |
+| `use-lifecycle-interface`                     |     Stable     |
+| `use-pipe-decorator`                          |     Stable     |
+| `use-pipe-transform-interface`                |     Stable     |
+| `no-conflicting-lifecycle`                    | _Experimental_ |
+| `no-unused-css`                               | _Experimental_ |
+| `pipe-prefix`                                 | _Experimental_ |
+| `relative-url-prefix`                         | _Experimental_ |
+| `template-accessibility-alt-text`             | _Experimental_ |
+| `template-accessibility-element-content`      | _Experimental_ |
+| `template-accessibility-label-for`            | _Experimental_ |
+| `template-accessibility-tabindex-no-positive` | _Experimental_ |
+| `template-accessibility-table-scope`          | _Experimental_ |
+| `template-accessibility-valid-aria`           | _Experimental_ |
+| `template-click-events-have-key-events`       | _Experimental_ |
+| `template-conditional-complexity`             | _Experimental_ |
+| `template-i18n`                               | _Experimental_ |
+| `template-mouse-events-have-key-events`       | _Experimental_ |
+| `template-no-any`                             | _Experimental_ |
+| `template-no-autofocus`                       | _Experimental_ |
+| `template-no-distracting-elements`            | _Experimental_ |
+| `angular-whitespace`                          |  _Deprecated_  |
 
 ## Disable a rule that validates Template or Styles
 
@@ -338,7 +342,7 @@ To disable rules that validate templates or styles you'd need to add a marker in
 ```ts
 import { Component } from '@angular/core';
 
-/* tslint:disable:trackBy-function */
+/* tslint:disable:template-use-track-by-function */
 @Component({
   selector: 'codelyzer',
   templateUrl: './codelyzer.component.html'
