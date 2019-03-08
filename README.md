@@ -271,7 +271,7 @@ Below you can find a recommended configuration which is based on the [Angular St
   "prefer-inline-decorator": true,
   "use-lifecycle-interface": true,
   // [ENABLED, "Suffix" | ["listOfSuffixes"]]
-  // Where "Suffix" is/are your custom(s) suffix(s), for instance "Page" for Ionic 2 components.
+  // Where "Suffix" is/are your custom(s) suffix(s), for instance "Page" for Ionic components.
   "component-class-suffix": [true, "Component"],
   "directive-class-suffix": [true, "Directive"]
 }
