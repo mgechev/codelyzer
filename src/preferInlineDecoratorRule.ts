@@ -2,21 +2,20 @@ import { IOptions, IRuleMetadata, Replacement, RuleFailure } from 'tslint/lib';
 import { AbstractRule } from 'tslint/lib/rules';
 import { Decorator, isPropertyDeclaration, SourceFile } from 'typescript';
 import { NgWalker } from './angular/ngWalker';
-import { decoratorKeys, Decorators, DECORATORS, getDecoratorName, isSameLine } from './util/utils';
+import { Decorators, getDecoratorName, isSameLine } from './util/utils';
 
 export class Rule extends AbstractRule {
   static readonly metadata: IRuleMetadata = {
     description: 'Ensures that decorators are on the same line as the property/method it decorates.',
     descriptionDetails: 'See more at https://angular.io/guide/styleguide#style-05-12.',
     hasFix: true,
-    optionExamples: [true, [true, Decorators.HostListener]],
+    optionExamples: [true, [true, Decorators.HostListener], [true, Decorators.Input, 'MyCustomDecorator']],
     options: {
-      items: {
-        enum: decoratorKeys,
-        type: 'string'
-      },
-      maxLength: DECORATORS.size,
-      minLength: 0,
+      items: [
+        {
+          type: 'string'
+        }
+      ],
       type: 'array'
     },
     optionsDescription: 'A list of blacklisted decorators.',
@@ -33,14 +32,7 @@ export class Rule extends AbstractRule {
   }
 
   isEnabled(): boolean {
-    const {
-      metadata: {
-        options: { maxLength, minLength }
-      }
-    } = Rule;
-    const { length } = this.ruleArguments;
-
-    return super.isEnabled() && length >= minLength && length <= maxLength;
+    return super.isEnabled() && this.ruleArguments.every(ruleArgument => !!(typeof ruleArgument === 'string' && ruleArgument.trim()));
   }
 }
 

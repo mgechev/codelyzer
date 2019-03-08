@@ -33,7 +33,7 @@ describe(ruleName, () => {
           class Test {
             @Input('test1')
             testVar1: string;
-            @Input('test2')
+            @MyCustomDecorator()
             testVar2: string;
           }
         `;
@@ -99,7 +99,7 @@ describe(ruleName, () => {
         const source = `
           class Test {
             @Input('test1') testVar1: string;
-            @Input('test2') testVar2: string;
+            @MyCustomDecorator() testVar2: string;
           }
         `;
         assertSuccess(ruleName, source);
@@ -172,7 +172,7 @@ describe(ruleName, () => {
   });
 
   describe('replacements', () => {
-    it('should fail if a property is not on the same line as its decorator', () => {
+    it('should fail and apply proper replacements if a property is not on the same line as its decorator', () => {
       const source = `
         class Test {
           @Output()
