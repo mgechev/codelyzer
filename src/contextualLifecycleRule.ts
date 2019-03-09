@@ -14,6 +14,7 @@ import {
   MetadataTypeKeys,
   MetadataTypes
 } from './util/utils';
+import { InjectableMetadata, PipeMetadata } from './angular';
 
 interface FailureParameters {
   readonly className: string;
@@ -45,20 +46,18 @@ export class Rule extends AbstractRule {
 }
 
 class ContextualLifecycleWalker extends NgWalker {
-  protected visitNgInjectable(controller: ClassDeclaration, decorator: Decorator): void {
-    this.validateDecorator(controller, decorator, METADATA_TYPE_LIFECYCLE_MAPPER.Injectable);
-    super.visitNgInjectable(controller, decorator);
+  visitNgInjectable(metadata: InjectableMetadata): void {
+    this.validateDecorator(metadata.controller, metadata.decorator, METADATA_TYPE_LIFECYCLE_MAPPER.Injectable);
+    super.visitNgInjectable(metadata);
   }
 
-  protected visitNgPipe(controller: ClassDeclaration, decorator: Decorator): void {
-    this.validateDecorator(controller, decorator, METADATA_TYPE_LIFECYCLE_MAPPER.Pipe);
-    super.visitNgPipe(controller, decorator);
+  visitNgPipe(metadata: PipeMetadata): void {
+    this.validateDecorator(metadata.controller, metadata.decorator, METADATA_TYPE_LIFECYCLE_MAPPER.Pipe);
+    super.visitNgPipe(metadata);
   }
 
   private validateDecorator(controller: ClassDeclaration, decorator: Decorator, allowedMethods: ReadonlySet<LifecycleMethodKeys>): void {
-    const className = getClassName(controller);
-
-    if (!className) return;
+    const className = getClassName(controller)!;
 
     const metadataType = getDecoratorName(decorator);
 

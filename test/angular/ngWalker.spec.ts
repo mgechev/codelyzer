@@ -54,6 +54,47 @@ describe('ngWalker', () => {
     (chai.expect(injSpy).to.have.been as any).called();
   });
 
+  it('should not visit components, directives, pipes, injectables, and modules', () => {
+    let source = `
+      @Component({
+        selector: 'foo',
+        template: 'bar'
+      })
+      export default class {}
+      @Directive({
+        selector: '[baz]'
+      })
+      export default class {}
+      @Pipe({
+        name: 'foo'
+      })
+      export default class {}
+      @NgModule({})
+      export default class {}
+      @Injectable()
+      export default class {}
+    `;
+    let ruleArgs: Lint.IOptions = {
+      ruleName: 'foo',
+      ruleArguments: ['foo'],
+      disabledIntervals: [],
+      ruleSeverity: 'warning'
+    };
+    let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
+    let walker = new NgWalker(sf, ruleArgs);
+    let cmpSpy = chaiSpy.on(walker, 'visitNgComponent');
+    let dirSpy = chaiSpy.on(walker, 'visitNgDirective');
+    let pipeSpy = chaiSpy.on(walker, 'visitNgPipe');
+    let modSpy = chaiSpy.on(walker, 'visitNgModule');
+    let injSpy = chaiSpy.on(walker, 'visitNgInjectable');
+    walker.walk(sf);
+    (chai.expect(cmpSpy).to.not.have.been as any).called();
+    (chai.expect(dirSpy).to.not.have.been as any).called();
+    (chai.expect(pipeSpy).to.not.have.been as any).called();
+    (chai.expect(modSpy).to.not.have.been as any).called();
+    (chai.expect(injSpy).to.not.have.been as any).called();
+  });
+
   it('should visit inputs and outputs with args', () => {
     let source = `
       @Component({

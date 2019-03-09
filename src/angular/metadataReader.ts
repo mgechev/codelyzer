@@ -1,12 +1,22 @@
 import * as ts from 'typescript';
-import { callExpression, decoratorArgument, hasProperties, withIdentifier } from '../util/astQuery';
+import { callExpression, decoratorArgument, getStringInitializerFromProperty, hasProperties, withIdentifier } from '../util/astQuery';
 import { ifTrue, listToMaybe, Maybe, unwrapFirst } from '../util/function';
 import { logger } from '../util/logger';
 import { getAnimations, getInlineStyle, getTemplate } from '../util/ngQuery';
 import { getDecoratorPropertyInitializer, isStringLiteralLike, maybeNodeArray } from '../util/utils';
 import { Config } from './config';
 import { FileResolver } from './fileResolver/fileResolver';
-import { AnimationMetadata, CodeWithSourceMap, ComponentMetadata, DirectiveMetadata, StyleMetadata, TemplateMetadata } from './metadata';
+import {
+  AnimationMetadata,
+  CodeWithSourceMap,
+  ComponentMetadata,
+  DirectiveMetadata,
+  InjectableMetadata,
+  ModuleMetadata,
+  PipeMetadata,
+  StyleMetadata,
+  TemplateMetadata
+} from './metadata';
 import { AbstractResolver, MetadataUrls } from './urlResolvers/abstractResolver';
 import { PathResolver } from './urlResolvers/pathResolver';
 import { UrlResolver } from './urlResolvers/urlResolver';
@@ -26,7 +36,7 @@ export class MetadataReader {
     this.urlResolver = this.urlResolver || new UrlResolver(new PathResolver());
   }
 
-  read(d: ts.ClassDeclaration): DirectiveMetadata | undefined {
+  read(d: ts.ClassDeclaration): DirectiveMetadata | ComponentMetadata | PipeMetadata | ModuleMetadata | InjectableMetadata | undefined {
     const componentMetadata = unwrapFirst<ComponentMetadata | undefined>(
       maybeNodeArray(d.decorators!).map(dec => {
         return Maybe.lift(dec)
@@ -45,7 +55,34 @@ export class MetadataReader {
       )
     );
 
-    return directiveMetadata || componentMetadata || undefined;
+    const pipeMetadata = unwrapFirst<PipeMetadata | undefined>(
+      maybeNodeArray(d.decorators!).map(dec =>
+        Maybe.lift(dec)
+          .bind(callExpression)
+          .bind(withIdentifier('Pipe') as any)
+          .fmap(() => this.readPipeMetadata(d, dec))
+      )
+    );
+
+    const moduleMetadata = unwrapFirst<ModuleMetadata | undefined>(
+      maybeNodeArray(d.decorators!).map(dec =>
+        Maybe.lift(dec)
+          .bind(callExpression)
+          .bind(withIdentifier('NgModule') as any)
+          .fmap(() => this.readModuleMetadata(d, dec))
+      )
+    );
+
+    const injectableMetadata = unwrapFirst<InjectableMetadata | undefined>(
+      maybeNodeArray(d.decorators!).map(dec =>
+        Maybe.lift(dec)
+          .bind(callExpression)
+          .bind(withIdentifier('Injectable') as any)
+          .fmap(() => this.readInjectableMetadata(d, dec))
+      )
+    );
+
+    return directiveMetadata || componentMetadata || pipeMetadata || moduleMetadata || injectableMetadata || undefined;
   }
 
   protected readDirectiveMetadata(d: ts.ClassDeclaration, dec: ts.Decorator): DirectiveMetadata {
@@ -53,6 +90,26 @@ export class MetadataReader {
     const selector = selectorExpression && isStringLiteralLike(selectorExpression) ? selectorExpression.text : undefined;
 
     return new DirectiveMetadata(d, dec, selector);
+  }
+
+  protected readPipeMetadata(d: ts.ClassDeclaration, dec: ts.Decorator): DirectiveMetadata {
+    const name = this.getDecoratorArgument(dec)
+      .bind(expr => getStringInitializerFromProperty('name', expr!.properties))
+      .fmap(initializer => initializer!.text);
+
+    const pure = this.getDecoratorArgument(dec)
+      .bind(expr => getStringInitializerFromProperty('pure', expr!.properties))
+      .fmap(initializer => initializer!.text);
+
+    return new PipeMetadata(d, dec, name.unwrap(), pure ? pure.unwrap() : undefined);
+  }
+
+  protected readModuleMetadata(d: ts.ClassDeclaration, dec: ts.Decorator): DirectiveMetadata {
+    return new ModuleMetadata(d, dec);
+  }
+
+  protected readInjectableMetadata(d: ts.ClassDeclaration, dec: ts.Decorator): DirectiveMetadata {
+    return new InjectableMetadata(d, dec);
   }
 
   protected readComponentMetadata(d: ts.ClassDeclaration, dec: ts.Decorator): ComponentMetadata {

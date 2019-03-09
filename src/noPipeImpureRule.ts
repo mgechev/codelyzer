@@ -4,6 +4,7 @@ import { AbstractRule } from 'tslint/lib/rules';
 import { ClassDeclaration, Decorator, SourceFile, SyntaxKind } from 'typescript';
 import { NgWalker } from './angular/ngWalker';
 import { getClassName, getDecoratorPropertyInitializer } from './util/utils';
+import { PipeMetadata } from './angular';
 
 interface FailureParameters {
   readonly className: string;
@@ -31,13 +32,13 @@ export class Rule extends AbstractRule {
 }
 
 export class ClassMetadataWalker extends NgWalker {
-  protected visitNgPipe(controller: ClassDeclaration, decorator: Decorator): void {
-    this.validatePipe(controller, decorator);
-    super.visitNgPipe(controller, decorator);
+  protected visitNgPipe(metadata: PipeMetadata): void {
+    this.validatePipe(metadata);
+    super.visitNgPipe(metadata);
   }
 
-  private validatePipe(controller: ClassDeclaration, decorator: Decorator): void {
-    const pureExpression = getDecoratorPropertyInitializer(decorator, 'pure');
+  private validatePipe(metadata: PipeMetadata): void {
+    const pureExpression = getDecoratorPropertyInitializer(metadata.decorator, 'pure');
 
     if (!pureExpression) return;
 
@@ -46,9 +47,7 @@ export class ClassMetadataWalker extends NgWalker {
 
     if (!parentExpression || isNotFalseLiteral) return;
 
-    const className = getClassName(controller);
-
-    if (!className) return;
+    const className = getClassName(metadata.controller)!;
 
     const failure = getFailureMessage({ className });
 
