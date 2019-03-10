@@ -38,19 +38,13 @@ export class ClassMetadataWalker extends NgWalker {
   }
 
   private validatePipe(metadata: PipeMetadata): void {
-    const pureExpression = getDecoratorPropertyInitializer(metadata.decorator, 'pure');
-
-    if (!pureExpression) return;
-
-    const { parent: parentExpression } = pureExpression;
-    const isNotFalseLiteral = pureExpression.kind !== SyntaxKind.FalseKeyword;
-
-    if (!parentExpression || isNotFalseLiteral) return;
+    if (!metadata.pure) return;
+    if (metadata.pure!.kind !== SyntaxKind.FalseKeyword) return;
 
     const className = getClassName(metadata.controller)!;
 
     const failure = getFailureMessage({ className });
 
-    this.addFailureAtNode(parentExpression, failure);
+    this.addFailureAtNode(metadata.pure, failure);
   }
 }

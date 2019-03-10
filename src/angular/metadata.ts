@@ -25,21 +25,17 @@ export interface TemplateMetadata extends PropertyMetadata {
 }
 
 export class DirectiveMetadata {
-  constructor(
-    public readonly controller: ts.ClassDeclaration,
-    public readonly decorator: ts.Decorator,
-    public readonly selector?: string
-  ) {}
+  constructor(readonly controller: ts.ClassDeclaration, readonly decorator: ts.Decorator, readonly selector?: string) {}
 }
 
 export class ComponentMetadata extends DirectiveMetadata {
   constructor(
-    public readonly controller: ts.ClassDeclaration,
-    public readonly decorator: ts.Decorator,
-    public readonly selector?: string,
-    public readonly animations?: (AnimationMetadata | undefined)[],
-    public readonly styles?: (StyleMetadata | undefined)[],
-    public readonly template?: TemplateMetadata
+    readonly controller: ts.ClassDeclaration,
+    readonly decorator: ts.Decorator,
+    readonly selector?: string,
+    readonly animations?: (AnimationMetadata | undefined)[],
+    readonly styles?: (StyleMetadata | undefined)[],
+    readonly template?: TemplateMetadata
   ) {
     super(controller, decorator, selector);
   }
@@ -47,17 +43,17 @@ export class ComponentMetadata extends DirectiveMetadata {
 
 export class PipeMetadata {
   constructor(
-    public readonly controller: ts.ClassDeclaration,
-    public readonly decorator: ts.Decorator,
-    public readonly name?: string,
-    public readonly pure?: string
+    readonly controller: ts.ClassDeclaration,
+    readonly decorator: ts.Decorator,
+    readonly name?: string,
+    readonly pure?: ts.BooleanLiteral
   ) {}
 }
 
 export class ModuleMetadata {
-  constructor(public readonly controller: ts.ClassDeclaration, public readonly decorator: ts.Decorator) {}
+  constructor(readonly controller: ts.ClassDeclaration, readonly decorator: ts.Decorator) {}
 }
 
 export class InjectableMetadata {
-  constructor(public readonly controller: ts.ClassDeclaration, public readonly decorator: ts.Decorator) {}
+  constructor(readonly controller: ts.ClassDeclaration, readonly decorator: ts.Decorator) {}
 }

@@ -163,7 +163,7 @@ export class NgWalker extends Lint.RuleWalker {
 
   protected visitNgDirective(metadata: DirectiveMetadata) {}
 
-  protected visitNgPipe(metadata: DirectiveMetadata) {}
+  protected visitNgPipe(metadata: PipeMetadata) {}
 
   protected visitNgInjectable(metadata: InjectableMetadata) {}
 
@@ -233,11 +233,6 @@ export class NgWalker extends Lint.RuleWalker {
   }
 
   private hasClassName(node: ts.Decorator | ts.ClassDeclaration) {
-    if (ts.isDecorator(node) && !getClassName(node.parent as ts.ClassDeclaration)) {
-      return false;
-    } else if (ts.isClassDeclaration(node) && !getClassName(node)) {
-      return false;
-    }
-    return true;
+    return (ts.isDecorator(node) && getClassName(node.parent)) || (ts.isClassDeclaration(node) && getClassName(node));
   }
 }

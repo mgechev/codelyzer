@@ -46,24 +46,24 @@ export class Rule extends AbstractRule {
 }
 
 class ContextualLifecycleWalker extends NgWalker {
-  visitNgInjectable(metadata: InjectableMetadata): void {
-    this.validateDecorator(metadata.controller, metadata.decorator, METADATA_TYPE_LIFECYCLE_MAPPER.Injectable);
+  protected visitNgInjectable(metadata: InjectableMetadata): void {
+    this.validateDecorator(metadata, METADATA_TYPE_LIFECYCLE_MAPPER.Injectable);
     super.visitNgInjectable(metadata);
   }
 
-  visitNgPipe(metadata: PipeMetadata): void {
-    this.validateDecorator(metadata.controller, metadata.decorator, METADATA_TYPE_LIFECYCLE_MAPPER.Pipe);
+  protected visitNgPipe(metadata: PipeMetadata): void {
+    this.validateDecorator(metadata, METADATA_TYPE_LIFECYCLE_MAPPER.Pipe);
     super.visitNgPipe(metadata);
   }
 
-  private validateDecorator(controller: ClassDeclaration, decorator: Decorator, allowedMethods: ReadonlySet<LifecycleMethodKeys>): void {
-    const className = getClassName(controller)!;
+  private validateDecorator(metadata: PipeMetadata, allowedMethods: ReadonlySet<LifecycleMethodKeys>): void {
+    const className = getClassName(metadata.controller)!;
 
-    const metadataType = getDecoratorName(decorator);
+    const metadataType = getDecoratorName(metadata.decorator);
 
     if (!metadataType || !isMetadataType(metadataType)) return;
 
-    for (const member of controller.members) {
+    for (const member of metadata.controller.members) {
       const { name: memberName } = member;
 
       if (!memberName) continue;
