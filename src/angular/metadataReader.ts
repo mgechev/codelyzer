@@ -97,9 +97,9 @@ export class MetadataReader {
     const name = nameExpression && isStringLiteralLike(nameExpression) ? nameExpression.text : undefined;
 
     const pureExpression = getDecoratorPropertyInitializer(dec, 'pure');
-    const isBoolean = pureExpression && isBooleanLiteralLike(pureExpression);
+    const pure = pureExpression && isBooleanLiteralLike(pureExpression) ? pureExpression : undefined;
 
-    return new PipeMetadata(d, dec, name, isBoolean ? (pureExpression as ts.BooleanLiteral) : undefined);
+    return new PipeMetadata(d, dec, name, pure);
   }
 
   protected readModuleMetadata(d: ts.ClassDeclaration, dec: ts.Decorator): DirectiveMetadata {

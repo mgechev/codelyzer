@@ -38,8 +38,7 @@ export class ClassMetadataWalker extends NgWalker {
   }
 
   private validatePipe(metadata: PipeMetadata): void {
-    if (!metadata.pure) return;
-    if (metadata.pure!.kind !== SyntaxKind.FalseKeyword) return;
+    if (!metadata.pure || metadata.pure.kind !== SyntaxKind.FalseKeyword) return;
 
     const className = getClassName(metadata.controller)!;
 
