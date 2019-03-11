@@ -19,6 +19,7 @@ import {
   ObjectLiteralExpression,
   SourceFile,
   StringLiteral,
+  BooleanLiteral,
   SyntaxKind
 } from 'typescript';
 import { getDeclaredMethods } from './classDeclarationUtils';
@@ -201,6 +202,9 @@ export const isSameLine = (sourceFile: SourceFile, pos1: number, pos2: number): 
 
 export const isStringLiteralLike = (node: Node): node is StringLiteral | NoSubstitutionTemplateLiteral =>
   isStringLiteral(node) || isNoSubstitutionTemplateLiteral(node);
+
+export const isBooleanLiteralLike = (node: Node): node is BooleanLiteral =>
+  node.kind === SyntaxKind.FalseKeyword || node.kind === SyntaxKind.TrueKeyword;
 
 export const maybeNodeArray = <T extends Node>(nodes: NodeArray<T>): ReadonlyArray<T> => nodes || [];
 

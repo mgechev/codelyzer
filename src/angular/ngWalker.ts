@@ -2,9 +2,9 @@ import * as compiler from '@angular/compiler';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { logger } from '../util/logger';
-import { getDecoratorName, maybeNodeArray } from '../util/utils';
+import { getClassName, getDecoratorName, maybeNodeArray } from '../util/utils';
 import { Config } from './config';
-import { ComponentMetadata, DirectiveMetadata, StyleMetadata } from './metadata';
+import { ComponentMetadata, DirectiveMetadata, InjectableMetadata, ModuleMetadata, PipeMetadata, StyleMetadata } from './metadata';
 import { MetadataReader } from './metadataReader';
 import { ngWalkerFactoryUtils } from './ngWalkerFactoryUtils';
 import { BasicCssAstVisitor, CssAstVisitorCtrl } from './styles/basicCssAstVisitor';
@@ -61,11 +61,19 @@ export class NgWalker extends Lint.RuleWalker {
   }
 
   visitClassDeclaration(declaration: ts.ClassDeclaration) {
-    const metadata = this._metadataReader!.read(declaration);
-    if (metadata instanceof ComponentMetadata) {
-      this.visitNgComponent(metadata);
-    } else if (metadata instanceof DirectiveMetadata) {
-      this.visitNgDirective(metadata);
+    if (this.hasClassName(declaration)) {
+      const metadata = this._metadataReader!.read(declaration);
+      if (metadata instanceof ComponentMetadata) {
+        this.visitNgComponent(metadata);
+      } else if (metadata instanceof DirectiveMetadata) {
+        this.visitNgDirective(metadata);
+      } else if (metadata instanceof PipeMetadata) {
+        this.visitNgPipe(metadata);
+      } else if (metadata instanceof ModuleMetadata) {
+        this.visitNgModule(metadata);
+      } else if (metadata instanceof InjectableMetadata) {
+        this.visitNgInjectable(metadata);
+      }
     }
     maybeNodeArray(ts.createNodeArray(declaration.decorators)).forEach(this.visitClassDecorator.bind(this));
     super.visitClassDeclaration(declaration);
@@ -115,22 +123,6 @@ export class NgWalker extends Lint.RuleWalker {
     }
   }
 
-  protected visitClassDecorator(decorator: ts.Decorator) {
-    let name = getDecoratorName(decorator);
-
-    if (name === 'Injectable') {
-      this.visitNgInjectable(decorator.parent as ts.ClassDeclaration, decorator);
-    }
-
-    if (name === 'Pipe') {
-      this.visitNgPipe(decorator.parent as ts.ClassDeclaration, decorator);
-    }
-
-    if (name === 'NgModule') {
-      this.visitNgModule(decorator);
-    }
-  }
-
   protected visitNgComponent(metadata: ComponentMetadata) {
     const { styles = [] } = metadata;
 
@@ -165,13 +157,15 @@ export class NgWalker extends Lint.RuleWalker {
     }
   }
 
-  protected visitNgModule(decorator: ts.Decorator) {}
+  protected visitClassDecorator(decorator: ts.Decorator) {}
+
+  protected visitNgModule(metadata: ModuleMetadata) {}
 
   protected visitNgDirective(metadata: DirectiveMetadata) {}
 
-  protected visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {}
+  protected visitNgPipe(metadata: PipeMetadata) {}
 
-  protected visitNgInjectable(classDeclaration: ts.ClassDeclaration, decorator: ts.Decorator) {}
+  protected visitNgInjectable(metadata: InjectableMetadata) {}
 
   protected visitNgInput(property: ts.PropertyDeclaration, input: ts.Decorator, args: string[]) {}
 
@@ -236,5 +230,9 @@ export class NgWalker extends Lint.RuleWalker {
     };
 
     return sf;
+  }
+
+  private hasClassName(node: ts.Decorator | ts.ClassDeclaration) {
+    return (ts.isDecorator(node) && getClassName(node.parent)) || (ts.isClassDeclaration(node) && getClassName(node));
   }
 }

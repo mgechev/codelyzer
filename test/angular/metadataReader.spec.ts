@@ -4,7 +4,7 @@ import * as ts from 'typescript';
 import { Config } from '../../src/angular/config';
 import { DummyFileResolver } from '../../src/angular/fileResolver/dummyFileResolver';
 import { FsFileResolver } from '../../src/angular/fileResolver/fsFileResolver';
-import { ComponentMetadata } from '../../src/angular/metadata';
+import { ComponentMetadata, DirectiveMetadata, PipeMetadata } from '../../src/angular/metadata';
 import { MetadataReader } from '../../src/angular/metadataReader';
 
 import { join, normalize } from 'path';
@@ -25,7 +25,22 @@ describe('metadataReader', () => {
       const reader = new MetadataReader(new DummyFileResolver());
       const ast = getAst(code);
       const metadata = reader.read(last(ast.statements) as ts.ClassDeclaration)!;
-      expect(metadata.selector).eq('foo');
+      expect(metadata).instanceof(DirectiveMetadata);
+      expect((metadata as DirectiveMetadata).selector).eq('foo');
+    });
+
+    it('should read name', () => {
+      const code = `
+        @Pipe({
+          name: 'foo'
+        })
+        class Bar {}
+      `;
+      const reader = new MetadataReader(new DummyFileResolver());
+      const ast = getAst(code);
+      const metadata = reader.read(last(ast.statements) as ts.ClassDeclaration)!;
+      expect(metadata).instanceof(PipeMetadata);
+      expect((metadata as PipeMetadata).name).eq('foo');
     });
 
     it('should not fail with empty decorator', () => {
@@ -36,7 +51,8 @@ describe('metadataReader', () => {
       const reader = new MetadataReader(new DummyFileResolver());
       const ast = getAst(code);
       const metadata = reader.read(last(ast.statements) as ts.ClassDeclaration)!;
-      expect(metadata.selector).eq(undefined);
+      expect(metadata).instanceof(DirectiveMetadata);
+      expect((metadata as DirectiveMetadata).selector).eq(undefined);
     });
 
     it('should provide class declaration', () => {
@@ -48,6 +64,7 @@ describe('metadataReader', () => {
       const ast = getAst(code);
       const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
       const metadata = reader.read(classDeclaration)!;
+      expect(metadata).instanceof(DirectiveMetadata);
       expect(metadata.controller).eq(classDeclaration);
     });
   });
@@ -66,8 +83,8 @@ describe('metadataReader', () => {
       const ast = getAst(code);
       const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
       const metadata = reader.read(classDeclaration)!;
-      expect(metadata instanceof ComponentMetadata).eq(true);
-      expect(metadata.selector).eq('foo');
+      expect(metadata).instanceof(ComponentMetadata);
+      expect((metadata as ComponentMetadata).selector).eq('foo');
       const m = <ComponentMetadata>metadata;
       expect(m.template!.template.code).eq('bar');
       expect(m.template!.url).eq(undefined);
@@ -88,8 +105,8 @@ describe('metadataReader', () => {
       const ast = getAst(code);
       const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
       const metadata = reader.read(classDeclaration)!;
-      expect(metadata instanceof ComponentMetadata).eq(true);
-      expect(metadata.selector).eq('foo');
+      expect(metadata).instanceof(ComponentMetadata);
+      expect((metadata as ComponentMetadata).selector).eq('foo');
       const m = <ComponentMetadata>metadata;
       expect(m.template!.template.code).eq('');
       expect(m.template!.url).eq('bar');
@@ -111,8 +128,8 @@ describe('metadataReader', () => {
       const ast = getAst(code);
       const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
       const metadata = reader.read(classDeclaration)!;
-      expect(metadata instanceof ComponentMetadata).eq(true);
-      expect(metadata.selector).eq('foo');
+      expect(metadata).instanceof(ComponentMetadata);
+      expect((metadata as ComponentMetadata).selector).eq('foo');
       const m = <ComponentMetadata>metadata;
       expect(m.template!.template.code).eq('qux');
       expect(m.template!.url).eq(undefined);
@@ -133,8 +150,8 @@ describe('metadataReader', () => {
       const ast = getAst(code, __dirname + '/../../test/fixtures/metadataReader/moduleid/foo.ts');
       const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
       const metadata = reader.read(classDeclaration)!;
-      expect(metadata instanceof ComponentMetadata).eq(true);
-      expect(metadata.selector).eq('foo');
+      expect(metadata).instanceof(ComponentMetadata);
+      expect((metadata as ComponentMetadata).selector).eq('foo');
       const m = <ComponentMetadata>metadata;
       expect(m.template!.template.code.trim()).eq('<div></div>');
       expect(m.template!.url!.endsWith('foo.html')).eq(true);
@@ -155,8 +172,8 @@ describe('metadataReader', () => {
       const ast = getAst(code, __dirname + '/../../test/fixtures/metadataReader/moduleid/foo.ts');
       const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
       const metadata = reader.read(classDeclaration)!;
-      expect(metadata instanceof ComponentMetadata).eq(true);
-      expect(metadata.selector).eq('foo');
+      expect(metadata).instanceof(ComponentMetadata);
+      expect((metadata as ComponentMetadata).selector).eq('foo');
       const m = <ComponentMetadata>metadata;
       expect(m.template!.template.code.trim()).eq('<div></div>');
       expect(m.template!.url!.endsWith('foo.html')).eq(true);
@@ -187,8 +204,8 @@ describe('metadataReader', () => {
         const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
         expect(invoked).eq(false);
         const metadata = reader.read(classDeclaration)!;
-        expect(metadata instanceof ComponentMetadata).eq(true);
-        expect(metadata.selector).eq('foo');
+        expect(metadata).instanceof(ComponentMetadata);
+        expect((metadata as ComponentMetadata).selector).eq('foo');
         const m = <ComponentMetadata>metadata;
         expect(m.template!.template.code.trim()).eq('<div></div>');
         expect(m.template!.url!.endsWith('foo.html')).eq(true);
@@ -223,8 +240,8 @@ describe('metadataReader', () => {
         const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
         expect(invoked).eq(false);
         const metadata = reader.read(classDeclaration)!;
-        expect(metadata instanceof ComponentMetadata).eq(true);
-        expect(metadata.selector).eq('foo');
+        expect(metadata).instanceof(ComponentMetadata);
+        expect((metadata as ComponentMetadata).selector).eq('foo');
         const m = <ComponentMetadata>metadata;
         expect(m.template!.template.code.trim()).eq('<div></div>');
         expect(m.template!.url!.endsWith('foo.html')).eq(true);
@@ -259,8 +276,8 @@ describe('metadataReader', () => {
         const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
         expect(invoked).eq(false);
         const metadata = reader.read(classDeclaration)!;
-        expect(metadata instanceof ComponentMetadata).eq(true);
-        expect(metadata.selector).eq('foo');
+        expect(metadata).instanceof(ComponentMetadata);
+        expect((metadata as ComponentMetadata).selector).eq('foo');
         const m = <ComponentMetadata>metadata;
         expect(m.template!.template.code.trim()).eq('<div></div>');
         expect(m.template!.url!.endsWith('foo.html')).eq(true);
@@ -300,8 +317,8 @@ describe('metadataReader', () => {
         const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
         expect(invoked).eq(false);
         const metadata = reader.read(classDeclaration)!;
-        expect(metadata instanceof ComponentMetadata).eq(true);
-        expect(metadata.selector).eq('foo');
+        expect(metadata).instanceof(ComponentMetadata);
+        expect((metadata as ComponentMetadata).selector).eq('foo');
         const m = <ComponentMetadata>metadata;
         expect(m.template!.template.code.trim()).eq('<div></div>');
         expect(m.template!.url!.endsWith('foo.html')).eq(true);
@@ -327,8 +344,8 @@ describe('metadataReader', () => {
       const ast = getAst(code, __dirname + '/../../test/fixtures/metadataReader/specialsymbols/foo.ts');
       const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
       const metadata = reader.read(classDeclaration)!;
-      expect(metadata instanceof ComponentMetadata).eq(true);
-      expect(metadata.selector).eq('foo');
+      expect(metadata).instanceof(ComponentMetadata);
+      expect((metadata as ComponentMetadata).selector).eq('foo');
       const m = <ComponentMetadata>metadata;
       expect(m.template!.template.code.trim()).eq('<div>`</div>');
       expect(m.template!.url!.endsWith('foo.html')).eq(true);
@@ -350,8 +367,8 @@ describe('metadataReader', () => {
       const ast = getAst(code, __dirname + '/../../test/fixtures/metadataReader/notsupported/foo.ts');
       const classDeclaration = <ts.ClassDeclaration>last(ast.statements);
       const metadata = reader.read(classDeclaration)!;
-      expect(metadata instanceof ComponentMetadata).eq(true);
-      expect(metadata.selector).eq('foo');
+      expect(metadata).instanceof(ComponentMetadata);
+      expect((metadata as ComponentMetadata).selector).eq('foo');
       const m = <ComponentMetadata>metadata;
       expect(m.template!.template.code.trim()).eq('');
       expect(m.template!.url!.endsWith('foo.dust')).eq(true);

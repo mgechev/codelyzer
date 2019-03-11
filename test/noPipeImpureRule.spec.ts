@@ -12,7 +12,7 @@ describe(ruleName, () => {
         @Pipe({
           name: 'test',
           pure: false
-          ~~~~~~~~~~~
+                ~~~~~
         })
         class Test {}
       `;

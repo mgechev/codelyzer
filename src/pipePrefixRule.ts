@@ -4,6 +4,7 @@ import * as ts from 'typescript';
 import { NgWalker } from './angular/ngWalker';
 import { SelectorValidator } from './util/selectorValidator';
 import { getDecoratorArgument } from './util/utils';
+import { PipeMetadata } from './angular';
 
 export class Rule extends Lint.Rules.AbstractRule {
   static readonly metadata: Lint.IRuleMetadata = {
@@ -69,10 +70,10 @@ export class ClassMetadataWalker extends NgWalker {
     super(sourceFile, rule.getOptions());
   }
 
-  protected visitNgPipe(controller: ts.ClassDeclaration, decorator: ts.Decorator) {
-    let className = controller.name!.text;
-    this.validateProperties(className, decorator);
-    super.visitNgPipe(controller, decorator);
+  protected visitNgPipe(metadata: PipeMetadata) {
+    let className = metadata.controller.name!.text;
+    this.validateProperties(className, metadata.decorator);
+    super.visitNgPipe(metadata);
   }
 
   private validateProperties(className: string, pipe: ts.Decorator) {

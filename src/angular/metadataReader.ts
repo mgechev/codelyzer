@@ -3,10 +3,20 @@ import { callExpression, decoratorArgument, hasProperties, withIdentifier } from
 import { ifTrue, listToMaybe, Maybe, unwrapFirst } from '../util/function';
 import { logger } from '../util/logger';
 import { getAnimations, getInlineStyle, getTemplate } from '../util/ngQuery';
-import { getDecoratorPropertyInitializer, isStringLiteralLike, maybeNodeArray } from '../util/utils';
+import { getDecoratorPropertyInitializer, isBooleanLiteralLike, isStringLiteralLike, maybeNodeArray } from '../util/utils';
 import { Config } from './config';
 import { FileResolver } from './fileResolver/fileResolver';
-import { AnimationMetadata, CodeWithSourceMap, ComponentMetadata, DirectiveMetadata, StyleMetadata, TemplateMetadata } from './metadata';
+import {
+  AnimationMetadata,
+  CodeWithSourceMap,
+  ComponentMetadata,
+  DirectiveMetadata,
+  InjectableMetadata,
+  ModuleMetadata,
+  PipeMetadata,
+  StyleMetadata,
+  TemplateMetadata
+} from './metadata';
 import { AbstractResolver, MetadataUrls } from './urlResolvers/abstractResolver';
 import { PathResolver } from './urlResolvers/pathResolver';
 import { UrlResolver } from './urlResolvers/urlResolver';
@@ -26,9 +36,9 @@ export class MetadataReader {
     this.urlResolver = this.urlResolver || new UrlResolver(new PathResolver());
   }
 
-  read(d: ts.ClassDeclaration): DirectiveMetadata | undefined {
+  read(d: ts.ClassDeclaration): DirectiveMetadata | ComponentMetadata | PipeMetadata | ModuleMetadata | InjectableMetadata | undefined {
     const componentMetadata = unwrapFirst<ComponentMetadata | undefined>(
-      maybeNodeArray(d.decorators!).map(dec => {
+      maybeNodeArray(ts.createNodeArray(d.decorators)).map(dec => {
         return Maybe.lift(dec)
           .bind(callExpression)
           .bind(withIdentifier('Component') as any)
@@ -37,7 +47,7 @@ export class MetadataReader {
     );
 
     const directiveMetadata = unwrapFirst<DirectiveMetadata | undefined>(
-      maybeNodeArray(d.decorators!).map(dec =>
+      maybeNodeArray(ts.createNodeArray(d.decorators)).map(dec =>
         Maybe.lift(dec)
           .bind(callExpression)
           .bind(withIdentifier('Directive') as any)
@@ -45,7 +55,34 @@ export class MetadataReader {
       )
     );
 
-    return directiveMetadata || componentMetadata || undefined;
+    const pipeMetadata = unwrapFirst<PipeMetadata | undefined>(
+      maybeNodeArray(ts.createNodeArray(d.decorators)).map(dec =>
+        Maybe.lift(dec)
+          .bind(callExpression)
+          .bind(withIdentifier('Pipe') as any)
+          .fmap(() => this.readPipeMetadata(d, dec))
+      )
+    );
+
+    const moduleMetadata = unwrapFirst<ModuleMetadata | undefined>(
+      maybeNodeArray(ts.createNodeArray(d.decorators)).map(dec =>
+        Maybe.lift(dec)
+          .bind(callExpression)
+          .bind(withIdentifier('NgModule') as any)
+          .fmap(() => this.readModuleMetadata(d, dec))
+      )
+    );
+
+    const injectableMetadata = unwrapFirst<InjectableMetadata | undefined>(
+      maybeNodeArray(ts.createNodeArray(d.decorators)).map(dec =>
+        Maybe.lift(dec)
+          .bind(callExpression)
+          .bind(withIdentifier('Injectable') as any)
+          .fmap(() => this.readInjectableMetadata(d, dec))
+      )
+    );
+
+    return directiveMetadata || componentMetadata || pipeMetadata || moduleMetadata || injectableMetadata;
   }
 
   protected readDirectiveMetadata(d: ts.ClassDeclaration, dec: ts.Decorator): DirectiveMetadata {
@@ -53,6 +90,24 @@ export class MetadataReader {
     const selector = selectorExpression && isStringLiteralLike(selectorExpression) ? selectorExpression.text : undefined;
 
     return new DirectiveMetadata(d, dec, selector);
+  }
+
+  protected readPipeMetadata(d: ts.ClassDeclaration, dec: ts.Decorator): DirectiveMetadata {
+    const nameExpression = getDecoratorPropertyInitializer(dec, 'name');
+    const name = nameExpression && isStringLiteralLike(nameExpression) ? nameExpression.text : undefined;
+
+    const pureExpression = getDecoratorPropertyInitializer(dec, 'pure');
+    const pure = pureExpression && isBooleanLiteralLike(pureExpression) ? pureExpression : undefined;
+
+    return new PipeMetadata(d, dec, name, pure);
+  }
+
+  protected readModuleMetadata(d: ts.ClassDeclaration, dec: ts.Decorator): DirectiveMetadata {
+    return new ModuleMetadata(d, dec);
+  }
+
+  protected readInjectableMetadata(d: ts.ClassDeclaration, dec: ts.Decorator): DirectiveMetadata {
+    return new InjectableMetadata(d, dec);
   }
 
   protected readComponentMetadata(d: ts.ClassDeclaration, dec: ts.Decorator): ComponentMetadata {
