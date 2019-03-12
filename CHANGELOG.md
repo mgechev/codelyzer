@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [5.0.0-beta.0](https://github.com/mgechev/codelyzer/compare/4.5.0...5.0.0-beta.0) (2019-03-12)
+
+### Bug Fixes
+
+- **allow-template-call-expression:** allow \$any in expressions ([#735](https://github.com/mgechev/codelyzer/issues/735)) ([a75c204](https://github.com/mgechev/codelyzer/commit/a75c204))
+- **no-input-rename:** some failures being reported incorrectly ([#723](https://github.com/mgechev/codelyzer/issues/723)) ([f692dcb](https://github.com/mgechev/codelyzer/commit/f692dcb))
+- **rule:** don't check keyup events for some elements ([#772](https://github.com/mgechev/codelyzer/issues/772)) ([a9c4ae9](https://github.com/mgechev/codelyzer/commit/a9c4ae9))
+- **rule:** 'prefer-inline-decorator' limiting the number of options ([#787](https://github.com/mgechev/codelyzer/issues/787)) ([31b2b6a](https://github.com/mgechev/codelyzer/commit/31b2b6a))
+- **rule:** fix spelling error ([#753](https://github.com/mgechev/codelyzer/issues/753)) ([512a5bd](https://github.com/mgechev/codelyzer/commit/512a5bd))
+- **rule:** remove an astray console.log ([#764](https://github.com/mgechev/codelyzer/issues/764)) ([fdcb07a](https://github.com/mgechev/codelyzer/commit/fdcb07a))
+
+### Features
+
+- **component-change-detection:** add change detection strategy rule ([#737](https://github.com/mgechev/codelyzer/issues/737)) ([a23ccde](https://github.com/mgechev/codelyzer/commit/a23ccde)), closes [#135](https://github.com/mgechev/codelyzer/issues/135)
+- **rule:** accessibility rule for alt text ([#741](https://github.com/mgechev/codelyzer/issues/741)) ([0815ec5](https://github.com/mgechev/codelyzer/commit/0815ec5))
+- **rule:** add new Rule RelativePathExternalResourcesRule ([#725](https://github.com/mgechev/codelyzer/issues/725)) ([f12f27b](https://github.com/mgechev/codelyzer/commit/f12f27b))
+- **rule:** anchor element should have content ([#742](https://github.com/mgechev/codelyzer/issues/742)) ([6ff8c56](https://github.com/mgechev/codelyzer/commit/6ff8c56))
+- **rule:** autofocus attribute should not be used ([#749](https://github.com/mgechev/codelyzer/issues/749)) ([799382f](https://github.com/mgechev/codelyzer/commit/799382f))
+- **rule:** click event should be accompanied with key event ([#761](https://github.com/mgechev/codelyzer/issues/761)) ([b0b330f](https://github.com/mgechev/codelyzer/commit/b0b330f))
+- **rule:** heading and anchor elements should have content ([#762](https://github.com/mgechev/codelyzer/issues/762)) ([865ec3b](https://github.com/mgechev/codelyzer/commit/865ec3b))
+- **rule:** label accessibility - should have associated control ([#739](https://github.com/mgechev/codelyzer/issues/739)) ([76c24fa](https://github.com/mgechev/codelyzer/commit/76c24fa))
+- **rule:** mouse events should accompany key events ([#759](https://github.com/mgechev/codelyzer/issues/759)) ([3a7b15d](https://github.com/mgechev/codelyzer/commit/3a7b15d))
+- **rule:** no distracting elements should be used ([#760](https://github.com/mgechev/codelyzer/issues/760)) ([6b21a9e](https://github.com/mgechev/codelyzer/commit/6b21a9e))
+- **rule:** only th element can have scope ([#743](https://github.com/mgechev/codelyzer/issues/743)) ([2832615](https://github.com/mgechev/codelyzer/commit/2832615))
+- add template-no-any rule ([#755](https://github.com/mgechev/codelyzer/issues/755)) ([77a5e32](https://github.com/mgechev/codelyzer/commit/77a5e32))
+- **rule:** tabindex should not be positive ([#744](https://github.com/mgechev/codelyzer/issues/744)) ([43902f7](https://github.com/mgechev/codelyzer/commit/43902f7))
+- **rule:** use valid aria rules ([#746](https://github.com/mgechev/codelyzer/issues/746)) ([762f67f](https://github.com/mgechev/codelyzer/commit/762f67f))
+
 <a name="4.5.0"></a>
 
 # [4.5.0](https://github.com/mgechev/codelyzer/compare/4.4.4...4.5.0) (2018-10-04)
