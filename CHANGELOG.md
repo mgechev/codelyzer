@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [5.0.0-beta.1](https://github.com/mgechev/codelyzer/compare/5.0.0-beta.0...5.0.0-beta.1) (2019-03-14)
+
+### Bug Fixes
+
+- update peerDependencies ([d5bfbd5](https://github.com/mgechev/codelyzer/commit/d5bfbd5))
+
 # [5.0.0-beta.0](https://github.com/mgechev/codelyzer/compare/4.5.0...5.0.0-beta.0) (2019-03-12)
 
 ### Bug Fixes
