@@ -165,6 +165,163 @@ describe(ruleName, () => {
       });
     });
 
+    describe('NgModule', () => {
+      it('should fail if a property is decorated with @ContentChild() decorator', () => {
+        const source = `
+          @NgModule()
+          class Test {
+            @ContentChild(Pane) pane: Pane;
+            ~~~~~~~~~~~~~~~~~~~
+          }
+        `;
+        assertAnnotated({
+          message: getFailureMessage({
+            className: 'Test',
+            decoratorName: Decorators.ContentChild,
+            metadataType: MetadataTypes.NgModule
+          }),
+          ruleName,
+          source
+        });
+      });
+
+      it('should fail if a property is decorated with @ContentChildren() decorator', () => {
+        const source = `
+          @NgModule()
+          class Test {
+            @ContentChildren(Pane, { descendants: true }) arbitraryNestedPanes: QueryList<Pane>;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          }
+        `;
+        assertAnnotated({
+          message: getFailureMessage({
+            className: 'Test',
+            decoratorName: Decorators.ContentChildren,
+            metadataType: MetadataTypes.NgModule
+          }),
+          ruleName,
+          source
+        });
+      });
+
+      it('should fail if a property is decorated with @HostBinding() decorator', () => {
+        const source = `
+          @NgModule()
+          class Test {
+            @HostBinding('class.card-outline') private isCardOutline: boolean;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          }
+        `;
+        assertAnnotated({
+          message: getFailureMessage({
+            className: 'Test',
+            decoratorName: Decorators.HostBinding,
+            metadataType: MetadataTypes.NgModule
+          }),
+          ruleName,
+          source
+        });
+      });
+
+      it('should fail if a method is decorated with @HostListener() decorator', () => {
+        const source = `
+          @NgModule()
+          class Test {
+            @HostListener('mouseover')
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~
+            mouseOver() {
+              console.log('mouseOver');
+            }
+          }
+        `;
+        assertAnnotated({
+          message: getFailureMessage({
+            className: 'Test',
+            decoratorName: Decorators.HostListener,
+            metadataType: MetadataTypes.NgModule
+          }),
+          ruleName,
+          source
+        });
+      });
+
+      it('should fail if a property is decorated with @Input() decorator', () => {
+        const source = `
+          @NgModule()
+          class Test {
+            @Input() label: string;
+            ~~~~~~~~
+          }
+        `;
+        assertAnnotated({
+          message: getFailureMessage({
+            className: 'Test',
+            decoratorName: Decorators.Input,
+            metadataType: MetadataTypes.NgModule
+          }),
+          ruleName,
+          source
+        });
+      });
+
+      it('should fail if a property is decorated with @Output() decorator', () => {
+        const source = `
+          @NgModule()
+          class Test {
+            @Output() emitter = new EventEmitter<void>();
+            ~~~~~~~~~
+          }
+        `;
+        assertAnnotated({
+          message: getFailureMessage({
+            className: 'Test',
+            decoratorName: Decorators.Output,
+            metadataType: MetadataTypes.NgModule
+          }),
+          ruleName,
+          source
+        });
+      });
+
+      it('should fail if a property is decorated with @ViewChild() decorator', () => {
+        const source = `
+          @NgModule()
+          class Test {
+            @ViewChild(Pane) pane: Pane;
+            ~~~~~~~~~~~~~~~~
+          }
+        `;
+        assertAnnotated({
+          message: getFailureMessage({
+            className: 'Test',
+            decoratorName: Decorators.ViewChild,
+            metadataType: MetadataTypes.NgModule
+          }),
+          ruleName,
+          source
+        });
+      });
+
+      it('should fail if a property is decorated with @ViewChildren() decorator', () => {
+        const source = `
+          @NgModule()
+          class Test {
+            @ViewChildren(Pane) panes: QueryList<Pane>;
+            ~~~~~~~~~~~~~~~~~~~
+          }
+        `;
+        assertAnnotated({
+          message: getFailureMessage({
+            className: 'Test',
+            decoratorName: Decorators.ViewChildren,
+            metadataType: MetadataTypes.NgModule
+          }),
+          ruleName,
+          source
+        });
+      });
+    });
+
     describe('Pipe', () => {
       it('should fail if a property is decorated with @ContentChild() decorator', () => {
         const source = `

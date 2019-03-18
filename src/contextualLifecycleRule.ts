@@ -14,7 +14,7 @@ import {
   MetadataTypeKeys,
   MetadataTypes
 } from './util/utils';
-import { InjectableMetadata, PipeMetadata } from './angular';
+import { InjectableMetadata, ModuleMetadata, PipeMetadata } from './angular';
 
 interface FailureParameters {
   readonly className: string;
@@ -54,6 +54,11 @@ class ContextualLifecycleWalker extends NgWalker {
   protected visitNgPipe(metadata: PipeMetadata): void {
     this.validateDecorator(metadata, METADATA_TYPE_LIFECYCLE_MAPPER.Pipe);
     super.visitNgPipe(metadata);
+  }
+
+  protected visitNgModule(metadata: ModuleMetadata) {
+    this.validateDecorator(metadata, METADATA_TYPE_LIFECYCLE_MAPPER.NgModule);
+    super.visitNgModule(metadata);
   }
 
   private validateDecorator(metadata: PipeMetadata, allowedMethods: ReadonlySet<LifecycleMethodKeys>): void {

@@ -61,7 +61,8 @@ export enum MetadataTypes {
   Component = 'Component',
   Directive = 'Directive',
   Injectable = 'Injectable',
-  Pipe = 'Pipe'
+  Pipe = 'Pipe',
+  NgModule = 'NgModule'
 }
 
 export type DecoratorKeys = keyof typeof Decorators;
@@ -84,13 +85,15 @@ export const METADATA_TYPE_DECORATOR_MAPPER: MetadataTypeDecoratorMapper = {
   Component: DECORATORS,
   Directive: DECORATORS,
   Injectable: new Set<DecoratorKeys>([]),
-  Pipe: new Set<DecoratorKeys>([])
+  Pipe: new Set<DecoratorKeys>([]),
+  NgModule: new Set<DecoratorKeys>([])
 };
 export const METADATA_TYPE_LIFECYCLE_MAPPER: MetadataTypeLifecycleMapper = {
   Component: LIFECYCLE_METHODS,
   Directive: LIFECYCLE_METHODS,
   Injectable: new Set<LifecycleMethodKeys>([LifecycleMethods.ngOnDestroy]),
-  Pipe: new Set<LifecycleMethodKeys>([LifecycleMethods.ngOnDestroy])
+  Pipe: new Set<LifecycleMethodKeys>([LifecycleMethods.ngOnDestroy]),
+  NgModule: new Set<LifecycleMethodKeys>([])
 };
 
 export const getClassName = (node: Node): string | undefined => {

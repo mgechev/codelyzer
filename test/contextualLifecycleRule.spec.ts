@@ -150,6 +150,168 @@ describe(ruleName, () => {
       });
     });
 
+    describe('NgModule', () => {
+      it('should fail if ngAfterContentChecked() method is present', () => {
+        const source = `
+          @NgModule()
+          class Test {
+            ngAfterContentChecked() { console.log('AfterContentChecked'); }
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          }
+        `;
+        const message = getFailureMessage({
+          className: 'Test',
+          metadataType: MetadataTypes.NgModule,
+          methodName: LifecycleMethods.ngAfterContentChecked
+        });
+        assertAnnotated({
+          message,
+          ruleName,
+          source
+        });
+      });
+
+      it('should fail if ngAfterContentInit() method is present', () => {
+        const source = `
+          @NgModule()
+          class Test {
+            ngAfterContentInit() { console.log('AfterContentInit'); }
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          }
+        `;
+        const message = getFailureMessage({
+          className: 'Test',
+          metadataType: MetadataTypes.NgModule,
+          methodName: LifecycleMethods.ngAfterContentInit
+        });
+        assertAnnotated({
+          message,
+          ruleName,
+          source
+        });
+      });
+
+      it('should fail if ngAfterViewChecked() method is present', () => {
+        const source = `
+          @NgModule()
+          class Test {
+            ngAfterViewChecked() { console.log('AfterViewChecked'); }
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          }
+        `;
+        const message = getFailureMessage({
+          className: 'Test',
+          metadataType: MetadataTypes.NgModule,
+          methodName: LifecycleMethods.ngAfterViewChecked
+        });
+        assertAnnotated({
+          message,
+          ruleName,
+          source
+        });
+      });
+
+      it('should fail if ngAfterViewInit() method is present', () => {
+        const source = `
+          @NgModule()
+          class Test {
+            ngAfterViewInit() { console.log('AfterViewInit'); }
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          }
+        `;
+        const message = getFailureMessage({
+          className: 'Test',
+          metadataType: MetadataTypes.NgModule,
+          methodName: LifecycleMethods.ngAfterViewInit
+        });
+        assertAnnotated({
+          message,
+          ruleName,
+          source
+        });
+      });
+
+      it('should fail if ngDoCheck() method is present', () => {
+        const source = `
+          @NgModule()
+          class Test {
+            ngDoCheck() { console.log('DoCheck'); }
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          }
+        `;
+        const message = getFailureMessage({
+          className: 'Test',
+          metadataType: MetadataTypes.NgModule,
+          methodName: LifecycleMethods.ngDoCheck
+        });
+        assertAnnotated({
+          message,
+          ruleName,
+          source
+        });
+      });
+
+      it('should fail if ngOnChanges() method is present', () => {
+        const source = `
+          @NgModule()
+          class Test {
+            ngOnChanges() { console.log('OnChanges'); }
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          }
+        `;
+        const message = getFailureMessage({
+          className: 'Test',
+          metadataType: MetadataTypes.NgModule,
+          methodName: LifecycleMethods.ngOnChanges
+        });
+        assertAnnotated({
+          message,
+          ruleName,
+          source
+        });
+      });
+
+      it('should fail if ngOnInit() method is present', () => {
+        const source = `
+          @NgModule()
+          class Test {
+            ngOnInit() { console.log('OnInit'); }
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          }
+        `;
+        const message = getFailureMessage({
+          className: 'Test',
+          metadataType: MetadataTypes.NgModule,
+          methodName: LifecycleMethods.ngOnInit
+        });
+        assertAnnotated({
+          message,
+          ruleName,
+          source
+        });
+      });
+
+      it('should fail if ngOnDestroy() method is present', () => {
+        const source = `
+          @NgModule()
+          class Test {
+            ngOnDestroy() { console.log('OnDestroy'); }
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          }
+        `;
+        const message = getFailureMessage({
+          className: 'Test',
+          metadataType: MetadataTypes.NgModule,
+          methodName: LifecycleMethods.ngOnDestroy
+        });
+        assertAnnotated({
+          message,
+          ruleName,
+          source
+        });
+      });
+    });
+
     describe('Pipe', () => {
       it('should fail if ngAfterContentChecked() method is present', () => {
         const source = `
