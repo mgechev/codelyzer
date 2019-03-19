@@ -255,8 +255,8 @@ Below you can find a recommended configuration which is based on the [Angular St
 
 ```js
 {
-  // The rule have the following arguments:
-  // [ENABLED, "attribute" | "element", "selectorPrefix" | ["listOfPrefixes"], "camelCase" | "kebab-case"]
+  // The rules component-selector and directive-selector have the following arguments:
+  // [ENABLED, "attribute" | "element", "prefix" | ["listOfPrefixes"], "camelCase" | "kebab-case"]
   "component-selector": [true, "element", ["cmp-prefix1", "cmp-prefix2"], "kebab-case"],
   "directive-selector": [true, "attribute", ["dir-prefix1", "dir-prefix2"], "camelCase"],
 
@@ -270,8 +270,10 @@ Below you can find a recommended configuration which is based on the [Angular St
   "no-queries-metadata-property": true,
   "prefer-inline-decorator": true,
   "use-lifecycle-interface": true,
-  // [ENABLED, "Suffix" | ["listOfSuffixes"]]
-  // Where "Suffix" is/are your custom(s) suffix(s), for instance "Page" for Ionic components.
+
+  // The rules component-class-suffix and directive-class-suffix have the following arguments:
+  // [ENABLED, "suffix" | ["listOfSuffixes"]]
+  // Where "suffix" is/are your custom(s) suffix(es), for instance "Page" for Ionic components.
   "component-class-suffix": [true, "Component"],
   "directive-class-suffix": [true, "Directive"]
 }
@@ -314,12 +316,13 @@ Below you can find a recommended configuration which is based on the [Angular St
 | `use-lifecycle-interface`                     |     Stable     |
 | `use-pipe-decorator`                          |     Stable     |
 | `use-pipe-transform-interface`                |     Stable     |
+| `component-change-detection`                  | _Experimental_ |
 | `no-conflicting-lifecycle`                    | _Experimental_ |
 | `no-unused-css`                               | _Experimental_ |
 | `pipe-prefix`                                 | _Experimental_ |
 | `relative-url-prefix`                         | _Experimental_ |
 | `template-accessibility-alt-text`             | _Experimental_ |
-| `template-accessibility-element-content`      | _Experimental_ |
+| `template-accessibility-elements-content`     | _Experimental_ |
 | `template-accessibility-label-for`            | _Experimental_ |
 | `template-accessibility-tabindex-no-positive` | _Experimental_ |
 | `template-accessibility-table-scope`          | _Experimental_ |
