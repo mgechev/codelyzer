@@ -66,7 +66,9 @@ export class Rule extends AbstractRule {
   static readonly FAILURE_STRING = `Exceeds the maximum allowed inline lines for %s. Defined limit: %s / total lines: %s (${STYLE_GUIDE_LINK})`;
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(new MaxInlineDeclarationsWalker(sourceFile, this.getOptions()));
+    const walker = new Walker(sourceFile, this.getOptions());
+
+    return this.applyWithWalker(walker);
   }
 
   isEnabled(): boolean {
@@ -81,7 +83,7 @@ export class Rule extends AbstractRule {
   }
 }
 
-export class MaxInlineDeclarationsWalker extends NgWalker {
+class Walker extends NgWalker {
   private readonly animationsLinesLimit = DEFAULT_ANIMATIONS_LIMIT;
   private readonly stylesLinesLimit = DEFAULT_STYLES_LIMIT;
   private readonly templateLinesLimit = DEFAULT_TEMPLATE_LIMIT;

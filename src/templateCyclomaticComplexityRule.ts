@@ -2,7 +2,7 @@ import { BoundDirectivePropertyAst } from '@angular/compiler';
 import { sprintf } from 'sprintf-js';
 import { IRuleMetadata, RuleFailure, Rules } from 'tslint/lib';
 import { SourceFile } from 'typescript/lib/typescript';
-import { NgWalker } from './angular/ngWalker';
+import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 
 export class Rule extends Rules.AbstractRule {
@@ -29,11 +29,10 @@ export class Rule extends Rules.AbstractRule {
   static readonly DEFAULT_MAX_COMPLEXITY = 5;
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(
-      new NgWalker(sourceFile, this.getOptions(), {
-        templateVisitorCtrl: TemplateConditionalComplexityVisitor
-      })
-    );
+    const walkerConfig: NgWalkerConfig = { templateVisitorCtrl: TemplateVisitorCtrl };
+    const walker = new NgWalker(sourceFile, this.getOptions(), walkerConfig);
+
+    return this.applyWithWalker(walker);
   }
 
   isEnabled(): boolean {
@@ -52,7 +51,7 @@ export const getFailureMessage = (maxComplexity = Rule.DEFAULT_MAX_COMPLEXITY): 
   return sprintf(Rule.FAILURE_STRING, maxComplexity);
 };
 
-class TemplateConditionalComplexityVisitor extends BasicTemplateAstVisitor {
+class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   totalComplexity = 0;
 
   visitDirectiveProperty(prop: BoundDirectivePropertyAst, context: any): any {

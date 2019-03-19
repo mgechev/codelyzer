@@ -1,9 +1,9 @@
 import { AttrAst, BoundElementPropertyAst } from '@angular/compiler';
+import { aria } from 'aria-query';
 import { IRuleMetadata, RuleFailure, Rules } from 'tslint/lib';
 import { SourceFile } from 'typescript/lib/typescript';
-import { NgWalker } from './angular/ngWalker';
+import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
-import { aria } from 'aria-query';
 import { getSuggestion } from './util/getSuggestion';
 
 const ariaAttributes: string[] = [...(<string[]>Array.from(aria.keys()))];
@@ -20,11 +20,10 @@ export class Rule extends Rules.AbstractRule {
   };
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(
-      new NgWalker(sourceFile, this.getOptions(), {
-        templateVisitorCtrl: TemplateAccessibilityValidAriaVisitor
-      })
-    );
+    const walkerConfig: NgWalkerConfig = { templateVisitorCtrl: TemplateVisitorCtrl };
+    const walker = new NgWalker(sourceFile, this.getOptions(), walkerConfig);
+
+    return this.applyWithWalker(walker);
   }
 }
 
@@ -39,7 +38,7 @@ export const getFailureMessage = (name: string): string => {
   return message;
 };
 
-class TemplateAccessibilityValidAriaVisitor extends BasicTemplateAstVisitor {
+class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   visitAttr(ast: AttrAst, context: any) {
     this.validateAttribute(ast);
     super.visitAttr(ast, context);

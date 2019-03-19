@@ -1,11 +1,11 @@
 import { ElementAst } from '@angular/compiler';
+import { sprintf } from 'sprintf-js';
 import { IRuleMetadata, RuleFailure, Rules } from 'tslint/lib';
 import { SourceFile } from 'typescript';
-import { sprintf } from 'sprintf-js';
-import { NgWalker } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular';
+import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 
-class TemplateAccessibilityElementsContentVisitor extends BasicTemplateAstVisitor {
+class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   visitElement(ast: ElementAst, context: any) {
     this.validateElement(ast);
     super.visitElement(ast, context);
@@ -50,10 +50,9 @@ export class Rule extends Rules.AbstractRule {
   static readonly ELEMENTS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'a', 'button'];
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(
-      new NgWalker(sourceFile, this.getOptions(), {
-        templateVisitorCtrl: TemplateAccessibilityElementsContentVisitor
-      })
-    );
+    const walkerConfig: NgWalkerConfig = { templateVisitorCtrl: TemplateVisitorCtrl };
+    const walker = new NgWalker(sourceFile, this.getOptions(), walkerConfig);
+
+    return this.applyWithWalker(walker);
   }
 }

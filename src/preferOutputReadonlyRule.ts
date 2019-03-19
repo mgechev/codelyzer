@@ -15,11 +15,13 @@ export class Rule extends Rules.AbstractRule {
   static readonly FAILURE_STRING = 'Prefer to declare `@Output` as readonly since they are not supposed to be reassigned';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(new OutputMetadataWalker(sourceFile, this.getOptions()));
+    const walker = new Walker(sourceFile, this.getOptions());
+
+    return this.applyWithWalker(walker);
   }
 }
 
-export class OutputMetadataWalker extends NgWalker {
+class Walker extends NgWalker {
   protected visitNgOutput(property: PropertyDeclaration, output: Decorator, args: string[]) {
     this.validateOutput(property);
     super.visitNgOutput(property, output, args);

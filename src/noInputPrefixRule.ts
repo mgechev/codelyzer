@@ -1,7 +1,6 @@
 import { sprintf } from 'sprintf-js';
 import { IOptions, IRuleMetadata, RuleFailure, Rules, Utils } from 'tslint/lib';
 import { Decorator, PropertyDeclaration, SourceFile } from 'typescript';
-
 import { NgWalker } from './angular/ngWalker';
 
 export class Rule extends Rules.AbstractRule {
@@ -30,7 +29,9 @@ export class Rule extends Rules.AbstractRule {
   static readonly FAILURE_STRING = '@Inputs should not be prefixed by %s';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(new NoInputPrefixWalker(sourceFile, this.getOptions()));
+    const walker = new Walker(sourceFile, this.getOptions());
+
+    return this.applyWithWalker(walker);
   }
 
   isEnabled(): boolean {
@@ -62,7 +63,7 @@ export const getFailureMessage = (prefixes: string[]): string => {
   return sprintf(Rule.FAILURE_STRING, getReadablePrefixes(prefixes));
 };
 
-class NoInputPrefixWalker extends NgWalker {
+class Walker extends NgWalker {
   private readonly blacklistedPrefixes: string[];
 
   constructor(source: SourceFile, options: IOptions) {

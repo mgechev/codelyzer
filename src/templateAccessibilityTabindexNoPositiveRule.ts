@@ -1,7 +1,7 @@
 import { ElementAst } from '@angular/compiler';
 import { IRuleMetadata, RuleFailure, Rules } from 'tslint/lib';
 import { SourceFile } from 'typescript/lib/typescript';
-import { NgWalker } from './angular/ngWalker';
+import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 import { getAttributeValue } from './util/getAttributeValue';
 
@@ -19,15 +19,14 @@ export class Rule extends Rules.AbstractRule {
   static readonly FAILURE_MESSAGE = 'tabindex attribute cannot be positive';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(
-      new NgWalker(sourceFile, this.getOptions(), {
-        templateVisitorCtrl: TemplateAccessibilityTabindexNoPositiveVisitor
-      })
-    );
+    const walkerConfig: NgWalkerConfig = { templateVisitorCtrl: TemplateVisitorCtrl };
+    const walker = new NgWalker(sourceFile, this.getOptions(), walkerConfig);
+
+    return this.applyWithWalker(walker);
   }
 }
 
-class TemplateAccessibilityTabindexNoPositiveVisitor extends BasicTemplateAstVisitor {
+class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   visitElement(ast: ElementAst, context: any): any {
     this.validateElement(ast);
     super.visitElement(ast, context);

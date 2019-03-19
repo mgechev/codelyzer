@@ -3,7 +3,7 @@ import { IRuleMetadata, RuleFailure } from 'tslint/lib';
 import { AbstractRule } from 'tslint/lib/rules';
 import { dedent } from 'tslint/lib/utils';
 import { SourceFile } from 'typescript';
-import { NgWalker } from './angular/ngWalker';
+import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 import { RecursiveAngularExpressionVisitor } from './angular/templates/recursiveAngularExpressionVisitor';
 
 const unstrictEqualityOperator = '==';
@@ -29,15 +29,14 @@ export class Rule extends AbstractRule {
   static readonly FAILURE_STRING_UNSTRICT_EQUALITY = 'Async pipes must use strict equality `===` when comparing with `false`';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(
-      new NgWalker(sourceFile, this.getOptions(), {
-        expressionVisitorCtrl: TemplateToNgTemplateVisitor
-      })
-    );
+    const walkerConfig: NgWalkerConfig = { expressionVisitorCtrl: ExpressionVisitorCtrl };
+    const walker = new NgWalker(sourceFile, this.getOptions(), walkerConfig);
+
+    return this.applyWithWalker(walker);
   }
 }
 
-class TemplateToNgTemplateVisitor extends RecursiveAngularExpressionVisitor {
+class ExpressionVisitorCtrl extends RecursiveAngularExpressionVisitor {
   visitBinary(ast: Binary, context: any): any {
     this.validateBinary(ast);
     super.visitBinary(ast, context);

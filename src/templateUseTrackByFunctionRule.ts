@@ -2,11 +2,11 @@ import { BoundDirectivePropertyAst } from '@angular/compiler';
 import { IRuleMetadata, RuleFailure } from 'tslint/lib';
 import { AbstractRule } from 'tslint/lib/rules';
 import { SourceFile } from 'typescript/lib/typescript';
-import { NgWalker } from './angular/ngWalker';
+import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 
 // current offset into the template
-export let curentOffset = 0;
+export let currentOffset = 0;
 
 const PATTERN = /\s*ngFor.*\s*trackBy\s*:|\[ngForTrackBy\]\s*=\s*['"].*['"]/;
 
@@ -24,13 +24,16 @@ export class Rule extends AbstractRule {
   static readonly FAILURE_STRING = 'Missing trackBy function in ngFor directive';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    curentOffset = 0;
+    currentOffset = 0;
 
-    return this.applyWithWalker(new NgWalker(sourceFile, this.getOptions(), { templateVisitorCtrl: TemplateUseTrackByFunctionVisitor }));
+    const walkerConfig: NgWalkerConfig = { templateVisitorCtrl: TemplateVisitorCtrl };
+    const walker = new NgWalker(sourceFile, this.getOptions(), walkerConfig);
+
+    return this.applyWithWalker(walker);
   }
 }
 
-class TemplateUseTrackByFunctionTemplateVisitor extends BasicTemplateAstVisitor {
+class TemplateUseTrackByFunctionVisitor extends BasicTemplateAstVisitor {
   visitDirectiveProperty(prop: BoundDirectivePropertyAst, context: BasicTemplateAstVisitor): any {
     this.validateDirective(prop, context);
     super.visitDirectiveProperty(prop, context);
@@ -48,8 +51,8 @@ class TemplateUseTrackByFunctionTemplateVisitor extends BasicTemplateAstVisitor 
       }
     } = prop;
 
-    if (PATTERN.test((context.codeWithMap.source || '').substr(curentOffset))) {
-      curentOffset = endOffset;
+    if (PATTERN.test((context.codeWithMap.source || '').substr(currentOffset))) {
+      currentOffset = endOffset;
 
       return;
     }
@@ -58,9 +61,9 @@ class TemplateUseTrackByFunctionTemplateVisitor extends BasicTemplateAstVisitor 
   }
 }
 
-class TemplateUseTrackByFunctionVisitor extends BasicTemplateAstVisitor {
+class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   private readonly visitors: ReadonlySet<BasicTemplateAstVisitor> = new Set([
-    new TemplateUseTrackByFunctionTemplateVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart)
+    new TemplateUseTrackByFunctionVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart)
   ]);
 
   visitDirectiveProperty(prop: BoundDirectivePropertyAst, context: BasicTemplateAstVisitor): any {

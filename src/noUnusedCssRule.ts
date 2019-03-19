@@ -1,17 +1,15 @@
 import { ElementAst, EmbeddedTemplateAst, PropertyBindingType, TemplateAst } from '@angular/compiler';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-
-import { NgWalker } from './angular/ngWalker';
+import { ComponentMetadata, StyleMetadata } from './angular/metadata';
+import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 import { BasicCssAstVisitor } from './angular/styles/basicCssAstVisitor';
 import { CssAst, CssSelectorAst, CssSelectorRuleAst } from './angular/styles/cssAst';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 import { parseTemplate } from './angular/templates/templateParser';
-import { getComponentDecorator, getDecoratorPropertyInitializer, getSymbolName } from './util/utils';
-
-import { ComponentMetadata, StyleMetadata } from './angular/metadata';
 import { logger } from './util/logger';
 import { SemVerDSL } from './util/ngVersion';
+import { getComponentDecorator, getDecoratorPropertyInitializer, getSymbolName } from './util/utils';
 
 interface Strategy {
   attribute(ast: ElementAst): boolean;
@@ -126,7 +124,7 @@ class ElementFilterVisitor extends BasicTemplateAstVisitor {
 }
 
 export class Rule extends Lint.Rules.AbstractRule {
-  public static metadata: Lint.IRuleMetadata = {
+  static readonly metadata: Lint.IRuleMetadata = {
     ruleName: 'no-unused-css',
     type: 'maintainability',
     description: "Disallows having an unused CSS rule in the component's stylesheet.",
@@ -136,16 +134,15 @@ export class Rule extends Lint.Rules.AbstractRule {
     hasFix: true
   };
 
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(
-      new UnusedCssNgVisitor(sourceFile, this.getOptions(), {
-        cssVisitorCtrl: UnusedCssVisitor
-      })
-    );
+  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+    const walkerConfig: NgWalkerConfig = { cssVisitorCtrl: CssVisitorCtrl };
+    const walker = new Walker(sourceFile, this.getOptions(), walkerConfig);
+
+    return this.applyWithWalker(walker);
   }
 }
 
-class UnusedCssVisitor extends BasicCssAstVisitor {
+class CssVisitorCtrl extends BasicCssAstVisitor {
   templateAst!: TemplateAst;
 
   constructor(
@@ -221,7 +218,7 @@ class UnusedCssVisitor extends BasicCssAstVisitor {
 }
 
 // Finds the template and wrapes the parsed content into a root element
-export class UnusedCssNgVisitor extends NgWalker {
+class Walker extends NgWalker {
   private templateAst!: TemplateAst;
 
   visitClassDeclaration(declaration: ts.ClassDeclaration) {
@@ -283,7 +280,7 @@ export class UnusedCssNgVisitor extends NgWalker {
     }
 
     const file = this.getContextSourceFile(styleMetadata.url!, styleMetadata.style.source!);
-    const visitor = new UnusedCssVisitor(file, this._originalOptions, context, styleMetadata, baseStart);
+    const visitor = new CssVisitorCtrl(file, this._originalOptions, context, styleMetadata, baseStart);
     visitor.templateAst = this.templateAst;
     const d = getComponentDecorator(context.controller)!;
     const encapsulation = getDecoratorPropertyInitializer(d, 'encapsulation');

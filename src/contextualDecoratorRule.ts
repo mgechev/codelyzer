@@ -39,11 +39,13 @@ export class Rule extends AbstractRule {
   static readonly FAILURE_STRING = 'The decorator "%s" is not allowed for class "%s" because it is decorated with "%s"';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(new ContextualDecoratorWalker(sourceFile, this.getOptions()));
+    const walker = new Walker(sourceFile, this.getOptions());
+
+    return this.applyWithWalker(walker);
   }
 }
 
-export class ContextualDecoratorWalker extends NgWalker {
+class Walker extends NgWalker {
   protected visitMethodDecorator(decorator: Decorator): void {
     this.validateDecorator(decorator);
     super.visitMethodDecorator(decorator);

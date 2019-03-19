@@ -1,7 +1,7 @@
 import { ElementAst } from '@angular/compiler';
 import { IRuleMetadata, RuleFailure, Rules } from 'tslint/lib';
 import { SourceFile } from 'typescript/lib/typescript';
-import { NgWalker } from './angular/ngWalker';
+import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 
 export class Rule extends Rules.AbstractRule {
@@ -19,15 +19,14 @@ export class Rule extends Rules.AbstractRule {
   static readonly FAILURE_STRING_MOUSE_OUT = 'mouseout must be accompanied by blur event for accessibility';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(
-      new NgWalker(sourceFile, this.getOptions(), {
-        templateVisitorCtrl: TemplateMouseEventsHaveKeyEventsVisitor
-      })
-    );
+    const walkerConfig: NgWalkerConfig = { templateVisitorCtrl: TemplateVisitorCtrl };
+    const walker = new NgWalker(sourceFile, this.getOptions(), walkerConfig);
+
+    return this.applyWithWalker(walker);
   }
 }
 
-class TemplateMouseEventsHaveKeyEventsVisitor extends BasicTemplateAstVisitor {
+class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   visitElement(el: ElementAst, context: any) {
     this.validateElement(el);
     super.visitElement(el, context);

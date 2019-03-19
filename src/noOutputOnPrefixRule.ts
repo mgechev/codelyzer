@@ -20,11 +20,13 @@ export class Rule extends Lint.Rules.AbstractRule {
   static readonly FAILURE_STRING = 'In the class "%s", the output property "%s" should not be prefixed with on';
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(new OutputWalker(sourceFile, this.getOptions()));
+    const walker = new Walker(sourceFile, this.getOptions());
+
+    return this.applyWithWalker(walker);
   }
 }
 
-class OutputWalker extends NgWalker {
+class Walker extends NgWalker {
   protected visitNgOutput(property: ts.PropertyDeclaration, output: ts.Decorator, args: string[]) {
     this.validateOutput(property);
     super.visitNgOutput(property, output, args);

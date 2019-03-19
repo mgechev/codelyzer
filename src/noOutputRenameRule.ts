@@ -18,7 +18,9 @@ export class Rule extends Rules.AbstractRule {
   static readonly FAILURE_STRING = '@Outputs should not be renamed';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(new OutputMetadataWalker(sourceFile, this.getOptions()));
+    const walker = new Walker(sourceFile, this.getOptions());
+
+    return this.applyWithWalker(walker);
   }
 }
 
@@ -26,7 +28,7 @@ export const getFailureMessage = (): string => {
   return Rule.FAILURE_STRING;
 };
 
-export class OutputMetadataWalker extends NgWalker {
+class Walker extends NgWalker {
   private directiveSelectors!: ReadonlySet<DirectiveMetadata['selector']>;
 
   protected visitNgDirective(metadata: DirectiveMetadata): void {

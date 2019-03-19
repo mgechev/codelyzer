@@ -1,11 +1,11 @@
 import { sprintf } from 'sprintf-js';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
+import { NgWalker } from './angular';
 import { ComponentMetadata } from './angular/metadata';
-import { Maybe, F2 } from './util/function';
+import { F2, Maybe } from './util/function';
 import { Failure } from './walkerFactory/walkerFactory';
 import { all, validateComponent } from './walkerFactory/walkerFn';
-import { NgWalker } from '.';
 
 export class Rule extends Lint.Rules.AbstractRule {
   static readonly metadata: Lint.IRuleMetadata = {
@@ -51,6 +51,8 @@ export class Rule extends Lint.Rules.AbstractRule {
   }
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(Rule.walkerBuilder(sourceFile, this.getOptions()));
+    const walker = Rule.walkerBuilder(sourceFile, this.getOptions());
+
+    return this.applyWithWalker(walker);
   }
 }

@@ -3,7 +3,7 @@ import { IRuleMetadata, RuleFailure } from 'tslint';
 import { AbstractRule } from 'tslint/lib/rules';
 import { arrayify, dedent } from 'tslint/lib/utils';
 import { SourceFile } from 'typescript';
-import { NgWalker } from './angular/ngWalker';
+import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 import { isNotNullOrUndefined } from './util/is-not-null-or-undefined';
 
@@ -61,11 +61,10 @@ export class Rule extends AbstractRule {
   static readonly FAILURE_STRING_TEXT = 'Each element containing text node should have an i18n attribute';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(
-      new NgWalker(sourceFile, this.getOptions(), {
-        templateVisitorCtrl: TemplateI18NVisitor
-      })
-    );
+    const walkerConfig: NgWalkerConfig = { templateVisitorCtrl: TemplateVisitorCtrl };
+    const walker = new NgWalker(sourceFile, this.getOptions(), walkerConfig);
+
+    return this.applyWithWalker(walker);
   }
 
   isEnabled(): boolean {
@@ -87,7 +86,7 @@ export class Rule extends AbstractRule {
   }
 }
 
-class TemplateI18NAttrVisitor extends BasicTemplateAstVisitor implements ConfigurableVisitor {
+class TemplateVisitorAttrCtrl extends BasicTemplateAstVisitor implements ConfigurableVisitor {
   getCheckOption(): CheckOption {
     return OPTION_CHECK_ID;
   }
@@ -108,7 +107,7 @@ class TemplateI18NAttrVisitor extends BasicTemplateAstVisitor implements Configu
   }
 }
 
-class TemplateI18NTextVisitor extends BasicTemplateAstVisitor implements ConfigurableVisitor {
+class TemplateVisitorTextCtrl extends BasicTemplateAstVisitor implements ConfigurableVisitor {
   private hasI18n = false;
   private readonly nestedElements: string[] = [];
   private readonly visited = new Set<BoundTextAst | TextAst>();
@@ -167,10 +166,10 @@ class TemplateI18NTextVisitor extends BasicTemplateAstVisitor implements Configu
   }
 }
 
-class TemplateI18NVisitor extends BasicTemplateAstVisitor {
+class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   private readonly visitors: ReadonlyArray<BasicTemplateAstVisitor & ConfigurableVisitor> = [
-    new TemplateI18NAttrVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart),
-    new TemplateI18NTextVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart)
+    new TemplateVisitorAttrCtrl(this.getSourceFile(), this.getOptions(), this.context, this.templateStart),
+    new TemplateVisitorTextCtrl(this.getSourceFile(), this.getOptions(), this.context, this.templateStart)
   ];
 
   visit(node: TemplateAst, context: BasicTemplateAstVisitor): any {

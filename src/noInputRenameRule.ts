@@ -26,7 +26,9 @@ export class Rule extends AbstractRule {
   `;
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(new InputMetadataWalker(sourceFile, this.getOptions()));
+    const walker = new Walker(sourceFile, this.getOptions());
+
+    return this.applyWithWalker(walker);
   }
 }
 
@@ -74,7 +76,7 @@ const whiteListAliases = new Set<string>([
   'aria-valuetext'
 ]);
 
-export class InputMetadataWalker extends NgWalker {
+class Walker extends NgWalker {
   private directiveSelectors!: ReadonlyArray<DirectiveMetadata['selector']>;
 
   protected visitNgDirective(metadata: DirectiveMetadata): void {

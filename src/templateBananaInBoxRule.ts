@@ -2,7 +2,7 @@ import { BoundEventAst } from '@angular/compiler';
 import { IRuleMetadata, Replacement, RuleFailure } from 'tslint';
 import { AbstractRule } from 'tslint/lib/rules';
 import { SourceFile } from 'typescript';
-import { NgWalker } from './angular/ngWalker';
+import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 
 const INVALID_BOX = /^\[(?!\()(.*)(?<!\))\]$/;
@@ -24,15 +24,14 @@ export class Rule extends AbstractRule {
   static readonly FAILURE_STRING = 'Invalid binding syntax. Use [(expr)] instead';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(
-      new NgWalker(sourceFile, this.getOptions(), {
-        templateVisitorCtrl: TemplateBananaInBoxVisitor
-      })
-    );
+    const walkerConfig: NgWalkerConfig = { templateVisitorCtrl: TemplateVisitorCtrl };
+    const walker = new NgWalker(sourceFile, this.getOptions(), walkerConfig);
+
+    return this.applyWithWalker(walker);
   }
 }
 
-class TemplateBananaInBoxVisitor extends BasicTemplateAstVisitor {
+class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   visitEvent(ast: BoundEventAst, context: BasicTemplateAstVisitor): any {
     this.validateEvent(ast);
     super.visitEvent(ast, context);

@@ -31,11 +31,13 @@ export class Rule extends AbstractRule {
   static readonly FAILURE_STRING = `The changeDetection value of a component should be set to ChangeDetectionStrategy.${ON_PUSH}`;
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(new PreferOnPushComponentChangeDetectionWalker(sourceFile, this.getOptions()));
+    const walker = new Walker(sourceFile, this.getOptions());
+
+    return this.applyWithWalker(walker);
   }
 }
 
-class PreferOnPushComponentChangeDetectionWalker extends NgWalker {
+class Walker extends NgWalker {
   protected visitNgComponent(metadata: ComponentMetadata): void {
     this.validateComponent(metadata);
     super.visitNgComponent(metadata);

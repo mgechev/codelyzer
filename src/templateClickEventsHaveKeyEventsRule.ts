@@ -2,11 +2,11 @@ import { ElementAst } from '@angular/compiler';
 import { dom } from 'aria-query';
 import { IRuleMetadata, RuleFailure, Rules } from 'tslint/lib';
 import { SourceFile } from 'typescript/lib/typescript';
-import { NgWalker } from './angular/ngWalker';
+import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
+import { isHiddenFromScreenReader } from './util/isHiddenFromScreenReader';
 import { isInteractiveElement } from './util/isInteractiveElement';
 import { isPresentationRole } from './util/isPresentationRole';
-import { isHiddenFromScreenReader } from './util/isHiddenFromScreenReader';
 
 const domElements = new Set(dom.keys());
 
@@ -24,15 +24,14 @@ export class Rule extends Rules.AbstractRule {
   static readonly FAILURE_STRING = 'click must be accompanied by either keyup, keydown or keypress event for accessibility';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(
-      new NgWalker(sourceFile, this.getOptions(), {
-        templateVisitorCtrl: TemplateClickEventsHaveKeyEventsVisitor
-      })
-    );
+    const walkerConfig: NgWalkerConfig = { templateVisitorCtrl: TemplateVisitorCtrl };
+    const walker = new NgWalker(sourceFile, this.getOptions(), walkerConfig);
+
+    return this.applyWithWalker(walker);
   }
 }
 
-class TemplateClickEventsHaveKeyEventsVisitor extends BasicTemplateAstVisitor {
+class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   visitElement(el: ElementAst, context: any) {
     this.validateElement(el);
     super.visitElement(el, context);

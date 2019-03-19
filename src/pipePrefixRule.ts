@@ -1,10 +1,10 @@
 import { sprintf } from 'sprintf-js';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
+import { PipeMetadata } from './angular';
 import { NgWalker } from './angular/ngWalker';
 import { SelectorValidator } from './util/selectorValidator';
 import { getDecoratorArgument } from './util/utils';
-import { PipeMetadata } from './angular';
 
 export class Rule extends Lint.Rules.AbstractRule {
   static readonly metadata: Lint.IRuleMetadata = {
@@ -46,7 +46,9 @@ export class Rule extends Lint.Rules.AbstractRule {
   }
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this));
+    const walker = new Walker(sourceFile, this);
+
+    return this.applyWithWalker(walker);
   }
 
   isEnabled(): boolean {
@@ -65,7 +67,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   }
 }
 
-export class ClassMetadataWalker extends NgWalker {
+class Walker extends NgWalker {
   constructor(sourceFile: ts.SourceFile, private rule: Rule) {
     super(sourceFile, rule.getOptions());
   }

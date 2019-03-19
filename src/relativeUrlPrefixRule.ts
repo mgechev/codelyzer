@@ -18,11 +18,13 @@ export class Rule extends Rules.AbstractRule {
   static readonly FAILURE_STRING = 'The ./ prefix is standard syntax for relative URLs. (https://angular.io/styleguide#style-05-04)';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(new RelativeUrlPrefixWalker(sourceFile, this.getOptions()));
+    const walker = new Walker(sourceFile, this.getOptions());
+
+    return this.applyWithWalker(walker);
   }
 }
 
-class RelativeUrlPrefixWalker extends NgWalker {
+class Walker extends NgWalker {
   constructor(sourceFile: SourceFile, options: IOptions) {
     super(sourceFile, options);
   }
