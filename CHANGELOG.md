@@ -44,18 +44,18 @@ This release contains many breaking changes due to the rename of several rules (
 ### Features
 
 - **rule:** add component-change-detection ([#737](https://github.com/mgechev/codelyzer/issues/737)) ([a23ccde](https://github.com/mgechev/codelyzer/commit/a23ccde)), closes [#135](https://github.com/mgechev/codelyzer/issues/135)
-- **rule:** add template-accessibility-alt-text ([#741](https://github.com/mgechev/codelyzer/issues/741)) ([0815ec5](https://github.com/mgechev/codelyzer/commit/0815ec5))
 - **rule:** add relative-url-prefix ([#725](https://github.com/mgechev/codelyzer/issues/725)) ([f12f27b](https://github.com/mgechev/codelyzer/commit/f12f27b))
+- **rule:** add template-accessibility-alt-text ([#741](https://github.com/mgechev/codelyzer/issues/741)) ([0815ec5](https://github.com/mgechev/codelyzer/commit/0815ec5))
 - **rule:** add template-accessibility-elements-content ([#742](https://github.com/mgechev/codelyzer/issues/742)) ([6ff8c56](https://github.com/mgechev/codelyzer/commit/6ff8c56))
-- **rule:** add template-no-autofocus ([#749](https://github.com/mgechev/codelyzer/issues/749)) ([799382f](https://github.com/mgechev/codelyzer/commit/799382f))
-- **rule:** add template-click-events-have-key-events ([#761](https://github.com/mgechev/codelyzer/issues/761)) ([b0b330f](https://github.com/mgechev/codelyzer/commit/b0b330f))
 - **rule:** add template-accessibility-label-for ([#739](https://github.com/mgechev/codelyzer/issues/739)) ([76c24fa](https://github.com/mgechev/codelyzer/commit/76c24fa))
-- **rule:** add template-mouse-events-have-key-events ([#759](https://github.com/mgechev/codelyzer/issues/759)) ([3a7b15d](https://github.com/mgechev/codelyzer/commit/3a7b15d))
-- **rule:** add template-no-distracting-elements ([#760](https://github.com/mgechev/codelyzer/issues/760)) ([6b21a9e](https://github.com/mgechev/codelyzer/commit/6b21a9e))
-- **rule:** add template-accessibility-table-scope ([#743](https://github.com/mgechev/codelyzer/issues/743)) ([2832615](https://github.com/mgechev/codelyzer/commit/2832615))
-- **rule:** add template-no-any rule ([#755](https://github.com/mgechev/codelyzer/issues/755)) ([77a5e32](https://github.com/mgechev/codelyzer/commit/77a5e32))
 - **rule:** add template-accessibility-tabindex-no-positive ([#744](https://github.com/mgechev/codelyzer/issues/744)) ([43902f7](https://github.com/mgechev/codelyzer/commit/43902f7))
+- **rule:** add template-accessibility-table-scope ([#743](https://github.com/mgechev/codelyzer/issues/743)) ([2832615](https://github.com/mgechev/codelyzer/commit/2832615))
 - **rule:** add template-accessibility-valid-aria ([#746](https://github.com/mgechev/codelyzer/issues/746)) ([762f67f](https://github.com/mgechev/codelyzer/commit/762f67f))
+- **rule:** add template-click-events-have-key-events ([#761](https://github.com/mgechev/codelyzer/issues/761)) ([b0b330f](https://github.com/mgechev/codelyzer/commit/b0b330f))
+- **rule:** add template-mouse-events-have-key-events ([#759](https://github.com/mgechev/codelyzer/issues/759)) ([3a7b15d](https://github.com/mgechev/codelyzer/commit/3a7b15d))
+- **rule:** add template-no-autofocus ([#749](https://github.com/mgechev/codelyzer/issues/749)) ([799382f](https://github.com/mgechev/codelyzer/commit/799382f))
+- **rule:** add template-no-distracting-elements ([#760](https://github.com/mgechev/codelyzer/issues/760)) ([6b21a9e](https://github.com/mgechev/codelyzer/commit/6b21a9e))
+- **rule:** add template-no-any ([#755](https://github.com/mgechev/codelyzer/issues/755)) ([77a5e32](https://github.com/mgechev/codelyzer/commit/77a5e32))
 
 <a name="4.5.0"></a>
 
