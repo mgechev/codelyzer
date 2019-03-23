@@ -20,11 +20,13 @@ export class Rule extends AbstractRule {
   static readonly FAILURE_STRING = `Using ViewEncapsulation.${NONE} makes your styles global, which may have an unintended effect`;
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(new ViewEncapsulationWalker(sourceFile, this.getOptions()));
+    const walker = new Walker(sourceFile, this.getOptions());
+
+    return this.applyWithWalker(walker);
   }
 }
 
-class ViewEncapsulationWalker extends NgWalker {
+class Walker extends NgWalker {
   protected visitNgComponent(metadata: ComponentMetadata): void {
     this.validateComponent(metadata);
     super.visitNgComponent(metadata);

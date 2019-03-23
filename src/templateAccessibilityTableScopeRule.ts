@@ -1,10 +1,10 @@
 import { ElementAst } from '@angular/compiler';
 import { IRuleMetadata, RuleFailure, Rules, Utils } from 'tslint/lib';
 import { SourceFile } from 'typescript';
-import { NgWalker } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular';
+import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 
-class TemplateAccessibilityTableScopeVisitor extends BasicTemplateAstVisitor {
+class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   visitElement(ast: ElementAst, context: any) {
     this.validateElement(ast);
     super.visitElement(ast, context);
@@ -46,10 +46,9 @@ export class Rule extends Rules.AbstractRule {
   static readonly FAILURE_MESSAGE = 'Scope attribute can only be on <th> element';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(
-      new NgWalker(sourceFile, this.getOptions(), {
-        templateVisitorCtrl: TemplateAccessibilityTableScopeVisitor
-      })
-    );
+    const walkerConfig: NgWalkerConfig = { templateVisitorCtrl: TemplateVisitorCtrl };
+    const walker = new NgWalker(sourceFile, this.getOptions(), walkerConfig);
+
+    return this.applyWithWalker(walker);
   }
 }

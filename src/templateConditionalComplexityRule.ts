@@ -2,7 +2,7 @@ import { AST, ASTWithSource, Binary, BoundDirectivePropertyAst, Lexer, Parser } 
 import { sprintf } from 'sprintf-js';
 import { IRuleMetadata, RuleFailure, Rules } from 'tslint/lib';
 import { SourceFile } from 'typescript/lib/typescript';
-import { NgWalker } from './angular/ngWalker';
+import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 
 export class Rule extends Rules.AbstractRule {
@@ -29,11 +29,10 @@ export class Rule extends Rules.AbstractRule {
     "The condition complexity (cost '%s') exceeded the defined limit (cost '%s'). The conditional expression should be moved into the component.";
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(
-      new NgWalker(sourceFile, this.getOptions(), {
-        templateVisitorCtrl: TemplateConditionalComplexityVisitor
-      })
-    );
+    const walkerConfig: NgWalkerConfig = { templateVisitorCtrl: TemplateVisitorCtrl };
+    const walker = new NgWalker(sourceFile, this.getOptions(), walkerConfig);
+
+    return this.applyWithWalker(walker);
   }
 
   isEnabled(): boolean {
@@ -85,7 +84,7 @@ const getTotalComplexity = (ast: AST): number => {
   return totalComplexity;
 };
 
-class TemplateConditionalComplexityVisitor extends BasicTemplateAstVisitor {
+class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   visitDirectiveProperty(prop: BoundDirectivePropertyAst, context: BasicTemplateAstVisitor): any {
     this.validateDirective(prop);
     super.visitDirectiveProperty(prop, context);

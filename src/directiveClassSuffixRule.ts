@@ -1,10 +1,9 @@
 import { sprintf } from 'sprintf-js';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
+import { DirectiveMetadata } from './angular/metadata';
 import { NgWalker } from './angular/ngWalker';
 import { getSymbolName } from './util/utils';
-
-import { DirectiveMetadata } from './angular/metadata';
 
 const ValidatorSuffix = 'Validator';
 
@@ -34,11 +33,13 @@ export class Rule extends Lint.Rules.AbstractRule {
   }
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this.getOptions()));
+    const walker = new Walker(sourceFile, this.getOptions());
+
+    return this.applyWithWalker(walker);
   }
 }
 
-export class ClassMetadataWalker extends NgWalker {
+class Walker extends NgWalker {
   protected visitNgDirective(metadata: DirectiveMetadata) {
     const name = metadata.controller.name!;
     const className = name.text;

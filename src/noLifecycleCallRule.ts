@@ -18,11 +18,13 @@ export class Rule extends AbstractRule {
   static readonly FAILURE_STRING = 'Avoid explicit calls to lifecycle methods';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(new ExpressionCallMetadataWalker(sourceFile, this.getOptions()));
+    const walker = new Walker(sourceFile, this.getOptions());
+
+    return this.applyWithWalker(walker);
   }
 }
 
-class ExpressionCallMetadataWalker extends NgWalker {
+class Walker extends NgWalker {
   visitCallExpression(node: CallExpression): void {
     this.validateCallExpression(node);
     super.visitCallExpression(node);

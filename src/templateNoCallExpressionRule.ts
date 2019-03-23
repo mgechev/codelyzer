@@ -2,7 +2,7 @@ import { MethodCall } from '@angular/compiler';
 import { IRuleMetadata, RuleFailure } from 'tslint';
 import { AbstractRule } from 'tslint/lib/rules';
 import { SourceFile } from 'typescript';
-import { NgWalker } from './angular/ngWalker';
+import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 import { RecursiveAngularExpressionVisitor } from './angular/templates/recursiveAngularExpressionVisitor';
 
@@ -22,20 +22,21 @@ export class Rule extends AbstractRule {
   static readonly FAILURE_STRING = 'Avoid calling expressions in templates';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(
-      new NgWalker(sourceFile, this.getOptions(), {
-        expressionVisitorCtrl: ExpressionVisitor,
-        templateVisitorCtrl: TemplateVisitor
-      })
-    );
+    const walkerConfig: NgWalkerConfig = {
+      expressionVisitorCtrl: ExpressionVisitorCtrl,
+      templateVisitorCtrl: TemplateVisitorCtrl
+    };
+    const walker = new NgWalker(sourceFile, this.getOptions(), walkerConfig);
+
+    return this.applyWithWalker(walker);
   }
 }
 
-class TemplateVisitor extends BasicTemplateAstVisitor {
+class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   visitEvent(): any {}
 }
 
-class ExpressionVisitor extends RecursiveAngularExpressionVisitor {
+class ExpressionVisitorCtrl extends RecursiveAngularExpressionVisitor {
   visitMethodCall(ast: MethodCall, context: any): any {
     this.validateMethodCall(ast);
     super.visitMethodCall(ast, context);

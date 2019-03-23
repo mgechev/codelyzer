@@ -3,7 +3,7 @@ import { IRuleMetadata, RuleFailure } from 'tslint';
 import { AbstractRule } from 'tslint/lib/rules';
 import { dedent } from 'tslint/lib/utils';
 import { SourceFile } from 'typescript';
-import { NgWalker } from './angular/ngWalker';
+import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 import { RecursiveAngularExpressionVisitor } from './angular/templates/recursiveAngularExpressionVisitor';
 
 const ANY_TYPE_CAST_FUNCTION_NAME = '$any';
@@ -25,15 +25,14 @@ export class Rule extends AbstractRule {
   static readonly FAILURE_STRING = `Avoid using '${ANY_TYPE_CAST_FUNCTION_NAME}' in templates`;
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(
-      new NgWalker(sourceFile, this.getOptions(), {
-        expressionVisitorCtrl: ExpressionVisitor
-      })
-    );
+    const walkerConfig: NgWalkerConfig = { expressionVisitorCtrl: ExpressionVisitorCtrl };
+    const walker = new NgWalker(sourceFile, this.getOptions(), walkerConfig);
+
+    return this.applyWithWalker(walker);
   }
 }
 
-class ExpressionVisitor extends RecursiveAngularExpressionVisitor {
+class ExpressionVisitorCtrl extends RecursiveAngularExpressionVisitor {
   visitMethodCall(ast: MethodCall, context: any): any {
     this.validateMethodCall(ast);
     super.visitMethodCall(ast, context);

@@ -3,7 +3,7 @@ import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { Config } from './angular/config';
 import { ExpTypes } from './angular/expressionTypes';
-import { NgWalker } from './angular/ngWalker';
+import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 import { RecursiveAngularExpressionVisitor } from './angular/templates/recursiveAngularExpressionVisitor';
 
@@ -162,7 +162,7 @@ class SemicolonTemplateVisitor extends BasicTemplateAstVisitor implements Config
   }
 }
 
-class WhitespaceTemplateVisitor extends BasicTemplateAstVisitor {
+class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   private visitors: (BasicTemplateAstVisitor & ConfigurableVisitor)[] = [
     new InterpolationWhitespaceVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart),
     new SemicolonTemplateVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart)
@@ -259,7 +259,7 @@ class PipeWhitespaceVisitor extends RecursiveAngularExpressionVisitor implements
   }
 }
 
-class TemplateExpressionVisitor extends RecursiveAngularExpressionVisitor {
+class ExpressionVisitorCtrl extends RecursiveAngularExpressionVisitor {
   private visitors: (RecursiveAngularExpressionVisitor & ConfigurableVisitor)[] = [
     new PipeWhitespaceVisitor(this.getSourceFile(), this.getOptions(), this.context, this.basePosition)
   ];
@@ -310,12 +310,13 @@ export class Rule extends Lint.Rules.AbstractRule {
   };
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(
-      new NgWalker(sourceFile, this.getOptions(), {
-        expressionVisitorCtrl: TemplateExpressionVisitor,
-        templateVisitorCtrl: WhitespaceTemplateVisitor
-      })
-    );
+    const walkerConfig: NgWalkerConfig = {
+      expressionVisitorCtrl: ExpressionVisitorCtrl,
+      templateVisitorCtrl: TemplateVisitorCtrl
+    };
+    const walker = new NgWalker(sourceFile, this.getOptions(), walkerConfig);
+
+    return this.applyWithWalker(walker);
   }
 
   isEnabled(): boolean {

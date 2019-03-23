@@ -1,7 +1,8 @@
 import { sprintf } from 'sprintf-js';
 import { IRuleMetadata, RuleFailure } from 'tslint/lib';
 import { AbstractRule } from 'tslint/lib/rules';
-import { ClassDeclaration, Decorator, SourceFile } from 'typescript';
+import { SourceFile } from 'typescript';
+import { InjectableMetadata, ModuleMetadata, PipeMetadata } from './angular';
 import { NgWalker } from './angular/ngWalker';
 import {
   getClassName,
@@ -14,7 +15,6 @@ import {
   MetadataTypeKeys,
   MetadataTypes
 } from './util/utils';
-import { InjectableMetadata, ModuleMetadata, PipeMetadata } from './angular';
 
 interface FailureParameters {
   readonly className: string;
@@ -41,11 +41,13 @@ export class Rule extends AbstractRule {
   static readonly FAILURE_STRING = 'The method "%s" is not allowed for class "%s" because it is decorated with "%s"';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(new ContextualLifecycleWalker(sourceFile, this.getOptions()));
+    const walker = new Walker(sourceFile, this.getOptions());
+
+    return this.applyWithWalker(walker);
   }
 }
 
-class ContextualLifecycleWalker extends NgWalker {
+class Walker extends NgWalker {
   protected visitNgInjectable(metadata: InjectableMetadata): void {
     this.validateDecorator(metadata, METADATA_TYPE_LIFECYCLE_MAPPER.Injectable);
     super.visitNgInjectable(metadata);

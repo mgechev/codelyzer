@@ -1,8 +1,7 @@
-import { BoundDirectivePropertyAst, ElementAst } from '@angular/compiler';
-import { sprintf } from 'sprintf-js';
+import { ElementAst } from '@angular/compiler';
 import { IRuleMetadata, RuleFailure, Rules, Utils } from 'tslint/lib';
 import { SourceFile } from 'typescript/lib/typescript';
-import { NgWalker } from './angular/ngWalker';
+import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 import { mayContainChildComponent } from './util/mayContainChildComponent';
 
@@ -55,15 +54,14 @@ export class Rule extends Rules.AbstractRule {
   static readonly FORM_ELEMENTS = ['input', 'select', 'textarea'];
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(
-      new NgWalker(sourceFile, this.getOptions(), {
-        templateVisitorCtrl: TemplateAccessibilityLabelForVisitor
-      })
-    );
+    const walkerConfig: NgWalkerConfig = { templateVisitorCtrl: TemplateVisitorCtrl };
+    const walker = new NgWalker(sourceFile, this.getOptions(), walkerConfig);
+
+    return this.applyWithWalker(walker);
   }
 }
 
-class TemplateAccessibilityLabelForVisitor extends BasicTemplateAstVisitor {
+class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   visitElement(element: ElementAst, context: any) {
     this.validateElement(element);
     super.visitElement(element, context);

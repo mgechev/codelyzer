@@ -1,10 +1,10 @@
 import { sprintf } from 'sprintf-js';
 import { IRuleMetadata, RuleFailure } from 'tslint';
 import { AbstractRule } from 'tslint/lib/rules';
-import { ClassDeclaration, Decorator, SourceFile, SyntaxKind } from 'typescript';
-import { NgWalker } from './angular/ngWalker';
-import { getClassName, getDecoratorPropertyInitializer } from './util/utils';
+import { SourceFile, SyntaxKind } from 'typescript';
 import { PipeMetadata } from './angular';
+import { NgWalker } from './angular/ngWalker';
+import { getClassName } from './util/utils';
 
 interface FailureParameters {
   readonly className: string;
@@ -27,11 +27,13 @@ export class Rule extends AbstractRule {
   static readonly FAILURE_STRING = 'Impure pipe declared in class %s';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(new ClassMetadataWalker(sourceFile, this.getOptions()));
+    const walker = new Walker(sourceFile, this.getOptions());
+
+    return this.applyWithWalker(walker);
   }
 }
 
-export class ClassMetadataWalker extends NgWalker {
+class Walker extends NgWalker {
   protected visitNgPipe(metadata: PipeMetadata): void {
     this.validatePipe(metadata);
     super.visitNgPipe(metadata);

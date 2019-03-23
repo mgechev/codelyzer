@@ -28,7 +28,9 @@ export class Rule extends AbstractRule {
   static readonly FAILURE_STRING = 'Consider placing decorators on the same line as the property/method it decorates';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(new PreferInlineDecoratorWalker(sourceFile, this.getOptions()));
+    const walker = new Walker(sourceFile, this.getOptions());
+
+    return this.applyWithWalker(walker);
   }
 
   isEnabled(): boolean {
@@ -36,7 +38,7 @@ export class Rule extends AbstractRule {
   }
 }
 
-export class PreferInlineDecoratorWalker extends NgWalker {
+class Walker extends NgWalker {
   private readonly blacklistedDecorators: ReadonlySet<string>;
 
   constructor(source: SourceFile, options: IOptions) {

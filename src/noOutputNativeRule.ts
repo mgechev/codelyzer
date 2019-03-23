@@ -202,11 +202,13 @@ export class Rule extends AbstractRule {
   static readonly FAILURE_STRING = 'In the class "%s", the output property "%s" should not be named or renamed as a native event';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    return this.applyWithWalker(new NoOutputNativeWalker(sourceFile, this.getOptions()));
+    const walker = new Walker(sourceFile, this.getOptions());
+
+    return this.applyWithWalker(walker);
   }
 }
 
-class NoOutputNativeWalker extends NgWalker {
+class Walker extends NgWalker {
   protected visitNgOutput(property: PropertyDeclaration, output: Decorator, args: string[]): void {
     this.validateOutput(property, args);
     super.visitNgOutput(property, output, args);
