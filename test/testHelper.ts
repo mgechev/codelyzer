@@ -118,42 +118,42 @@ const parseInvalidSource = (
 ): { failure: ExpectedFailure; source: AssertConfig['source'] } => {
   let replacedSource: string;
 
-  if (otherChars.length > 0) {
+  if (otherChars.length === 0) {
+    replacedSource = source;
+  } else {
     const patternAsStr = `[${otherChars.map(escapeRegexp).join('')}]`;
     const pattern = new RegExp(patternAsStr, 'g');
-    replacedSource = source.replace(pattern, '');
-  } else {
-    replacedSource = source;
+
+    replacedSource = source.replace(pattern, ' ');
   }
 
-  let startPosition;
-  let line = 0;
   let col = 0;
+  let line = 0;
   let lastCol = 0;
   let lastLine = 0;
+  let startPosition;
 
-  for (let i = 0; i < replacedSource.length; i += 1) {
-    const currentSource = replacedSource[i];
-    const previousSource = replacedSource[i - 1];
+  for (const currentChar of replacedSource) {
+    if (currentChar === '\n') {
+      col = 0;
+      line++;
 
-    if (currentSource === specialChar && previousSource !== '/' && startPosition === undefined) {
+      continue;
+    }
+
+    col++;
+
+    if (currentChar !== specialChar) continue;
+
+    if (!startPosition) {
       startPosition = {
-        character: col,
+        character: col - 1,
         line: line - 1
       };
     }
 
-    if (currentSource === '\n') {
-      col = 0;
-      line += 1;
-    } else {
-      col += 1;
-    }
-
-    if (currentSource === specialChar && previousSource !== '/') {
-      lastCol = col;
-      lastLine = line - 1;
-    }
+    lastCol = col;
+    lastLine = line - 1;
   }
 
   const endPosition: SourcePosition = {
@@ -181,13 +181,11 @@ const parseInvalidSource = (
 export const assertAnnotated = (config: AssertConfig): RuleFailure[] | void => {
   const { message, options, ruleName, source: sourceConfig } = config;
 
-  if (message) {
-    const { failure, source } = parseInvalidSource(sourceConfig, message);
+  if (!message) return assertSuccess(ruleName, sourceConfig, options);
 
-    return assertFailure(ruleName, source, failure, options);
-  }
+  const { failure, source } = parseInvalidSource(sourceConfig, message);
 
-  return assertSuccess(ruleName, sourceConfig, options);
+  return assertFailure(ruleName, source, failure, options);
 };
 
 /**
@@ -220,6 +218,12 @@ export const assertMultipleAnnotated = (configs: AssertMultipleConfigs): RuleFai
   }, []);
 };
 
+const assertFail = (expectedFailure: ExpectedFailure, ruleFailure: RuleFailure): void => {
+  assert.equal(expectedFailure.message, ruleFailure.getFailure(), "error messages don't match");
+  assert.deepEqual(expectedFailure.startPosition, ruleFailure.getStartPosition().getLineAndCharacter(), "start char doesn't match");
+  assert.deepEqual(expectedFailure.endPosition, ruleFailure.getEndPosition().getLineAndCharacter(), "end char doesn't match");
+};
+
 /**
  * A helper function used in specs to assert a failure (meaning that the code contains a lint error).
  * Consider using `assertAnnotated` instead.
@@ -235,7 +239,7 @@ export const assertMultipleAnnotated = (configs: AssertMultipleConfigs): RuleFai
 export const assertFailure = (
   ruleName: AssertConfig['ruleName'],
   source: string | SourceFile,
-  fail: ExpectedFailure,
+  expectedFailure: ExpectedFailure,
   options?: AssertConfig['options'],
   onlyNthFailure = 0
 ): RuleFailure[] => {
@@ -243,11 +247,9 @@ export const assertFailure = (
 
   assert(result.failures.length > 0, 'no failures');
 
-  const ruleFail = result.failures[onlyNthFailure];
+  const ruleFailure = result.failures[onlyNthFailure];
 
-  assert.equal(fail.message, ruleFail.getFailure(), "error messages don't match");
-  assert.deepEqual(fail.startPosition, ruleFail.getStartPosition().getLineAndCharacter(), "start char doesn't match");
-  assert.deepEqual(fail.endPosition, ruleFail.getEndPosition().getLineAndCharacter(), "end char doesn't match");
+  assertFail(expectedFailure, ruleFailure);
 
   return result.failures;
 };
@@ -264,18 +266,14 @@ export const assertFailure = (
 export const assertFailures = (
   ruleName: AssertConfig['ruleName'],
   source: string | SourceFile,
-  fails: ExpectedFailure[],
+  expectedFailures: ExpectedFailure[],
   options?: AssertConfig['options']
 ): void => {
   const result = lint(ruleName, source, options);
 
   assert(result.failures.length > 0, 'no failures');
 
-  result.failures.forEach((ruleFail, index) => {
-    assert.equal(fails[index].message, ruleFail.getFailure(), "error messages don't match");
-    assert.deepEqual(fails[index].startPosition, ruleFail.getStartPosition().getLineAndCharacter(), "start char doesn't match");
-    assert.deepEqual(fails[index].endPosition, ruleFail.getEndPosition().getLineAndCharacter(), "end char doesn't match");
-  });
+  result.failures.forEach((ruleFailure, index) => assertFail(expectedFailures[index], ruleFailure));
 };
 
 /**
