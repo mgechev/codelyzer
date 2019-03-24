@@ -109,7 +109,16 @@ export const ANGULAR_CLASS_DECORATOR_MAPPER: ReadonlyMap<AngularClassDecoratorKe
       AngularInnerClassDecorators.SkipSelf
     ])
   ],
-  [AngularClassDecorators.NgModule, new Set([])],
+  [
+    AngularClassDecorators.NgModule,
+    new Set([
+      AngularInnerClassDecorators.Host,
+      AngularInnerClassDecorators.Inject,
+      AngularInnerClassDecorators.Optional,
+      AngularInnerClassDecorators.Self,
+      AngularInnerClassDecorators.SkipSelf
+    ])
+  ],
   [
     AngularClassDecorators.Pipe,
     new Set([
