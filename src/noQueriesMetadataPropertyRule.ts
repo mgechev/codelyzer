@@ -1,6 +1,7 @@
 import { IOptions, IRuleMetadata } from 'tslint/lib';
+import { dedent } from 'tslint/lib/utils';
 import { MetadataPropertyBase } from './metadataPropertyBase';
-import { Decorators } from './util/utils';
+import { AngularInnerClassDecorators } from './util/utils';
 
 const METADATA_PROPERTY_NAME = 'queries';
 
@@ -9,17 +10,25 @@ export class Rule extends MetadataPropertyBase {
     description: `Disallows usage of the \`${METADATA_PROPERTY_NAME}\` metadata property.`,
     options: null,
     optionsDescription: 'Not configurable.',
-    rationale: `If you ever need to rename the property associated with @${Decorators.ContentChild}, @${Decorators.ContentChildren}, @${
-      Decorators.ViewChild
-    } or @${Decorators.ViewChildren}, you can modify it in a single place.`,
+    rationale: dedent`
+      If you ever need to rename the property associated
+      with @${AngularInnerClassDecorators.ContentChild},
+      @${AngularInnerClassDecorators.ContentChildren}, @${AngularInnerClassDecorators.ViewChild}
+      or @${AngularInnerClassDecorators.ViewChildren},
+      you can modify it in a single place.
+    `,
     ruleName: 'no-queries-metadata-property',
     type: 'style',
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = `Use @${Decorators.ContentChild}, @${Decorators.ContentChildren}, @${Decorators.ViewChild} or @${
-    Decorators.ViewChildren
-  } rather than the \`${METADATA_PROPERTY_NAME}\` metadata property`;
+  static readonly FAILURE_STRING = dedent`
+    Use @${AngularInnerClassDecorators.ContentChild},
+    @${AngularInnerClassDecorators.ContentChildren},
+    @${AngularInnerClassDecorators.ViewChild}
+    or @${AngularInnerClassDecorators.ViewChildren}
+    rather than the \`${METADATA_PROPERTY_NAME}\` metadata property
+  `;
 
   constructor(options: IOptions) {
     super(

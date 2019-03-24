@@ -4,17 +4,17 @@ import { AbstractRule } from 'tslint/lib/rules';
 import { ClassDeclaration, forEachChild, isClassDeclaration, Node, SourceFile } from 'typescript';
 import { getDeclaredMethods } from './util/classDeclarationUtils';
 import {
-  getDeclaredLifecycleInterfaces,
+  AngularLifecycleInterfaceKeys,
+  AngularLifecycleInterfaces,
+  AngularLifecycleMethodKeys,
+  getDeclaredAngularLifecycleInterfaces,
   getLifecycleInterfaceByMethodName,
-  isLifecycleMethod,
-  LifecycleInterfaceKeys,
-  LifecycleInterfaces,
-  LifecycleMethodKeys
+  isAngularLifecycleMethod
 } from './util/utils';
 
 interface FailureParameters {
-  readonly interfaceName: LifecycleInterfaceKeys;
-  readonly methodName: LifecycleMethodKeys;
+  readonly interfaceName: AngularLifecycleInterfaceKeys;
+  readonly methodName: AngularLifecycleMethodKeys;
 }
 
 const STYLE_GUIDE_LINK = 'https://angular.io/styleguide#style-09-01';
@@ -42,17 +42,17 @@ export class Rule extends AbstractRule {
 }
 
 const validateClassDeclaration = (context: WalkContext<void>, node: ClassDeclaration): void => {
-  const declaredLifecycleInterfaces = getDeclaredLifecycleInterfaces(node);
+  const declaredLifecycleInterfaces = getDeclaredAngularLifecycleInterfaces(node);
   const declaredMethods = getDeclaredMethods(node);
 
   for (const method of declaredMethods) {
     const { name: methodProperty } = method;
     const methodName = methodProperty.getText();
 
-    if (!isLifecycleMethod(methodName)) continue;
+    if (!isAngularLifecycleMethod(methodName)) continue;
 
     const interfaceName = getLifecycleInterfaceByMethodName(methodName);
-    const isMethodImplemented = declaredLifecycleInterfaces.indexOf(LifecycleInterfaces[interfaceName]) !== -1;
+    const isMethodImplemented = declaredLifecycleInterfaces.includes(AngularLifecycleInterfaces[interfaceName]);
 
     if (isMethodImplemented) continue;
 

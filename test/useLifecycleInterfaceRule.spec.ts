@@ -1,5 +1,5 @@
 import { getFailureMessage, Rule } from '../src/useLifecycleInterfaceRule';
-import { LifecycleInterfaces, LifecycleMethods } from '../src/util/utils';
+import { AngularLifecycleInterfaces, AngularLifecycleMethods } from '../src/util/utils';
 import { assertAnnotated, assertFailures, assertSuccess } from './testHelper';
 
 const {
@@ -17,8 +17,8 @@ describe(ruleName, () => {
         }
       `;
       const message = getFailureMessage({
-        interfaceName: LifecycleInterfaces.OnInit,
-        methodName: LifecycleMethods.ngOnInit
+        interfaceName: AngularLifecycleInterfaces.OnInit,
+        methodName: AngularLifecycleMethods.ngOnInit
       });
       assertAnnotated({
         message,
@@ -38,8 +38,8 @@ describe(ruleName, () => {
         }
       `;
       const message = getFailureMessage({
-        interfaceName: LifecycleInterfaces.OnDestroy,
-        methodName: LifecycleMethods.ngOnDestroy
+        interfaceName: AngularLifecycleInterfaces.OnDestroy,
+        methodName: AngularLifecycleMethods.ngOnDestroy
       });
       assertAnnotated({
         message,
@@ -63,8 +63,8 @@ describe(ruleName, () => {
             line: 2
           },
           message: getFailureMessage({
-            interfaceName: LifecycleInterfaces.OnInit,
-            methodName: LifecycleMethods.ngOnInit
+            interfaceName: AngularLifecycleInterfaces.OnInit,
+            methodName: AngularLifecycleMethods.ngOnInit
           }),
           startPosition: {
             character: 10,
@@ -77,8 +77,8 @@ describe(ruleName, () => {
             line: 4
           },
           message: getFailureMessage({
-            interfaceName: LifecycleInterfaces.OnDestroy,
-            methodName: LifecycleMethods.ngOnDestroy
+            interfaceName: AngularLifecycleInterfaces.OnDestroy,
+            methodName: AngularLifecycleMethods.ngOnDestroy
           }),
           startPosition: {
             character: 10,
@@ -99,8 +99,8 @@ describe(ruleName, () => {
         }
       `;
       const message = getFailureMessage({
-        interfaceName: LifecycleInterfaces.OnDestroy,
-        methodName: LifecycleMethods.ngOnDestroy
+        interfaceName: AngularLifecycleInterfaces.OnDestroy,
+        methodName: AngularLifecycleMethods.ngOnDestroy
       });
       assertAnnotated({
         message,

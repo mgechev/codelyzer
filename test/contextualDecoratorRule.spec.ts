@@ -1,5 +1,5 @@
 import { getFailureMessage, Rule } from '../src/contextualDecoratorRule';
-import { Decorators, MetadataTypes } from '../src/util/utils';
+import { AngularClassDecorators, AngularInnerClassDecorators } from '../src/util/utils';
 import { assertAnnotated, assertSuccess } from './testHelper';
 
 const {
@@ -19,9 +19,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.Injectable,
             className: 'Test',
-            decoratorName: Decorators.ContentChild,
-            metadataType: MetadataTypes.Injectable
+            innerClassDecoratorName: AngularInnerClassDecorators.ContentChild
           }),
           ruleName,
           source
@@ -38,9 +38,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.Injectable,
             className: 'Test',
-            decoratorName: Decorators.ContentChildren,
-            metadataType: MetadataTypes.Injectable
+            innerClassDecoratorName: AngularInnerClassDecorators.ContentChildren
           }),
           ruleName,
           source
@@ -57,9 +57,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.Injectable,
             className: 'Test',
-            decoratorName: Decorators.HostBinding,
-            metadataType: MetadataTypes.Injectable
+            innerClassDecoratorName: AngularInnerClassDecorators.HostBinding
           }),
           ruleName,
           source
@@ -79,9 +79,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.Injectable,
             className: 'Test',
-            decoratorName: Decorators.HostListener,
-            metadataType: MetadataTypes.Injectable
+            innerClassDecoratorName: AngularInnerClassDecorators.HostListener
           }),
           ruleName,
           source
@@ -98,9 +98,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.Injectable,
             className: 'Test',
-            decoratorName: Decorators.Input,
-            metadataType: MetadataTypes.Injectable
+            innerClassDecoratorName: AngularInnerClassDecorators.Input
           }),
           ruleName,
           source
@@ -117,9 +117,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.Injectable,
             className: 'Test',
-            decoratorName: Decorators.Output,
-            metadataType: MetadataTypes.Injectable
+            innerClassDecoratorName: AngularInnerClassDecorators.Output
           }),
           ruleName,
           source
@@ -136,9 +136,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.Injectable,
             className: 'Test',
-            decoratorName: Decorators.ViewChild,
-            metadataType: MetadataTypes.Injectable
+            innerClassDecoratorName: AngularInnerClassDecorators.ViewChild
           }),
           ruleName,
           source
@@ -155,9 +155,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.Injectable,
             className: 'Test',
-            decoratorName: Decorators.ViewChildren,
-            metadataType: MetadataTypes.Injectable
+            innerClassDecoratorName: AngularInnerClassDecorators.ViewChildren
           }),
           ruleName,
           source
@@ -176,9 +176,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.NgModule,
             className: 'Test',
-            decoratorName: Decorators.ContentChild,
-            metadataType: MetadataTypes.NgModule
+            innerClassDecoratorName: AngularInnerClassDecorators.ContentChild
           }),
           ruleName,
           source
@@ -195,9 +195,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.NgModule,
             className: 'Test',
-            decoratorName: Decorators.ContentChildren,
-            metadataType: MetadataTypes.NgModule
+            innerClassDecoratorName: AngularInnerClassDecorators.ContentChildren
           }),
           ruleName,
           source
@@ -214,9 +214,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.NgModule,
             className: 'Test',
-            decoratorName: Decorators.HostBinding,
-            metadataType: MetadataTypes.NgModule
+            innerClassDecoratorName: AngularInnerClassDecorators.HostBinding
           }),
           ruleName,
           source
@@ -236,9 +236,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.NgModule,
             className: 'Test',
-            decoratorName: Decorators.HostListener,
-            metadataType: MetadataTypes.NgModule
+            innerClassDecoratorName: AngularInnerClassDecorators.HostListener
           }),
           ruleName,
           source
@@ -255,9 +255,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.NgModule,
             className: 'Test',
-            decoratorName: Decorators.Input,
-            metadataType: MetadataTypes.NgModule
+            innerClassDecoratorName: AngularInnerClassDecorators.Input
           }),
           ruleName,
           source
@@ -274,9 +274,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.NgModule,
             className: 'Test',
-            decoratorName: Decorators.Output,
-            metadataType: MetadataTypes.NgModule
+            innerClassDecoratorName: AngularInnerClassDecorators.Output
           }),
           ruleName,
           source
@@ -293,9 +293,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.NgModule,
             className: 'Test',
-            decoratorName: Decorators.ViewChild,
-            metadataType: MetadataTypes.NgModule
+            innerClassDecoratorName: AngularInnerClassDecorators.ViewChild
           }),
           ruleName,
           source
@@ -312,9 +312,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.NgModule,
             className: 'Test',
-            decoratorName: Decorators.ViewChildren,
-            metadataType: MetadataTypes.NgModule
+            innerClassDecoratorName: AngularInnerClassDecorators.ViewChildren
           }),
           ruleName,
           source
@@ -333,9 +333,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.Pipe,
             className: 'Test',
-            decoratorName: Decorators.ContentChild,
-            metadataType: MetadataTypes.Pipe
+            innerClassDecoratorName: AngularInnerClassDecorators.ContentChild
           }),
           ruleName,
           source
@@ -352,9 +352,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.Pipe,
             className: 'Test',
-            decoratorName: Decorators.ContentChildren,
-            metadataType: MetadataTypes.Pipe
+            innerClassDecoratorName: AngularInnerClassDecorators.ContentChildren
           }),
           ruleName,
           source
@@ -371,9 +371,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.Pipe,
             className: 'Test',
-            decoratorName: Decorators.HostBinding,
-            metadataType: MetadataTypes.Pipe
+            innerClassDecoratorName: AngularInnerClassDecorators.HostBinding
           }),
           ruleName,
           source
@@ -393,9 +393,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.Pipe,
             className: 'Test',
-            decoratorName: Decorators.HostListener,
-            metadataType: MetadataTypes.Pipe
+            innerClassDecoratorName: AngularInnerClassDecorators.HostListener
           }),
           ruleName,
           source
@@ -412,9 +412,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.Pipe,
             className: 'Test',
-            decoratorName: Decorators.Input,
-            metadataType: MetadataTypes.Pipe
+            innerClassDecoratorName: AngularInnerClassDecorators.Input
           }),
           ruleName,
           source
@@ -431,9 +431,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.Pipe,
             className: 'Test',
-            decoratorName: Decorators.Output,
-            metadataType: MetadataTypes.Pipe
+            innerClassDecoratorName: AngularInnerClassDecorators.Output
           }),
           ruleName,
           source
@@ -450,9 +450,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.Pipe,
             className: 'Test',
-            decoratorName: Decorators.ViewChild,
-            metadataType: MetadataTypes.Pipe
+            innerClassDecoratorName: AngularInnerClassDecorators.ViewChild
           }),
           ruleName,
           source
@@ -469,9 +469,9 @@ describe(ruleName, () => {
         `;
         assertAnnotated({
           message: getFailureMessage({
+            classDecoratorName: AngularClassDecorators.Pipe,
             className: 'Test',
-            decoratorName: Decorators.ViewChildren,
-            metadataType: MetadataTypes.Pipe
+            innerClassDecoratorName: AngularInnerClassDecorators.ViewChildren
           }),
           ruleName,
           source
@@ -494,9 +494,9 @@ describe(ruleName, () => {
           }
         `;
         const message = getFailureMessage({
+          classDecoratorName: AngularClassDecorators.Pipe,
           className: 'Test',
-          decoratorName: Decorators.Input,
-          metadataType: MetadataTypes.Pipe
+          innerClassDecoratorName: AngularInnerClassDecorators.Input
         });
         assertAnnotated({
           message,
@@ -508,9 +508,9 @@ describe(ruleName, () => {
   });
 
   describe('success', () => {
-    describe('Component', () => {
+    describe('', () => {
       it('should succeed if a property is decorated with @ContentChild() decorator', () => {
-        const source = `
+        const source = `Component
           @Component()
           class Test {
             @ContentChild(Pane) pane: Pane;

@@ -2,7 +2,7 @@ import { IRuleMetadata, RuleFailure } from 'tslint';
 import { AbstractRule } from 'tslint/lib/rules';
 import { CallExpression, isPropertyAccessExpression, SourceFile, SyntaxKind } from 'typescript';
 import { NgWalker } from './angular/ngWalker';
-import { isLifecycleMethod } from './util/utils';
+import { isAngularLifecycleMethod } from './util/utils';
 
 export class Rule extends AbstractRule {
   static readonly metadata: IRuleMetadata = {
@@ -39,7 +39,7 @@ class Walker extends NgWalker {
       expression,
       name: { text: methodName }
     } = nodeExpression;
-    const isLifecycleCall = isLifecycleMethod(methodName);
+    const isLifecycleCall = isAngularLifecycleMethod(methodName);
     const isSuperCall = expression.kind === SyntaxKind.SuperKeyword;
 
     if (!isLifecycleCall || isSuperCall) return;

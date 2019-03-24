@@ -23,19 +23,46 @@ import {
   SyntaxKind
 } from 'typescript';
 import { getDeclaredMethods } from './classDeclarationUtils';
+import { objectKeys } from './objectKeys';
 
-export enum Decorators {
+export enum AngularClassDecorators {
+  Component = 'Component',
+  Directive = 'Directive',
+  Injectable = 'Injectable',
+  NgModule = 'NgModule',
+  Pipe = 'Pipe'
+}
+
+enum AngularMethodDecorators {
+  HostListener = 'HostListener'
+}
+
+enum AngularParameterPropertyDecorators {
+  Attribute = 'Attribute',
+  Host = 'Host',
+  Inject = 'Inject',
+  Optional = 'Optional',
+  Self = 'Self',
+  SkipSelf = 'SkipSelf'
+}
+
+enum AngularPropertyAccessorDecorators {
   ContentChild = 'ContentChild',
   ContentChildren = 'ContentChildren',
   HostBinding = 'HostBinding',
-  HostListener = 'HostListener',
   Input = 'Input',
   Output = 'Output',
   ViewChild = 'ViewChild',
   ViewChildren = 'ViewChildren'
 }
 
-export enum LifecycleInterfaces {
+export const AngularInnerClassDecorators = {
+  ...AngularMethodDecorators,
+  ...AngularParameterPropertyDecorators,
+  ...AngularPropertyAccessorDecorators
+};
+
+export enum AngularLifecycleInterfaces {
   AfterContentChecked = 'AfterContentChecked',
   AfterContentInit = 'AfterContentInit',
   AfterViewChecked = 'AfterViewChecked',
@@ -46,7 +73,7 @@ export enum LifecycleInterfaces {
   DoCheck = 'DoCheck'
 }
 
-export enum LifecycleMethods {
+export enum AngularLifecycleMethods {
   ngAfterContentChecked = 'ngAfterContentChecked',
   ngAfterContentInit = 'ngAfterContentInit',
   ngAfterViewChecked = 'ngAfterViewChecked',
@@ -57,44 +84,55 @@ export enum LifecycleMethods {
   ngDoCheck = 'ngDoCheck'
 }
 
-export enum MetadataTypes {
-  Component = 'Component',
-  Directive = 'Directive',
-  Injectable = 'Injectable',
-  Pipe = 'Pipe',
-  NgModule = 'NgModule'
-}
+export type AngularClassDecoratorKeys = keyof typeof AngularClassDecorators;
+export type AngularInnerClassDecoratorKeys = Exclude<keyof typeof AngularInnerClassDecorators, number>;
+export type AngularLifecycleInterfaceKeys = keyof typeof AngularLifecycleInterfaces;
+export type AngularLifecycleMethodKeys = keyof typeof AngularLifecycleMethods;
 
-export type DecoratorKeys = keyof typeof Decorators;
-export type LifecycleInterfaceKeys = keyof typeof LifecycleInterfaces;
-export type LifecycleMethodKeys = keyof typeof LifecycleMethods;
-export type MetadataTypeKeys = keyof typeof MetadataTypes;
-export type MetadataTypeLifecycleMapper = Readonly<Record<MetadataTypes, typeof LIFECYCLE_METHODS>>;
-export type MetadataTypeDecoratorMapper = Readonly<Record<MetadataTypes, typeof DECORATORS>>;
+export const angularClassDecoratorKeys = objectKeys(AngularClassDecorators);
+export const angularInnerClassDecoratorKeys = objectKeys(AngularInnerClassDecorators);
+export const angularLifecycleInterfaceKeys = objectKeys(AngularLifecycleInterfaces);
+export const angularLifecycleMethodKeys = objectKeys(AngularLifecycleMethods);
 
-export const decoratorKeys = Object.keys(Decorators) as ReadonlyArray<DecoratorKeys>;
-export const lifecycleInterfaceKeys = Object.keys(LifecycleInterfaces) as ReadonlyArray<LifecycleInterfaceKeys>;
-export const lifecycleMethodKeys = Object.keys(LifecycleMethods) as ReadonlyArray<LifecycleMethodKeys>;
-export const metadataTypeKeys = Object.keys(MetadataTypes) as ReadonlyArray<MetadataTypeKeys>;
-
-export const DECORATORS: ReadonlySet<DecoratorKeys> = new Set(decoratorKeys);
-export const LIFECYCLE_INTERFACES: ReadonlySet<LifecycleInterfaceKeys> = new Set(lifecycleInterfaceKeys);
-export const LIFECYCLE_METHODS: ReadonlySet<LifecycleMethodKeys> = new Set(lifecycleMethodKeys);
-export const METADATA_TYPES: ReadonlySet<MetadataTypeKeys> = new Set(metadataTypeKeys);
-export const METADATA_TYPE_DECORATOR_MAPPER: MetadataTypeDecoratorMapper = {
-  Component: DECORATORS,
-  Directive: DECORATORS,
-  Injectable: new Set<DecoratorKeys>([]),
-  Pipe: new Set<DecoratorKeys>([]),
-  NgModule: new Set<DecoratorKeys>([])
-};
-export const METADATA_TYPE_LIFECYCLE_MAPPER: MetadataTypeLifecycleMapper = {
-  Component: LIFECYCLE_METHODS,
-  Directive: LIFECYCLE_METHODS,
-  Injectable: new Set<LifecycleMethodKeys>([LifecycleMethods.ngOnDestroy]),
-  Pipe: new Set<LifecycleMethodKeys>([LifecycleMethods.ngOnDestroy]),
-  NgModule: new Set<LifecycleMethodKeys>([])
-};
+export const ANGULAR_INNER_CLASS_DECORATORS: ReadonlySet<AngularInnerClassDecoratorKeys> = new Set(angularInnerClassDecoratorKeys);
+export const ANGULAR_CLASS_DECORATORS: ReadonlySet<AngularClassDecoratorKeys> = new Set(angularClassDecoratorKeys);
+export const ANGULAR_CLASS_DECORATOR_MAPPER: ReadonlyMap<AngularClassDecoratorKeys, ReadonlySet<AngularInnerClassDecoratorKeys>> = new Map([
+  [AngularClassDecorators.Component, ANGULAR_INNER_CLASS_DECORATORS],
+  [AngularClassDecorators.Directive, ANGULAR_INNER_CLASS_DECORATORS],
+  [
+    AngularClassDecorators.Injectable,
+    new Set([
+      AngularInnerClassDecorators.Host,
+      AngularInnerClassDecorators.Inject,
+      AngularInnerClassDecorators.Optional,
+      AngularInnerClassDecorators.Self,
+      AngularInnerClassDecorators.SkipSelf
+    ])
+  ],
+  [AngularClassDecorators.NgModule, new Set([])],
+  [
+    AngularClassDecorators.Pipe,
+    new Set([
+      AngularInnerClassDecorators.Host,
+      AngularInnerClassDecorators.Inject,
+      AngularInnerClassDecorators.Optional,
+      AngularInnerClassDecorators.Self,
+      AngularInnerClassDecorators.SkipSelf
+    ])
+  ]
+]);
+export const ANGULAR_LIFECYCLE_INTERFACES: ReadonlySet<AngularLifecycleInterfaceKeys> = new Set(angularLifecycleInterfaceKeys);
+export const ANGULAR_LIFECYCLE_METHODS: ReadonlySet<AngularLifecycleMethodKeys> = new Set(angularLifecycleMethodKeys);
+export const ANGULAR_CLASS_DECORATOR_LIFECYCLE_METHOD_MAPPER: ReadonlyMap<
+  AngularClassDecoratorKeys,
+  ReadonlySet<AngularLifecycleMethodKeys>
+> = new Map([
+  [AngularClassDecorators.Component, ANGULAR_LIFECYCLE_METHODS],
+  [AngularClassDecorators.Directive, ANGULAR_LIFECYCLE_METHODS],
+  [AngularClassDecorators.Injectable, new Set<AngularLifecycleMethodKeys>([AngularLifecycleMethods.ngOnDestroy])],
+  [AngularClassDecorators.NgModule, new Set<AngularLifecycleMethodKeys>([])],
+  [AngularClassDecorators.Pipe, new Set<AngularLifecycleMethodKeys>([AngularLifecycleMethods.ngOnDestroy])]
+]);
 
 export const getClassName = (node: Node): string | undefined => {
   const klass = getNextToLastParentNode(node);
@@ -174,14 +212,17 @@ export const getSymbolName = (expression: ExpressionWithTypeArguments): string =
   return isPropertyAccessExpression(childExpression) ? childExpression.name.getText() : childExpression.getText();
 };
 
-export const isNgDecorator = (value: string): value is DecoratorKeys => DECORATORS.has(value as DecoratorKeys);
+export const isAngularClassDecorator = (value: string): value is AngularClassDecoratorKeys =>
+  ANGULAR_CLASS_DECORATORS.has(value as AngularClassDecoratorKeys);
 
-export const isLifecycleInterface = (value: string): value is LifecycleInterfaceKeys =>
-  LIFECYCLE_INTERFACES.has(value as LifecycleInterfaceKeys);
+export const isAngularInnerClassDecorator = (value: string): value is AngularInnerClassDecoratorKeys =>
+  ANGULAR_INNER_CLASS_DECORATORS.has(value as AngularInnerClassDecoratorKeys);
 
-export const isLifecycleMethod = (value: string): value is LifecycleMethodKeys => LIFECYCLE_METHODS.has(value as LifecycleMethodKeys);
+export const isAngularLifecycleInterface = (value: string): value is AngularLifecycleInterfaceKeys =>
+  ANGULAR_LIFECYCLE_INTERFACES.has(value as AngularLifecycleInterfaceKeys);
 
-export const isMetadataType = (value: string): value is MetadataTypes => METADATA_TYPES.has(value as MetadataTypes);
+export const isAngularLifecycleMethod = (value: string): value is AngularLifecycleMethodKeys =>
+  ANGULAR_LIFECYCLE_METHODS.has(value as AngularLifecycleMethodKeys);
 
 export const getDeclaredInterfaces = (node: ClassDeclaration): NodeArray<ExpressionWithTypeArguments> => {
   const heritageClause = createNodeArray(node.heritageClauses).find(h => h.token === SyntaxKind.ImplementsKeyword);
@@ -194,16 +235,16 @@ export const getDeclaredInterfaceNames = (node: ClassDeclaration): string[] => g
 export const getDeclaredInterfaceName = (node: ClassDeclaration, value: string): string | undefined =>
   getDeclaredInterfaceNames(node).find(interfaceName => interfaceName === value);
 
-export const getDeclaredLifecycleInterfaces = (node: ClassDeclaration): ReadonlyArray<LifecycleInterfaceKeys> =>
-  getDeclaredInterfaceNames(node).filter(isLifecycleInterface) as ReadonlyArray<LifecycleInterfaceKeys>;
+export const getDeclaredAngularLifecycleInterfaces = (node: ClassDeclaration): ReadonlyArray<AngularLifecycleInterfaceKeys> =>
+  getDeclaredInterfaceNames(node).filter(isAngularLifecycleInterface) as ReadonlyArray<AngularLifecycleInterfaceKeys>;
 
-export const getLifecycleInterfaceByMethodName = (methodName: LifecycleMethodKeys): LifecycleInterfaceKeys =>
-  methodName.slice(2) as LifecycleInterfaceKeys;
+export const getLifecycleInterfaceByMethodName = (methodName: AngularLifecycleMethodKeys): AngularLifecycleInterfaceKeys =>
+  methodName.slice(2) as AngularLifecycleInterfaceKeys;
 
-export const getDeclaredLifecycleMethods = (node: ClassDeclaration): ReadonlyArray<LifecycleMethodKeys> =>
+export const getDeclaredAngularLifecycleMethods = (node: ClassDeclaration): ReadonlyArray<AngularLifecycleMethodKeys> =>
   getDeclaredMethods(node)
-    .map(m => m.name.getText())
-    .filter(isLifecycleMethod) as ReadonlyArray<LifecycleMethodKeys>;
+    .map(method => method.name.getText())
+    .filter(isAngularLifecycleMethod) as ReadonlyArray<AngularLifecycleMethodKeys>;
 
 export const kebabToCamelCase = (value: string) => value.replace(/-[a-zA-Z]/g, x => x[1].toUpperCase());
 
