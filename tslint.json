@@ -32,6 +32,6 @@
     "no-unused-expression": true,
     "no-var-keyword": true,
     "triple-equals": true,
-    "variable-name": false
+    "file-name-casing": [true, "camel-case"]
   }
 }

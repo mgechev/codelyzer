@@ -6,6 +6,7 @@ import { ExpTypes } from './angular/expressionTypes';
 import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 import { RecursiveAngularExpressionVisitor } from './angular/templates/recursiveAngularExpressionVisitor';
+import { isNotNullOrUndefined } from './util/isNotNullOrUndefined';
 
 // Check if ES6 'y' flag is usable.
 const stickyFlagUsable = (() => {
@@ -173,7 +174,7 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
     this.visitors
       .filter(v => options.indexOf(v.getCheckOption()) >= 0)
       .map(v => v.visitBoundText(text, this))
-      .filter(Boolean)
+      .filter(isNotNullOrUndefined)
       .forEach(f =>
         this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
       );
@@ -185,7 +186,7 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
     this.visitors
       .filter(v => options.indexOf(v.getCheckOption()) >= 0)
       .map(v => v.visitDirectiveProperty(prop, this))
-      .filter(Boolean)
+      .filter(isNotNullOrUndefined)
       .forEach(f =>
         this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
       );
@@ -270,7 +271,7 @@ class ExpressionVisitorCtrl extends RecursiveAngularExpressionVisitor {
       .map(v => v.addParentAST(this.parentAST))
       .filter(v => options.indexOf(v.getCheckOption()) >= 0)
       .map(v => v.visitPipe(expr, this))
-      .filter(Boolean)
+      .filter(isNotNullOrUndefined)
       .forEach(f =>
         this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
       );

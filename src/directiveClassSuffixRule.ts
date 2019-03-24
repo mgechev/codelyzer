@@ -3,7 +3,7 @@ import * as Lint from 'tslint';
 import * as ts from 'typescript';
 import { DirectiveMetadata } from './angular/metadata';
 import { NgWalker } from './angular/ngWalker';
-import { getSymbolName } from './util/utils';
+import { getDeclaredInterfaceNames } from './util/utils';
 
 const ValidatorSuffix = 'Validator';
 
@@ -40,25 +40,17 @@ export class Rule extends Lint.Rules.AbstractRule {
 }
 
 class Walker extends NgWalker {
-  protected visitNgDirective(metadata: DirectiveMetadata) {
+  protected visitNgDirective(metadata: DirectiveMetadata): void {
     const name = metadata.controller.name!;
     const className = name.text;
     const options = this.getOptions();
     const suffixes: string[] = options.length ? options : ['Directive'];
-    const { heritageClauses } = metadata.controller;
 
-    if (heritageClauses) {
-      const i = heritageClauses.filter(h => h.token === ts.SyntaxKind.ImplementsKeyword);
+    const declaredInterfaceNames = getDeclaredInterfaceNames(metadata.controller);
+    const hasValidatorInterface = declaredInterfaceNames.some(interfaceName => interfaceName.endsWith(ValidatorSuffix));
 
-      if (
-        i.length !== 0 &&
-        i[0].types
-          .map(getSymbolName)
-          .filter(Boolean)
-          .some(x => x.endsWith(ValidatorSuffix))
-      ) {
-        suffixes.push(ValidatorSuffix);
-      }
+    if (hasValidatorInterface) {
+      suffixes.push(ValidatorSuffix);
     }
 
     if (!Rule.validate(className, suffixes)) {
