@@ -35,7 +35,8 @@ export class Rule extends AbstractRule {
     description: 'Ensures that classes use allowed decorator in its body.',
     options: null,
     optionsDescription: 'Not configurable.',
-    rationale: dedent`Some decorators can only be used in certain class types.
+    rationale: dedent`
+      Some decorators can only be used in certain class types.
       For example, an @${AngularInnerClassDecorators.Input} should not be used
       in an @${AngularClassDecorators.Injectable} class.
     `,
