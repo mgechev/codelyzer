@@ -123,6 +123,18 @@ export const getDecoratorArgument = (decorator: Decorator): ObjectLiteralExpress
   return isObjectLiteralExpression(args) && args.properties ? args : undefined;
 };
 
+export const getDecoratorName = (decorator: Decorator): string | undefined => {
+  const { expression } = decorator;
+
+  if (isIdentifier(expression)) return expression.text;
+
+  if (isCallExpression(expression) && isIdentifier(expression.expression)) {
+    return expression.expression.text;
+  }
+
+  return undefined;
+};
+
 export const getDecoratorPropertyInitializer = (decorator: Decorator, name: string): Expression | undefined => {
   const args = getDecoratorArgument(decorator);
 
@@ -134,18 +146,6 @@ export const getDecoratorPropertyInitializer = (decorator: Decorator, name: stri
   if (!property || !isPropertyAssignment(property)) return undefined;
 
   return property.initializer;
-};
-
-export const getDecoratorName = (decorator: Decorator): string | undefined => {
-  const { expression } = decorator;
-
-  if (isIdentifier(expression)) return expression.text;
-
-  if (isCallExpression(expression) && isIdentifier(expression.expression)) {
-    return expression.expression.text;
-  }
-
-  return undefined;
 };
 
 export const getNextToLastParentNode = (node: Node): Node => {
