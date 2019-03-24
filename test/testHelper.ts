@@ -199,8 +199,8 @@ export const assertMultipleAnnotated = (configs: AssertMultipleConfigs): RuleFai
 
   return failures.reduce<RuleFailure[]>((previousValue, currentValue, index) => {
     const { msg: currentValueMsg, char: currentValueChar } = currentValue;
-    const otherCharacters = failures.map(failure => failure.char).filter(char => char !== currentValueChar);
-    const { failure: parsedFailure, source: parsedSource } = parseInvalidSource(source, currentValueMsg, currentValueChar, otherCharacters);
+    const otherChars = failures.map(failure => failure.char).filter(char => char !== currentValueChar);
+    const { failure: parsedFailure, source: parsedSource } = parseInvalidSource(source, currentValueMsg, currentValueChar, otherChars);
     const { character: parsedFailureEndChar, line: parsedFailureEndLine } = parsedFailure.endPosition;
     const { character: parsedFailureStartChar, line: parsedFailureStartLine } = parsedFailure.startPosition;
 
