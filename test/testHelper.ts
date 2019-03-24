@@ -1,6 +1,7 @@
 import { assert } from 'chai';
 import { ILinterOptions, IOptions, IRuleMetadata, Linter, LintResult, RuleFailure } from 'tslint/lib';
 import { SourceFile } from 'typescript/lib/typescript';
+import { escapeRegexp } from '../src/util/escapeRegexp';
 import { convertRuleOptions, loadRules } from './utils';
 
 interface Failure {
@@ -112,17 +113,28 @@ const lint = (ruleName: AssertConfig['ruleName'], source: string | SourceFile, r
 const parseInvalidSource = (
   source: AssertConfig['source'],
   message: ExpectedFailure['message'],
-  specialChar = '~'
+  specialChar = '~',
+  otherChars: string[] = []
 ): { failure: ExpectedFailure; source: AssertConfig['source'] } => {
+  let replacedSource: string;
+
+  if (otherChars.length > 0) {
+    const patternAsStr = `[${otherChars.map(escapeRegexp).join('')}]`;
+    const pattern = new RegExp(patternAsStr, 'g');
+    replacedSource = source.replace(pattern, '');
+  } else {
+    replacedSource = source;
+  }
+
   let startPosition;
   let line = 0;
   let col = 0;
   let lastCol = 0;
   let lastLine = 0;
 
-  for (let i = 0; i < source.length; i += 1) {
-    const currentSource = source[i];
-    const previousSource = source[i - 1];
+  for (let i = 0; i < replacedSource.length; i += 1) {
+    const currentSource = replacedSource[i];
+    const previousSource = replacedSource[i - 1];
 
     if (currentSource === specialChar && previousSource !== '/' && startPosition === undefined) {
       startPosition = {
@@ -148,7 +160,7 @@ const parseInvalidSource = (
     character: lastCol,
     line: lastLine
   };
-  const newSource = source.replace(new RegExp(specialChar, 'g'), '');
+  const newSource = replacedSource.replace(new RegExp(escapeRegexp(specialChar), 'g'), '');
 
   return {
     failure: {
@@ -186,7 +198,9 @@ export const assertMultipleAnnotated = (configs: AssertMultipleConfigs): RuleFai
   const { failures, options, ruleName, source } = configs;
 
   return failures.reduce<RuleFailure[]>((previousValue, currentValue, index) => {
-    const { failure: parsedFailure, source: parsedSource } = parseInvalidSource(source, currentValue.msg, currentValue.char);
+    const { msg: currentValueMsg, char: currentValueChar } = currentValue;
+    const otherCharacters = failures.map(failure => failure.char).filter(char => char !== currentValueChar);
+    const { failure: parsedFailure, source: parsedSource } = parseInvalidSource(source, currentValueMsg, currentValueChar, otherCharacters);
     const { character: parsedFailureEndChar, line: parsedFailureEndLine } = parsedFailure.endPosition;
     const { character: parsedFailureStartChar, line: parsedFailureStartLine } = parsedFailure.startPosition;
 
