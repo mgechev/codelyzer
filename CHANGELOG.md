@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.2"></a>
+
+# [5.0.0-beta.2](https://github.com/mgechev/codelyzer/compare/5.0.0-beta.1...5.0.0-beta.2) (2019-03-25)
+
 # [5.0.0-beta.1](https://github.com/mgechev/codelyzer/compare/5.0.0-beta.0...5.0.0-beta.1) (2019-03-14)
 
 ### Bug Fixes
