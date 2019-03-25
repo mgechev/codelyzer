@@ -28,6 +28,7 @@ export { Rule as PreferOnPushComponentChangeDetectionRule } from './preferOnPush
 export { Rule as PreferOutputReadonlyRule } from './preferOutputReadonlyRule';
 export { Rule as RelativeUrlPrefixRule } from './relativeUrlPrefixRule';
 export { Rule as TemplateAccessibilityAltTextRule } from './templateAccessibilityAltTextRule';
+export { Rule as TemplateAccessibilityElementsContentRule } from './templateAccessibilityElementsContentRule';
 export { Rule as TemplateAccessibilityLabelForVisitor } from './templateAccessibilityLabelForRule';
 export { Rule as TemplateAccessibilityTabindexNoPositiveRule } from './templateAccessibilityTabindexNoPositiveRule';
 export { Rule as TemplateAccessibilityTableScopeRule } from './templateAccessibilityTableScopeRule';
