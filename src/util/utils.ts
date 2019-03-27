@@ -1,4 +1,5 @@
 import {
+  BooleanLiteral,
   ClassDeclaration,
   createNodeArray,
   Decorator,
@@ -19,7 +20,6 @@ import {
   ObjectLiteralExpression,
   SourceFile,
   StringLiteral,
-  BooleanLiteral,
   SyntaxKind
 } from 'typescript';
 import { getDeclaredMethods } from './classDeclarationUtils';
@@ -136,10 +136,17 @@ export const getDecoratorPropertyInitializer = (decorator: Decorator, name: stri
   return property.initializer;
 };
 
-export const getDecoratorName = (decorator: Decorator): string | undefined =>
-  isCallExpression(decorator.expression) && isIdentifier(decorator.expression.expression)
-    ? decorator.expression.expression.text
-    : undefined;
+export const getDecoratorName = (decorator: Decorator): string | undefined => {
+  const { expression } = decorator;
+
+  if (isIdentifier(expression)) return expression.text;
+
+  if (isCallExpression(expression) && isIdentifier(expression.expression)) {
+    return expression.expression.text;
+  }
+
+  return undefined;
+};
 
 export const getNextToLastParentNode = (node: Node): Node => {
   let currentNode = node;
@@ -203,11 +210,11 @@ export const kebabToCamelCase = (value: string) => value.replace(/-[a-zA-Z]/g, x
 export const isSameLine = (sourceFile: SourceFile, pos1: number, pos2: number): boolean =>
   getLineAndCharacterOfPosition(sourceFile, pos1).line === getLineAndCharacterOfPosition(sourceFile, pos2).line;
 
-export const isStringLiteralLike = (node: Node): node is StringLiteral | NoSubstitutionTemplateLiteral =>
-  isStringLiteral(node) || isNoSubstitutionTemplateLiteral(node);
-
 export const isBooleanLiteralLike = (node: Node): node is BooleanLiteral =>
   node.kind === SyntaxKind.FalseKeyword || node.kind === SyntaxKind.TrueKeyword;
+
+export const isStringLiteralLike = (node: Node): node is StringLiteral | NoSubstitutionTemplateLiteral =>
+  isStringLiteral(node) || isNoSubstitutionTemplateLiteral(node);
 
 export const maybeNodeArray = <T extends Node>(nodes: NodeArray<T>): ReadonlyArray<T> => nodes || [];
 
