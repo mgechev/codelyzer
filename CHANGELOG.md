@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [5.0.0](https://github.com/mgechev/codelyzer/compare/5.0.0-beta.2...5.0.0) (2019-03-27)
+
+### Bug Fixes
+
+- **rule:** add template-accessibility-elements-content to index.ts ([#803](https://github.com/mgechev/codelyzer/issues/803)) ([1e8cbbf](https://github.com/mgechev/codelyzer/commit/1e8cbbf)), closes [#801](https://github.com/mgechev/codelyzer/issues/801)
+
+### Features
+
+- add support for svg templates ([#800](https://github.com/mgechev/codelyzer/issues/800)) ([dadf8ec](https://github.com/mgechev/codelyzer/commit/dadf8ec))
+
 <a name="5.0.0-beta.2"></a>
 
 # [5.0.0-beta.2](https://github.com/mgechev/codelyzer/compare/5.0.0-beta.1...5.0.0-beta.2) (2019-03-25)
