@@ -2,6 +2,7 @@ import { IRuleMetadata, RuleFailure, WalkContext } from 'tslint';
 import { AbstractRule } from 'tslint/lib/rules';
 import {
   ConstructorDeclaration,
+  createNodeArray,
   Decorator,
   forEachChild,
   isConstructorDeclaration,
@@ -11,48 +12,50 @@ import {
 } from 'typescript';
 import { getDecoratorName } from './util/utils';
 
+const ATTRIBUTE = 'Attribute';
+
 export class Rule extends AbstractRule {
   static readonly metadata: IRuleMetadata = {
-    description: 'Disallows usage of @Attribute decorator.',
+    description: `Disallows usage of @${ATTRIBUTE} decorator.`,
     options: null,
     optionsDescription: 'Not configurable.',
-    rationale: '@Attribute is considered bad practice. Use @Input instead.',
     ruleName: 'no-attribute-decorator',
     type: 'functionality',
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = '@Attribute is considered bad practice. Use @Input instead.';
+  static readonly FAILURE_STRING = `@${ATTRIBUTE} is considered bad practice. Use @Input instead.`;
 
   apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithFunction(sourceFile, walk);
   }
 }
 
-const isAttributeDecorator = (decorator: Decorator): boolean => getDecoratorName(decorator) === 'Attribute';
+const callbackHandler = (walkContext: WalkContext<void>, node: Node): void => {
+  if (isConstructorDeclaration(node)) validateConstructor(walkContext, node);
+};
 
-const validateConstructor = (context: WalkContext<void>, node: ConstructorDeclaration): void =>
-  node.parameters.forEach(parameter => validateParameter(context, parameter));
+const isAttributeDecorator = (decorator: Decorator): boolean => getDecoratorName(decorator) === ATTRIBUTE;
 
-const validateDecorator = (context: WalkContext<void>, decorator: Decorator): void => {
+const validateConstructor = (walkContext: WalkContext<void>, node: ConstructorDeclaration): void => {
+  node.parameters.forEach(parameter => validateParameter(walkContext, parameter));
+};
+
+const validateDecorator = (walkContext: WalkContext<void>, decorator: Decorator): void => {
   if (!isAttributeDecorator(decorator)) return;
 
-  context.addFailureAtNode(decorator, Rule.FAILURE_STRING);
+  walkContext.addFailureAtNode(decorator, Rule.FAILURE_STRING);
 };
 
-const validateParameter = (context: WalkContext<void>, parameter: ParameterDeclaration): void => {
-  const { decorators } = parameter;
-
-  if (!decorators) return;
-
-  decorators.forEach(decorator => validateDecorator(context, decorator));
+const validateParameter = (walkContext: WalkContext<void>, node: ParameterDeclaration): void => {
+  createNodeArray(node.decorators).forEach(decorator => validateDecorator(walkContext, decorator));
 };
 
-const walk = (context: WalkContext<void>): void => {
-  const { sourceFile } = context;
+const walk = (walkContext: WalkContext<void>): void => {
+  const { sourceFile } = walkContext;
 
   const callback = (node: Node): void => {
-    if (isConstructorDeclaration(node)) validateConstructor(context, node);
+    callbackHandler(walkContext, node);
 
     forEachChild(node, callback);
   };
