@@ -21,7 +21,7 @@ import {
   SourceFile
 } from 'typescript';
 import { isNotNullOrUndefined } from './util/isNotNullOrUndefined';
-import { objectKeys } from './util/object-keys';
+import { objectKeys } from './util/objectKeys';
 import { AngularInnerClassDecorators, getDecoratorName, isSameLine } from './util/utils';
 
 const OPTION_GETTERS = 'getters';
