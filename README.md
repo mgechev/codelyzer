@@ -316,7 +316,7 @@ Below you can find a recommended configuration which is based on the [Angular St
 | `use-lifecycle-interface`                     |     Stable     |
 | `use-pipe-decorator`                          |     Stable     |
 | `use-pipe-transform-interface`                |     Stable     |
-| `component-change-detection`                  | _Experimental_ |
+| `prefer-on-push-component-change-detection`   | _Experimental_ |
 | `no-conflicting-lifecycle`                    | _Experimental_ |
 | `no-unused-css`                               | _Experimental_ |
 | `pipe-prefix`                                 | _Experimental_ |
