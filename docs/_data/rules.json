@@ -1,5 +1,6 @@
 [
   {
+    "deprecationMessage": "Use a formatter like Prettier for formatting purposes.",
     "description": "Ensures the proper formatting of Angular expressions.",
     "hasFix": true,
     "optionExamples": [
@@ -24,16 +25,6 @@
     "typescriptOnly": true
   },
   {
-    "ruleName": "banana-in-box",
-    "type": "functionality",
-    "description": "Ensure that the two-way data binding syntax is correct.",
-    "rationale": "The parens \"()\" should have been inside the brackets \"[]\".",
-    "options": null,
-    "optionsDescription": "Not configurable.",
-    "typescriptOnly": true,
-    "hasFix": true
-  },
-  {
     "description": "Classes decorated with @Component must have suffix \"Component\" (or custom) in their name.",
     "descriptionDetails": "See more at https://angular.io/styleguide#style-02-03.",
     "optionExamples": [true, [true, "Component", "View"]],
@@ -51,8 +42,47 @@
     "typescriptOnly": true
   },
   {
+    "description": "Disallows having too many lines in inline template and styles. Forces separate template or styles file creation.",
+    "descriptionDetails": "See more at https://angular.io/guide/styleguide#style-05-04..",
+    "optionExamples": [
+      true,
+      [
+        true,
+        {
+          "animations": 20,
+          "styles": 8,
+          "template": 5
+        }
+      ]
+    ],
+    "options": {
+      "items": {
+        "properties": {
+          "animations": {
+            "type": "number"
+          },
+          "styles": {
+            "type": "number"
+          },
+          "template": {
+            "type": "number"
+          }
+        },
+        "type": "object"
+      },
+      "maxLength": 1,
+      "minLength": 0,
+      "type": "array"
+    },
+    "optionsDescription": "\nIt can take an optional object with the properties 'animations', 'styles' and 'template':\n* `animations` - number > 0 defining the maximum allowed inline lines for animations. Defaults to 15.\n* `styles` - number > 0 defining the maximum allowed inline lines for styles. Defaults to 3.\n* `template` - number > 0 defining the maximum allowed inline lines for template. Defaults to 3.\n    ",
+    "rationale": "Large, inline templates and styles obscure the component's purpose and implementation, reducing readability and maintainability.",
+    "ruleName": "component-max-inline-declarations",
+    "type": "maintainability",
+    "typescriptOnly": true
+  },
+  {
     "description": "Component selectors should follow given naming rules.",
-    "descriptionDetails": "\nSee more at https://angular.io/styleguide#style-02-07, https://angular.io/styleguide#style-05-02,\nand https://angular.io/styleguide#style-05-03.\n    ",
+    "descriptionDetails": "\nSee more at https://angular.io/guide/styleguide#style-02-07, https://angular.io/guide/styleguide#style-05-02\nand https://angular.io/guide/styleguide#style-05-03.\n    ",
     "optionExamples": [
       [true, "element", "my-prefix", "kebab-case"],
       [true, "element", ["ng", "ngx"], "kebab-case"],
@@ -92,20 +122,20 @@
     "typescriptOnly": true
   },
   {
-    "description": "Ensure that classes use allowed life cycle method in its body.",
+    "description": "Ensures that classes use allowed decorator in its body.",
     "options": null,
     "optionsDescription": "Not configurable.",
-    "rationale": "Some life cycle methods can only be used in certain class types.For example, ngOnInit() hook method should not be used in an @Injectable class.",
-    "ruleName": "contextual-life-cycle",
+    "rationale": "Some decorators can only be used in certain class types. For example, an @Input should not be used in an @Injectable class.",
+    "ruleName": "contextual-decorator",
     "type": "functionality",
     "typescriptOnly": true
   },
   {
-    "description": "Ensure that classes use allowed decorator in its body.",
+    "description": "Ensures that classes use allowed lifecycle method in its body.",
     "options": null,
     "optionsDescription": "Not configurable.",
-    "rationale": "Some decorators can only be used in certain class types. For example, an @Input should not be used in an @Injectable class.",
-    "ruleName": "decorator-not-allowed",
+    "rationale": "Some lifecycle methods can only be used in certain class types. For example, ngOnInit() method should not be used in an @Injectable class.",
+    "ruleName": "contextual-lifecycle",
     "type": "functionality",
     "typescriptOnly": true
   },
@@ -128,11 +158,12 @@
   },
   {
     "description": "Directive selectors should follow given naming rules.",
-    "descriptionDetails": "See more at https://angular.io/styleguide#style-02-06 and https://angular.io/styleguide#style-02-08.",
+    "descriptionDetails": "See more at https://angular.io/guide/styleguide#style-02-06 and https://angular.io/guide/styleguide#style-02-08",
     "optionExamples": [
       [true, "element", "my-prefix", "kebab-case"],
       [true, "element", ["ng", "ngx"], "kebab-case"],
-      [true, "attribute", "myPrefix", "camelCase"]
+      [true, "attribute", "myPrefix", "camelCase"],
+      [true, ["element", "attribute"], "myPrefix", "camelCase"]
     ],
     "options": {
       "items": [
@@ -160,41 +191,14 @@
       "minLength": 3,
       "type": "array"
     },
-    "optionsDescription": "\nOptions accept three obligatory items as an array:\n1. `element` or `attribute` forces directives either to be elements or attributes.\n2. A single prefix (string) or array of prefixes (strings) which have to be used in directive selectors.\n3. `kebab-case` or `camelCase` allows you to pick a case.\n    ",
-    "rationale": "\n* Consistent conventions make it easy to quickly identify and reference assets of different types.\n* Makes it easier to promote and share the directive in other apps.\n* Directives are easy to identify in the DOM.\n* It is easier to recognize that a symbol is a directive by looking at the template's HTML.\n    ",
+    "optionsDescription": "\nOptions accept three obligatory items as an array:\n1. `element` or `attribute` forces directives to be used as either elements, attributes, or both (not recommended)\n2. A single prefix (string) or array of prefixes (strings) which have to be used in directive selectors.\n3. `kebab-case` or `camelCase` allows you to pick a case.\n    ",
+    "rationale": "\n* Consistent conventions make it easy to quickly identify and reference assets of different types.\n* Makes it easier to promote and share the directive in other apps.\n* Directives are easy to identify in the DOM.\n* Keeps the element names consistent with the specification for Custom Elements.\n* It is easier to recognize that a symbol is a directive by looking at the template's HTML.\n    ",
     "ruleName": "directive-selector",
     "type": "style",
     "typescriptOnly": true
   },
   {
-    "ruleName": "enforce-component-selector",
-    "type": "style",
-    "description": "Component selector must be declared.",
-    "rationale": "Omit the component selector makes debugging difficult.",
-    "options": null,
-    "optionsDescription": "Not configurable.",
-    "typescriptOnly": true
-  },
-  {
-    "description": "Ensures following best practices for i18n.",
-    "optionExamples": [[true, "check-id"], [true, "check-text"], [true, "check-id", "check-text"]],
-    "options": {
-      "items": {
-        "enum": ["check-id", "check-text"],
-        "type": "string"
-      },
-      "maxLength": 2,
-      "minLength": 1,
-      "type": "array"
-    },
-    "optionsDescription": "\nOne (or both) of the following arguments must be provided:\n* `check-id` Makes sure i18n attributes have ID specified\n* `check-text` Makes sure there are no elements with text content but no i18n attribute\n    ",
-    "rationale": "Makes the code more maintainable in i18n sense.",
-    "ruleName": "i18n",
-    "type": "maintainability",
-    "typescriptOnly": true
-  },
-  {
-    "description": "Ensure consistent and tidy imports.",
+    "description": "Ensures imports are consistent and tidy.",
     "hasFix": true,
     "options": null,
     "optionsDescription": "Not configurable.",
@@ -204,70 +208,40 @@
     "typescriptOnly": true
   },
   {
-    "description": "Disallows having too many lines in inline template and styles. Forces separate template or styles file creation.",
-    "descriptionDetails": "See more at https://angular.io/guide/styleguide#style-05-04.",
-    "optionExamples": [
-      true,
-      [
-        true,
-        {
-          "animations": 20,
-          "styles": 8,
-          "template": 5
-        }
-      ]
-    ],
-    "options": {
-      "items": {
-        "properties": {
-          "animations": {
-            "type": "number"
-          },
-          "styles": {
-            "type": "number"
-          },
-          "template": {
-            "type": "number"
-          }
-        },
-        "type": "object"
-      },
-      "maxLength": 1,
-      "minLength": 0,
-      "type": "array"
-    },
-    "optionsDescription": "\nIt can take an optional object with the properties 'animations', 'styles' and 'template':\n* `animations` - number > 0 defining the maximum allowed inline lines for animations. Defaults to 15.\n* `styles` - number > 0 defining the maximum allowed inline lines for styles. Defaults to 3.\n* `template` - number > 0 defining the maximum allowed inline lines for template. Defaults to 3.\n    ",
-    "rationale": "Large, inline templates and styles obscure the component's purpose and implementation, reducing readability and maintainability.",
-    "ruleName": "max-inline-declarations",
-    "type": "maintainability",
-    "typescriptOnly": true
-  },
-  {
-    "description": "Disallow usage of @Attribute decorator.",
+    "description": "Disallows usage of @Attribute decorator.",
     "options": null,
     "optionsDescription": "Not configurable.",
-    "rationale": "@Attribute is considered bad practice. Use @Input instead.",
-    "ruleName": "no-attribute-parameter-decorator",
-    "type": "maintainability",
+    "ruleName": "no-attribute-decorator",
+    "type": "functionality",
     "typescriptOnly": true
   },
   {
-    "description": "Ensure that directives not implement conflicting life cycle hooks.",
+    "description": "Ensures that directives not implement conflicting lifecycle interfaces.",
     "descriptionDetails": "See more at https://angular.io/api/core/DoCheck#description.",
     "options": null,
     "optionsDescription": "Not configurable.",
     "rationale": "\nA directive typically should not use both DoCheck and OnChanges to respond\nto changes on the same input, as ngOnChanges will continue to be called when the\ndefault change detector detects changes.\n    ",
-    "ruleName": "no-conflicting-life-cycle-hooks",
+    "ruleName": "no-conflicting-lifecycle",
     "type": "maintainability",
     "typescriptOnly": true
   },
   {
-    "description": "Disallows usage of forward references for DI.",
+    "description": "Disallows usage of `forwardRef` references for DI.",
     "options": null,
     "optionsDescription": "Not configurable.",
     "rationale": "The flow of DI is disrupted by using `forwardRef` and might make code more difficult to understand.",
     "ruleName": "no-forward-ref",
     "type": "maintainability",
+    "typescriptOnly": true
+  },
+  {
+    "description": "Disallows usage of the `host` metadata property.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#style-06-03.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "rationale": "If you ever need to rename the property associated with @HostBinding or the method associated with\n    @HostListener, you can modify it in a single place.",
+    "ruleName": "no-host-metadata-property",
+    "type": "style",
     "typescriptOnly": true
   },
   {
@@ -299,21 +273,31 @@
     "typescriptOnly": true
   },
   {
-    "description": "Disallows explicit calls to life cycle hooks.",
+    "description": "Disallows usage of the `inputs` metadata property.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#style-05-12.",
     "options": null,
     "optionsDescription": "Not configurable.",
-    "rationale": "Explicit calls to life cycle hooks could be confusing. Invoke life cycle hooks is the responsability of Angular.",
-    "ruleName": "no-life-cycle-call",
-    "type": "maintainability",
+    "rationale": "\n* It is easier and more readable to identify which properties in a class are inputs.\n* If you ever need to rename the property associated with @Input, you can modify it in a single place.\n* The metadata declaration attached to the directive is shorter and thus more readable.\n    ",
+    "ruleName": "no-inputs-metadata-property",
+    "type": "style",
     "typescriptOnly": true
   },
   {
-    "description": "Disallows naming directive outputs after a standard DOM event.",
+    "description": "Disallows explicit calls to lifecycle methods.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "rationale": "Explicit calls to lifecycle methods could be confusing. Invoke them is an Angular's responsability.",
+    "ruleName": "no-lifecycle-call",
+    "type": "functionality",
+    "typescriptOnly": true
+  },
+  {
+    "description": "Disallows naming directive outputs as standard DOM event.",
     "options": null,
     "optionsDescription": "Not configurable.",
     "rationale": "Listeners subscribed to an output with such a name will also be invoked when the native event is raised.",
-    "ruleName": "no-output-named-after-standard-event",
-    "type": "maintainability",
+    "ruleName": "no-output-native",
+    "type": "functionality",
     "typescriptOnly": true
   },
   {
@@ -337,21 +321,31 @@
     "typescriptOnly": true
   },
   {
-    "description": "Use @ContentChild, @ContentChildren, @ViewChild or @ViewChildren instead of the `queries` property of `@Component` or `@Directive` metadata.",
+    "description": "Disallows usage of the `outputs` metadata property.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#style-05-12.",
     "options": null,
     "optionsDescription": "Not configurable.",
-    "rationale": "\nThe property associated with @ContentChild, @ContentChildren, @ViewChild or @ViewChildren\ncan be modified only in a single place: in the directive's class. If you use the queries metadata\nproperty, you must modify both the property declaration inside the controller, and the metadata\nassociated with the directive.\n    ",
-    "ruleName": "no-queries-parameter",
+    "rationale": "\n* It is easier and more readable to identify which properties in a class are events.\n* If you ever need to rename the event associated with @Output, you can modify it in a single place.\n* The metadata declaration attached to the directive is shorter and thus more readable.\n    ",
+    "ruleName": "no-outputs-metadata-property",
     "type": "style",
     "typescriptOnly": true
   },
   {
-    "description": "Call expressions are not allowed in templates except in output handlers.",
+    "description": "Disallows the declaration of impure pipes.",
     "options": null,
     "optionsDescription": "Not configurable.",
-    "rationale": "The change detector will call functions used in templates very often. Use an observable instead.",
-    "ruleName": "no-template-call-expression",
-    "type": "maintainability",
+    "rationale": "Impure pipes should be avoided because they are invoked on each change-detection cycle.",
+    "ruleName": "no-pipe-impure",
+    "type": "functionality",
+    "typescriptOnly": true
+  },
+  {
+    "description": "Disallows usage of the `queries` metadata property.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "rationale": "If you ever need to rename the property associated with @ContentChild, @ContentChildren, @ViewChild or @ViewChildren, you can modify it in a single place.",
+    "ruleName": "no-queries-metadata-property",
+    "type": "style",
     "typescriptOnly": true
   },
   {
@@ -362,41 +356,6 @@
     "optionsDescription": "Not configurable.",
     "typescriptOnly": true,
     "hasFix": true
-  },
-  {
-    "ruleName": "pipe-impure",
-    "type": "functionality",
-    "description": "Pipes cannot be declared as impure.",
-    "rationale": "Impure pipes do not perform well because they run on every change detection cycle.",
-    "options": null,
-    "optionsDescription": "Not configurable.",
-    "typescriptOnly": true
-  },
-  {
-    "deprecationMessage": "You can name your pipes only camelCase. If you try to use snake-case then your application will not compile. For prefix validation use pipe-prefix rule.",
-    "description": "Enforce consistent case and prefix for pipes.",
-    "optionExamples": [
-      [true, "camelCase", "myPrefix"],
-      [true, "camelCase", "myPrefix", "myOtherPrefix"],
-      [true, "kebab-case", "my-prefix"]
-    ],
-    "options": {
-      "items": [
-        {
-          "enum": ["kebab-case", "attribute"]
-        },
-        {
-          "type": "string"
-        }
-      ],
-      "minLength": 1,
-      "type": "array"
-    },
-    "optionsDescription": "\n* The first item in the array is `camelCase` or `kebab-case`, which allows you to pick a case.\n* The rest of the arguments are supported prefixes (given as strings). They are optional.\n    ",
-    "rationale": "Consistent conventions make it easy to quickly identify and reference assets of different types.",
-    "ruleName": "pipe-naming",
-    "type": "style",
-    "typescriptOnly": true
   },
   {
     "description": "Enforce consistent prefix for pipes.",
@@ -417,23 +376,153 @@
     "typescriptOnly": true
   },
   {
-    "description": "Ensures that decorators are on the same line as the property/method it decorates.",
+    "description": "Ensures that declarations are on the same line as its decorator(s).",
     "descriptionDetails": "See more at https://angular.io/guide/styleguide#style-05-12.",
-    "hasFix": true,
-    "optionExamples": [true, [true, "HostListener"]],
+    "optionExamples": [
+      true,
+      [
+        true,
+        {
+          "methods": false
+        }
+      ],
+      [
+        true,
+        {
+          "getters": {
+            "safelist": ["Input"]
+          },
+          "methods": true,
+          "parameter-properties": false,
+          "parameters": false,
+          "properties": {
+            "safelist": ["Output", "MyCustomDecorator"]
+          },
+          "setters": true
+        }
+      ]
+    ],
     "options": {
-      "items": {
-        "enum": ["ContentChild", "ContentChildren", "HostBinding", "HostListener", "Input", "Output", "ViewChild", "ViewChildren"],
-        "type": "string"
+      "additionalProperties": false,
+      "properties": {
+        "getters": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "properties": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "type": "object"
+            }
+          ]
+        },
+        "methods": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "properties": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "type": "object"
+            }
+          ]
+        },
+        "parameter-properties": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "properties": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "type": "object"
+            }
+          ]
+        },
+        "parameters": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "properties": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "type": "object"
+            }
+          ]
+        },
+        "properties": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "properties": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "type": "object"
+            }
+          ]
+        },
+        "setters": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "properties": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "type": "object"
+            }
+          ]
+        }
       },
-      "maxLength": 8,
-      "minLength": 0,
-      "type": "array"
+      "type": "object"
     },
-    "optionsDescription": "A list of blacklisted decorators.",
-    "rationale": "Placing the decorator on the same line usually makes for shorter code and still easily identifies the property/method.",
+    "optionsDescription": "\nAn optional object with optional `getters`, `methods`, `parameter-properties`, `parameters`, `properties` and `setters` properties.\n\nThe properties can be specifed as booleans or as objects with the property `safelist` containing the names of the decorators that should be ignored. Note that if a declaration is decorated with multiple decorators and at least one of them is present in `safelist`, this declaration is ignored.\n\n* `getters` - requires that getters are on the same line as its decorator(s). Defaults to `true`.\n* `methods` - requires that methods are on the same line as its decorator(s). Defaults to `true`.\n* `parameter-properties` - requires that parameter properties are on the same line as its decorator(s). Defaults to `true`.\n* `parameters` - requires that parameters are on the same line as its decorator(s). Defaults to `true`.\n* `properties` - requires that properties are on the same line as its decorator(s). Defaults to `true`.\n* `setters` - requires that setters are on the same line as its decorator(s). Defaults to `true`.\n    ",
+    "rationale": "Placing the decorator on the same line usually makes for shorter code and still easily identifies the declarations.",
     "ruleName": "prefer-inline-decorator",
     "type": "style",
+    "typescriptOnly": true
+  },
+  {
+    "description": "Enforces component's change detection to ChangeDetectionStrategy.OnPush.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "rationale": "\nBy default Angular uses the ChangeDetectionStrategy.Default.\n\nThis strategy doesn’t assume anything about the application, therefore every time something changes in our application, as a result of various user events, timers, XHR, promises, etc., a change detection will run on all components.\n\nBy using ChangeDetectionStrategy.OnPush, Angular will only run the change detection cycle in the following cases:\n* Inputs references change.\n* An event originated from the component or one of its children.\n* If manually called.\n    ",
+    "ruleName": "prefer-on-push-component-change-detection",
+    "type": "functionality",
     "typescriptOnly": true
   },
   {
@@ -442,6 +531,124 @@
     "optionsDescription": "Not configurable.",
     "ruleName": "prefer-output-readonly",
     "type": "maintainability",
+    "typescriptOnly": true
+  },
+  {
+    "description": "The ./ prefix is standard syntax for relative URLs; don't depend on Angular's current ability to do without that prefix.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#style-05-04.",
+    "rationale": "A component relative URL requires no change when you move the component files, as long as the files stay together.",
+    "ruleName": "relative-url-prefix",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "type": "maintainability",
+    "typescriptOnly": true
+  },
+  {
+    "description": "Enforces alternate text for elements which require the alt, aria-label, aria-labelledby attributes",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "rationale": "Alternate text lets screen readers provide more information to end users.",
+    "ruleName": "template-accessibility-alt-text",
+    "type": "functionality",
+    "typescriptOnly": true
+  },
+  {
+    "description": "Ensures that the heading, anchor and button elements have content in it",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "rationale": "Heading, anchor and button elements should have content to be accessible by screen readers",
+    "ruleName": "template-accessibility-elements-content",
+    "type": "functionality",
+    "typescriptOnly": true
+  },
+  {
+    "description": "Checks if the label has associated for attribute or a form element",
+    "optionExamples": [
+      [
+        true,
+        {
+          "labelComponents": ["app-label"],
+          "labelAttributes": ["id"],
+          "controlComponents": ["app-input", "app-select"]
+        }
+      ]
+    ],
+    "options": {
+      "items": {
+        "type": "object",
+        "properties": {
+          "labelComponents": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "labelAttributes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "controlComponents": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "type": "array"
+    },
+    "optionsDescription": "Add custom label, label attribute and controls",
+    "rationale": "\nThe label tag should either have a for attribute or should have associated control.\nThis rule supports two ways, either the label component should explicitly have a for attribute or a control nested inside the label component\nIt also supports adding custom control component and custom label component support.",
+    "ruleName": "template-accessibility-label-for",
+    "type": "functionality",
+    "typescriptOnly": true
+  },
+  {
+    "description": "Ensures that the tabindex attribute is not positive",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "rationale": "positive values for tabindex attribute should be avoided because they mess up with the order of focus (AX_FOCUS_03)",
+    "ruleName": "template-accessibility-tabindex-no-positive",
+    "type": "functionality",
+    "typescriptOnly": true
+  },
+  {
+    "description": "Ensures that scope is not used on any element except th",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "rationale": "\nThe scope attribute makes table navigation much easier for screen reader users, provided that it is used correctly.\nIf used incorrectly, it can make table navigation much harder and less efficient. (aXe)\n",
+    "ruleName": "template-accessibility-table-scope",
+    "type": "functionality",
+    "typescriptOnly": true
+  },
+  {
+    "description": "Ensures that the correct ARIA attributes are used",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "rationale": "Elements should not use invalid aria attributes (AX_ARIA_11)",
+    "ruleName": "template-accessibility-valid-aria",
+    "type": "functionality",
+    "typescriptOnly": true
+  },
+  {
+    "description": "Ensures that the two-way data binding syntax is correct.",
+    "hasFix": true,
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "rationale": "The parentheses \"()\" should have been inside the brackets \"[]\".",
+    "ruleName": "template-banana-in-box",
+    "type": "functionality",
+    "typescriptOnly": true
+  },
+  {
+    "description": "Ensures that the click event is accompanied with at least one key event keyup, keydown or keypress",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "rationale": "Keyboard is important for users with physical disabilities who cannot use mouse.",
+    "ruleName": "template-click-events-have-key-events",
+    "type": "functionality",
     "typescriptOnly": true
   },
   {
@@ -479,86 +686,127 @@
     "typescriptOnly": true
   },
   {
-    "description": "Ensures that strict equality is used when evaluating negations on async pipe output.",
+    "description": "Ensures following best practices for i18n.",
+    "optionExamples": [[true, "check-id"], [true, "check-text"], [true, "check-id", "check-text"]],
+    "options": {
+      "items": {
+        "enum": ["check-id", "check-text"],
+        "type": "string"
+      },
+      "maxLength": 2,
+      "minLength": 1,
+      "type": "array"
+    },
+    "optionsDescription": "\nOne (or both) of the following arguments must be provided:\n* `check-id` Makes sure i18n attributes have ID specified\n* `check-text` Makes sure there are no elements with text content but no i18n attribute\n    ",
+    "rationale": "Makes the code more maintainable in i18n sense.",
+    "ruleName": "template-i18n",
+    "type": "maintainability",
+    "typescriptOnly": true
+  },
+  {
+    "description": "Ensures that the Mouse Events mouseover and mouseout are accompanied with Key Events focus and blur",
     "options": null,
     "optionsDescription": "Not configurable.",
-    "rationale": "\nAngular's async pipes emit null initially, prior to the observable emitting any values, or the promise resolving. This can cause negations, like \n*ngIf=\"!(myConditional | async)\" to thrash the layout and cause expensive side-effects like firing off XHR requests for a component which should not be shown.\n",
-    "ruleName": "templates-no-negated-async",
+    "rationale": "Keyboard is important for users with physical disabilities who cannot use mouse.",
+    "ruleName": "template-mouse-events-have-key-events",
     "type": "functionality",
     "typescriptOnly": true
   },
   {
-    "description": "Ensures a trackBy function is used.",
+    "description": "Disallows using '$any' in templates.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "rationale": "\nThe use of '$any' nullifies the compile-time\nbenefits of the Angular's type system.\n    ",
+    "ruleName": "template-no-any",
+    "type": "functionality",
+    "typescriptOnly": true
+  },
+  {
+    "description": "Ensure that autofocus property is not used",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "rationale": "autofocus attribute reduces usability and accessibility for users.",
+    "ruleName": "template-no-autofocus",
+    "type": "functionality",
+    "typescriptOnly": true
+  },
+  {
+    "description": "Disallows calling expressions in templates, except for output handlers.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "rationale": "Calling expressions in templates causes it to run on every change detection cycle and may cause performance issues.",
+    "ruleName": "template-no-call-expression",
+    "type": "maintainability",
+    "typescriptOnly": true
+  },
+  {
+    "description": "Enforces that no distracting elements are used",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "rationale": "Elements that can be visually distracting can cause accessibility issues with visually impaired users.",
+    "ruleName": "template-no-distracting-elements",
+    "type": "functionality",
+    "typescriptOnly": true
+  },
+  {
+    "description": "Ensures that strict equality is used when evaluating negations on async pipe output.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "rationale": "\nAngular's async pipes emit null initially, prior to the observable emitting any values, or the promise resolving. This can cause negations, like\n*ngIf=\"!(myConditional | async)\" to thrash the layout and cause expensive side-effects like firing off XHR requests for a component which should not be shown.\n    ",
+    "ruleName": "template-no-negated-async",
+    "type": "functionality",
+    "typescriptOnly": true
+  },
+  {
+    "description": "Ensures trackBy function is used.",
     "options": null,
     "optionsDescription": "Not configurable.",
     "rationale": "The use of 'trackBy' is considered a good practice.",
-    "ruleName": "trackBy-function",
+    "ruleName": "template-use-track-by-function",
     "type": "maintainability",
     "typescriptOnly": true
   },
   {
-    "description": "Use @HostProperty decorator rather than the `host` property of `@Component` and `@Directive` metadata.",
-    "descriptionDetails": "See more at https://angular.io/styleguide#style-06-03.",
+    "description": "Component selector must be declared.",
     "options": null,
     "optionsDescription": "Not configurable.",
-    "rationale": "\nThe property associated with @HostBinding or the method associated with @HostListener\ncan be modified only in a single place: in the directive's class. If you use the host metadata\nproperty, you must modify both the property declaration inside the controller, and the metadata\nassociated with the directive.\n    ",
-    "ruleName": "use-host-property-decorator",
-    "type": "style",
-    "typescriptOnly": true
-  },
-  {
-    "description": "Use `@Input` decorator rather than the `inputs` property of `@Component` and `@Directive` metadata.",
-    "descriptionDetails": "See more at https://angular.io/styleguide#style-05-12.",
-    "options": null,
-    "optionsDescription": "Not configurable.",
-    "rationale": "\n* It is easier and more readable to identify which properties in a class are inputs.\n* If you ever need to rename the property name associated with @Input, you can modify it in a single place.\n* The metadata declaration attached to the directive is shorter and thus more readable.\n* Placing the decorator on the same line usually makes for shorter code and still easily identifies the property as an input.\n    ",
-    "ruleName": "use-input-property-decorator",
-    "type": "style",
-    "typescriptOnly": true
-  },
-  {
-    "description": "Ensure that components implement life cycle interfaces if they use them.",
-    "descriptionDetails": "See more at https://angular.io/styleguide#style-09-01.",
-    "options": null,
-    "optionsDescription": "Not configurable.",
-    "rationale": "Interfaces prescribe typed method signatures. Use those signatures to flag spelling and syntax mistakes.",
-    "ruleName": "use-life-cycle-interface",
+    "rationale": "Omit the component selector makes debugging difficult.",
+    "ruleName": "use-component-selector",
     "type": "maintainability",
     "typescriptOnly": true
   },
   {
-    "description": "Use `@Output` decorator rather than the `outputs` property of `@Component` and `@Directive` metadata.",
-    "descriptionDetails": "See more at https://angular.io/styleguide#style-05-12.",
+    "description": "Disallows using ViewEncapsulation.None.",
     "options": null,
     "optionsDescription": "Not configurable.",
-    "rationale": "\n* It is easier and more readable to identify which properties in a class are events.\n* If you ever need to rename the event name associated with @Output, you can modify it in a single place.\n* The metadata declaration attached to the directive is shorter and thus more readable.\n* Placing the decorator on the same line usually makes for shorter code and still easily identifies the property as an output.\n    ",
-    "ruleName": "use-output-property-decorator",
-    "type": "style",
+    "ruleName": "use-component-view-encapsulation",
+    "type": "maintainability",
     "typescriptOnly": true
   },
   {
-    "description": "Ensure that classes implementing PipeTransform interface, use Pipe decorator.",
+    "description": "Ensures classes implement lifecycle interfaces corresponding to the declared lifecycle methods.",
+    "descriptionDetails": "See more at https://angular.io/styleguide#style-09-01",
     "options": null,
     "optionsDescription": "Not configurable.",
     "rationale": "Interfaces prescribe typed method signatures. Use those signatures to flag spelling and syntax mistakes.",
+    "ruleName": "use-lifecycle-interface",
+    "type": "functionality",
+    "typescriptOnly": true
+  },
+  {
+    "description": "Ensures that classes implementing PipeTransform interface use @Pipe decorator.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
     "ruleName": "use-pipe-decorator",
     "type": "maintainability",
     "typescriptOnly": true
   },
   {
-    "description": "Ensure that pipes implement PipeTransform interface.",
+    "description": "Ensures tht classes decorated with @Pipe implement PipeTransform interface.",
     "options": null,
     "optionsDescription": "Not configurable.",
     "rationale": "Interfaces prescribe typed method signatures. Use those signatures to flag spelling and syntax mistakes.",
     "ruleName": "use-pipe-transform-interface",
-    "type": "maintainability",
-    "typescriptOnly": true
-  },
-  {
-    "description": "Disallows using of ViewEncapsulation.None.",
-    "options": null,
-    "optionsDescription": "Not configurable.",
-    "ruleName": "use-view-encapsulation",
     "type": "maintainability",
     "typescriptOnly": true
   }
