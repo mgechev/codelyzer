@@ -1,0 +1,18 @@
+---
+description: Ensures that directives not implement conflicting lifecycle interfaces.
+descriptionDetails: 'See more at https://angular.io/api/core/DoCheck#description.'
+options: null
+optionsDescription: Not configurable.
+rationale: |-
+
+  A directive typically should not use both DoCheck and OnChanges to respond
+  to changes on the same input, as ngOnChanges will continue to be called when the
+  default change detector detects changes.
+      
+ruleName: no-conflicting-lifecycle
+type: maintainability
+typescriptOnly: true
+layout: rule
+title: 'Rule: no-conflicting-lifecycle'
+optionsJSON: 'null'
+---

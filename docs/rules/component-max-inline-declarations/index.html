@@ -1,0 +1,53 @@
+---
+description: Disallows having too many lines in inline template and styles. Forces separate template or styles file creation.
+descriptionDetails: 'See more at https://angular.io/guide/styleguide#style-05-04..'
+optionExamples:
+  - 'true'
+  - '[true, {"animations": 20, "styles": 8, "template": 5}]'
+options:
+  items:
+    properties:
+      animations:
+        type: number
+      styles:
+        type: number
+      template:
+        type: number
+    type: object
+  maxLength: 1
+  minLength: 0
+  type: array
+optionsDescription: |-
+
+  It can take an optional object with the properties 'animations', 'styles' and 'template':
+  * `animations` - number > 0 defining the maximum allowed inline lines for animations. Defaults to 15.
+  * `styles` - number > 0 defining the maximum allowed inline lines for styles. Defaults to 3.
+  * `template` - number > 0 defining the maximum allowed inline lines for template. Defaults to 3.
+      
+rationale: 'Large, inline templates and styles obscure the component''s purpose and implementation, reducing readability and maintainability.'
+ruleName: component-max-inline-declarations
+type: maintainability
+typescriptOnly: true
+layout: rule
+title: 'Rule: component-max-inline-declarations'
+optionsJSON: |-
+  {
+    "items": {
+      "properties": {
+        "animations": {
+          "type": "number"
+        },
+        "styles": {
+          "type": "number"
+        },
+        "template": {
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "maxLength": 1,
+    "minLength": 0,
+    "type": "array"
+  }
+---

@@ -2,9 +2,68 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-<a name="5.0.0-beta.2"></a>
+# [5.0.0](https://github.com/mgechev/codelyzer/compare/5.0.0-beta.2...5.0.0) (2019-03-27)
+
+### BREAKING CHANGES
+
+**Angular CLI will automatically migrate your projects to reflect the latest config**.
+
+- `contextual-life-cycle` is renamed to `contextual-lifecycle`
+- `no-conflicting-life-cycle-hooks` is renamed to `no-conflicting-lifecycle`
+- `no-life-cycle-call` is renamed to `no-lifecycle-call`
+- `use-life-cycle-interface` is renamed to `use-lifecycle-interface`
+- `decorator-not-allowed` is renamed to `contextual-decorator`
+- `enforce-component-selector` is renamed to `use-component-selector`
+- `no-output-named-after-standard-event` is renamed to `no-output-native`
+- `use-host-property-decorator` is renamed to `no-host-metadata-property`
+- `use-input-property-decorator` is renamed to `no-inputs-metadata-property`
+- `use-output-property-decorator` is renamed to `no-outputs-metadata-property`
+- `no-queries-parameter` is renamed to `no-queries-metadata-property`
+- `pipe-impure` is renamed to `no-pipe-impure`
+- `use-view-encapsulation` is renamed to `use-component-view-encapsulation`
+- `i18n` is renamed to `template-i18n`
+- `banana-in-box` is renamed to `template-banana-in-box`
+- `no-template-call-expression` is renamed to `template-no-call-expression`
+- `templates-no-negated-async` is renamed to `template-no-negated-async`
+- `trackBy-function` is renamed to `template-use-track-by-function`
+- `no-attribute-parameter-decorator` is renamed to `no-attribute-decorator`
+- `max-inline-declarations` is renamed to `component-max-inline-declarations`
+
+### Bug Fixes
+
+- **rule:** template-use-track-by-function not reporting failures involving multiple \*ngFor directives ([#721](https://github.com/mgechev/codelyzer/issues/721)) ([9269be6](https://github.com/mgechev/codelyzer/commit/9269be6)), closes [#718](https://github.com/mgechev/codelyzer/issues/718)
+- **rule:** template-no-call-expression should allow \$any usages ([#735](https://github.com/mgechev/codelyzer/issues/735)) ([a75c204](https://github.com/mgechev/codelyzer/commit/a75c204))
+- **rule:** no-input-rename reporting some failures incorrectly ([#723](https://github.com/mgechev/codelyzer/issues/723)) ([f692dcb](https://github.com/mgechev/codelyzer/commit/f692dcb))
+- **rule:** prefer-inline-decorator should not set a max number of options ([#787](https://github.com/mgechev/codelyzer/issues/787)) ([31b2b6a](https://github.com/mgechev/codelyzer/commit/31b2b6a))
+- **rule:** add template-accessibility-elements-content to index.ts ([#803](https://github.com/mgechev/codelyzer/issues/803)) ([1e8cbbf](https://github.com/mgechev/codelyzer/commit/1e8cbbf)), closes [#801](https://github.com/mgechev/codelyzer/issues/801)
+- **rule:** NgModule not being handled for contextual-lifecycle and contextual-decorators ([#790](https://github.com/mgechev/codelyzer/issues/790)) ([cedfa2e](https://github.com/mgechev/codelyzer/commit/cedfa2e))
+- **rule:** prefer-inline-decorator not reporting failures for some cases ([#794](https://github.com/mgechev/codelyzer/issues/794)) ([a76ebbc](https://github.com/mgechev/codelyzer/commit/a76ebbc))
+- update peerDependencies ([d5bfbd5](https://github.com/mgechev/codelyzer/commit/d5bfbd5))
+- improve ngWalker by preventing an error when a class has no name ([#788](https://github.com/mgechev/codelyzer/issues/788)) ([17c0fe2](https://github.com/mgechev/codelyzer/commit/17c0fe2))
+
+### Features
+
+- **rule:** add component-change-detection ([#737](https://github.com/mgechev/codelyzer/issues/737)) ([a23ccde](https://github.com/mgechev/codelyzer/commit/a23ccde)), closes [#135](https://github.com/mgechev/codelyzer/issues/135)
+- **rule:** add relative-url-prefix ([#725](https://github.com/mgechev/codelyzer/issues/725)) ([f12f27b](https://github.com/mgechev/codelyzer/commit/f12f27b))
+- **rule:** add template-accessibility-alt-text ([#741](https://github.com/mgechev/codelyzer/issues/741)) ([0815ec5](https://github.com/mgechev/codelyzer/commit/0815ec5))
+- **rule:** add template-accessibility-elements-content ([#742](https://github.com/mgechev/codelyzer/issues/742)) ([6ff8c56](https://github.com/mgechev/codelyzer/commit/6ff8c56))
+- **rule:** add template-accessibility-label-for ([#739](https://github.com/mgechev/codelyzer/issues/739)) ([76c24fa](https://github.com/mgechev/codelyzer/commit/76c24fa))
+- **rule:** add template-accessibility-tabindex-no-positive ([#744](https://github.com/mgechev/codelyzer/issues/744)) ([43902f7](https://github.com/mgechev/codelyzer/commit/43902f7))
+- **rule:** add template-accessibility-table-scope ([#743](https://github.com/mgechev/codelyzer/issues/743)) ([2832615](https://github.com/mgechev/codelyzer/commit/2832615))
+- **rule:** add template-accessibility-valid-aria ([#746](https://github.com/mgechev/codelyzer/issues/746)) ([762f67f](https://github.com/mgechev/codelyzer/commit/762f67f))
+- **rule:** add template-click-events-have-key-events ([#761](https://github.com/mgechev/codelyzer/issues/761)) ([b0b330f](https://github.com/mgechev/codelyzer/commit/b0b330f))
+- **rule:** add template-mouse-events-have-key-events ([#759](https://github.com/mgechev/codelyzer/issues/759)) ([3a7b15d](https://github.com/mgechev/codelyzer/commit/3a7b15d))
+- **rule:** add template-no-autofocus ([#749](https://github.com/mgechev/codelyzer/issues/749)) ([799382f](https://github.com/mgechev/codelyzer/commit/799382f))
+- **rule:** add template-no-distracting-elements ([#760](https://github.com/mgechev/codelyzer/issues/760)) ([6b21a9e](https://github.com/mgechev/codelyzer/commit/6b21a9e))
+- **rule:** add template-no-any ([#755](https://github.com/mgechev/codelyzer/issues/755)) ([77a5e32](https://github.com/mgechev/codelyzer/commit/77a5e32))
+- **rule:** prefer-inline-decorator now accept options ([#794](https://github.com/mgechev/codelyzer/issues/794)) ([a76ebbc](https://github.com/mgechev/codelyzer/commit/a76ebbc))
+- add support for svg templates ([#800](https://github.com/mgechev/codelyzer/issues/800)) ([dadf8ec](https://github.com/mgechev/codelyzer/commit/dadf8ec))
 
 # [5.0.0-beta.2](https://github.com/mgechev/codelyzer/compare/5.0.0-beta.1...5.0.0-beta.2) (2019-03-25)
+
+### Bug Fixes
+
+- **rule:** NgModule not being handled for contextual-lifecycle and contextual-decorators ([#790](https://github.com/mgechev/codelyzer/issues/790)) ([cedfa2e](https://github.com/mgechev/codelyzer/commit/cedfa2e))
 
 # [5.0.0-beta.1](https://github.com/mgechev/codelyzer/compare/5.0.0-beta.0...5.0.0-beta.1) (2019-03-14)
 
@@ -41,9 +100,11 @@ This release contains many breaking changes due to the rename of several rules (
 
 ### Bug Fixes
 
+- **rule:** template-use-track-by-function not reporting failures involving multiple \*ngFor directives ([#721](https://github.com/mgechev/codelyzer/issues/721)) ([9269be6](https://github.com/mgechev/codelyzer/commit/9269be6)), closes [#718](https://github.com/mgechev/codelyzer/issues/718)
 - **rule:** template-no-call-expression should allow \$any usages ([#735](https://github.com/mgechev/codelyzer/issues/735)) ([a75c204](https://github.com/mgechev/codelyzer/commit/a75c204))
 - **rule:** no-input-rename reporting some failures incorrectly ([#723](https://github.com/mgechev/codelyzer/issues/723)) ([f692dcb](https://github.com/mgechev/codelyzer/commit/f692dcb))
 - **rule:** prefer-inline-decorator should not set a max number of options ([#787](https://github.com/mgechev/codelyzer/issues/787)) ([31b2b6a](https://github.com/mgechev/codelyzer/commit/31b2b6a))
+- improve ngWalker by preventing an error when a class has no name ([#787](https://github.com/mgechev/codelyzer/issues/787)) ([17c0fe2](https://github.com/mgechev/codelyzer/commit/17c0fe2))
 
 ### Features
 
@@ -61,8 +122,6 @@ This release contains many breaking changes due to the rename of several rules (
 - **rule:** add template-no-distracting-elements ([#760](https://github.com/mgechev/codelyzer/issues/760)) ([6b21a9e](https://github.com/mgechev/codelyzer/commit/6b21a9e))
 - **rule:** add template-no-any ([#755](https://github.com/mgechev/codelyzer/issues/755)) ([77a5e32](https://github.com/mgechev/codelyzer/commit/77a5e32))
 
-<a name="4.5.0"></a>
-
 # [4.5.0](https://github.com/mgechev/codelyzer/compare/4.4.4...4.5.0) (2018-10-04)
 
 ### Bug Fixes
@@ -75,15 +134,11 @@ This release contains many breaking changes due to the rename of several rules (
 - **rule:** add pipe-prefix ([#693](https://github.com/mgechev/codelyzer/issues/693)) ([71660ae](https://github.com/mgechev/codelyzer/commit/71660ae))
 - support Angular 7.0 ([#710](https://github.com/mgechev/codelyzer/issues/710)) ([5eb3064](https://github.com/mgechev/codelyzer/commit/5eb3064))
 
-<a name="4.4.4"></a>
-
 ## [4.4.4](https://github.com/mgechev/codelyzer/compare/4.4.3...4.4.4) (2018-08-13)
 
 ### Bug Fixes
 
 - errors not being displayed in the correct files ([#700](https://github.com/mgechev/codelyzer/issues/700)) ([db3cf5a](https://github.com/mgechev/codelyzer/commit/db3cf5a))
-
-<a name="4.4.3"></a>
 
 ## [4.4.3](https://github.com/mgechev/codelyzer/compare/4.4.2...4.4.3) (2018-08-06)
 
@@ -92,23 +147,17 @@ This release contains many breaking changes due to the rename of several rules (
 - url not passed to transformStyle when using styleUrls ([#686](https://github.com/mgechev/codelyzer/issues/686)) ([5a84041](https://github.com/mgechev/codelyzer/commit/5a84041))
 - **templates-no-negated-async:** not reporting failures for some cases ([#694](https://github.com/mgechev/codelyzer/issues/694)) ([2ffe2ea](https://github.com/mgechev/codelyzer/commit/2ffe2ea))
 
-<a name="4.4.2"></a>
-
 ## [4.4.2](https://github.com/mgechev/codelyzer/compare/4.4.1...4.4.2) (2018-06-25)
 
 ### Bug Fixes
 
 - **no-output-on-prefix:** fix regular expression ([#674](https://github.com/mgechev/codelyzer/issues/674)) ([adc974a](https://github.com/mgechev/codelyzer/commit/adc974a))
 
-<a name="4.4.1"></a>
-
 ## [4.4.1](https://github.com/mgechev/codelyzer/compare/4.4.0...4.4.1) (2018-06-23)
 
 ### Bug Fixes
 
 - regressions in 4.4.0 ([#671](https://github.com/mgechev/codelyzer/issues/671)) ([d922dcb](https://github.com/mgechev/codelyzer/commit/d922dcb)), closes [#669](https://github.com/mgechev/codelyzer/issues/669), [#670](https://github.com/mgechev/codelyzer/issues/670)
-
-<a name="4.4.0"></a>
 
 # [4.4.0](https://github.com/mgechev/codelyzer/compare/4.3.0...4.4.0) (2018-06-23)
 

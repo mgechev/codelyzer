@@ -1,0 +1,28 @@
+---
+description: Enforces component's change detection to ChangeDetectionStrategy.OnPush.
+options: null
+optionsDescription: Not configurable.
+rationale: >-
+
+  By default Angular uses the ChangeDetectionStrategy.Default.
+
+
+  This strategy doesn’t assume anything about the application, therefore every time something changes in our application, as a result of
+  various user events, timers, XHR, promises, etc., a change detection will run on all components.
+
+
+  By using ChangeDetectionStrategy.OnPush, Angular will only run the change detection cycle in the following cases:
+
+  * Inputs references change.
+
+  * An event originated from the component or one of its children.
+
+  * If manually called.
+      
+ruleName: prefer-on-push-component-change-detection
+type: functionality
+typescriptOnly: true
+layout: rule
+title: 'Rule: prefer-on-push-component-change-detection'
+optionsJSON: 'null'
+---

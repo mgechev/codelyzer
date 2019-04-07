@@ -1,0 +1,71 @@
+---
+description: Checks if the label has associated for attribute or a form element
+optionExamples:
+  - |-
+    [
+      true,
+      {
+        "labelComponents": ["app-label"],
+        "labelAttributes": ["id"],
+        "controlComponents": ["app-input", "app-select"]
+      }
+    ]
+options:
+  items:
+    type: object
+    properties:
+      labelComponents:
+        type: array
+        items:
+          type: string
+      labelAttributes:
+        type: array
+        items:
+          type: string
+      controlComponents:
+        type: array
+        items:
+          type: string
+  type: array
+optionsDescription: 'Add custom label, label attribute and controls'
+rationale: >-
+
+  The label tag should either have a for attribute or should have associated control.
+
+  This rule supports two ways, either the label component should explicitly have a for attribute or a control nested inside the label
+  component
+
+  It also supports adding custom control component and custom label component support.
+ruleName: template-accessibility-label-for
+type: functionality
+typescriptOnly: true
+layout: rule
+title: 'Rule: template-accessibility-label-for'
+optionsJSON: |-
+  {
+    "items": {
+      "type": "object",
+      "properties": {
+        "labelComponents": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "labelAttributes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "controlComponents": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "type": "array"
+  }
+---

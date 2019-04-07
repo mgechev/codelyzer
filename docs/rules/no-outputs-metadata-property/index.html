@@ -1,0 +1,18 @@
+---
+description: Disallows usage of the `outputs` metadata property.
+descriptionDetails: 'See more at https://angular.io/styleguide#style-05-12.'
+options: null
+optionsDescription: Not configurable.
+rationale: |-
+
+  * It is easier and more readable to identify which properties in a class are events.
+  * If you ever need to rename the event associated with @Output, you can modify it in a single place.
+  * The metadata declaration attached to the directive is shorter and thus more readable.
+      
+ruleName: no-outputs-metadata-property
+type: style
+typescriptOnly: true
+layout: rule
+title: 'Rule: no-outputs-metadata-property'
+optionsJSON: 'null'
+---
