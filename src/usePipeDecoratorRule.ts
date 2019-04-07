@@ -30,10 +30,8 @@ export class Rule extends AbstractRule {
   }
 }
 
-const hasPipeTransformInterface = (node: ClassDeclaration): boolean => !!getDeclaredInterfaceName(node, PIPE_TRANSFORM);
-
 const validateClassDeclaration = (context: WalkContext<void>, node: ClassDeclaration): void => {
-  if (!hasPipeTransformInterface(node) || getPipeDecorator(node)) return;
+  if (getPipeDecorator(node) || !getDeclaredInterfaceName(node, PIPE_TRANSFORM)) return;
 
   context.addFailureAtNode(node, sprintf(Rule.FAILURE_STRING));
 };

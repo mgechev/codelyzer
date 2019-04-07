@@ -508,7 +508,7 @@ describe(ruleName, () => {
   });
 
   describe('success', () => {
-    describe('', () => {
+    describe('Component', () => {
       it('should succeed if a property is decorated with @ContentChild() decorator', () => {
         const source = `
           @Component()
