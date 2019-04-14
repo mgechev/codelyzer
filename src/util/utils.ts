@@ -33,17 +33,17 @@ export enum AngularClassDecorators {
   Pipe = 'Pipe'
 }
 
-enum AngularMethodDecorators {
-  HostListener = 'HostListener'
-}
-
-enum AngularParameterPropertyDecorators {
+enum AngularConstructorParameterDecorators {
   Attribute = 'Attribute',
   Host = 'Host',
   Inject = 'Inject',
   Optional = 'Optional',
   Self = 'Self',
   SkipSelf = 'SkipSelf'
+}
+
+enum AngularMethodDecorators {
+  HostListener = 'HostListener'
 }
 
 enum AngularPropertyAccessorDecorators {
@@ -57,8 +57,8 @@ enum AngularPropertyAccessorDecorators {
 }
 
 export const AngularInnerClassDecorators = {
+  ...AngularConstructorParameterDecorators,
   ...AngularMethodDecorators,
-  ...AngularParameterPropertyDecorators,
   ...AngularPropertyAccessorDecorators
 };
 
