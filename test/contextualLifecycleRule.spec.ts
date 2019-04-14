@@ -1,5 +1,5 @@
 import { getFailureMessage, Rule } from '../src/contextualLifecycleRule';
-import { LifecycleMethods, MetadataTypes } from '../src/util/utils';
+import { AngularClassDecorators, AngularLifecycleMethods } from '../src/util/utils';
 import { assertAnnotated, assertSuccess } from './testHelper';
 
 const {
@@ -19,8 +19,8 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          metadataType: MetadataTypes.Injectable,
-          methodName: LifecycleMethods.ngAfterContentChecked
+          decoratorName: AngularClassDecorators.Injectable,
+          methodName: AngularLifecycleMethods.ngAfterContentChecked
         });
         assertAnnotated({
           message,
@@ -39,8 +39,8 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          metadataType: MetadataTypes.Injectable,
-          methodName: LifecycleMethods.ngAfterContentInit
+          decoratorName: AngularClassDecorators.Injectable,
+          methodName: AngularLifecycleMethods.ngAfterContentInit
         });
         assertAnnotated({
           message,
@@ -59,8 +59,8 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          metadataType: MetadataTypes.Injectable,
-          methodName: LifecycleMethods.ngAfterViewChecked
+          decoratorName: AngularClassDecorators.Injectable,
+          methodName: AngularLifecycleMethods.ngAfterViewChecked
         });
         assertAnnotated({
           message,
@@ -79,8 +79,8 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          metadataType: MetadataTypes.Injectable,
-          methodName: LifecycleMethods.ngAfterViewInit
+          decoratorName: AngularClassDecorators.Injectable,
+          methodName: AngularLifecycleMethods.ngAfterViewInit
         });
         assertAnnotated({
           message,
@@ -99,8 +99,8 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          metadataType: MetadataTypes.Injectable,
-          methodName: LifecycleMethods.ngDoCheck
+          decoratorName: AngularClassDecorators.Injectable,
+          methodName: AngularLifecycleMethods.ngDoCheck
         });
         assertAnnotated({
           message,
@@ -119,8 +119,8 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          metadataType: MetadataTypes.Injectable,
-          methodName: LifecycleMethods.ngOnChanges
+          decoratorName: AngularClassDecorators.Injectable,
+          methodName: AngularLifecycleMethods.ngOnChanges
         });
         assertAnnotated({
           message,
@@ -139,8 +139,8 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          metadataType: MetadataTypes.Injectable,
-          methodName: LifecycleMethods.ngOnInit
+          decoratorName: AngularClassDecorators.Injectable,
+          methodName: AngularLifecycleMethods.ngOnInit
         });
         assertAnnotated({
           message,
@@ -161,8 +161,8 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          metadataType: MetadataTypes.NgModule,
-          methodName: LifecycleMethods.ngAfterContentChecked
+          decoratorName: AngularClassDecorators.NgModule,
+          methodName: AngularLifecycleMethods.ngAfterContentChecked
         });
         assertAnnotated({
           message,
@@ -181,8 +181,8 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          metadataType: MetadataTypes.NgModule,
-          methodName: LifecycleMethods.ngAfterContentInit
+          decoratorName: AngularClassDecorators.NgModule,
+          methodName: AngularLifecycleMethods.ngAfterContentInit
         });
         assertAnnotated({
           message,
@@ -201,8 +201,8 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          metadataType: MetadataTypes.NgModule,
-          methodName: LifecycleMethods.ngAfterViewChecked
+          decoratorName: AngularClassDecorators.NgModule,
+          methodName: AngularLifecycleMethods.ngAfterViewChecked
         });
         assertAnnotated({
           message,
@@ -221,8 +221,8 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          metadataType: MetadataTypes.NgModule,
-          methodName: LifecycleMethods.ngAfterViewInit
+          decoratorName: AngularClassDecorators.NgModule,
+          methodName: AngularLifecycleMethods.ngAfterViewInit
         });
         assertAnnotated({
           message,
@@ -241,8 +241,8 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          metadataType: MetadataTypes.NgModule,
-          methodName: LifecycleMethods.ngDoCheck
+          decoratorName: AngularClassDecorators.NgModule,
+          methodName: AngularLifecycleMethods.ngDoCheck
         });
         assertAnnotated({
           message,
@@ -261,8 +261,8 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          metadataType: MetadataTypes.NgModule,
-          methodName: LifecycleMethods.ngOnChanges
+          decoratorName: AngularClassDecorators.NgModule,
+          methodName: AngularLifecycleMethods.ngOnChanges
         });
         assertAnnotated({
           message,
@@ -281,8 +281,8 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          metadataType: MetadataTypes.NgModule,
-          methodName: LifecycleMethods.ngOnInit
+          decoratorName: AngularClassDecorators.NgModule,
+          methodName: AngularLifecycleMethods.ngOnInit
         });
         assertAnnotated({
           message,
@@ -301,8 +301,8 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          metadataType: MetadataTypes.NgModule,
-          methodName: LifecycleMethods.ngOnDestroy
+          decoratorName: AngularClassDecorators.NgModule,
+          methodName: AngularLifecycleMethods.ngOnDestroy
         });
         assertAnnotated({
           message,
@@ -323,8 +323,8 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          metadataType: MetadataTypes.Pipe,
-          methodName: LifecycleMethods.ngAfterContentChecked
+          decoratorName: AngularClassDecorators.Pipe,
+          methodName: AngularLifecycleMethods.ngAfterContentChecked
         });
         assertAnnotated({
           message,
@@ -343,8 +343,8 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          metadataType: MetadataTypes.Pipe,
-          methodName: LifecycleMethods.ngAfterContentInit
+          decoratorName: AngularClassDecorators.Pipe,
+          methodName: AngularLifecycleMethods.ngAfterContentInit
         });
         assertAnnotated({
           message,
@@ -363,8 +363,8 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          metadataType: MetadataTypes.Pipe,
-          methodName: LifecycleMethods.ngAfterViewChecked
+          decoratorName: AngularClassDecorators.Pipe,
+          methodName: AngularLifecycleMethods.ngAfterViewChecked
         });
         assertAnnotated({
           message,
@@ -383,8 +383,8 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          metadataType: MetadataTypes.Pipe,
-          methodName: LifecycleMethods.ngAfterViewInit
+          decoratorName: AngularClassDecorators.Pipe,
+          methodName: AngularLifecycleMethods.ngAfterViewInit
         });
         assertAnnotated({
           message,
@@ -403,8 +403,8 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          metadataType: MetadataTypes.Pipe,
-          methodName: LifecycleMethods.ngDoCheck
+          decoratorName: AngularClassDecorators.Pipe,
+          methodName: AngularLifecycleMethods.ngDoCheck
         });
         assertAnnotated({
           message,
@@ -423,8 +423,8 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          metadataType: MetadataTypes.Pipe,
-          methodName: LifecycleMethods.ngOnChanges
+          decoratorName: AngularClassDecorators.Pipe,
+          methodName: AngularLifecycleMethods.ngOnChanges
         });
         assertAnnotated({
           message,
@@ -443,8 +443,8 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          metadataType: MetadataTypes.Pipe,
-          methodName: LifecycleMethods.ngOnInit
+          decoratorName: AngularClassDecorators.Pipe,
+          methodName: AngularLifecycleMethods.ngOnInit
         });
         assertAnnotated({
           message,
@@ -475,8 +475,8 @@ describe(ruleName, () => {
         `;
           const message = getFailureMessage({
             className: 'Test',
-            metadataType: MetadataTypes.Pipe,
-            methodName: LifecycleMethods.ngDoCheck
+            decoratorName: AngularClassDecorators.Pipe,
+            methodName: AngularLifecycleMethods.ngDoCheck
           });
           assertAnnotated({
             message,

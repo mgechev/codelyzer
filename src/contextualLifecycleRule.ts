@@ -1,38 +1,41 @@
 import { sprintf } from 'sprintf-js';
 import { IRuleMetadata, RuleFailure } from 'tslint/lib';
 import { AbstractRule } from 'tslint/lib/rules';
+import { dedent } from 'tslint/lib/utils';
 import { SourceFile } from 'typescript';
 import { InjectableMetadata, ModuleMetadata, PipeMetadata } from './angular';
 import { NgWalker } from './angular/ngWalker';
 import {
+  ANGULAR_CLASS_DECORATOR_LIFECYCLE_METHOD_MAPPER,
+  AngularClassDecoratorKeys,
+  AngularClassDecorators,
+  AngularLifecycleMethodKeys,
+  AngularLifecycleMethods,
   getClassName,
   getDecoratorName,
-  isLifecycleMethod,
-  isMetadataType,
-  LifecycleMethodKeys,
-  LifecycleMethods,
-  METADATA_TYPE_LIFECYCLE_MAPPER,
-  MetadataTypeKeys,
-  MetadataTypes
+  isAngularClassDecorator,
+  isAngularLifecycleMethod
 } from './util/utils';
 
 interface FailureParameters {
   readonly className: string;
-  readonly metadataType: MetadataTypeKeys;
-  readonly methodName: LifecycleMethodKeys;
+  readonly decoratorName: AngularClassDecoratorKeys;
+  readonly methodName: AngularLifecycleMethodKeys;
 }
 
 export const getFailureMessage = (failureParameters: FailureParameters): string =>
-  sprintf(Rule.FAILURE_STRING, failureParameters.methodName, failureParameters.className, failureParameters.metadataType);
+  sprintf(Rule.FAILURE_STRING, failureParameters.methodName, failureParameters.className, failureParameters.decoratorName);
 
 export class Rule extends AbstractRule {
   static readonly metadata: IRuleMetadata = {
     description: 'Ensures that classes use allowed lifecycle method in its body.',
     options: null,
     optionsDescription: 'Not configurable.',
-    rationale: `Some lifecycle methods can only be used in certain class types. For example, ${
-      LifecycleMethods.ngOnInit
-    }() method should not be used in an @${MetadataTypes.Injectable} class.`,
+    rationale: dedent`
+      Some lifecycle methods can only be used in certain class types.
+      For example, ${AngularLifecycleMethods.ngOnInit}() method should not be used
+      in an @${AngularClassDecorators.Injectable} class.
+    `,
     ruleName: 'contextual-lifecycle',
     type: 'functionality',
     typescriptOnly: true
@@ -49,26 +52,38 @@ export class Rule extends AbstractRule {
 
 class Walker extends NgWalker {
   protected visitNgInjectable(metadata: InjectableMetadata): void {
-    this.validateDecorator(metadata, METADATA_TYPE_LIFECYCLE_MAPPER.Injectable);
+    const injectableAllowedMethods = ANGULAR_CLASS_DECORATOR_LIFECYCLE_METHOD_MAPPER.get(AngularClassDecorators.Injectable);
+
+    if (!injectableAllowedMethods) return;
+
+    this.validateDecorator(metadata, injectableAllowedMethods);
     super.visitNgInjectable(metadata);
   }
 
-  protected visitNgPipe(metadata: PipeMetadata): void {
-    this.validateDecorator(metadata, METADATA_TYPE_LIFECYCLE_MAPPER.Pipe);
-    super.visitNgPipe(metadata);
-  }
+  protected visitNgModule(metadata: ModuleMetadata): void {
+    const ngModuleAllowedMethods = ANGULAR_CLASS_DECORATOR_LIFECYCLE_METHOD_MAPPER.get(AngularClassDecorators.NgModule);
 
-  protected visitNgModule(metadata: ModuleMetadata) {
-    this.validateDecorator(metadata, METADATA_TYPE_LIFECYCLE_MAPPER.NgModule);
+    if (!ngModuleAllowedMethods) return;
+
+    this.validateDecorator(metadata, ngModuleAllowedMethods);
     super.visitNgModule(metadata);
   }
 
-  private validateDecorator(metadata: PipeMetadata, allowedMethods: ReadonlySet<LifecycleMethodKeys>): void {
+  protected visitNgPipe(metadata: PipeMetadata): void {
+    const pipeAllowedMethods = ANGULAR_CLASS_DECORATOR_LIFECYCLE_METHOD_MAPPER.get(AngularClassDecorators.Pipe);
+
+    if (!pipeAllowedMethods) return;
+
+    this.validateDecorator(metadata, pipeAllowedMethods);
+    super.visitNgPipe(metadata);
+  }
+
+  private validateDecorator(metadata: PipeMetadata, allowedMethods: ReadonlySet<AngularLifecycleMethodKeys>): void {
     const className = getClassName(metadata.controller)!;
 
-    const metadataType = getDecoratorName(metadata.decorator);
+    const decoratorName = getDecoratorName(metadata.decorator);
 
-    if (!metadataType || !isMetadataType(metadataType)) return;
+    if (!decoratorName || !isAngularClassDecorator(decoratorName)) return;
 
     for (const member of metadata.controller.members) {
       const { name: memberName } = member;
@@ -77,9 +92,9 @@ class Walker extends NgWalker {
 
       const methodName = memberName.getText();
 
-      if (!isLifecycleMethod(methodName) || allowedMethods.has(methodName)) continue;
+      if (!isAngularLifecycleMethod(methodName) || allowedMethods.has(methodName)) continue;
 
-      const failure = getFailureMessage({ className, metadataType, methodName });
+      const failure = getFailureMessage({ className, decoratorName, methodName });
 
       this.addFailureAtNode(member, failure);
     }

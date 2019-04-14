@@ -1,36 +1,45 @@
 import { sprintf } from 'sprintf-js';
 import { IRuleMetadata, RuleFailure } from 'tslint';
 import { AbstractRule } from 'tslint/lib/rules';
+import { dedent } from 'tslint/lib/utils';
 import { createNodeArray, Decorator, isClassDeclaration, SourceFile } from 'typescript';
 import { NgWalker } from './angular/ngWalker';
 import {
-  DecoratorKeys,
-  Decorators,
+  ANGULAR_CLASS_DECORATOR_MAPPER,
+  AngularClassDecoratorKeys,
+  AngularClassDecorators,
+  AngularInnerClassDecoratorKeys,
+  AngularInnerClassDecorators,
   getDecoratorName,
   getNextToLastParentNode,
-  isMetadataType,
-  isNgDecorator,
-  METADATA_TYPE_DECORATOR_MAPPER,
-  MetadataTypes
+  isAngularClassDecorator,
+  isAngularInnerClassDecorator
 } from './util/utils';
 
 interface FailureParameters {
   readonly className: string;
-  readonly decoratorName: DecoratorKeys;
-  readonly metadataType: MetadataTypes;
+  readonly classDecoratorName: AngularClassDecoratorKeys;
+  readonly innerClassDecoratorName: AngularInnerClassDecoratorKeys;
 }
 
 export const getFailureMessage = (failureParameters: FailureParameters): string =>
-  sprintf(Rule.FAILURE_STRING, failureParameters.decoratorName, failureParameters.className, failureParameters.metadataType);
+  sprintf(
+    Rule.FAILURE_STRING,
+    failureParameters.innerClassDecoratorName,
+    failureParameters.className,
+    failureParameters.classDecoratorName
+  );
 
 export class Rule extends AbstractRule {
   static readonly metadata: IRuleMetadata = {
     description: 'Ensures that classes use allowed decorator in its body.',
     options: null,
     optionsDescription: 'Not configurable.',
-    rationale: `Some decorators can only be used in certain class types. For example, an @${Decorators.Input} should not be used in an @${
-      MetadataTypes.Injectable
-    } class.`,
+    rationale: dedent`
+      Some decorators can only be used in certain class types.
+      For example, an @${AngularInnerClassDecorators.Input} should not be used
+      in an @${AngularClassDecorators.Injectable} class.
+    `,
     ruleName: 'contextual-decorator',
     type: 'functionality',
     typescriptOnly: true
@@ -61,23 +70,23 @@ class Walker extends NgWalker {
 
     if (!isClassDeclaration(klass) || !klass.name) return;
 
-    const metadataType = createNodeArray(klass.decorators)
+    const classDecoratorName = createNodeArray(klass.decorators)
       .map(x => x.expression.getText())
       .map(x => x.replace(/[^a-zA-Z]/g, ''))
-      .find(isMetadataType);
+      .find(isAngularClassDecorator);
 
-    if (!metadataType) return;
+    if (!classDecoratorName) return;
 
-    const decoratorName = getDecoratorName(decorator);
+    const innerClassDecoratorName = getDecoratorName(decorator);
 
-    if (!decoratorName || !isNgDecorator(decoratorName)) return;
+    if (!innerClassDecoratorName || !isAngularInnerClassDecorator(innerClassDecoratorName)) return;
 
-    const allowedDecorators = METADATA_TYPE_DECORATOR_MAPPER[metadataType];
+    const allowedDecorators = ANGULAR_CLASS_DECORATOR_MAPPER.get(classDecoratorName);
 
-    if (!allowedDecorators || allowedDecorators.has(decoratorName)) return;
+    if (!allowedDecorators || allowedDecorators.has(innerClassDecoratorName)) return;
 
     const className = klass.name.getText();
-    const failure = getFailureMessage({ className, decoratorName, metadataType });
+    const failure = getFailureMessage({ classDecoratorName, className, innerClassDecoratorName });
 
     this.addFailureAtNode(decorator, failure);
   }

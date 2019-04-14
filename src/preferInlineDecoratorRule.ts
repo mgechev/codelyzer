@@ -20,9 +20,9 @@ import {
   SetAccessorDeclaration,
   SourceFile
 } from 'typescript';
-import { isNotNullOrUndefined } from './util/is-not-null-or-undefined';
-import { objectKeys } from './util/object-keys';
-import { Decorators, getDecoratorName, isSameLine } from './util/utils';
+import { isNotNullOrUndefined } from './util/isNotNullOrUndefined';
+import { objectKeys } from './util/objectKeys';
+import { AngularInnerClassDecorators, getDecoratorName, isSameLine } from './util/utils';
 
 const OPTION_GETTERS = 'getters';
 const OPTION_METHODS = 'methods';
@@ -95,13 +95,13 @@ export class Rule extends AbstractRule {
         true,
         {
           [OPTION_GETTERS]: {
-            [OPTION_SAFELIST]: [Decorators.Input]
+            [OPTION_SAFELIST]: [AngularInnerClassDecorators.Input]
           },
           [OPTION_METHODS]: true,
           [OPTION_PARAMETER_PROPERTIES]: false,
           [OPTION_PARAMETERS]: false,
           [OPTION_PROPERTIES]: {
-            [OPTION_SAFELIST]: [Decorators.Output, 'MyCustomDecorator']
+            [OPTION_SAFELIST]: [AngularInnerClassDecorators.Output, 'MyCustomDecorator']
           },
           [OPTION_SETTERS]: true
         }

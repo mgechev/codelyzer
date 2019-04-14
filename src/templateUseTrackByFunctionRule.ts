@@ -5,10 +5,9 @@ import { SourceFile } from 'typescript/lib/typescript';
 import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 
-// current offset into the template
-export let currentOffset = 0;
-
 const PATTERN = /\s*ngFor.*\s*trackBy\s*:|\[ngForTrackBy\]\s*=\s*['"].*['"]/;
+// current offset into the template
+let currentOffset = 0;
 
 export class Rule extends AbstractRule {
   static readonly metadata: IRuleMetadata = {

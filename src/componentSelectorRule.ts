@@ -9,7 +9,7 @@ import {
   SelectorStyle,
   SelectorType
 } from './selectorPropertyBase';
-import { isNotNullOrUndefined } from './util/is-not-null-or-undefined';
+import { isNotNullOrUndefined } from './util/isNotNullOrUndefined';
 
 const STYLE_GUIDE_PREFIX_LINK = 'https://angular.io/guide/styleguide#style-02-07';
 const STYLE_GUIDE_STYLE_LINK = 'https://angular.io/guide/styleguide#style-05-02';

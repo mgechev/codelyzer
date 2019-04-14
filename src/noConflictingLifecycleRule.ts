@@ -4,20 +4,26 @@ import { AbstractRule } from 'tslint/lib/rules';
 import { dedent } from 'tslint/lib/utils';
 import { ClassDeclaration, forEachChild, isClassDeclaration, Node, SourceFile } from 'typescript';
 import {
-  getDeclaredLifecycleInterfaces,
-  getDeclaredLifecycleMethods,
-  LifecycleInterfaceKeys,
-  LifecycleInterfaces,
-  LifecycleMethodKeys,
-  LifecycleMethods
+  AngularLifecycleInterfaceKeys,
+  AngularLifecycleInterfaces,
+  AngularLifecycleMethodKeys,
+  AngularLifecycleMethods,
+  getDeclaredAngularLifecycleInterfaces,
+  getDeclaredAngularLifecycleMethods
 } from './util/utils';
 
 interface FailureParameters {
   readonly message: typeof Rule.FAILURE_STRING_INTERFACE_HOOK | typeof Rule.FAILURE_STRING_METHOD_HOOK;
 }
 
-const LIFECYCLE_INTERFACES: ReadonlyArray<LifecycleInterfaceKeys> = [LifecycleInterfaces.DoCheck, LifecycleInterfaces.OnChanges];
-const LIFECYCLE_METHODS: ReadonlyArray<LifecycleMethodKeys> = [LifecycleMethods.ngDoCheck, LifecycleMethods.ngOnChanges];
+const LIFECYCLE_INTERFACES: ReadonlyArray<AngularLifecycleInterfaceKeys> = [
+  AngularLifecycleInterfaces.DoCheck,
+  AngularLifecycleInterfaces.OnChanges
+];
+const LIFECYCLE_METHODS: ReadonlyArray<AngularLifecycleMethodKeys> = [
+  AngularLifecycleMethods.ngDoCheck,
+  AngularLifecycleMethods.ngOnChanges
+];
 
 export const getFailureMessage = (failureParameters: FailureParameters): string => sprintf(failureParameters.message);
 
@@ -28,8 +34,8 @@ export class Rule extends AbstractRule {
     options: null,
     optionsDescription: 'Not configurable.',
     rationale: dedent`
-      A directive typically should not use both ${LifecycleInterfaces.DoCheck} and ${LifecycleInterfaces.OnChanges} to respond
-      to changes on the same input, as ${LifecycleMethods.ngOnChanges} will continue to be called when the
+      A directive typically should not use both ${AngularLifecycleInterfaces.DoCheck} and ${AngularLifecycleInterfaces.OnChanges} to respond
+      to changes on the same input, as ${AngularLifecycleMethods.ngOnChanges} will continue to be called when the
       default change detector detects changes.
     `,
     ruleName: 'no-conflicting-lifecycle',
@@ -38,10 +44,10 @@ export class Rule extends AbstractRule {
   };
 
   static readonly FAILURE_STRING_INTERFACE_HOOK = dedent`
-    Implementing ${LifecycleInterfaces.DoCheck} and ${LifecycleInterfaces.OnChanges} in a class is not recommended
+    Implementing ${AngularLifecycleInterfaces.DoCheck} and ${AngularLifecycleInterfaces.OnChanges} in a class is not recommended
   `;
   static readonly FAILURE_STRING_METHOD_HOOK = dedent`
-    Declaring ${LifecycleMethods.ngDoCheck} and ${LifecycleMethods.ngOnChanges} method in a class is not recommended
+    Declaring ${AngularLifecycleMethods.ngDoCheck} and ${AngularLifecycleMethods.ngOnChanges} method in a class is not recommended
   `;
 
   apply(sourceFile: SourceFile): RuleFailure[] {
@@ -55,9 +61,9 @@ const validateClassDeclaration = (context: WalkContext<void>, node: ClassDeclara
 };
 
 const validateInterfaces = (context: WalkContext<void>, node: ClassDeclaration): void => {
-  const declaredLifecycleInterfaces = getDeclaredLifecycleInterfaces(node);
-  const hasConflictingLifecycle = LIFECYCLE_INTERFACES.every(
-    lifecycleInterface => declaredLifecycleInterfaces.indexOf(lifecycleInterface) !== -1
+  const declaredAngularLifecycleInterfaces = getDeclaredAngularLifecycleInterfaces(node);
+  const hasConflictingLifecycle = LIFECYCLE_INTERFACES.every(lifecycleInterface =>
+    declaredAngularLifecycleInterfaces.includes(lifecycleInterface)
   );
 
   if (!hasConflictingLifecycle) return;
@@ -70,8 +76,8 @@ const validateInterfaces = (context: WalkContext<void>, node: ClassDeclaration):
 };
 
 const validateMethods = (context: WalkContext<void>, node: ClassDeclaration): void => {
-  const declaredLifecycleMethods = getDeclaredLifecycleMethods(node);
-  const hasConflictingLifecycle = LIFECYCLE_METHODS.every(lifecycleMethod => declaredLifecycleMethods.indexOf(lifecycleMethod) !== -1);
+  const declaredAngularLifecycleMethods = getDeclaredAngularLifecycleMethods(node);
+  const hasConflictingLifecycle = LIFECYCLE_METHODS.every(lifecycleMethod => declaredAngularLifecycleMethods.includes(lifecycleMethod));
 
   if (!hasConflictingLifecycle) return;
 

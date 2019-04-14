@@ -56,13 +56,11 @@ export abstract class SelectorPropertyBase extends AbstractRule {
 
   getValidSelectors(selectors: CssSelector[]): ReadonlyArray<string> {
     return selectors.reduce<ReadonlyArray<string>>((previousValue, currentValue) => {
-      const validSelectors = this.types
-        .reduce<ReadonlyArray<string>>((accumulator, type) => {
-          const value = currentValue[type];
+      const validSelectors = this.types.reduce<ReadonlyArray<string>>((accumulator, type) => {
+        const value = currentValue[type];
 
-          return value ? accumulator.concat(value) : accumulator;
-        }, [])
-        .filter(Boolean);
+        return value ? accumulator.concat(value) : accumulator;
+      }, []);
 
       return previousValue.concat(validSelectors);
     }, []);

@@ -1,6 +1,7 @@
 import { assert } from 'chai';
 import { ILinterOptions, IOptions, IRuleMetadata, Linter, LintResult, RuleFailure } from 'tslint/lib';
 import { SourceFile } from 'typescript/lib/typescript';
+import { escapeRegexp } from '../src/util/escapeRegexp';
 import { convertRuleOptions, loadRules } from './utils';
 
 interface Failure {
@@ -112,43 +113,54 @@ const lint = (ruleName: AssertConfig['ruleName'], source: string | SourceFile, r
 const parseInvalidSource = (
   source: AssertConfig['source'],
   message: ExpectedFailure['message'],
-  specialChar = '~'
+  specialChar = '~',
+  otherChars: string[] = []
 ): { failure: ExpectedFailure; source: AssertConfig['source'] } => {
-  let startPosition;
-  let line = 0;
+  let replacedSource: string;
+
+  if (otherChars.length === 0) {
+    replacedSource = source;
+  } else {
+    const patternAsStr = `[${otherChars.map(escapeRegexp).join('')}]`;
+    const pattern = new RegExp(patternAsStr, 'g');
+
+    replacedSource = source.replace(pattern, ' ');
+  }
+
   let col = 0;
+  let line = 0;
   let lastCol = 0;
   let lastLine = 0;
+  let startPosition;
 
-  for (let i = 0; i < source.length; i += 1) {
-    const currentSource = source[i];
-    const previousSource = source[i - 1];
+  for (const currentChar of replacedSource) {
+    if (currentChar === '\n') {
+      col = 0;
+      line++;
 
-    if (currentSource === specialChar && previousSource !== '/' && startPosition === undefined) {
+      continue;
+    }
+
+    col++;
+
+    if (currentChar !== specialChar) continue;
+
+    if (!startPosition) {
       startPosition = {
-        character: col,
+        character: col - 1,
         line: line - 1
       };
     }
 
-    if (currentSource === '\n') {
-      col = 0;
-      line += 1;
-    } else {
-      col += 1;
-    }
-
-    if (currentSource === specialChar && previousSource !== '/') {
-      lastCol = col;
-      lastLine = line - 1;
-    }
+    lastCol = col;
+    lastLine = line - 1;
   }
 
   const endPosition: SourcePosition = {
     character: lastCol,
     line: lastLine
   };
-  const newSource = source.replace(new RegExp(specialChar, 'g'), '');
+  const newSource = replacedSource.replace(new RegExp(escapeRegexp(specialChar), 'g'), '');
 
   return {
     failure: {
@@ -169,13 +181,11 @@ const parseInvalidSource = (
 export const assertAnnotated = (config: AssertConfig): RuleFailure[] | void => {
   const { message, options, ruleName, source: sourceConfig } = config;
 
-  if (message) {
-    const { failure, source } = parseInvalidSource(sourceConfig, message);
+  if (!message) return assertSuccess(ruleName, sourceConfig, options);
 
-    return assertFailure(ruleName, source, failure, options);
-  }
+  const { failure, source } = parseInvalidSource(sourceConfig, message);
 
-  return assertSuccess(ruleName, sourceConfig, options);
+  return assertFailure(ruleName, source, failure, options);
 };
 
 /**
@@ -186,7 +196,9 @@ export const assertMultipleAnnotated = (configs: AssertMultipleConfigs): RuleFai
   const { failures, options, ruleName, source } = configs;
 
   return failures.reduce<RuleFailure[]>((previousValue, currentValue, index) => {
-    const { failure: parsedFailure, source: parsedSource } = parseInvalidSource(source, currentValue.msg, currentValue.char);
+    const { msg: currentValueMsg, char: currentValueChar } = currentValue;
+    const otherChars = failures.map(failure => failure.char).filter(char => char !== currentValueChar);
+    const { failure: parsedFailure, source: parsedSource } = parseInvalidSource(source, currentValueMsg, currentValueChar, otherChars);
     const { character: parsedFailureEndChar, line: parsedFailureEndLine } = parsedFailure.endPosition;
     const { character: parsedFailureStartChar, line: parsedFailureStartLine } = parsedFailure.startPosition;
 
@@ -206,6 +218,12 @@ export const assertMultipleAnnotated = (configs: AssertMultipleConfigs): RuleFai
   }, []);
 };
 
+const assertFail = (expectedFailure: ExpectedFailure, ruleFailure: RuleFailure): void => {
+  assert.equal(expectedFailure.message, ruleFailure.getFailure(), "error messages don't match");
+  assert.deepEqual(expectedFailure.startPosition, ruleFailure.getStartPosition().getLineAndCharacter(), "start char doesn't match");
+  assert.deepEqual(expectedFailure.endPosition, ruleFailure.getEndPosition().getLineAndCharacter(), "end char doesn't match");
+};
+
 /**
  * A helper function used in specs to assert a failure (meaning that the code contains a lint error).
  * Consider using `assertAnnotated` instead.
@@ -221,7 +239,7 @@ export const assertMultipleAnnotated = (configs: AssertMultipleConfigs): RuleFai
 export const assertFailure = (
   ruleName: AssertConfig['ruleName'],
   source: string | SourceFile,
-  fail: ExpectedFailure,
+  expectedFailure: ExpectedFailure,
   options?: AssertConfig['options'],
   onlyNthFailure = 0
 ): RuleFailure[] => {
@@ -229,11 +247,9 @@ export const assertFailure = (
 
   assert(result.failures.length > 0, 'no failures');
 
-  const ruleFail = result.failures[onlyNthFailure];
+  const ruleFailure = result.failures[onlyNthFailure];
 
-  assert.equal(fail.message, ruleFail.getFailure(), "error messages don't match");
-  assert.deepEqual(fail.startPosition, ruleFail.getStartPosition().getLineAndCharacter(), "start char doesn't match");
-  assert.deepEqual(fail.endPosition, ruleFail.getEndPosition().getLineAndCharacter(), "end char doesn't match");
+  assertFail(expectedFailure, ruleFailure);
 
   return result.failures;
 };
@@ -250,18 +266,14 @@ export const assertFailure = (
 export const assertFailures = (
   ruleName: AssertConfig['ruleName'],
   source: string | SourceFile,
-  fails: ExpectedFailure[],
+  expectedFailures: ExpectedFailure[],
   options?: AssertConfig['options']
 ): void => {
   const result = lint(ruleName, source, options);
 
   assert(result.failures.length > 0, 'no failures');
 
-  result.failures.forEach((ruleFail, index) => {
-    assert.equal(fails[index].message, ruleFail.getFailure(), "error messages don't match");
-    assert.deepEqual(fails[index].startPosition, ruleFail.getStartPosition().getLineAndCharacter(), "start char doesn't match");
-    assert.deepEqual(fails[index].endPosition, ruleFail.getEndPosition().getLineAndCharacter(), "end char doesn't match");
-  });
+  result.failures.forEach((ruleFailure, index) => assertFail(expectedFailures[index], ruleFailure));
 };
 
 /**

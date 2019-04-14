@@ -5,7 +5,7 @@ import { arrayify, dedent } from 'tslint/lib/utils';
 import { SourceFile } from 'typescript';
 import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
-import { isNotNullOrUndefined } from './util/is-not-null-or-undefined';
+import { isNotNullOrUndefined } from './util/isNotNullOrUndefined';
 
 const OPTION_CHECK_ID = 'check-id';
 const OPTION_CHECK_TEXT = 'check-text';
@@ -201,7 +201,7 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
     this.visitors
       .filter(v => options.indexOf(v.getCheckOption()) !== -1)
       .map(v => v.visitAttr(ast, this))
-      .filter(Boolean)
+      .filter(isNotNullOrUndefined)
       .forEach(f =>
         this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
       );
@@ -212,7 +212,7 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
     this.visitors
       .filter(v => options.indexOf(v.getCheckOption()) !== -1)
       .map(v => v.visitBoundText(text, this))
-      .filter(Boolean)
+      .filter(isNotNullOrUndefined)
       .forEach(f =>
         this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
       );
@@ -223,7 +223,7 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
     this.visitors
       .filter(v => options.indexOf(v.getCheckOption()) !== -1)
       .map(v => v.visitElement(element, this))
-      .filter(Boolean)
+      .filter(isNotNullOrUndefined)
       .forEach(f =>
         this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
       );
@@ -234,7 +234,7 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
     this.visitors
       .filter(v => options.indexOf(v.getCheckOption()) !== -1)
       .map(v => v.visitText(text, this))
-      .filter(Boolean)
+      .filter(isNotNullOrUndefined)
       .forEach(f =>
         this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
       );

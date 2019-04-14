@@ -2,6 +2,7 @@
   "rules": {
     "class-name": true,
     "deprecation": true,
+    "file-name-casing": [true, "camel-case"],
     "no-console": [true, "debug", "log", "info", "time", "timeEnd", "trace"],
     "member-ordering": [
       true,
@@ -31,7 +32,6 @@
     "no-eval": true,
     "no-unused-expression": true,
     "no-var-keyword": true,
-    "triple-equals": true,
-    "variable-name": false
+    "triple-equals": true
   }
 }
