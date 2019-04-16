@@ -1,57 +1,93 @@
 import { ElementAst } from '@angular/compiler';
-import { IRuleMetadata, RuleFailure, Rules, Utils } from 'tslint/lib';
+import { IOptions, IRuleMetadata, RuleFailure } from 'tslint/lib';
+import { AbstractRule } from 'tslint/lib/rules';
+import { dedent } from 'tslint/lib/utils';
 import { SourceFile } from 'typescript/lib/typescript';
+import { ComponentMetadata } from './angular/metadata';
 import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
-import { mayContainChildComponent } from './util/mayContainChildComponent';
+import { isChildNodeOf } from './util/isChildNodeOf';
+import { objectKeys } from './util/objectKeys';
 
-interface ILabelForOptions {
-  labelComponents: string[];
-  labelAttributes: string[];
-  controlComponents: string[];
-}
-export class Rule extends Rules.AbstractRule {
-  static readonly metadata: IRuleMetadata = {
-    description: 'Checks if the label has associated for attribute or a form element',
-    optionExamples: [[true, { labelComponents: ['app-label'], labelAttributes: ['id'], controlComponents: ['app-input', 'app-select'] }]],
-    options: {
-      items: {
-        type: 'object',
-        properties: {
-          labelComponents: {
-            type: 'array',
-            items: {
-              type: 'string'
-            }
-          },
-          labelAttributes: {
-            type: 'array',
-            items: {
-              type: 'string'
-            }
-          },
-          controlComponents: {
-            type: 'array',
-            items: {
-              type: 'string'
-            }
-          }
-        }
-      },
-      type: 'array'
+const OPTION_CONTROL_COMPONENTS = 'controlComponents';
+const OPTION_LABEL_ATTRIBUTES = 'labelAttributes';
+const OPTION_LABEL_COMPONENTS = 'labelComponents';
+
+const OPTION_SCHEMA_VALUE = {
+  properties: {
+    items: {
+      type: 'string'
     },
-    optionsDescription: 'Add custom label, label attribute and controls',
-    rationale: Utils.dedent`
-    The label tag should either have a for attribute or should have associated control.
-    This rule supports two ways, either the label component should explicitly have a for attribute or a control nested inside the label component
-    It also supports adding custom control component and custom label component support.`,
+    type: 'array',
+    uniqueItems: true
+  },
+  type: 'object'
+};
+
+const DEFAULT_CONTROL_COMPONENTS = ['button', 'input', 'meter', 'output', 'progress', 'select', 'textarea'];
+const DEFAULT_LABEL_ATTRIBUTES = ['for', 'htmlFor'];
+const DEFAULT_LABEL_COMPONENTS = ['label'];
+
+type OptionKeys = typeof OPTION_CONTROL_COMPONENTS | typeof OPTION_LABEL_ATTRIBUTES | typeof OPTION_LABEL_COMPONENTS;
+
+type OptionDictionary = Readonly<Record<OptionKeys, ReadonlyArray<string>>>;
+
+const getReadableItems = (items: ReadonlyArray<string>): string => {
+  const { length: itemsLength } = items;
+
+  if (itemsLength === 1) return `"${items[0]}"`;
+
+  return `${items
+    .map(x => `"${x}"`)
+    .slice(0, itemsLength - 1)
+    .join(', ')} and "${[...items].pop()}"`;
+};
+
+export class Rule extends AbstractRule {
+  static readonly metadata: IRuleMetadata = {
+    description: 'Checks if a label component is associated with a form element',
+    optionExamples: [
+      true,
+      [
+        true,
+        {
+          [OPTION_CONTROL_COMPONENTS]: ['app-input']
+        }
+      ],
+      [
+        true,
+        {
+          [OPTION_CONTROL_COMPONENTS]: ['app-input', 'app-select'],
+          [OPTION_LABEL_ATTRIBUTES]: ['id'],
+          [OPTION_LABEL_COMPONENTS]: ['app-label']
+        }
+      ]
+    ],
+    options: {
+      additionalProperties: false,
+      properties: {
+        [OPTION_CONTROL_COMPONENTS]: OPTION_SCHEMA_VALUE,
+        [OPTION_LABEL_ATTRIBUTES]: OPTION_SCHEMA_VALUE,
+        [OPTION_LABEL_COMPONENTS]: OPTION_SCHEMA_VALUE
+      },
+      type: 'object'
+    },
+    optionsDescription: dedent`
+      An optional object with optional \`${OPTION_CONTROL_COMPONENTS}\`, \`${OPTION_LABEL_ATTRIBUTES}\` and \`${OPTION_LABEL_COMPONENTS}\` properties.
+
+      * \`${OPTION_CONTROL_COMPONENTS}\` - components that must be inside a label component. Default and non overridable values are
+      ${getReadableItems(DEFAULT_CONTROL_COMPONENTS)}.
+      * \`${OPTION_LABEL_ATTRIBUTES}\` - attributes that must be set on label components. Default and non overridable values are
+      ${getReadableItems(DEFAULT_LABEL_ATTRIBUTES)}.
+      * \`${OPTION_LABEL_COMPONENTS}\` - components that act like a label. Default and non overridable values are
+      ${getReadableItems(DEFAULT_LABEL_COMPONENTS)}.
+    `,
     ruleName: 'template-accessibility-label-for',
     type: 'functionality',
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'A form label must be associated with a control';
-  static readonly FORM_ELEMENTS = ['input', 'select', 'textarea'];
+  static readonly FAILURE_STRING = 'A label component must be associated with a form element';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
     const walkerConfig: NgWalkerConfig = { templateVisitorCtrl: TemplateVisitorCtrl };
@@ -59,33 +95,73 @@ export class Rule extends Rules.AbstractRule {
 
     return this.applyWithWalker(walker);
   }
+
+  isEnabled(): boolean {
+    return super.isEnabled() && this.areOptionsValid();
+  }
+
+  private areOptionsValid(): boolean {
+    const { length: ruleArgumentsLength } = this.ruleArguments;
+
+    if (ruleArgumentsLength === 0) return true;
+
+    if (ruleArgumentsLength > 1) return false;
+
+    const {
+      metadata: { options: ruleOptions }
+    } = Rule;
+    const [ruleArgument] = this.ruleArguments as ReadonlyArray<OptionDictionary>;
+    const ruleArgumentsKeys = objectKeys(ruleArgument);
+    const propertiesKeys = objectKeys(ruleOptions.properties as OptionDictionary);
+
+    return (
+      ruleArgumentsKeys.every(argumentKey => propertiesKeys.includes(argumentKey)) &&
+      ruleArgumentsKeys
+        .map(argumentKey => ruleArgument[argumentKey])
+        .every(argumentValue => Array.isArray(argumentValue) && argumentValue.length > 0)
+    );
+  }
 }
 
 class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
-  visitElement(element: ElementAst, context: any) {
+  private readonly controlComponents: ReadonlySet<string>;
+  private readonly labelAttributes: ReadonlySet<string>;
+  private readonly labelComponents: ReadonlySet<string>;
+
+  constructor(sourceFile: SourceFile, options: IOptions, context: ComponentMetadata, templateStart: number) {
+    super(sourceFile, options, context, templateStart);
+
+    const { controlComponents, labelAttributes, labelComponents } = (options.ruleArguments[0] || {}) as OptionDictionary;
+
+    this.controlComponents = new Set([...DEFAULT_CONTROL_COMPONENTS, ...controlComponents]);
+    this.labelAttributes = new Set([...DEFAULT_LABEL_ATTRIBUTES, ...labelAttributes]);
+    this.labelComponents = new Set([...DEFAULT_LABEL_COMPONENTS, ...labelComponents]);
+  }
+
+  visitElement(element: ElementAst, context: any): any {
     this.validateElement(element);
     super.visitElement(element, context);
   }
 
-  private validateElement(element: ElementAst) {
-    let { labelAttributes, labelComponents, controlComponents }: ILabelForOptions = this.getOptions() || {};
-    controlComponents = Rule.FORM_ELEMENTS.concat(controlComponents || []);
-    labelComponents = ['label'].concat(labelComponents || []);
-    labelAttributes = ['for'].concat(labelAttributes || []);
+  private hasControlComponentInsideElement(element: ElementAst): boolean {
+    return Array.from(this.controlComponents).some(controlComponentName => isChildNodeOf(element, controlComponentName));
+  }
 
-    if (labelComponents.indexOf(element.name) === -1) {
+  private hasValidAttrOrInput(element: ElementAst): boolean {
+    return [...element.attrs, ...element.inputs]
+      .map(attrOrInput => attrOrInput.name)
+      .some(attrOrInputName => this.labelAttributes.has(attrOrInputName));
+  }
+
+  private isLabelComponent(element: ElementAst): boolean {
+    return this.labelComponents.has(element.name);
+  }
+
+  private validateElement(element: ElementAst): void {
+    if (!this.isLabelComponent(element) || this.hasValidAttrOrInput(element) || this.hasControlComponentInsideElement(element)) {
       return;
     }
-    const hasForAttr = element.attrs.some(attr => labelAttributes.indexOf(attr.name) !== -1);
-    const hasForInput = element.inputs.some(input => {
-      return labelAttributes.indexOf(input.name) !== -1;
-    });
 
-    const hasImplicitFormElement = controlComponents.some(component => mayContainChildComponent(element, component));
-
-    if (hasForAttr || hasForInput || hasImplicitFormElement) {
-      return;
-    }
     const {
       sourceSpan: {
         end: { offset: endOffset },
