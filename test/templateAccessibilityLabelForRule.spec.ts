@@ -8,7 +8,7 @@ const {
 
 describe(ruleName, () => {
   describe('failure', () => {
-    it("should fail when label doesn't have for attribute", () => {
+    it('should fail if a label does not have a "for" attribute', () => {
       const source = `
         @Component({
           template: \`
@@ -16,8 +16,9 @@ describe(ruleName, () => {
             ~~~~~~~
           \`
         })
-        class Bar {}
+        class Test {}
       `;
+
       assertAnnotated({
         message: FAILURE_STRING,
         ruleName,
@@ -25,7 +26,7 @@ describe(ruleName, () => {
       });
     });
 
-    it("should fail when custom label doesn't have label attribute", () => {
+    it('should fail if a label component does not have a label attribute', () => {
       const source = `
         @Component({
           template: \`
@@ -33,46 +34,98 @@ describe(ruleName, () => {
             ~~~~~~~~~~~
           \`
         })
-        class Bar {}
+        class Test {}
       `;
+      const options = [
+        {
+          labelAttributes: ['id'],
+          labelComponents: ['app-label']
+        }
+      ];
+
       assertAnnotated({
         message: FAILURE_STRING,
+        options,
         ruleName,
-        source,
-        options: {
-          labelComponents: ['app-label'],
-          labelAttributes: ['id']
+        source
+      });
+    });
+
+    it('should fail if a label component does not have a control component inside it', () => {
+      const source = `
+        @Component({
+          template: \`
+            <app-label></app-label>
+            ~~~~~~~~~~~
+          \`
+        })
+        class Test {}
+      `;
+      const options = [
+        {
+          controlComponents: ['app-input'],
+          labelComponents: ['app-label']
         }
+      ];
+
+      assertAnnotated({
+        message: FAILURE_STRING,
+        options,
+        ruleName,
+        source
       });
     });
   });
 
   describe('success', () => {
-    it('should work when label has for attribute', () => {
+    it('should succeed if a label has "for" attribute', () => {
       const source = `
         @Component({
           template: \`
             <label for="id"></label>
+            <label for="{{id}}"></label>
             <label [attr.for]="id"></label>
           \`
         })
-        class Bar {}
+        class Test {}
       `;
+
       assertSuccess(ruleName, source);
     });
 
-    it('should work when label are associated implicitly', () => {
+    it('should succeed if a label component has a label attribute', () => {
+      const source = `
+        @Component({
+          template: \`
+            <app-label id="name"></app-label>
+            <app-label id="{{name}}"></app-label>
+            <app-label [id]="name"></app-label>
+          \`
+        })
+        class Test {}
+      `;
+      const options = [
+        {
+          labelAttributes: ['id'],
+          labelComponents: ['app-label']
+        }
+      ];
+
+      assertSuccess(ruleName, source, options);
+    });
+
+    it('should succeed if a label component has a control component inside it', () => {
       const source = `
         @Component({
           template: \`
             <label>
               Label
-              <input />
+              <input>
             </label>
 
             <label>
               Label
-              <span><input /></span>
+              <span><input></span>
             </label>
 
             <app-label>
@@ -82,46 +135,32 @@ describe(ruleName, () => {
             </app-label>
           \`
         })
-        class Bar {}
+        class Test {}
       `;
-      assertSuccess(ruleName, source, {
-        labelComponents: ['app-label'],
-        controlComponents: ['app-input']
-      });
+      const options = [
+        {
+          controlComponents: ['app-input'],
+          labelComponents: ['app-label']
+        }
+      ];
+
+      assertSuccess(ruleName, source, options);
     });
 
-    it("should fail when label doesn't have for attribute", () => {
+    it('should succeed if a label component is associated with a form element', () => {
       const source = `
         @Component({
           template: \`
-            <label>
-              <span>
-                <span>
-                  <input>
-                </span>
-              </span>
-            </label>
+            <ng-container *ngFor="let item of itemList; let i = index">
+              <label for="item-{{i}}">My label #{{i}</label>
+              <input type="text" id="item-{{i}}" [(ngModel)]="item.name">
+            </ng-container>
           \`
         })
-        class Bar {}
+        class Test {}
       `;
+
       assertSuccess(ruleName, source);
-    });
-
-    it('should work when custom label has label attribute', () => {
-      const source = `
-        @Component({
-          template: \`
-          <app-label id="name"></app-label>
-          <app-label [id]="name"></app-label>
-          \`
-        })
-        class Bar {}
-      `;
-      assertSuccess(ruleName, source, {
-        labelComponents: ['app-label'],
-        labelAttributes: ['id']
-      });
     });
   });
 });
