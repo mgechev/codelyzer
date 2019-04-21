@@ -5,7 +5,7 @@ import { SourceFile } from 'typescript/lib/typescript';
 import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 
-const PATTERN = /\s*ngFor.*\s*trackBy\s*:|\[ngForTrackBy\]\s*=\s*['"].*['"]/;
+const PATTERN = /trackBy\s*:|\[ngForTrackBy\]\s*=\s*['"].*['"]/;
 // current offset into the template
 let currentOffset = 0;
 
