@@ -213,5 +213,23 @@ describe(ruleName, () => {
       `;
       assertSuccess(ruleName, source);
     });
+
+    it('should succeed when trackBy function is on a different line', () => {
+      const source = `
+        @Component({
+          template: \`
+            <div *ngFor="
+              let item of [1, 2, 3];
+              let i = index;
+              trackBy : trackByFn
+            ">
+              {{ item }}
+            </div>
+          \`
+        })
+        class Bar {}
+      `;
+      assertSuccess(ruleName, source);
+    });
   });
 });
