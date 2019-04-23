@@ -55,5 +55,5 @@ export class ModuleMetadata {
 }
 
 export class InjectableMetadata {
-  constructor(readonly controller: ts.ClassDeclaration, readonly decorator: ts.Decorator) {}
+  constructor(readonly controller: ts.ClassDeclaration, readonly decorator: ts.Decorator, readonly providedIn?: string | ts.Expression) {}
 }

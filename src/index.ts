@@ -47,6 +47,7 @@ export { Rule as TemplateNoNegatedAsyncRule } from './templateNoNegatedAsyncRule
 export { Rule as TemplateUseTrackByFunctionRule } from './templateUseTrackByFunctionRule';
 export { Rule as UseComponentSelectorRule } from './useComponentSelectorRule';
 export { Rule as UseComponentViewEncapsulationRule } from './useComponentViewEncapsulationRule';
+export { Rule as UseInjectableProvidedInRule } from './useInjectableProvidedInRule';
 export { Rule as UseLifecycleInterfaceRule } from './useLifecycleInterfaceRule';
 export { Rule as UsePipeDecoratorRule } from './usePipeDecoratorRule';
 export { Rule as UsePipeTransformInterfaceRule } from './usePipeTransformInterfaceRule';
