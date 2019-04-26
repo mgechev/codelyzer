@@ -5,7 +5,7 @@ import { SourceFile } from 'typescript';
 import { NgWalker, NgWalkerConfig } from './angular/ngWalker';
 import { BasicTemplateAstVisitor } from './angular/templates/basicTemplateAstVisitor';
 
-const INVALID_BOX = /^\[(?!\()(.*)(?<!\))\]$/;
+const INVALID_PATTERN = /\[(.*)\]/;
 const VALID_CLOSE_BOX = ')]';
 const VALID_OPEN_BOX = '[(';
 
@@ -38,7 +38,7 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   }
 
   private validateEvent(ast: BoundEventAst): void {
-    const matches = ast.name.match(INVALID_BOX);
+    const matches = ast.name.match(INVALID_PATTERN);
 
     if (!matches) return;
 
