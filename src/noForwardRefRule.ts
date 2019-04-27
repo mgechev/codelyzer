@@ -22,13 +22,13 @@ export class Rule extends AbstractRule {
   }
 }
 
-const validateCallExpression = (context: WalkContext<void>, node: CallExpression): void => {
+const validateCallExpression = (context: WalkContext, node: CallExpression): void => {
   if (node.expression.getText() !== FORWARD_REF) return;
 
   context.addFailureAtNode(node, Rule.FAILURE_STRING);
 };
 
-const walk = (context: WalkContext<void>): void => {
+const walk = (context: WalkContext): void => {
   const { sourceFile } = context;
 
   const callback = (node: Node): void => {

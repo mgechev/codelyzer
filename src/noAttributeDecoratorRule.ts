@@ -31,27 +31,27 @@ export class Rule extends AbstractRule {
   }
 }
 
-const callbackHandler = (walkContext: WalkContext<void>, node: Node): void => {
+const callbackHandler = (walkContext: WalkContext, node: Node): void => {
   if (isConstructorDeclaration(node)) validateConstructor(walkContext, node);
 };
 
 const isAttributeDecorator = (decorator: Decorator): boolean => getDecoratorName(decorator) === ATTRIBUTE;
 
-const validateConstructor = (walkContext: WalkContext<void>, node: ConstructorDeclaration): void => {
+const validateConstructor = (walkContext: WalkContext, node: ConstructorDeclaration): void => {
   node.parameters.forEach(parameter => validateParameter(walkContext, parameter));
 };
 
-const validateDecorator = (walkContext: WalkContext<void>, decorator: Decorator): void => {
+const validateDecorator = (walkContext: WalkContext, decorator: Decorator): void => {
   if (!isAttributeDecorator(decorator)) return;
 
   walkContext.addFailureAtNode(decorator, Rule.FAILURE_STRING);
 };
 
-const validateParameter = (walkContext: WalkContext<void>, node: ParameterDeclaration): void => {
+const validateParameter = (walkContext: WalkContext, node: ParameterDeclaration): void => {
   createNodeArray(node.decorators).forEach(decorator => validateDecorator(walkContext, decorator));
 };
 
-const walk = (walkContext: WalkContext<void>): void => {
+const walk = (walkContext: WalkContext): void => {
   const { sourceFile } = walkContext;
 
   const callback = (node: Node): void => {
