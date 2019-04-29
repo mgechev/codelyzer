@@ -28,13 +28,13 @@ export class Rule extends AbstractRule {
   }
 }
 
-const validateClassDeclaration = (context: WalkContext<void>, node: ClassDeclaration): void => {
+const validateClassDeclaration = (context: WalkContext, node: ClassDeclaration): void => {
   if (!getPipeDecorator(node) || getDeclaredInterfaceName(node, PIPE_TRANSFORM)) return;
 
   context.addFailureAtNode(node, sprintf(Rule.FAILURE_STRING));
 };
 
-const walk = (context: WalkContext<void>): void => {
+const walk = (context: WalkContext): void => {
   const { sourceFile } = context;
 
   const callback = (node: Node): void => {

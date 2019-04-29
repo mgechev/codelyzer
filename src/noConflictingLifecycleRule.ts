@@ -55,12 +55,12 @@ export class Rule extends AbstractRule {
   }
 }
 
-const validateClassDeclaration = (context: WalkContext<void>, node: ClassDeclaration): void => {
+const validateClassDeclaration = (context: WalkContext, node: ClassDeclaration): void => {
   validateInterfaces(context, node);
   validateMethods(context, node);
 };
 
-const validateInterfaces = (context: WalkContext<void>, node: ClassDeclaration): void => {
+const validateInterfaces = (context: WalkContext, node: ClassDeclaration): void => {
   const declaredAngularLifecycleInterfaces = getDeclaredAngularLifecycleInterfaces(node);
   const hasConflictingLifecycle = LIFECYCLE_INTERFACES.every(lifecycleInterface =>
     declaredAngularLifecycleInterfaces.includes(lifecycleInterface)
@@ -75,7 +75,7 @@ const validateInterfaces = (context: WalkContext<void>, node: ClassDeclaration):
   context.addFailureAtNode(node, failure);
 };
 
-const validateMethods = (context: WalkContext<void>, node: ClassDeclaration): void => {
+const validateMethods = (context: WalkContext, node: ClassDeclaration): void => {
   const declaredAngularLifecycleMethods = getDeclaredAngularLifecycleMethods(node);
   const hasConflictingLifecycle = LIFECYCLE_METHODS.every(lifecycleMethod => declaredAngularLifecycleMethods.includes(lifecycleMethod));
 
@@ -88,7 +88,7 @@ const validateMethods = (context: WalkContext<void>, node: ClassDeclaration): vo
   context.addFailureAtNode(node, failure);
 };
 
-const walk = (context: WalkContext<void>): void => {
+const walk = (context: WalkContext): void => {
   const { sourceFile } = context;
 
   const callback = (node: Node): void => {

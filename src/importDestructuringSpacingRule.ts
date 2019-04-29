@@ -48,7 +48,7 @@ const getReplacements = (node: NamedImports, totalLeadingSpaces: number, totalTr
   return replacements;
 };
 
-const validateNamedImports = (context: WalkContext<void>, node: NamedImports): void => {
+const validateNamedImports = (context: WalkContext, node: NamedImports): void => {
   const nodeText = node.getText();
 
   if (isBlankOrMultilineImport(nodeText)) return;
@@ -65,7 +65,7 @@ const validateNamedImports = (context: WalkContext<void>, node: NamedImports): v
   context.addFailureAtNode(node, Rule.FAILURE_STRING, replacements);
 };
 
-const walk = (context: WalkContext<void>): void => {
+const walk = (context: WalkContext): void => {
   const { sourceFile } = context;
 
   const callback = (node: Node): void => {
