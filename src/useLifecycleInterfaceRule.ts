@@ -41,7 +41,7 @@ export class Rule extends AbstractRule {
   }
 }
 
-const validateClassDeclaration = (context: WalkContext<void>, node: ClassDeclaration): void => {
+const validateClassDeclaration = (context: WalkContext, node: ClassDeclaration): void => {
   const declaredLifecycleInterfaces = getDeclaredAngularLifecycleInterfaces(node);
   const declaredMethods = getDeclaredMethods(node);
 
@@ -62,7 +62,7 @@ const validateClassDeclaration = (context: WalkContext<void>, node: ClassDeclara
   }
 };
 
-const walk = (context: WalkContext<void>): void => {
+const walk = (context: WalkContext): void => {
   const { sourceFile } = context;
 
   const callback = (node: Node): void => {

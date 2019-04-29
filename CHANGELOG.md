@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.1"></a>
+
+## [5.0.1](https://github.com/mgechev/codelyzer/compare/5.0.0...5.0.1) (2019-04-25)
+
+### Bug Fixes
+
+- **rule:** detect trackBy function when ngFor spans multiple lines ([#813](https://github.com/mgechev/codelyzer/issues/813)) ([2260dfd](https://github.com/mgechev/codelyzer/commit/2260dfd))
+- **rule:** template-accessibility-label-for not recognizing options and interpolated values ([#812](https://github.com/mgechev/codelyzer/issues/812)) ([1fb5d8a](https://github.com/mgechev/codelyzer/commit/1fb5d8a))
+
 # [5.0.0](https://github.com/mgechev/codelyzer/compare/5.0.0-beta.2...5.0.0) (2019-03-27)
 
 ### BREAKING CHANGES
