@@ -1,14 +1,27 @@
 import { sprintf } from 'sprintf-js';
-import { IRuleMetadata, RuleFailure } from 'tslint';
+import { IRuleMetadata, RuleFailure, WalkContext } from 'tslint';
 import { AbstractRule } from 'tslint/lib/rules';
 import { dedent } from 'tslint/lib/utils';
-import { createNodeArray, Decorator, isClassDeclaration, SourceFile } from 'typescript';
-import { NgWalker } from './angular/ngWalker';
+import {
+  AccessorDeclaration,
+  createNodeArray,
+  Decorator,
+  forEachChild,
+  isAccessor,
+  isMethodDeclaration,
+  isParameterPropertyDeclaration,
+  isPropertyDeclaration,
+  MethodDeclaration,
+  Node,
+  ParameterPropertyDeclaration,
+  PropertyDeclaration,
+  SourceFile
+} from 'typescript';
+import { isNotNullOrUndefined } from './util/isNotNullOrUndefined';
 import {
   ANGULAR_CLASS_DECORATOR_MAPPER,
   AngularClassDecoratorKeys,
   AngularClassDecorators,
-  AngularInnerClassDecoratorKeys,
   AngularInnerClassDecorators,
   getDecoratorName,
   getNextToLastParentNode,
@@ -17,77 +30,83 @@ import {
 } from './util/utils';
 
 interface FailureParameters {
-  readonly className: string;
   readonly classDecoratorName: AngularClassDecoratorKeys;
-  readonly innerClassDecoratorName: AngularInnerClassDecoratorKeys;
 }
 
-export const getFailureMessage = (failureParameters: FailureParameters): string =>
-  sprintf(
-    Rule.FAILURE_STRING,
-    failureParameters.innerClassDecoratorName,
-    failureParameters.className,
-    failureParameters.classDecoratorName
-  );
+type DeclarationLike = AccessorDeclaration | MethodDeclaration | ParameterPropertyDeclaration | PropertyDeclaration;
+
+export const getFailureMessage = (failureParameters: FailureParameters): string => {
+  return sprintf(Rule.FAILURE_STRING, failureParameters.classDecoratorName);
+};
 
 export class Rule extends AbstractRule {
   static readonly metadata: IRuleMetadata = {
-    description: 'Ensures that classes use allowed decorator in its body.',
+    description: 'Ensures that classes use contextual decorators in its body.',
     options: null,
     optionsDescription: 'Not configurable.',
     rationale: dedent`
-      Some decorators can only be used in certain class types.
-      For example, an @${AngularInnerClassDecorators.Input} should not be used
-      in an @${AngularClassDecorators.Injectable} class.
+      Some decorators should only be used in certain class types. For example,
+      the decorator @${AngularInnerClassDecorators.Input}() should
+      not be used in a class decorated with @${AngularClassDecorators.Injectable}().
     `,
     ruleName: 'contextual-decorator',
     type: 'functionality',
     typescriptOnly: true
   };
 
-  static readonly FAILURE_STRING = 'The decorator "%s" is not allowed for class "%s" because it is decorated with "%s"';
+  static readonly FAILURE_STRING = 'Decorator out of context for "@%s()"';
 
   apply(sourceFile: SourceFile): RuleFailure[] {
-    const walker = new Walker(sourceFile, this.getOptions());
-
-    return this.applyWithWalker(walker);
+    return this.applyWithFunction(sourceFile, walk);
   }
 }
 
-class Walker extends NgWalker {
-  protected visitMethodDecorator(decorator: Decorator): void {
-    this.validateDecorator(decorator);
-    super.visitMethodDecorator(decorator);
-  }
+const callbackHandler = (walkContext: WalkContext, node: Node): void => {
+  if (isDeclarationLike(node)) validateDeclaration(walkContext, node);
+};
 
-  protected visitPropertyDecorator(decorator: Decorator): void {
-    this.validateDecorator(decorator);
-    super.visitPropertyDecorator(decorator);
-  }
+const getClassDecoratorName = (klass: Node): AngularClassDecoratorKeys | undefined => {
+  return createNodeArray(klass.decorators)
+    .map(getDecoratorName)
+    .filter(isNotNullOrUndefined)
+    .find(isAngularClassDecorator);
+};
 
-  private validateDecorator(decorator: Decorator): void {
-    const klass = getNextToLastParentNode(decorator);
+const isDeclarationLike = (node: Node): node is DeclarationLike => {
+  return isAccessor(node) || isMethodDeclaration(node) || isParameterPropertyDeclaration(node) || isPropertyDeclaration(node);
+};
 
-    if (!isClassDeclaration(klass) || !klass.name) return;
+const validateDeclaration = (walkContext: WalkContext, node: DeclarationLike): void => {
+  const klass = getNextToLastParentNode(node);
+  const classDecoratorName = getClassDecoratorName(klass);
 
-    const classDecoratorName = createNodeArray(klass.decorators)
-      .map(x => x.expression.getText())
-      .map(x => x.replace(/[^a-zA-Z]/g, ''))
-      .find(isAngularClassDecorator);
+  if (!classDecoratorName) return;
 
-    if (!classDecoratorName) return;
+  createNodeArray(node.decorators).forEach(decorator => validateDecorator(walkContext, decorator, classDecoratorName));
+};
 
-    const innerClassDecoratorName = getDecoratorName(decorator);
+const validateDecorator = (walkContext: WalkContext, node: Decorator, classDecoratorName: AngularClassDecoratorKeys): void => {
+  const decoratorName = getDecoratorName(node);
 
-    if (!innerClassDecoratorName || !isAngularInnerClassDecorator(innerClassDecoratorName)) return;
+  if (!decoratorName || !isAngularInnerClassDecorator(decoratorName)) return;
 
-    const allowedDecorators = ANGULAR_CLASS_DECORATOR_MAPPER.get(classDecoratorName);
+  const allowedDecorators = ANGULAR_CLASS_DECORATOR_MAPPER.get(classDecoratorName);
 
-    if (!allowedDecorators || allowedDecorators.has(innerClassDecoratorName)) return;
+  if (!allowedDecorators || allowedDecorators.has(decoratorName)) return;
 
-    const className = klass.name.getText();
-    const failure = getFailureMessage({ classDecoratorName, className, innerClassDecoratorName });
+  const failure = getFailureMessage({ classDecoratorName });
 
-    this.addFailureAtNode(decorator, failure);
-  }
-}
+  walkContext.addFailureAtNode(node, failure);
+};
+
+const walk = (walkContext: WalkContext): void => {
+  const { sourceFile } = walkContext;
+
+  const callback = (node: Node): void => {
+    callbackHandler(walkContext, node);
+
+    forEachChild(node, callback);
+  };
+
+  forEachChild(sourceFile, callback);
+};
