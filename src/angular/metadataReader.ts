@@ -107,7 +107,9 @@ export class MetadataReader {
   }
 
   protected readInjectableMetadata(d: ts.ClassDeclaration, dec: ts.Decorator): DirectiveMetadata {
-    return new InjectableMetadata(d, dec);
+    const providedInExpression = getDecoratorPropertyInitializer(dec, 'providedIn');
+
+    return new InjectableMetadata(d, dec, providedInExpression);
   }
 
   protected readComponentMetadata(d: ts.ClassDeclaration, dec: ts.Decorator): ComponentMetadata {
