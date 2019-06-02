@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.1.0"></a>
+
+# [5.1.0](https://github.com/mgechev/codelyzer/compare/5.0.1...5.1.0) (2019-06-02)
+
+### Bug Fixes
+
+- **rule:** 'contextual-decorator' - decorators with arguments, accessors and some missing decorators not being handled ([#798](https://github.com/mgechev/codelyzer/issues/798)) ([efbcb69](https://github.com/mgechev/codelyzer/commit/efbcb69))
+- **rule:** template-banana-in-box regex failing in some environments ([#820](https://github.com/mgechev/codelyzer/issues/820)) ([3b82574](https://github.com/mgechev/codelyzer/commit/3b82574))
+
+### Features
+
+- **rule:** add use-injectable-provided-in ([#814](https://github.com/mgechev/codelyzer/issues/814)) ([656816f](https://github.com/mgechev/codelyzer/commit/656816f))
+
 <a name="5.0.1"></a>
 
 ## [5.0.1](https://github.com/mgechev/codelyzer/compare/5.0.0...5.0.1) (2019-04-25)
