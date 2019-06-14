@@ -19,7 +19,7 @@
     "codelyzer": "5.1.0",
     "codemirror": "5.15.2",
     "rxjs": "5.5.12",
-    "tslint": "3.14.0",
+    "tslint": "3.15.1",
     "typescript": "2.9.2",
     "uglifyjs": "2.4.11",
     "zone.js": "0.6.26"
