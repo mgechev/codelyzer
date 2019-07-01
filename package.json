@@ -78,7 +78,7 @@
     "husky": "2.1.0",
     "js-yaml": "3.13.1",
     "json-stringify-pretty-compact": "2.0.0",
-    "lint-staged": "8.1.5",
+    "lint-staged": "8.2.1",
     "mocha": "6.1.4",
     "ncp": "2.0.0",
     "node-sass": "4.12.0",
