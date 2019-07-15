@@ -64,8 +64,8 @@
   "devDependencies": {
     "@angular/compiler": "7.2.14",
     "@angular/core": "7.2.14",
-    "@commitlint/cli": "8.0.0",
-    "@commitlint/config-angular": "8.0.0",
+    "@commitlint/cli": "8.1.0",
+    "@commitlint/config-angular": "8.1.0",
     "@types/chai": "4.1.7",
     "@types/mocha": "5.2.6",
     "@types/node": "11.13.8",
