@@ -75,7 +75,7 @@
     "chai": "4.2.0",
     "chai-spies": "0.7.1",
     "cross-env": "5.2.0",
-    "husky": "2.1.0",
+    "husky": "2.7.0",
     "js-yaml": "3.13.1",
     "json-stringify-pretty-compact": "2.0.0",
     "lint-staged": "9.2.0",
