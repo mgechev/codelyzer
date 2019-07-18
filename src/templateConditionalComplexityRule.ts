@@ -9,7 +9,14 @@ export class Rule extends Rules.AbstractRule {
   static readonly metadata: IRuleMetadata = {
     description: "The condition complexity shouldn't exceed a rational limit in a template.",
     optionExamples: [true, [true, 4]],
-    options: { items: { type: 'string' }, maxLength: 1, minLength: 0, type: 'array' },
+    options: {
+      items: {
+        type: 'string'
+      },
+      maxLength: 1,
+      minLength: 0,
+      type: 'array'
+    },
     optionsDescription: 'Determine the maximum number of Boolean operators allowed.',
     rationale: 'An important complexity complicates the tests and the maintenance.',
     ruleName: 'template-conditional-complexity',
