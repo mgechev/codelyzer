@@ -9,14 +9,7 @@ export class Rule extends Rules.AbstractRule {
   static readonly metadata: IRuleMetadata = {
     description: "The condition complexity shouldn't exceed a rational limit in a template.",
     optionExamples: [true, [true, 4]],
-    options: {
-      items: {
-        type: 'string'
-      },
-      maxLength: 1,
-      minLength: 0,
-      type: 'array'
-    },
+    options: { items: { type: 'string' }, maxLength: 1, minLength: 0, type: 'array' },
     optionsDescription: 'Determine the maximum number of Boolean operators allowed.',
     rationale: 'An important complexity complicates the tests and the maintenance.',
     ruleName: 'template-conditional-complexity',
@@ -54,7 +47,7 @@ export const getFailureMessage = (totalComplexity: number, maxComplexity = Rule.
 const getTotalComplexity = (ast: AST): number => {
   const expr = ((ast as ASTWithSource).source || '').replace(/\s/g, '');
   const expressionParser = new Parser(new Lexer());
-  const astWithSource = expressionParser.parseAction(expr, null);
+  const astWithSource = expressionParser.parseAction(expr, null, 0);
   const conditions: Binary[] = [];
   let totalComplexity = 0;
   let condition = astWithSource.ast as Binary;
