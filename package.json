@@ -62,8 +62,8 @@
   },
   "homepage": "https://github.com/mgechev/codelyzer#readme",
   "devDependencies": {
-    "@angular/compiler": "7.2.14",
-    "@angular/core": "7.2.14",
+    "@angular/compiler": "7.2.15",
+    "@angular/core": "7.2.15",
     "@commitlint/cli": "8.1.0",
     "@commitlint/config-angular": "8.1.0",
     "@types/chai": "4.1.7",
