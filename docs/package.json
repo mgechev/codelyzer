@@ -14,8 +14,8 @@
   "author": "Minko Gechev <mgechev@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@angular/compiler": "2.4.10",
-    "@angular/core": "2.4.10",
+    "@angular/compiler": "8.1.2",
+    "@angular/core": "8.1.2",
     "codelyzer": "5.1.0",
     "codemirror": "5.15.2",
     "rxjs": "5.5.12",
