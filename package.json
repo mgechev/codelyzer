@@ -67,7 +67,7 @@
     "@commitlint/cli": "8.1.0",
     "@commitlint/config-angular": "8.1.0",
     "@types/chai": "4.1.7",
-    "@types/mocha": "5.2.6",
+    "@types/mocha": "5.2.7",
     "@types/node": "11.13.8",
     "@types/node-sass": "4.11.0",
     "@types/sprintf-js": "1.1.2",
