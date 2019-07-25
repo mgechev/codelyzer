@@ -22,7 +22,7 @@
     "tslint": "3.15.1",
     "typescript": "2.9.2",
     "uglifyjs": "2.4.11",
-    "zone.js": "0.6.26"
+    "zone.js": "0.9.1"
   },
   "devDependencies": {
     "browserify": "16.3.0",
