@@ -5,14 +5,14 @@ optionsDescription: Not configurable.
 rationale: >
 
   Angular's async pipes emit null initially, prior to the observable emitting any values, or the promise resolving. This can cause
-  negations, like 
+  negations, like
 
   *ngIf="!(myConditional | async)" to thrash the layout and cause expensive side-effects like firing off XHR requests for a component which
   should not be shown.
-ruleName: templates-no-negated-async
+ruleName: template-no-negated-async
 type: functionality
 typescriptOnly: true
 layout: rule
-title: 'Rule: templates-no-negated-async'
+title: 'Rule: template-no-negated-async'
 optionsJSON: 'null'
 ---
