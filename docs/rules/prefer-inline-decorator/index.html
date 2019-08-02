@@ -1,62 +1,17 @@
 ---
-description: Ensures that declarations are on the same line as its decorator(s).
+description: Ensures that decorators are on the same line as the property/method it decorates.
 descriptionDetails: 'See more at https://angular.io/guide/styleguide#style-05-12.'
+hasFix: true
 optionExamples:
   - 'true'
-  - '[true, {"methods": false}]'
-  - |-
-    [
-      true,
-      {
-        "getters": {"safelist": ["Input"]},
-        "methods": true,
-        "parameter-properties": false,
-        "parameters": false,
-        "properties": {"safelist": ["Output", "MyCustomDecorator"]},
-        "setters": true
-      }
-    ]
+  - '[true, "HostListener"]'
+  - '[true, "Input", "MyCustomDecorator"]'
 options:
-  additionalProperties: false
-  properties:
-    getters: &ref_0
-      oneOf:
-        - type: boolean
-        - properties:
-            items:
-              type: string
-            type: array
-            uniqueItems: true
-          type: object
-    methods: *ref_0
-    parameter-properties: *ref_0
-    parameters: *ref_0
-    properties: *ref_0
-    setters: *ref_0
-  type: object
-optionsDescription: >-
-
-  An optional object with optional `getters`, `methods`, `parameter-properties`, `parameters`, `properties` and `setters` properties.
-
-
-  The properties can be specifed as booleans or as objects with the property `safelist` containing the names of the decorators that should
-  be ignored. Note that if a declaration is decorated with multiple decorators and at least one of them is present in `safelist`, this
-  declaration is ignored.
-
-
-  * `getters` - requires that getters are on the same line as its decorator(s). Defaults to `true`.
-
-  * `methods` - requires that methods are on the same line as its decorator(s). Defaults to `true`.
-
-  * `parameter-properties` - requires that parameter properties are on the same line as its decorator(s). Defaults to `true`.
-
-  * `parameters` - requires that parameters are on the same line as its decorator(s). Defaults to `true`.
-
-  * `properties` - requires that properties are on the same line as its decorator(s). Defaults to `true`.
-
-  * `setters` - requires that setters are on the same line as its decorator(s). Defaults to `true`.
-      
-rationale: Placing the decorator on the same line usually makes for shorter code and still easily identifies the declarations.
+  items:
+    - type: string
+  type: array
+optionsDescription: A list of blacklisted decorators.
+rationale: Placing the decorator on the same line usually makes for shorter code and still easily identifies the property/method.
 ruleName: prefer-inline-decorator
 type: style
 typescriptOnly: true
@@ -64,111 +19,11 @@ layout: rule
 title: 'Rule: prefer-inline-decorator'
 optionsJSON: |-
   {
-    "additionalProperties": false,
-    "properties": {
-      "getters": {
-        "oneOf": [
-          {
-            "type": "boolean"
-          },
-          {
-            "properties": {
-              "items": {
-                "type": "string"
-              },
-              "type": "array",
-              "uniqueItems": true
-            },
-            "type": "object"
-          }
-        ]
-      },
-      "methods": {
-        "oneOf": [
-          {
-            "type": "boolean"
-          },
-          {
-            "properties": {
-              "items": {
-                "type": "string"
-              },
-              "type": "array",
-              "uniqueItems": true
-            },
-            "type": "object"
-          }
-        ]
-      },
-      "parameter-properties": {
-        "oneOf": [
-          {
-            "type": "boolean"
-          },
-          {
-            "properties": {
-              "items": {
-                "type": "string"
-              },
-              "type": "array",
-              "uniqueItems": true
-            },
-            "type": "object"
-          }
-        ]
-      },
-      "parameters": {
-        "oneOf": [
-          {
-            "type": "boolean"
-          },
-          {
-            "properties": {
-              "items": {
-                "type": "string"
-              },
-              "type": "array",
-              "uniqueItems": true
-            },
-            "type": "object"
-          }
-        ]
-      },
-      "properties": {
-        "oneOf": [
-          {
-            "type": "boolean"
-          },
-          {
-            "properties": {
-              "items": {
-                "type": "string"
-              },
-              "type": "array",
-              "uniqueItems": true
-            },
-            "type": "object"
-          }
-        ]
-      },
-      "setters": {
-        "oneOf": [
-          {
-            "type": "boolean"
-          },
-          {
-            "properties": {
-              "items": {
-                "type": "string"
-              },
-              "type": "array",
-              "uniqueItems": true
-            },
-            "type": "object"
-          }
-        ]
+    "items": [
+      {
+        "type": "string"
       }
-    },
-    "type": "object"
+    ],
+    "type": "array"
   }
 ---
