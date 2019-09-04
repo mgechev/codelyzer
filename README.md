@@ -275,7 +275,7 @@ Below you can find a recommended configuration which is based on the [Angular St
   "template-banana-in-box": true,
   "template-no-negated-async": true,
   "use-lifecycle-interface": true,
-  "use-pipe-transform-interface": true
+  "use-pipe-transform-interface": true,
 
   // The rules component-class-suffix and directive-class-suffix have the following arguments:
   // [ENABLED, "suffix" | ["listOfSuffixes"]]
