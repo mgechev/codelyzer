@@ -158,6 +158,18 @@ describe(ruleName, () => {
       assertSuccess(ruleName, source);
     });
 
+    it('should work when click events are associated with key pseudo events', () => {
+      const source = `
+        @Component({
+          template: \`
+            <div (click)="onClick()" (keyup.enter)="onKeyup()"></div>
+          \`
+        })
+        class Bar {}
+      `;
+      assertSuccess(ruleName, source);
+    });
+
     it('should work when click events are passed to custom element', () => {
       const source = `
         @Component({

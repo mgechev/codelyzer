@@ -56,8 +56,9 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
     if (isInteractiveElement(el)) {
       return;
     }
-
-    const hasKeyEvent = el.outputs.some(output => output.name === 'keyup' || output.name === 'keydown' || output.name === 'keypress');
+    const hasKeyEvent = el.outputs.some(
+      output => output.name.startsWith('keyup') || output.name.startsWith('keydown') || output.name.startsWith('keypress')
+    );
 
     if (hasKeyEvent) {
       return;
