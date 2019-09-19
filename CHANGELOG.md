@@ -1,6 +1,16 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [5.1.1](https://github.com/mgechev/codelyzer/compare/5.1.0...5.1.1) (2019-09-19)
+
+### Bug Fixes
+
+- **deps:** pin dependencies ([#826](https://github.com/mgechev/codelyzer/issues/826)) ([fa40a63](https://github.com/mgechev/codelyzer/commit/fa40a63))
+- **deps:** update dependency codelyzer to v5 ([#847](https://github.com/mgechev/codelyzer/issues/847)) ([98deb50](https://github.com/mgechev/codelyzer/commit/98deb50))
+- **deps:** update dependency codemirror to v5.48.2 ([#839](https://github.com/mgechev/codelyzer/issues/839)) ([21504e1](https://github.com/mgechev/codelyzer/commit/21504e1))
+- **deps:** update dependency tslint to v3.15.1 ([#841](https://github.com/mgechev/codelyzer/issues/841)) ([fc80f4e](https://github.com/mgechev/codelyzer/commit/fc80f4e))
+- **rule:** template-click-events-have-key-events - support pseudo events ([#893](https://github.com/mgechev/codelyzer/issues/893)) ([5b57bd6](https://github.com/mgechev/codelyzer/commit/5b57bd6))
 
 <a name="5.1.0"></a>
 
