@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.1.2](https://github.com/mgechev/codelyzer/compare/5.1.1...5.1.2) (2019-09-26)
+
+### Bug Fixes
+
+- **angular:** update function call broken by Angular changes ([#857](https://github.com/mgechev/codelyzer/issues/857)) ([d916eb3](https://github.com/mgechev/codelyzer/commit/d916eb3))
+- **deps:** update dependency codelyzer to v5.1.1 ([#894](https://github.com/mgechev/codelyzer/issues/894)) ([2902c31](https://github.com/mgechev/codelyzer/commit/2902c31))
+- **deps:** update dependency codemirror to v5.49.0 ([#877](https://github.com/mgechev/codelyzer/issues/877)) ([76fa03e](https://github.com/mgechev/codelyzer/commit/76fa03e))
+
 ### [5.1.1](https://github.com/mgechev/codelyzer/compare/5.1.0...5.1.1) (2019-09-19)
 
 ### Bug Fixes
