@@ -33,14 +33,14 @@ const nonInteractiveElementRoleSchemas = elementRoleEntries.reduce((accumulator:
     accumulator.push(elementSchema);
   }
   return accumulator;
-}, []);
+}, []) as any[];
 
-const interactiveElementRoleSchemas = elementRoleEntries.reduce((accumulator: any[], [elementSchema, roleSet]: any) => {
+const interactiveElementRoleSchemas: any[] = elementRoleEntries.reduce((accumulator: any[], [elementSchema, roleSet]: any) => {
   if (Array.from(roleSet).some((role): boolean => interactiveRoles.has(role))) {
     accumulator.push(elementSchema);
   }
   return accumulator;
-}, []);
+}, []) as any[];
 
 const interactiveAXObjects = new Set(Array.from(AXObjects.keys()).filter(name => AXObjects.get(name).type === 'widget'));
 
@@ -49,7 +49,7 @@ const interactiveElementAXObjectSchemas = Array.from(elementAXObjects).reduce((a
     accumulator.push(elementSchema);
   }
   return accumulator;
-}, []);
+}, []) as any[];
 
 function checkIsInteractiveElement(el: ElementAst): boolean {
   function elementSchemaMatcher(elementSchema) {
