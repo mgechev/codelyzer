@@ -133,9 +133,9 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
 
     const { controlComponents, labelAttributes, labelComponents } = (options.ruleArguments[0] || {}) as OptionDictionary;
 
-    this.controlComponents = new Set([...DEFAULT_CONTROL_COMPONENTS, ...controlComponents]);
-    this.labelAttributes = new Set([...DEFAULT_LABEL_ATTRIBUTES, ...labelAttributes]);
-    this.labelComponents = new Set([...DEFAULT_LABEL_COMPONENTS, ...labelComponents]);
+    this.controlComponents = new Set([...DEFAULT_CONTROL_COMPONENTS.concat(controlComponents)]);
+    this.labelAttributes = new Set([...DEFAULT_LABEL_ATTRIBUTES.concat(labelAttributes)]);
+    this.labelComponents = new Set([...DEFAULT_LABEL_COMPONENTS.concat(labelComponents)]);
   }
 
   visitElement(element: ElementAst, context: any): any {

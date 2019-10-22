@@ -28,14 +28,14 @@ const interactiveRoles: any = new Set(
   })
 );
 
-const nonInteractiveElementRoleSchemas = elementRoleEntries.reduce((accumulator: any, [elementSchema, roleSet]: any) => {
+const nonInteractiveElementRoleSchemas = elementRoleEntries.reduce((accumulator: any[], [elementSchema, roleSet]: any) => {
   if (Array.from(roleSet).every((role): boolean => nonInteractiveRoles.has(role))) {
     accumulator.push(elementSchema);
   }
   return accumulator;
 }, []);
 
-const interactiveElementRoleSchemas = elementRoleEntries.reduce((accumulator: any, [elementSchema, roleSet]: any) => {
+const interactiveElementRoleSchemas = elementRoleEntries.reduce((accumulator: any[], [elementSchema, roleSet]: any) => {
   if (Array.from(roleSet).some((role): boolean => interactiveRoles.has(role))) {
     accumulator.push(elementSchema);
   }
@@ -44,7 +44,7 @@ const interactiveElementRoleSchemas = elementRoleEntries.reduce((accumulator: an
 
 const interactiveAXObjects = new Set(Array.from(AXObjects.keys()).filter(name => AXObjects.get(name).type === 'widget'));
 
-const interactiveElementAXObjectSchemas = Array.from(elementAXObjects).reduce((accumulator: any, [elementSchema, AXObjectSet]: any) => {
+const interactiveElementAXObjectSchemas = Array.from(elementAXObjects).reduce((accumulator: any[], [elementSchema, AXObjectSet]: any) => {
   if (Array.from(AXObjectSet).every((role): boolean => interactiveAXObjects.has(role))) {
     accumulator.push(elementSchema);
   }
