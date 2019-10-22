@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.2.0](https://github.com/mgechev/codelyzer/compare/5.1.2...5.2.0) (2019-10-22)
+
+### Bug Fixes
+
+- **deps:** update angular monorepo ([#867](https://github.com/mgechev/codelyzer/issues/867)) ([98ff423](https://github.com/mgechev/codelyzer/commit/98ff423))
+- **deps:** update dependency codelyzer to v5.1.2 ([#900](https://github.com/mgechev/codelyzer/issues/900)) ([9b0caec](https://github.com/mgechev/codelyzer/commit/9b0caec))
+
+### Features
+
+- support typescript 3.6 ([#915](https://github.com/mgechev/codelyzer/issues/915)) ([dcb0218](https://github.com/mgechev/codelyzer/commit/dcb0218))
+
 ### [5.1.2](https://github.com/mgechev/codelyzer/compare/5.1.1...5.1.2) (2019-09-26)
 
 ### Bug Fixes
