@@ -196,9 +196,9 @@ const callbackHandler = (walkContext: WalkContext<OptionDictionary>, node: Node)
     validateGetAccessorDeclaration(walkContext, node);
   } else if (methods && isMethodDeclaration(node)) {
     validateMethodDeclaration(walkContext, node);
-  } else if (parameters && isParameter(node) && !isParameterPropertyDeclaration(node)) {
+  } else if (parameters && isParameter(node) && !isParameterPropertyDeclaration(node, node.parent)) {
     validateParameterDeclaration(walkContext, node);
-  } else if (parameterProperties && isParameterPropertyDeclaration(node)) {
+  } else if (parameterProperties && isParameterPropertyDeclaration(node, node.parent)) {
     validateParameterPropertyDeclaration(walkContext, node);
   } else if (properties && isPropertyDeclaration(node)) {
     validatePropertyDeclaration(walkContext, node);

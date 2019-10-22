@@ -73,7 +73,7 @@ const getClassDecoratorName = (klass: Node): AngularClassDecoratorKeys | undefin
 };
 
 const isDeclarationLike = (node: Node): node is DeclarationLike => {
-  return isAccessor(node) || isMethodDeclaration(node) || isParameterPropertyDeclaration(node) || isPropertyDeclaration(node);
+  return isAccessor(node) || isMethodDeclaration(node) || isParameterPropertyDeclaration(node, node.parent) || isPropertyDeclaration(node);
 };
 
 const validateDeclaration = (walkContext: WalkContext, node: DeclarationLike): void => {
