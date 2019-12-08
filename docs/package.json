@@ -20,7 +20,7 @@
     "codemirror": "5.49.0",
     "rxjs": "6.5.3",
     "tslint": "5.20.0",
-    "typescript": "3.6.4",
+    "typescript": "3.7.3",
     "uglifyjs": "2.4.11",
     "zone.js": "0.10.2"
   },
