@@ -122,10 +122,10 @@
     "typescriptOnly": true
   },
   {
-    "description": "Ensures that classes use allowed decorator in its body.",
+    "description": "Ensures that classes use contextual decorators in its body.",
     "options": null,
     "optionsDescription": "Not configurable.",
-    "rationale": "Some decorators can only be used in certain class types. For example, an @Input should not be used in an @Injectable class.",
+    "rationale": "\nSome decorators should only be used in certain class types. For example,\nthe decorator @Input() should\nnot be used in a class decorated with @Injectable().\n    ",
     "ruleName": "contextual-decorator",
     "type": "functionality",
     "typescriptOnly": true
@@ -134,7 +134,7 @@
     "description": "Ensures that classes use allowed lifecycle method in its body.",
     "options": null,
     "optionsDescription": "Not configurable.",
-    "rationale": "Some lifecycle methods can only be used in certain class types. For example, ngOnInit() method should not be used in an @Injectable class.",
+    "rationale": "\nSome lifecycle methods can only be used in certain class types.\nFor example, ngOnInit() method should not be used\nin an @Injectable class.\n    ",
     "ruleName": "contextual-lifecycle",
     "type": "functionality",
     "typescriptOnly": true
@@ -211,7 +211,6 @@
     "description": "Disallows usage of @Attribute decorator.",
     "options": null,
     "optionsDescription": "Not configurable.",
-    "rationale": "@Attribute is considered bad practice. Use @Input instead.",
     "ruleName": "no-attribute-decorator",
     "type": "functionality",
     "typescriptOnly": true
@@ -240,7 +239,7 @@
     "descriptionDetails": "See more at https://angular.io/styleguide#style-06-03.",
     "options": null,
     "optionsDescription": "Not configurable.",
-    "rationale": "If you ever need to rename the property associated with @HostBinding or the method associated with\n    @HostListener, you can modify it in a single place.",
+    "rationale": "\nIf you ever need to rename the property associated\nwith @HostBinding or the method associated\nwith @HostListener, you can modify it in a single place.\n    ",
     "ruleName": "no-host-metadata-property",
     "type": "style",
     "typescriptOnly": true
@@ -278,7 +277,7 @@
     "descriptionDetails": "See more at https://angular.io/styleguide#style-05-12.",
     "options": null,
     "optionsDescription": "Not configurable.",
-    "rationale": "\n* It is easier and more readable to identify which properties in a class are inputs.\n* If you ever need to rename the property associated with @Input, you can modify it in a single place.\n* The metadata declaration attached to the directive is shorter and thus more readable.\n    ",
+    "rationale": "\n* It is easier and more readable to identify which properties in a class\nare inputs.\n* If you ever need to rename the property associated\nwith @Input, you can modify it in a single place.\n* The metadata declaration attached to the directive is shorter and thus more readable.\n    ",
     "ruleName": "no-inputs-metadata-property",
     "type": "style",
     "typescriptOnly": true
@@ -344,7 +343,7 @@
     "description": "Disallows usage of the `queries` metadata property.",
     "options": null,
     "optionsDescription": "Not configurable.",
-    "rationale": "If you ever need to rename the property associated with @ContentChild, @ContentChildren, @ViewChild or @ViewChildren, you can modify it in a single place.",
+    "rationale": "\nIf you ever need to rename the property associated\nwith @ContentChild,\n@ContentChildren, @ViewChild\nor @ViewChildren,\nyou can modify it in a single place.\n    ",
     "ruleName": "no-queries-metadata-property",
     "type": "style",
     "typescriptOnly": true
@@ -377,20 +376,142 @@
     "typescriptOnly": true
   },
   {
-    "description": "Ensures that decorators are on the same line as the property/method it decorates.",
+    "description": "Ensures that declarations are on the same line as its decorator(s).",
     "descriptionDetails": "See more at https://angular.io/guide/styleguide#style-05-12.",
-    "hasFix": true,
-    "optionExamples": [true, [true, "HostListener"], [true, "Input", "MyCustomDecorator"]],
-    "options": {
-      "items": [
+    "optionExamples": [
+      true,
+      [
+        true,
         {
-          "type": "string"
+          "methods": false
         }
       ],
-      "type": "array"
+      [
+        true,
+        {
+          "getters": {
+            "safelist": ["Input"]
+          },
+          "methods": true,
+          "parameter-properties": false,
+          "parameters": false,
+          "properties": {
+            "safelist": ["Output", "MyCustomDecorator"]
+          },
+          "setters": true
+        }
+      ]
+    ],
+    "options": {
+      "additionalProperties": false,
+      "properties": {
+        "getters": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "properties": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "type": "object"
+            }
+          ]
+        },
+        "methods": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "properties": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "type": "object"
+            }
+          ]
+        },
+        "parameter-properties": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "properties": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "type": "object"
+            }
+          ]
+        },
+        "parameters": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "properties": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "type": "object"
+            }
+          ]
+        },
+        "properties": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "properties": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "type": "object"
+            }
+          ]
+        },
+        "setters": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "properties": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "type": "object"
+            }
+          ]
+        }
+      },
+      "type": "object"
     },
-    "optionsDescription": "A list of blacklisted decorators.",
-    "rationale": "Placing the decorator on the same line usually makes for shorter code and still easily identifies the property/method.",
+    "optionsDescription": "\nAn optional object with optional `getters`, `methods`, `parameter-properties`, `parameters`, `properties` and `setters` properties.\n\nThe properties can be specifed as booleans or as objects with the property `safelist` containing the names of the decorators that should be ignored. Note that if a declaration is decorated with multiple decorators and at least one of them is present in `safelist`, this declaration is ignored.\n\n* `getters` - requires that getters are on the same line as its decorator(s). Defaults to `true`.\n* `methods` - requires that methods are on the same line as its decorator(s). Defaults to `true`.\n* `parameter-properties` - requires that parameter properties are on the same line as its decorator(s). Defaults to `true`.\n* `parameters` - requires that parameters are on the same line as its decorator(s). Defaults to `true`.\n* `properties` - requires that properties are on the same line as its decorator(s). Defaults to `true`.\n* `setters` - requires that setters are on the same line as its decorator(s). Defaults to `true`.\n    ",
+    "rationale": "Placing the decorator on the same line usually makes for shorter code and still easily identifies the declarations.",
     "ruleName": "prefer-inline-decorator",
     "type": "style",
     "typescriptOnly": true
@@ -441,45 +562,61 @@
     "typescriptOnly": true
   },
   {
-    "description": "Checks if the label has associated for attribute or a form element",
+    "description": "Checks if a label component is associated with a form element",
     "optionExamples": [
+      true,
       [
         true,
         {
-          "labelComponents": ["app-label"],
+          "controlComponents": ["app-input"]
+        }
+      ],
+      [
+        true,
+        {
+          "controlComponents": ["app-input", "app-select"],
           "labelAttributes": ["id"],
-          "controlComponents": ["app-input", "app-select"]
+          "labelComponents": ["app-label"]
         }
       ]
     ],
     "options": {
-      "items": {
-        "type": "object",
-        "properties": {
-          "labelComponents": {
-            "type": "array",
+      "additionalProperties": false,
+      "properties": {
+        "controlComponents": {
+          "properties": {
             "items": {
               "type": "string"
-            }
+            },
+            "type": "array",
+            "uniqueItems": true
           },
-          "labelAttributes": {
-            "type": "array",
+          "type": "object"
+        },
+        "labelAttributes": {
+          "properties": {
             "items": {
               "type": "string"
-            }
+            },
+            "type": "array",
+            "uniqueItems": true
           },
-          "controlComponents": {
-            "type": "array",
+          "type": "object"
+        },
+        "labelComponents": {
+          "properties": {
             "items": {
               "type": "string"
-            }
-          }
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "type": "object"
         }
       },
-      "type": "array"
+      "type": "object"
     },
-    "optionsDescription": "Add custom label, label attribute and controls",
-    "rationale": "\nThe label tag should either have a for attribute or should have associated control.\nThis rule supports two ways, either the label component should explicitly have a for attribute or a control nested inside the label component\nIt also supports adding custom control component and custom label component support.",
+    "optionsDescription": "\nAn optional object with optional `controlComponents`, `labelAttributes` and `labelComponents` properties.\n\n* `controlComponents` - components that must be inside a label component. Default and non overridable values are\n\"button\", \"input\", \"meter\", \"output\", \"progress\", \"select\" and \"textarea\".\n* `labelAttributes` - attributes that must be set on label components. Default and non overridable values are\n\"for\" and \"htmlFor\".\n* `labelComponents` - components that act like a label. Default and non overridable values are\n\"label\".\n    ",
     "ruleName": "template-accessibility-label-for",
     "type": "functionality",
     "typescriptOnly": true
@@ -663,6 +800,15 @@
     "typescriptOnly": true
   },
   {
+    "description": "Enforces classes decorated with @Injectable to use the 'providedIn' property.",
+    "options": null,
+    "optionsDescription": "Not configurable.",
+    "rationale": "Using the 'providedIn' property makes classes decorated with @Injectable tree shakeable.",
+    "ruleName": "use-injectable-provided-in",
+    "type": "functionality",
+    "typescriptOnly": true
+  },
+  {
     "description": "Ensures classes implement lifecycle interfaces corresponding to the declared lifecycle methods.",
     "descriptionDetails": "See more at https://angular.io/styleguide#style-09-01",
     "options": null,
@@ -673,7 +819,7 @@
     "typescriptOnly": true
   },
   {
-    "description": "Ensures that classes implementing PipeTransform interface use @Pipe decorator.",
+    "description": "\nEnsures that classes implementing PipeTransform interface\nuse @Pipe decorator.\n    ",
     "options": null,
     "optionsDescription": "Not configurable.",
     "ruleName": "use-pipe-decorator",

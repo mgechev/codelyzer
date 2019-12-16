@@ -1,41 +1,41 @@
 ---
-description: Checks if the label has associated for attribute or a form element
+description: Checks if a label component is associated with a form element
 optionExamples:
+  - 'true'
+  - '[true, {"controlComponents": ["app-input"]}]'
   - |-
     [
       true,
       {
-        "labelComponents": ["app-label"],
+        "controlComponents": ["app-input", "app-select"],
         "labelAttributes": ["id"],
-        "controlComponents": ["app-input", "app-select"]
+        "labelComponents": ["app-label"]
       }
     ]
 options:
-  items:
-    type: object
-    properties:
-      labelComponents:
-        type: array
+  additionalProperties: false
+  properties:
+    controlComponents: &ref_0
+      properties:
         items:
           type: string
-      labelAttributes:
         type: array
-        items:
-          type: string
-      controlComponents:
-        type: array
-        items:
-          type: string
-  type: array
-optionsDescription: 'Add custom label, label attribute and controls'
-rationale: >-
+        uniqueItems: true
+      type: object
+    labelAttributes: *ref_0
+    labelComponents: *ref_0
+  type: object
+optionsDescription: |-
 
-  The label tag should either have a for attribute or should have associated control.
+  An optional object with optional `controlComponents`, `labelAttributes` and `labelComponents` properties.
 
-  This rule supports two ways, either the label component should explicitly have a for attribute or a control nested inside the label
-  component
-
-  It also supports adding custom control component and custom label component support.
+  * `controlComponents` - components that must be inside a label component. Default and non overridable values are
+  "button", "input", "meter", "output", "progress", "select" and "textarea".
+  * `labelAttributes` - attributes that must be set on label components. Default and non overridable values are
+  "for" and "htmlFor".
+  * `labelComponents` - components that act like a label. Default and non overridable values are
+  "label".
+      
 ruleName: template-accessibility-label-for
 type: functionality
 typescriptOnly: true
@@ -43,29 +43,39 @@ layout: rule
 title: 'Rule: template-accessibility-label-for'
 optionsJSON: |-
   {
-    "items": {
-      "type": "object",
-      "properties": {
-        "labelComponents": {
-          "type": "array",
+    "additionalProperties": false,
+    "properties": {
+      "controlComponents": {
+        "properties": {
           "items": {
             "type": "string"
-          }
+          },
+          "type": "array",
+          "uniqueItems": true
         },
-        "labelAttributes": {
-          "type": "array",
+        "type": "object"
+      },
+      "labelAttributes": {
+        "properties": {
           "items": {
             "type": "string"
-          }
+          },
+          "type": "array",
+          "uniqueItems": true
         },
-        "controlComponents": {
-          "type": "array",
+        "type": "object"
+      },
+      "labelComponents": {
+        "properties": {
           "items": {
             "type": "string"
-          }
-        }
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "type": "object"
       }
     },
-    "type": "array"
+    "type": "object"
   }
 ---
