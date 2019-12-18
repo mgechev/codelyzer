@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.2.1](https://github.com/mgechev/codelyzer/compare/5.2.0...5.2.1) (2019-12-18)
+
+### Bug Fixes
+
+- **deps:** update dependency typescript to v3 ([#837](https://github.com/mgechev/codelyzer/issues/837)) ([49c2828](https://github.com/mgechev/codelyzer/commit/49c2828))
+- 3.6 compile time errors ([0066e93](https://github.com/mgechev/codelyzer/commit/0066e93))
+
 ## [5.2.0](https://github.com/mgechev/codelyzer/compare/5.1.2...5.2.0) (2019-10-22)
 
 ### Bug Fixes
