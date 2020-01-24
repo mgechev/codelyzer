@@ -12,7 +12,8 @@
 
 # codelyzer
 
-A set of tslint rules for static code analysis of Angular TypeScript projects.
+A set of tslint rules for static code analysis of Angular TypeScript projects.  
+(If you are using [ESLint](https://github.com/eslint/eslint) check out the new [`angular-eslint`](https://github.com/angular-eslint/angular-eslint) repository.
 
 You can run the static code analyzer over web apps, NativeScript, Ionic, etc.
 
