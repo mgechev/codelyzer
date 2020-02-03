@@ -9,7 +9,7 @@ const PIPE_TRANSFORM = 'PipeTransform';
 
 export class Rule extends AbstractRule {
   static readonly metadata: IRuleMetadata = {
-    description: `Ensures tht classes decorated with @${AngularClassDecorators.Pipe} implement ${PIPE_TRANSFORM} interface.`,
+    description: `Ensures that classes decorated with @${AngularClassDecorators.Pipe} implement ${PIPE_TRANSFORM} interface.`,
     options: null,
     optionsDescription: 'Not configurable.',
     rationale: 'Interfaces prescribe typed method signatures. Use those signatures to flag spelling and syntax mistakes.',
