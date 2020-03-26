@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.2.3](https://github.com/mgechev/codelyzer/compare/5.2.0...5.2.3) (2020-03-26)
+
+### Bug Fixes
+
+- add support for tslint 6.0+ ([#961](https://github.com/mgechev/codelyzer/issues/961)) ([ef5f158](https://github.com/mgechev/codelyzer/commit/ef5f158375c529634a3c0edb96addd3caf2550ac))
+- **deps:** update dependency codemirror to v5.51.0 ([#914](https://github.com/mgechev/codelyzer/issues/914)) ([87bbfd5](https://github.com/mgechev/codelyzer/commit/87bbfd5e274b28c807ec65e5b9cda37c1ec8faab))
+- **deps:** update dependency typescript to v3 ([#837](https://github.com/mgechev/codelyzer/issues/837)) ([49c2828](https://github.com/mgechev/codelyzer/commit/49c282857e62e3a7a91d165b67cb86d46831ddb2))
+- 3.6 compile time errors ([0066e93](https://github.com/mgechev/codelyzer/commit/0066e93d75de3d4a22562535e8c080cdaf0ae0bd))
+
 ### [5.2.1](https://github.com/mgechev/codelyzer/compare/5.2.0...5.2.1) (2020-03-03)
 
 ### Bug Fixes
