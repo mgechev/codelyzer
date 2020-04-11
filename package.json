@@ -97,7 +97,7 @@
     "tslint": "^5.0.0 || ^6.0.0"
   },
   "dependencies": {
-    "app-root-path": "^2.2.1",
+    "app-root-path": "^3.0.0",
     "aria-query": "^3.0.0",
     "axobject-query": "2.0.2",
     "css-selector-tokenizer": "^0.7.1",
