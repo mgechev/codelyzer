@@ -1,6 +1,5 @@
 import { CompileReflector, ExternalReference, Identifiers, getUrlScheme, syntaxError } from '@angular/compiler';
 import {
-  ANALYZE_FOR_ENTRY_COMPONENTS,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -105,7 +104,6 @@ export class JitReflector implements CompileReflector {
 
 function createBuiltinExternalReferencesMap() {
   const map = new Map<ExternalReference, any>();
-  map.set(Identifiers.ANALYZE_FOR_ENTRY_COMPONENTS, ANALYZE_FOR_ENTRY_COMPONENTS);
   map.set(Identifiers.ElementRef, ElementRef);
   map.set(Identifiers.NgModuleRef, NgModuleRef);
   map.set(Identifiers.ViewContainerRef, ViewContainerRef);
