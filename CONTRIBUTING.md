@@ -12,7 +12,7 @@ today! As a contributor, here are the guidelines we would like you to follow:
 
 ## <a name="question"></a> Got a Question or Problem?
 
-Please, do not open issues for the general support questions as we want to keep GitHub issues for bug reports and feature requests. You've got much better chances of getting your question answered on [StackOverflow](stackoverflow.com/questions/tagged/codelyzer) where the questions should be tagged with tag `codelyzer`.
+Please, do not open issues for the general support questions as we want to keep GitHub issues for bug reports and feature requests. You've got much better chances of getting your question answered on [StackOverflow](https://stackoverflow.com/questions/tagged/codelyzer) where the questions should be tagged with tag `codelyzer`.
 
 StackOverflow is a much better place to ask questions since:
 
