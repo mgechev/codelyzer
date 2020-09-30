@@ -293,10 +293,10 @@ describe('failure', () => {
         ruleName: 'angular-whitespace',
         failures: [
           { char: '~', msg: 'Missing whitespace in interpolation start; expecting {{ expr }}' },
-          { char: '^', msg: 'Missing whitespace in interpolation end; expecting {{ expr }}' }
+          { char: '^', msg: 'Missing whitespace in interpolation end; expecting {{ expr }}' },
         ],
         source,
-        options: ['check-interpolation']
+        options: ['check-interpolation'],
       });
     });
 
@@ -314,7 +314,7 @@ describe('failure', () => {
         ruleName: 'angular-whitespace',
         message: 'Missing whitespace in interpolation start; expecting {{ expr }}',
         source,
-        options: ['check-interpolation']
+        options: ['check-interpolation'],
       });
     });
 
@@ -333,12 +333,15 @@ describe('failure', () => {
           ruleName: 'angular-whitespace',
           failures: [
             { char: '~', msg: 'Missing whitespace in interpolation start; expecting {{ expr }}' },
-            { char: '^', msg: 'Missing whitespace in interpolation end; expecting {{ expr }}' }
+            { char: '^', msg: 'Missing whitespace in interpolation end; expecting {{ expr }}' },
           ],
           source,
-          options: ['check-interpolation']
+          options: ['check-interpolation'],
         });
-        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+        const replacement = Replacement.applyFixes(
+          source,
+          failures.map((f) => f.getFix()!)
+        );
 
         expect(replacement).to.eq(`
           @Component({
@@ -368,12 +371,15 @@ describe('failure', () => {
           ruleName: 'angular-whitespace',
           failures: [
             { char: '~', msg: 'Missing whitespace in interpolation start; expecting {{ expr }}' },
-            { char: '^', msg: 'Missing whitespace in interpolation end; expecting {{ expr }}' }
+            { char: '^', msg: 'Missing whitespace in interpolation end; expecting {{ expr }}' },
           ],
           source,
-          options: ['check-interpolation']
+          options: ['check-interpolation'],
         });
-        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+        const replacement = Replacement.applyFixes(
+          source,
+          failures.map((f) => f.getFix()!)
+        );
 
         expect(replacement).to.eq(`
           @Component({
@@ -411,12 +417,15 @@ describe('failure', () => {
             { char: '~', msg: 'Missing whitespace in interpolation start; expecting {{ expr }}' },
             { char: '-', msg: 'Missing whitespace in interpolation end; expecting {{ expr }}' },
             { char: '^', msg: 'Extra whitespace in interpolation start; expecting {{ expr }}' },
-            { char: '#', msg: 'Extra whitespace in interpolation end; expecting {{ expr }}' }
+            { char: '#', msg: 'Extra whitespace in interpolation end; expecting {{ expr }}' },
           ],
           source,
-          options: ['check-interpolation']
+          options: ['check-interpolation'],
         });
-        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+        const replacement = Replacement.applyFixes(
+          source,
+          failures.map((f) => f.getFix()!)
+        );
 
         expect(replacement).to.eq(`
           @Component({
@@ -449,12 +458,15 @@ describe('failure', () => {
           ruleName: 'angular-whitespace',
           message: 'Missing whitespace in interpolation start; expecting {{ expr }}',
           source,
-          options: ['check-interpolation']
+          options: ['check-interpolation'],
         });
 
         if (!Array.isArray(failures)) return;
 
-        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+        const replacement = Replacement.applyFixes(
+          source,
+          failures.map((f) => f.getFix()!)
+        );
 
         expect(replacement).to.eq(`
           @Component({
@@ -481,12 +493,15 @@ describe('failure', () => {
           ruleName: 'angular-whitespace',
           failures: [
             { char: '~', msg: 'Extra whitespace in interpolation start; expecting {{ expr }}' },
-            { char: '^', msg: 'Extra whitespace in interpolation end; expecting {{ expr }}' }
+            { char: '^', msg: 'Extra whitespace in interpolation end; expecting {{ expr }}' },
           ],
           source,
-          options: ['check-interpolation']
+          options: ['check-interpolation'],
         });
-        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+        const replacement = Replacement.applyFixes(
+          source,
+          failures.map((f) => f.getFix()!)
+        );
 
         expect(replacement).to.eq(`
           @Component({
@@ -515,7 +530,7 @@ describe('failure', () => {
         ruleName: 'angular-whitespace',
         message: "Missing whitespace after semicolon; expecting '; expr'",
         source,
-        options: ['check-semicolon']
+        options: ['check-semicolon'],
       });
     });
 
@@ -532,7 +547,7 @@ describe('failure', () => {
         ruleName: 'angular-whitespace',
         message: "Missing whitespace after semicolon; expecting '; expr'",
         source,
-        options: ['check-semicolon']
+        options: ['check-semicolon'],
       });
     });
 
@@ -549,7 +564,7 @@ describe('failure', () => {
         ruleName: 'angular-whitespace',
         message: "Missing whitespace after semicolon; expecting '; expr'",
         source,
-        options: ['check-semicolon']
+        options: ['check-semicolon'],
       });
     });
 
@@ -566,7 +581,7 @@ describe('failure', () => {
         ruleName: 'angular-whitespace',
         message: "Missing whitespace after semicolon; expecting '; expr'",
         source,
-        options: ['check-semicolon']
+        options: ['check-semicolon'],
       });
     });
 
@@ -584,12 +599,15 @@ describe('failure', () => {
           ruleName: 'angular-whitespace',
           message: "Missing whitespace after semicolon; expecting '; expr'",
           source,
-          options: ['check-semicolon']
+          options: ['check-semicolon'],
         });
 
         if (!Array.isArray(failures)) return;
 
-        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+        const replacement = Replacement.applyFixes(
+          source,
+          failures.map((f) => f.getFix()!)
+        );
 
         expect(replacement).to.eq(`
           @Component({
@@ -614,12 +632,15 @@ describe('failure', () => {
           ruleName: 'angular-whitespace',
           message: "Missing whitespace after semicolon; expecting '; expr'",
           source,
-          options: ['check-semicolon']
+          options: ['check-semicolon'],
         });
 
         if (!Array.isArray(failures)) return;
 
-        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+        const replacement = Replacement.applyFixes(
+          source,
+          failures.map((f) => f.getFix()!)
+        );
 
         expect(replacement).to.eq(`
           @Component({
@@ -644,12 +665,15 @@ describe('failure', () => {
           ruleName: 'angular-whitespace',
           message: "Missing whitespace after semicolon; expecting '; expr'",
           source,
-          options: ['check-semicolon']
+          options: ['check-semicolon'],
         });
 
         if (!Array.isArray(failures)) return;
 
-        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+        const replacement = Replacement.applyFixes(
+          source,
+          failures.map((f) => f.getFix()!)
+        );
 
         expect(replacement).to.eq(`
           @Component({
@@ -675,12 +699,15 @@ describe('failure', () => {
           ruleName: 'angular-whitespace',
           failures: [
             { char: '~', msg: "Missing whitespace after semicolon; expecting '; expr'" },
-            { char: '^', msg: "Missing whitespace after semicolon; expecting '; expr'" }
+            { char: '^', msg: "Missing whitespace after semicolon; expecting '; expr'" },
           ],
           source,
-          options: ['check-semicolon']
+          options: ['check-semicolon'],
         });
-        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+        const replacement = Replacement.applyFixes(
+          source,
+          failures.map((f) => f.getFix()!)
+        );
 
         expect(replacement).to.eq(`
           @Component({
@@ -707,13 +734,16 @@ describe('failure', () => {
           ruleName: 'angular-whitespace',
           failures: [
             { char: '~', msg: "Missing whitespace after semicolon; expecting '; expr'" },
-            { char: '^', msg: "Missing whitespace after semicolon; expecting '; expr'" }
+            { char: '^', msg: "Missing whitespace after semicolon; expecting '; expr'" },
           ],
           source,
-          options: ['check-semicolon']
+          options: ['check-semicolon'],
         });
 
-        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+        const replacement = Replacement.applyFixes(
+          source,
+          failures.map((f) => f.getFix()!)
+        );
 
         expect(replacement).to.eq(`
           @Component({
@@ -740,12 +770,15 @@ describe('failure', () => {
           ruleName: 'angular-whitespace',
           message: "Missing whitespace after semicolon; expecting '; expr'",
           source,
-          options: ['check-semicolon']
+          options: ['check-semicolon'],
         });
 
         if (!Array.isArray(failures)) return;
 
-        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+        const replacement = Replacement.applyFixes(
+          source,
+          failures.map((f) => f.getFix()!)
+        );
 
         expect(replacement).to.eq(`
           @Component({
@@ -772,12 +805,15 @@ describe('failure', () => {
           ruleName: 'angular-whitespace',
           message: "Missing whitespace after semicolon; expecting '; expr'",
           source,
-          options: ['check-semicolon']
+          options: ['check-semicolon'],
         });
 
         if (!Array.isArray(failures)) return;
 
-        const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+        const replacement = Replacement.applyFixes(
+          source,
+          failures.map((f) => f.getFix()!)
+        );
 
         expect(replacement).to.eq(`
           @Component({
@@ -811,12 +847,15 @@ describe('pipes', () => {
       ruleName: 'angular-whitespace',
       message: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".',
       source,
-      options: ['check-pipe']
+      options: ['check-pipe'],
     });
 
     if (!Array.isArray(failures)) return;
 
-    const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+    const replacement = Replacement.applyFixes(
+      source,
+      failures.map((f) => f.getFix()!)
+    );
 
     expect(replacement).to.eq(`
       @Component({
@@ -849,12 +888,15 @@ describe('pipes', () => {
       ruleName: 'angular-whitespace',
       message: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".',
       source,
-      options: ['check-pipe']
+      options: ['check-pipe'],
     });
 
     if (!Array.isArray(failures)) return;
 
-    const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+    const replacement = Replacement.applyFixes(
+      source,
+      failures.map((f) => f.getFix()!)
+    );
 
     expect(replacement).to.eq(`
       @Component({
@@ -887,12 +929,15 @@ describe('pipes', () => {
       ruleName: 'angular-whitespace',
       message: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".',
       source,
-      options: ['check-pipe']
+      options: ['check-pipe'],
     });
 
     if (!Array.isArray(failures)) return;
 
-    const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+    const replacement = Replacement.applyFixes(
+      source,
+      failures.map((f) => f.getFix()!)
+    );
 
     expect(replacement).to.eq(`
       @Component({
@@ -925,12 +970,15 @@ describe('pipes', () => {
       ruleName: 'angular-whitespace',
       message: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".',
       source,
-      options: ['check-pipe']
+      options: ['check-pipe'],
     });
 
     if (!Array.isArray(failures)) return;
 
-    const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+    const replacement = Replacement.applyFixes(
+      source,
+      failures.map((f) => f.getFix()!)
+    );
 
     expect(replacement).to.eq(`
       @Component({
@@ -963,12 +1011,15 @@ describe('pipes', () => {
       ruleName: 'angular-whitespace',
       failures: [
         { char: '~', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".' },
-        { char: '^', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".' }
+        { char: '^', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".' },
       ],
       source,
-      options: ['check-pipe']
+      options: ['check-pipe'],
     });
-    const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+    const replacement = Replacement.applyFixes(
+      source,
+      failures.map((f) => f.getFix()!)
+    );
 
     expect(replacement).to.eq(`
       @Component({
@@ -1001,12 +1052,15 @@ describe('pipes', () => {
       ruleName: 'angular-whitespace',
       message: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".',
       source,
-      options: ['check-pipe']
+      options: ['check-pipe'],
     });
 
     if (!Array.isArray(failures)) return;
 
-    const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+    const replacement = Replacement.applyFixes(
+      source,
+      failures.map((f) => f.getFix()!)
+    );
 
     expect(replacement).to.eq(`
       @Component({
@@ -1041,12 +1095,15 @@ describe('pipes', () => {
       ruleName: 'angular-whitespace',
       message: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".',
       source,
-      options: ['check-pipe']
+      options: ['check-pipe'],
     });
 
     if (!Array.isArray(failures)) return;
 
-    const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+    const replacement = Replacement.applyFixes(
+      source,
+      failures.map((f) => f.getFix()!)
+    );
 
     expect(replacement).to.eq(`
       @Component({
@@ -1093,12 +1150,15 @@ describe('angular-whitespace multiple checks', () => {
         ruleName: 'angular-whitespace',
         failures: [
           { char: '~', msg: 'Missing whitespace in interpolation start; expecting {{ expr }}' },
-          { char: '^', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".' }
+          { char: '^', msg: 'The pipe operator should be surrounded by one space on each side, i.e. " | ".' },
         ],
         source,
-        options: ['check-interpolation', 'check-pipe']
+        options: ['check-interpolation', 'check-pipe'],
       });
-      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+      const replacement = Replacement.applyFixes(
+        source,
+        failures.map((f) => f.getFix()!)
+      );
 
       expect(replacement).to.eq(`
         @Component({

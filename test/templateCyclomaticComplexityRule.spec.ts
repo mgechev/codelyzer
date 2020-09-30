@@ -2,7 +2,7 @@ import { getFailureMessage, Rule } from '../src/templateCyclomaticComplexityRule
 import { assertAnnotated, assertSuccess } from './testHelper';
 
 const {
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {
@@ -31,7 +31,7 @@ describe(ruleName, () => {
       assertAnnotated({
         message: getFailureMessage(),
         ruleName,
-        source
+        source,
       });
     });
 
@@ -70,7 +70,7 @@ describe(ruleName, () => {
         message: getFailureMessage(6),
         options: [6],
         ruleName,
-        source
+        source,
       });
     });
   });

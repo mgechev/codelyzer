@@ -20,7 +20,7 @@ export class Rule extends AbstractRule {
     rationale: 'Omit the component selector makes debugging difficult.',
     ruleName: 'use-component-selector',
     type: 'maintainability',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = 'The selector of the component "%s" is mandatory';
@@ -42,7 +42,7 @@ class Walker extends NgWalker {
     const {
       decorator: metadataDecorator,
       controller: { name: controllerName },
-      selector: metadataSelector
+      selector: metadataSelector,
     } = metadata;
 
     if (metadataSelector || !controllerName) return;

@@ -5,7 +5,7 @@ import { assertFailure } from './testHelper';
 const {
   FAILURE_STRING_ATTR,
   FAILURE_STRING_TEXT,
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {
@@ -25,7 +25,7 @@ describe(ruleName, () => {
           message: FAILURE_STRING_ATTR,
           options: ['check-id'],
           ruleName,
-          source
+          source,
         });
       });
 
@@ -43,7 +43,7 @@ describe(ruleName, () => {
           message: FAILURE_STRING_ATTR,
           options: ['check-id'],
           ruleName,
-          source
+          source,
         });
       });
 
@@ -61,7 +61,7 @@ describe(ruleName, () => {
           message: FAILURE_STRING_ATTR,
           options: ['check-id'],
           ruleName,
-          source
+          source,
         });
       });
     });
@@ -81,7 +81,7 @@ describe(ruleName, () => {
           message: FAILURE_STRING_TEXT,
           options: ['check-text'],
           ruleName,
-          source
+          source,
         });
       });
 
@@ -102,7 +102,7 @@ describe(ruleName, () => {
           message: FAILURE_STRING_TEXT,
           options: ['check-text'],
           ruleName,
-          source
+          source,
         });
       });
 
@@ -122,13 +122,13 @@ describe(ruleName, () => {
           {
             endPosition: {
               character: 12,
-              line: 5
+              line: 5,
             },
             message: FAILURE_STRING_TEXT,
             startPosition: {
               character: 34,
-              line: 3
-            }
+              line: 3,
+            },
           },
           ['check-text']
         );
@@ -148,7 +148,7 @@ describe(ruleName, () => {
           message: FAILURE_STRING_TEXT,
           options: ['check-text'],
           ruleName,
-          source
+          source,
         });
       });
 
@@ -166,7 +166,7 @@ describe(ruleName, () => {
           message: FAILURE_STRING_TEXT,
           options: ['check-text'],
           ruleName,
-          source
+          source,
         });
       });
 
@@ -186,13 +186,13 @@ describe(ruleName, () => {
           {
             endPosition: {
               character: 12,
-              line: 5
+              line: 5,
             },
             message: FAILURE_STRING_TEXT,
             startPosition: {
               character: 34,
-              line: 3
-            }
+              line: 3,
+            },
           },
           ['check-text']
         );
@@ -218,13 +218,13 @@ describe(ruleName, () => {
           {
             endPosition: {
               character: 12,
-              line: 9
+              line: 9,
             },
             message: FAILURE_STRING_TEXT,
             startPosition: {
               character: 19,
-              line: 7
-            }
+              line: 7,
+            },
           },
           ['check-text']
         );

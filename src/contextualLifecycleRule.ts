@@ -14,7 +14,7 @@ import {
   getClassName,
   getDecoratorName,
   isAngularClassDecorator,
-  isAngularLifecycleMethod
+  isAngularLifecycleMethod,
 } from './util/utils';
 
 interface FailureParameters {
@@ -38,7 +38,7 @@ export class Rule extends AbstractRule {
     `,
     ruleName: 'contextual-lifecycle',
     type: 'functionality',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = 'The method "%s" is not allowed for class "%s" because it is decorated with "%s"';

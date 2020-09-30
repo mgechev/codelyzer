@@ -2,7 +2,7 @@ import { getFailureMessage, Rule } from '../src/noOutputRenameRule';
 import { assertAnnotated, assertSuccess } from './testHelper';
 
 const {
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {
@@ -20,7 +20,7 @@ describe(ruleName, () => {
       assertAnnotated({
         message: getFailureMessage(),
         ruleName,
-        source
+        source,
       });
     });
 

@@ -10,9 +10,9 @@ const roleKeys: any = <string[]>Array.from(roles.keys());
 const elementRoleEntries = Array.from(elementRoles);
 
 const nonInteractiveRoles = new Set(
-  roleKeys.filter(name => {
+  roleKeys.filter((name) => {
     const role = roles.get(name);
-    return !role.abstract && !role.superClass.some(classes => classes.indexOf('widget') !== 0);
+    return !role.abstract && !role.superClass.some((classes) => classes.indexOf('widget') !== 0);
   })
 );
 
@@ -21,10 +21,10 @@ const interactiveRoles: any = new Set(
     ...roleKeys,
     // 'toolbar' does not descend from widget, but it does support
     // aria-activedescendant, thus in practice we treat it as a widget.
-    'toolbar'
-  ].filter(name => {
+    'toolbar',
+  ].filter((name) => {
     const role = roles.get(name);
-    return !role.abstract && role.superClass.some(classes => classes.indexOf('widget') !== 0);
+    return !role.abstract && role.superClass.some((classes) => classes.indexOf('widget') !== 0);
   })
 );
 
@@ -42,7 +42,7 @@ const interactiveElementRoleSchemas: any[] = elementRoleEntries.reduce((accumula
   return accumulator;
 }, []) as any[];
 
-const interactiveAXObjects = new Set(Array.from(AXObjects.keys()).filter(name => AXObjects.get(name).type === 'widget'));
+const interactiveAXObjects = new Set(Array.from(AXObjects.keys()).filter((name) => AXObjects.get(name).type === 'widget'));
 
 const interactiveElementAXObjectSchemas = Array.from(elementAXObjects).reduce((accumulator: any[], [elementSchema, AXObjectSet]: any) => {
   if (Array.from(AXObjectSet).every((role): boolean => interactiveAXObjects.has(role))) {

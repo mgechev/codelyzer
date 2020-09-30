@@ -21,7 +21,7 @@ export class Rule extends AbstractRule {
     rationale: 'Impure pipes should be avoided because they are invoked on each change-detection cycle.',
     ruleName: 'no-pipe-impure',
     type: 'functionality',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = 'Impure pipe declared in class %s';

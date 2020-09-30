@@ -21,11 +21,11 @@ export class MetadataPropertyBase extends AbstractRule {
 }
 
 const validateClassDeclaration = (context: WalkContext<MetadataPropertyConfig>, node: ClassDeclaration): void =>
-  createNodeArray(node.decorators).forEach(decorator => validateDecorator(context, decorator));
+  createNodeArray(node.decorators).forEach((decorator) => validateDecorator(context, decorator));
 
 const validateDecorator = (context: WalkContext<MetadataPropertyConfig>, decorator: Decorator): void => {
   const {
-    options: { errorMessage, propertyName }
+    options: { errorMessage, propertyName },
   } = context;
   const propertyExpression = getDecoratorPropertyInitializer(decorator, propertyName);
   const decoratorName = getDecoratorName(decorator);

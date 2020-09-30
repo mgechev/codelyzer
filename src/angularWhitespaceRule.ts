@@ -166,16 +166,16 @@ class SemicolonTemplateVisitor extends BasicTemplateAstVisitor implements Config
 class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   private visitors: (BasicTemplateAstVisitor & ConfigurableVisitor)[] = [
     new InterpolationWhitespaceVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart),
-    new SemicolonTemplateVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart)
+    new SemicolonTemplateVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart),
   ];
 
   visitBoundText(text: ast.BoundTextAst, context: BasicTemplateAstVisitor): any {
     const options = this.getOptions();
     this.visitors
-      .filter(v => options.indexOf(v.getCheckOption()) >= 0)
-      .map(v => v.visitBoundText(text, this))
+      .filter((v) => options.indexOf(v.getCheckOption()) >= 0)
+      .map((v) => v.visitBoundText(text, this))
       .filter(isNotNullOrUndefined)
-      .forEach(f =>
+      .forEach((f) =>
         this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
       );
     super.visitBoundText(text, context);
@@ -184,10 +184,10 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   visitDirectiveProperty(prop: ast.BoundDirectivePropertyAst, context: BasicTemplateAstVisitor): any {
     const options = this.getOptions();
     this.visitors
-      .filter(v => options.indexOf(v.getCheckOption()) >= 0)
-      .map(v => v.visitDirectiveProperty(prop, this))
+      .filter((v) => options.indexOf(v.getCheckOption()) >= 0)
+      .map((v) => v.visitDirectiveProperty(prop, this))
       .filter(isNotNullOrUndefined)
-      .forEach(f =>
+      .forEach((f) =>
         this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
       );
     super.visitDirectiveProperty(prop, context);
@@ -262,17 +262,17 @@ class PipeWhitespaceVisitor extends RecursiveAngularExpressionVisitor implements
 
 class ExpressionVisitorCtrl extends RecursiveAngularExpressionVisitor {
   private visitors: (RecursiveAngularExpressionVisitor & ConfigurableVisitor)[] = [
-    new PipeWhitespaceVisitor(this.getSourceFile(), this.getOptions(), this.context, this.basePosition)
+    new PipeWhitespaceVisitor(this.getSourceFile(), this.getOptions(), this.context, this.basePosition),
   ];
 
   visitPipe(expr: ast.BindingPipe, context: BasicTemplateAstVisitor): any {
     const options = this.getOptions();
     this.visitors
-      .map(v => v.addParentAST(this.parentAST))
-      .filter(v => options.indexOf(v.getCheckOption()) >= 0)
-      .map(v => v.visitPipe(expr, this))
+      .map((v) => v.addParentAST(this.parentAST))
+      .filter((v) => options.indexOf(v.getCheckOption()) >= 0)
+      .map((v) => v.visitPipe(expr, this))
       .filter(isNotNullOrUndefined)
-      .forEach(f =>
+      .forEach((f) =>
         this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
       );
   }
@@ -287,16 +287,16 @@ export class Rule extends Lint.Rules.AbstractRule {
       [true, OPTION_CHECK_INTERPOLATION],
       [true, OPTION_CHECK_PIPE],
       [true, OPTION_CHECK_SEMICOLON],
-      [true, OPTION_CHECK_INTERPOLATION, OPTION_CHECK_PIPE, OPTION_CHECK_SEMICOLON]
+      [true, OPTION_CHECK_INTERPOLATION, OPTION_CHECK_PIPE, OPTION_CHECK_SEMICOLON],
     ],
     options: {
       items: {
         enum: [OPTION_CHECK_INTERPOLATION, OPTION_CHECK_PIPE, OPTION_CHECK_SEMICOLON],
-        type: 'string'
+        type: 'string',
       },
       maxLength: 3,
       minLength: 1,
-      type: 'array'
+      type: 'array',
     },
     optionsDescription: Lint.Utils.dedent`
       One (or both) of the following arguments must be provided:
@@ -307,13 +307,13 @@ export class Rule extends Lint.Rules.AbstractRule {
     rationale: 'Having whitespace in the right places in an Angular expression makes the template more readable.',
     ruleName: 'angular-whitespace',
     type: 'style',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     const walkerConfig: NgWalkerConfig = {
       expressionVisitorCtrl: ExpressionVisitorCtrl,
-      templateVisitorCtrl: TemplateVisitorCtrl
+      templateVisitorCtrl: TemplateVisitorCtrl,
     };
     const walker = new NgWalker(sourceFile, this.getOptions(), walkerConfig);
 
@@ -323,8 +323,8 @@ export class Rule extends Lint.Rules.AbstractRule {
   isEnabled(): boolean {
     const {
       metadata: {
-        options: { maxLength, minLength }
-      }
+        options: { maxLength, minLength },
+      },
     } = Rule;
     const { length } = this.ruleArguments;
 

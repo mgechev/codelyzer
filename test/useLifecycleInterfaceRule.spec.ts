@@ -3,7 +3,7 @@ import { AngularLifecycleInterfaces, AngularLifecycleMethods } from '../src/util
 import { assertAnnotated, assertFailures, assertSuccess } from './testHelper';
 
 const {
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {
@@ -18,12 +18,12 @@ describe(ruleName, () => {
       `;
       const message = getFailureMessage({
         interfaceName: AngularLifecycleInterfaces.OnInit,
-        methodName: AngularLifecycleMethods.ngOnInit
+        methodName: AngularLifecycleMethods.ngOnInit,
       });
       assertAnnotated({
         message,
         ruleName,
-        source
+        source,
       });
     });
 
@@ -39,12 +39,12 @@ describe(ruleName, () => {
       `;
       const message = getFailureMessage({
         interfaceName: AngularLifecycleInterfaces.OnDestroy,
-        methodName: AngularLifecycleMethods.ngOnDestroy
+        methodName: AngularLifecycleMethods.ngOnDestroy,
       });
       assertAnnotated({
         message,
         ruleName,
-        source
+        source,
       });
     });
 
@@ -60,31 +60,31 @@ describe(ruleName, () => {
         {
           endPosition: {
             character: 18,
-            line: 2
+            line: 2,
           },
           message: getFailureMessage({
             interfaceName: AngularLifecycleInterfaces.OnInit,
-            methodName: AngularLifecycleMethods.ngOnInit
+            methodName: AngularLifecycleMethods.ngOnInit,
           }),
           startPosition: {
             character: 10,
-            line: 2
-          }
+            line: 2,
+          },
         },
         {
           endPosition: {
             character: 21,
-            line: 4
+            line: 4,
           },
           message: getFailureMessage({
             interfaceName: AngularLifecycleInterfaces.OnDestroy,
-            methodName: AngularLifecycleMethods.ngOnDestroy
+            methodName: AngularLifecycleMethods.ngOnDestroy,
           }),
           startPosition: {
             character: 10,
-            line: 4
-          }
-        }
+            line: 4,
+          },
+        },
       ]);
     });
 
@@ -100,12 +100,12 @@ describe(ruleName, () => {
       `;
       const message = getFailureMessage({
         interfaceName: AngularLifecycleInterfaces.OnDestroy,
-        methodName: AngularLifecycleMethods.ngOnDestroy
+        methodName: AngularLifecycleMethods.ngOnDestroy,
       });
       assertAnnotated({
         message,
         ruleName,
-        source
+        source,
       });
     });
   });

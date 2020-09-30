@@ -9,7 +9,7 @@ export class Rule extends Rules.AbstractRule {
     optionsDescription: 'Not configurable.',
     ruleName: 'prefer-output-readonly',
     type: 'maintainability',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = 'Prefer to declare `@Output` as readonly since they are not supposed to be reassigned';
@@ -28,7 +28,7 @@ class Walker extends NgWalker {
   }
 
   private validateOutput(property: PropertyDeclaration) {
-    if (property.modifiers && property.modifiers.some(m => m.kind === SyntaxKind.ReadonlyKeyword)) {
+    if (property.modifiers && property.modifiers.some((m) => m.kind === SyntaxKind.ReadonlyKeyword)) {
       return;
     }
 

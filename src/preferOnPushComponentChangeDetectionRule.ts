@@ -25,7 +25,7 @@ export class Rule extends AbstractRule {
     `,
     ruleName: 'prefer-on-push-component-change-detection',
     type: 'functionality',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = `The changeDetection value of a component should be set to ChangeDetectionStrategy.${ON_PUSH}`;

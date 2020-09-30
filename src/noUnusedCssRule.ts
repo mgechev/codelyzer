@@ -48,10 +48,10 @@ const lang = require('cssauron')({
   },
   class(node: ElementAst) {
     const classBindings = (node.inputs || [])
-      .filter(b => b.type === PropertyBindingType.Class)
-      .map(b => b.name)
+      .filter((b) => b.type === PropertyBindingType.Class)
+      .map((b) => b.name)
       .join(' ');
-    const classAttr = node.attrs.find(a => a.name.toLowerCase() === 'class');
+    const classAttr = node.attrs.find((a) => a.name.toLowerCase() === 'class');
 
     return classAttr ? `${classAttr.value} ${classBindings}` : classBindings;
   },
@@ -62,17 +62,17 @@ const lang = require('cssauron')({
     return node.children;
   },
   attr(node: ElementAst, attr: string) {
-    const targetAttr = node.attrs.find(a => a.name === attr);
+    const targetAttr = node.attrs.find((a) => a.name === attr);
 
     return targetAttr ? targetAttr.value : undefined;
-  }
+  },
 });
 
 // Visitor which normalizes the elements and finds out if we have a match
 class ElementVisitor extends BasicTemplateAstVisitor {
   visitElement(ast: ElementAst, fn: any) {
     fn(ast);
-    ast.children.forEach(c => {
+    ast.children.forEach((c) => {
       if (c instanceof ElementAst) {
         (c as any).parentNode = ast;
       }
@@ -87,19 +87,19 @@ const hasSelector = (s: any, type: string) => {
     return false;
   }
 
-  return s.type === 'selector' || s.type === 'selectors' ? (s.nodes || []).some(n => hasSelector(n, type)) : s.type === type;
+  return s.type === 'selector' || s.type === 'selectors' ? (s.nodes || []).some((n) => hasSelector(n, type)) : s.type === type;
 };
 
 const dynamicFilters: Strategy = {
   id(ast: ElementAst) {
-    return (ast.inputs || []).some(i => i.name === 'id');
+    return (ast.inputs || []).some((i) => i.name === 'id');
   },
   attribute(ast: ElementAst) {
-    return (ast.inputs || []).some(i => i.type === PropertyBindingType.Attribute);
+    return (ast.inputs || []).some((i) => i.type === PropertyBindingType.Attribute);
   },
   class(ast: ElementAst) {
-    return (ast.inputs || []).some(i => i.name === 'className' || i.name === 'ngClass');
-  }
+    return (ast.inputs || []).some((i) => i.name === 'className' || i.name === 'ngClass');
+  },
 };
 
 // Filters elements following the strategies:
@@ -109,15 +109,15 @@ const dynamicFilters: Strategy = {
 class ElementFilterVisitor extends BasicTemplateAstVisitor {
   shouldVisit(ast: ElementAst, strategies: Strategy, selectorTypes: object): boolean {
     return (
-      Object.keys(strategies).every(s => {
+      Object.keys(strategies).every((s) => {
         const strategy = strategies[s];
         return !selectorTypes[s] || !strategy(ast);
       }) &&
       (ast.children || []).every(
-        c =>
+        (c) =>
           (ast instanceof ElementAst && this.shouldVisit(c as ElementAst, strategies, selectorTypes)) ||
           (ast instanceof EmbeddedTemplateAst &&
-            (ast.children || []).every(c => this.shouldVisit(c as ElementAst, strategies, selectorTypes)))
+            (ast.children || []).every((c) => this.shouldVisit(c as ElementAst, strategies, selectorTypes)))
       )
     );
   }
@@ -131,7 +131,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     options: null,
     optionsDescription: 'Not configurable.',
     typescriptOnly: true,
-    hasFix: true
+    hasFix: true,
   };
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
@@ -157,12 +157,12 @@ class CssVisitorCtrl extends BasicCssAstVisitor {
 
   visitCssSelectorRule(ast: CssSelectorRuleAst) {
     try {
-      const match = ast.selectors.some(s => this.visitCssSelector(s));
+      const match = ast.selectors.some((s) => this.visitCssSelector(s));
       if (!match) {
         // We need this because of eventual source maps
         const {
           end: { offset: endOffset },
-          start: { offset: startOffset }
+          start: { offset: startOffset },
         } = ast;
         // length + 1 because we want to drop the '}'
         const length = endOffset - startOffset + 1;
@@ -191,7 +191,7 @@ class CssVisitorCtrl extends BasicCssAstVisitor {
     if (!parts.length || !this.templateAst) {
       return true;
     }
-    const strippedSelector = parts.map(s => s.replace(/\/|>$/, '').trim()).join(' ');
+    const strippedSelector = parts.map((s) => s.replace(/\/|>$/, '').trim()).join(' ');
     const elementFilterVisitor = new ElementFilterVisitor(this.getSourceFile(), this._originalOptions, this.context, 0);
     const tokenized = CssSelectorTokenizer.parse(strippedSelector);
     const selectorTypesCache = Object.keys(dynamicFilters).reduce((a, key) => {
@@ -287,7 +287,7 @@ class Walker extends NgWalker {
     if (isEncapsulationEnabled(encapsulation)) {
       style.visit(visitor);
       // tslint:disable-next-line:deprecation
-      visitor.getFailures().forEach(f => this.addFailure(f));
+      visitor.getFailures().forEach((f) => this.addFailure(f));
     }
   }
 }

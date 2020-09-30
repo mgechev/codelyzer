@@ -5,7 +5,7 @@ import { assertAnnotated, assertMultipleAnnotated, assertSuccess } from './testH
 
 const {
   FAILURE_STRING,
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {
@@ -23,7 +23,7 @@ describe(ruleName, () => {
       assertAnnotated({
         message: FAILURE_STRING,
         ruleName,
-        source
+        source,
       });
     });
 
@@ -44,19 +44,19 @@ describe(ruleName, () => {
         failures: [
           {
             char: '~',
-            msg: FAILURE_STRING
+            msg: FAILURE_STRING,
           },
           {
             char: '^',
-            msg: FAILURE_STRING
+            msg: FAILURE_STRING,
           },
           {
             char: '%',
-            msg: FAILURE_STRING
-          }
+            msg: FAILURE_STRING,
+          },
         ],
         ruleName,
-        source
+        source,
       });
     });
   });
@@ -115,12 +115,15 @@ describe(ruleName, () => {
       const failures = assertAnnotated({
         message: FAILURE_STRING,
         ruleName,
-        source
+        source,
       });
 
       if (!Array.isArray(failures)) return;
 
-      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+      const replacement = Replacement.applyFixes(
+        source,
+        failures.map((f) => f.getFix()!)
+      );
       const expectedSource = `
         @Component({
           template: \`
@@ -151,21 +154,24 @@ describe(ruleName, () => {
         failures: [
           {
             char: '~',
-            msg: FAILURE_STRING
+            msg: FAILURE_STRING,
           },
           {
             char: '^',
-            msg: FAILURE_STRING
+            msg: FAILURE_STRING,
           },
           {
             char: '%',
-            msg: FAILURE_STRING
-          }
+            msg: FAILURE_STRING,
+          },
         ],
         ruleName,
-        source
+        source,
       });
-      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+      const replacement = Replacement.applyFixes(
+        source,
+        failures.map((f) => f.getFix()!)
+      );
       const expectedSource = `
         @Component({
           template: \`

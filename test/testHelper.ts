@@ -50,13 +50,13 @@ const lint = (ruleName: AssertConfig['ruleName'], source: string | SourceFile, r
     extends: [],
     jsRules: new Map<string, Partial<IOptions>>(),
     rules: rulesMap,
-    rulesDirectory: []
+    rulesDirectory: [],
   };
   const linterOptions: ILinterOptions = {
     fix: false,
     formatter: 'json',
     formattersDirectory: undefined,
-    rulesDirectory
+    rulesDirectory,
   };
   const linter = new Linter(linterOptions, undefined);
 
@@ -68,8 +68,8 @@ const lint = (ruleName: AssertConfig['ruleName'], source: string | SourceFile, r
 
   const rules = loadRules(convertRuleOptions(rulesMap), rulesDirectory, false);
   const failures = rules.reduce<RuleFailure[]>((previousValue, currentValue) => previousValue.concat(currentValue.apply(source)), []);
-  const errorCount = failures.filter(r => !r.getRuleSeverity || r.getRuleSeverity() === 'error').length;
-  const fixes = ([] as RuleFailure[]).concat.apply(failures.map(r => r.getFix()));
+  const errorCount = failures.filter((r) => !r.getRuleSeverity || r.getRuleSeverity() === 'error').length;
+  const fixes = ([] as RuleFailure[]).concat.apply(failures.map((r) => r.getFix()));
   const warningCount = failures.length - errorCount;
 
   return {
@@ -78,7 +78,7 @@ const lint = (ruleName: AssertConfig['ruleName'], source: string | SourceFile, r
     fixes,
     format: '',
     output: '',
-    warningCount
+    warningCount,
   };
 };
 
@@ -148,7 +148,7 @@ const parseInvalidSource = (
     if (!startPosition) {
       startPosition = {
         character: col - 1,
-        line: line - 1
+        line: line - 1,
       };
     }
 
@@ -158,7 +158,7 @@ const parseInvalidSource = (
 
   const endPosition: SourcePosition = {
     character: lastCol,
-    line: lastLine
+    line: lastLine,
   };
   const newSource = replacedSource.replace(new RegExp(escapeRegexp(specialChar), 'g'), '');
 
@@ -166,9 +166,9 @@ const parseInvalidSource = (
     failure: {
       endPosition,
       message,
-      startPosition
+      startPosition,
     },
-    source: newSource
+    source: newSource,
   };
 };
 
@@ -197,12 +197,12 @@ export const assertMultipleAnnotated = (configs: AssertMultipleConfigs): RuleFai
 
   return failures.reduce<RuleFailure[]>((previousValue, currentValue, index) => {
     const { msg: currentValueMsg, char: currentValueChar } = currentValue;
-    const otherChars = failures.map(failure => failure.char).filter(char => char !== currentValueChar);
+    const otherChars = failures.map((failure) => failure.char).filter((char) => char !== currentValueChar);
     const { failure: parsedFailure, source: parsedSource } = parseInvalidSource(source, currentValueMsg, currentValueChar, otherChars);
     const { character: parsedFailureEndChar, line: parsedFailureEndLine } = parsedFailure.endPosition;
     const { character: parsedFailureStartChar, line: parsedFailureStartLine } = parsedFailure.startPosition;
 
-    const newFailures = assertFailure(ruleName, parsedSource, parsedFailure, options, index).filter(ruleFailure => {
+    const newFailures = assertFailure(ruleName, parsedSource, parsedFailure, options, index).filter((ruleFailure) => {
       const { character: ruleFailureEndChar, line: ruleFailureEndLine } = ruleFailure.getEndPosition().getLineAndCharacter();
       const { character: ruleFailureStartChar, line: ruleFailureStartLine } = ruleFailure.getStartPosition().getLineAndCharacter();
 

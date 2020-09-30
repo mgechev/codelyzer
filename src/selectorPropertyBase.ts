@@ -10,7 +10,7 @@ import {
   isClassDeclaration,
   Node,
   SourceFile,
-  StringLiteralLike
+  StringLiteralLike,
 } from 'typescript';
 import { SelectorValidator } from './util/selectorValidator';
 import { getDecoratorName, getDecoratorPropertyInitializer, isStringLiteralLike } from './util/utils';
@@ -27,7 +27,7 @@ export type SelectorTypeInternal = typeof OPTION_TYPE_ATTRS | typeof OPTION_TYPE
 
 const SELECTOR_TYPE_MAPPER: Record<SelectorType, SelectorTypeInternal> = {
   [OPTION_TYPE_ATTRIBUTE]: OPTION_TYPE_ATTRS,
-  [OPTION_TYPE_ELEMENT]: OPTION_TYPE_ELEMENT
+  [OPTION_TYPE_ELEMENT]: OPTION_TYPE_ELEMENT,
 };
 
 export abstract class SelectorPropertyBase extends AbstractRule {
@@ -67,13 +67,13 @@ export abstract class SelectorPropertyBase extends AbstractRule {
   }
 
   validatePrefixes(selectors: ReadonlyArray<string>): boolean {
-    return selectors.some(selector => this.prefixes.some(prefix => SelectorValidator.prefix(prefix, this.style)(selector)));
+    return selectors.some((selector) => this.prefixes.some((prefix) => SelectorValidator.prefix(prefix, this.style)(selector)));
   }
 
   validateStyle(selectors: ReadonlyArray<string>): boolean {
     const validator = this.style === OPTION_STYLE_KEBAB_CASE ? SelectorValidator.kebabCase : SelectorValidator.camelCase;
 
-    return selectors.some(selector => validator(selector));
+    return selectors.some((selector) => validator(selector));
   }
 
   validateTypes(selectors: ReadonlyArray<string>): boolean {
@@ -86,7 +86,7 @@ export abstract class SelectorPropertyBase extends AbstractRule {
 }
 
 const validateClassDeclaration = (context: WalkContext<SelectorPropertyBase>, node: ClassDeclaration): void =>
-  createNodeArray(node.decorators).forEach(decorator => validateDecorator(context, decorator));
+  createNodeArray(node.decorators).forEach((decorator) => validateDecorator(context, decorator));
 
 const validateDecorator = (context: WalkContext<SelectorPropertyBase>, decorator: Decorator): void => {
   const selectorExpression = getDecoratorPropertyInitializer(decorator, 'selector');

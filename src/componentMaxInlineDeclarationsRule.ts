@@ -35,20 +35,20 @@ export class Rule extends AbstractRule {
       items: {
         properties: {
           [OPTION_ANIMATIONS]: {
-            type: 'number'
+            type: 'number',
           },
           [OPTION_STYLES]: {
-            type: 'number'
+            type: 'number',
           },
           [OPTION_TEMPLATE]: {
-            type: 'number'
-          }
+            type: 'number',
+          },
         },
-        type: 'object'
+        type: 'object',
       },
       maxLength: 1,
       minLength: 0,
-      type: 'array'
+      type: 'array',
     },
     optionsDescription: dedent`
       It can take an optional object with the properties '${OPTION_ANIMATIONS}', '${OPTION_STYLES}' and '${OPTION_TEMPLATE}':
@@ -60,7 +60,7 @@ export class Rule extends AbstractRule {
       "Large, inline templates and styles obscure the component's purpose and implementation, reducing readability and maintainability.",
     ruleName: 'component-max-inline-declarations',
     type: 'maintainability',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = `Exceeds the maximum allowed inline lines for %s. Defined limit: %s / total lines: %s (${STYLE_GUIDE_LINK})`;
@@ -74,8 +74,8 @@ export class Rule extends AbstractRule {
   isEnabled(): boolean {
     const {
       metadata: {
-        options: { maxLength, minLength }
-      }
+        options: { maxLength, minLength },
+      },
     } = Rule;
     const { length } = this.ruleArguments;
 

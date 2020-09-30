@@ -10,11 +10,11 @@ export class Rule extends Rules.AbstractRule {
     options: {
       items: [
         {
-          type: 'string'
-        }
+          type: 'string',
+        },
       ],
       minLength: 1,
-      type: 'array'
+      type: 'array',
     },
     optionsDescription: 'Options accept a string array of disallowed input prefixes.',
     rationale: Utils.dedent`
@@ -23,7 +23,7 @@ export class Rule extends Rules.AbstractRule {
     `,
     ruleName: 'no-input-prefix',
     type: 'maintainability',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = '@Inputs should not be prefixed by %s';
@@ -37,8 +37,8 @@ export class Rule extends Rules.AbstractRule {
   isEnabled(): boolean {
     const {
       metadata: {
-        options: { minLength }
-      }
+        options: { minLength },
+      },
     } = Rule;
     const { length } = this.ruleArguments;
 
@@ -54,7 +54,7 @@ const getReadablePrefixes = (prefixes: string[]): string => {
   }
 
   return `${prefixes
-    .map(x => `"${x}"`)
+    .map((x) => `"${x}"`)
     .slice(0, prefixesLength - 1)
     .join(', ')} or "${[...prefixes].pop()}"`;
 };
@@ -78,7 +78,7 @@ class Walker extends NgWalker {
 
   private validatePrefix(property: PropertyDeclaration) {
     const memberName = property.name.getText();
-    const isBlackListedPrefix = this.blacklistedPrefixes.some(x => x === memberName || new RegExp(`^${x}[^a-z]`).test(memberName));
+    const isBlackListedPrefix = this.blacklistedPrefixes.some((x) => x === memberName || new RegExp(`^${x}[^a-z]`).test(memberName));
 
     if (!isBlackListedPrefix) {
       return;

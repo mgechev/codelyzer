@@ -2,7 +2,7 @@ import { Rule } from '../src/relativeUrlPrefixRule';
 import { assertAnnotated, assertSuccess } from './testHelper';
 
 const {
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {
@@ -41,7 +41,7 @@ describe(ruleName, () => {
         assertAnnotated({
           ruleName,
           message: Rule.FAILURE_STRING,
-          source
+          source,
         });
       });
 
@@ -56,7 +56,7 @@ describe(ruleName, () => {
         assertAnnotated({
           ruleName,
           message: Rule.FAILURE_STRING,
-          source
+          source,
         });
       });
 
@@ -71,7 +71,7 @@ describe(ruleName, () => {
         assertAnnotated({
           ruleName,
           message: Rule.FAILURE_STRING,
-          source
+          source,
         });
       });
     });
@@ -102,7 +102,7 @@ describe(ruleName, () => {
         assertAnnotated({
           ruleName,
           message: Rule.FAILURE_STRING,
-          source
+          source,
         });
       });
 
@@ -117,7 +117,7 @@ describe(ruleName, () => {
         assertAnnotated({
           ruleName,
           message: Rule.FAILURE_STRING,
-          source
+          source,
         });
       });
 
@@ -132,7 +132,7 @@ describe(ruleName, () => {
         assertAnnotated({
           ruleName,
           message: Rule.FAILURE_STRING,
-          source
+          source,
         });
       });
     });

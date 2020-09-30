@@ -13,7 +13,7 @@ export class Rule extends Rules.AbstractRule {
     rationale: 'Alternate text lets screen readers provide more information to end users.',
     ruleName: 'template-accessibility-alt-text',
     type: 'functionality',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = '%s element must have a text alternative.';
@@ -38,7 +38,7 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   }
 
   validateElement(element: ElementAst) {
-    const typesToValidate = Rule.DEFAULT_ELEMENTS.map(type => {
+    const typesToValidate = Rule.DEFAULT_ELEMENTS.map((type) => {
       if (type === 'input[type="image"]') {
         return 'input';
       }
@@ -55,24 +55,24 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
     const {
       sourceSpan: {
         end: { offset: endOffset },
-        start: { offset: startOffset }
-      }
+        start: { offset: startOffset },
+      },
     } = element;
     this.addFailureFromStartToEnd(startOffset, endOffset, getFailureMessage(element.name));
   }
 
   img(element: ElementAst) {
-    const hasAltAttr = element.attrs.some(attr => attr.name === 'alt');
-    const hasAltInput = element.inputs.some(input => input.name === 'alt');
+    const hasAltAttr = element.attrs.some((attr) => attr.name === 'alt');
+    const hasAltInput = element.inputs.some((input) => input.name === 'alt');
     return hasAltAttr || hasAltInput;
   }
 
   object(element: ElementAst) {
     let elementHasText: string = '';
-    const hasLabelAttr = element.attrs.some(attr => attr.name === 'aria-label' || attr.name === 'aria-labelledby');
-    const hasLabelInput = element.inputs.some(input => input.name === 'aria-label' || input.name === 'aria-labelledby');
-    const hasTitleAttr = element.attrs.some(attr => attr.name === 'title');
-    const hasTitleInput = element.inputs.some(input => input.name === 'title');
+    const hasLabelAttr = element.attrs.some((attr) => attr.name === 'aria-label' || attr.name === 'aria-labelledby');
+    const hasLabelInput = element.inputs.some((input) => input.name === 'aria-label' || input.name === 'aria-labelledby');
+    const hasTitleAttr = element.attrs.some((attr) => attr.name === 'title');
+    const hasTitleInput = element.inputs.some((input) => input.name === 'title');
     if (element.children.length) {
       elementHasText = (<TextAst>element.children[0]).value;
     }
@@ -80,16 +80,16 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   }
 
   area(element: ElementAst) {
-    const hasLabelAttr = element.attrs.some(attr => attr.name === 'aria-label' || attr.name === 'aria-labelledby');
-    const hasLabelInput = element.inputs.some(input => input.name === 'aria-label' || input.name === 'aria-labelledby');
-    const hasAltAttr = element.attrs.some(attr => attr.name === 'alt');
-    const hasAltInput = element.inputs.some(input => input.name === 'alt');
+    const hasLabelAttr = element.attrs.some((attr) => attr.name === 'aria-label' || attr.name === 'aria-labelledby');
+    const hasLabelInput = element.inputs.some((input) => input.name === 'aria-label' || input.name === 'aria-labelledby');
+    const hasAltAttr = element.attrs.some((attr) => attr.name === 'alt');
+    const hasAltInput = element.inputs.some((input) => input.name === 'alt');
     return hasAltAttr || hasAltInput || hasLabelAttr || hasLabelInput;
   }
 
   input(element: ElementAst) {
-    const attrType: AttrAst = element.attrs.find(attr => attr.name === 'type') || <AttrAst>{};
-    const inputType: BoundElementPropertyAst = element.inputs.find(input => input.name === 'type') || <BoundElementPropertyAst>{};
+    const attrType: AttrAst = element.attrs.find((attr) => attr.name === 'type') || <AttrAst>{};
+    const inputType: BoundElementPropertyAst = element.inputs.find((input) => input.name === 'type') || <BoundElementPropertyAst>{};
     const type = attrType.value || inputType.value;
     if (type !== 'image') {
       return true;

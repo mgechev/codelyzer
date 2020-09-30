@@ -15,7 +15,7 @@ export class Rule extends AbstractRule {
     rationale: 'Interfaces prescribe typed method signatures. Use those signatures to flag spelling and syntax mistakes.',
     ruleName: 'use-pipe-transform-interface',
     type: 'maintainability',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = dedent`

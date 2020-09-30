@@ -12,7 +12,7 @@ export class Rule extends AbstractRule {
     rationale: `The flow of DI is disrupted by using \`${FORWARD_REF}\` and might make code more difficult to understand.`,
     ruleName: 'no-forward-ref',
     type: 'maintainability',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = `Avoid using \`${FORWARD_REF}\``;

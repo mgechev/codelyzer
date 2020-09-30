@@ -43,7 +43,7 @@ let BUILD_TYPE = '<%= BUILD_TYPE %>';
 type FileExtension = typeof CSS_FILE_EXTENSION | typeof HTML_FILE_EXTENSION | typeof SVG_FILE_EXTENSION;
 
 const transform = (code: string, fileExtensions: ReadonlyArray<FileExtension>, url?: string): { code: string; url?: string } => {
-  const parsedCode = !url || fileExtensions.some(fileExtension => url.endsWith(fileExtension)) ? code : '';
+  const parsedCode = !url || fileExtensions.some((fileExtension) => url.endsWith(fileExtension)) ? code : '';
 
   return { code: parsedCode, url };
 };
@@ -77,14 +77,14 @@ export const Config: Config = {
     { selector: 'md-button-toggle-group:not([multiple])', exportAs: 'mdButtonToggleGroup' },
     { selector: '[md-menu-trigger-for], [mdMenuTriggerFor]', exportAs: 'mdMenuTrigger' },
     { selector: '[md-tooltip], [mdTooltip]', exportAs: 'mdTooltip' },
-    { selector: 'md-select', exportAs: 'mdSelect' }
+    { selector: 'md-select', exportAs: 'mdSelect' },
   ],
 
   resolveUrl: (url: string | null) => url,
 
   transformStyle: (code: string, url?: string) => transform(code, [CSS_FILE_EXTENSION], url),
 
-  transformTemplate: (code: string, url?: string) => transform(code, [HTML_FILE_EXTENSION, SVG_FILE_EXTENSION], url)
+  transformTemplate: (code: string, url?: string) => transform(code, [HTML_FILE_EXTENSION, SVG_FILE_EXTENSION], url),
 };
 
 try {

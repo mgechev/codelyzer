@@ -14,22 +14,22 @@ export class Rule extends Lint.Rules.AbstractRule {
     optionExamples: [true, [true, 'Directive', 'MySuffix']],
     options: {
       items: {
-        type: 'string'
+        type: 'string',
       },
       minLength: 0,
-      type: 'array'
+      type: 'array',
     },
     optionsDescription: 'Supply a list of allowed component suffixes. Defaults to "Directive".',
     rationale: 'Consistent conventions make it easy to quickly identify and reference assets of different types.',
     ruleName: 'directive-class-suffix',
     type: 'style',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = 'The name of the class %s should end with the suffix %s (https://angular.io/styleguide#style-02-03)';
 
   static validate(className: string, suffixes: string[]): boolean {
-    return suffixes.some(s => className.endsWith(s));
+    return suffixes.some((s) => className.endsWith(s));
   }
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
@@ -47,7 +47,7 @@ class Walker extends NgWalker {
     const suffixes: string[] = options.length ? options : ['Directive'];
 
     const declaredInterfaceNames = getDeclaredInterfaceNames(metadata.controller);
-    const hasValidatorInterface = declaredInterfaceNames.some(interfaceName => interfaceName.endsWith(ValidatorSuffix));
+    const hasValidatorInterface = declaredInterfaceNames.some((interfaceName) => interfaceName.endsWith(ValidatorSuffix));
 
     if (hasValidatorInterface) {
       suffixes.push(ValidatorSuffix);

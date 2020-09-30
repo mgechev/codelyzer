@@ -3,7 +3,7 @@ import { AngularClassDecorators, AngularLifecycleMethods } from '../src/util/uti
 import { assertAnnotated, assertSuccess } from './testHelper';
 
 const {
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {
@@ -20,12 +20,12 @@ describe(ruleName, () => {
         const message = getFailureMessage({
           className: 'Test',
           decoratorName: AngularClassDecorators.Injectable,
-          methodName: AngularLifecycleMethods.ngAfterContentChecked
+          methodName: AngularLifecycleMethods.ngAfterContentChecked,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -40,12 +40,12 @@ describe(ruleName, () => {
         const message = getFailureMessage({
           className: 'Test',
           decoratorName: AngularClassDecorators.Injectable,
-          methodName: AngularLifecycleMethods.ngAfterContentInit
+          methodName: AngularLifecycleMethods.ngAfterContentInit,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -60,12 +60,12 @@ describe(ruleName, () => {
         const message = getFailureMessage({
           className: 'Test',
           decoratorName: AngularClassDecorators.Injectable,
-          methodName: AngularLifecycleMethods.ngAfterViewChecked
+          methodName: AngularLifecycleMethods.ngAfterViewChecked,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -80,12 +80,12 @@ describe(ruleName, () => {
         const message = getFailureMessage({
           className: 'Test',
           decoratorName: AngularClassDecorators.Injectable,
-          methodName: AngularLifecycleMethods.ngAfterViewInit
+          methodName: AngularLifecycleMethods.ngAfterViewInit,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -100,12 +100,12 @@ describe(ruleName, () => {
         const message = getFailureMessage({
           className: 'Test',
           decoratorName: AngularClassDecorators.Injectable,
-          methodName: AngularLifecycleMethods.ngDoCheck
+          methodName: AngularLifecycleMethods.ngDoCheck,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -120,12 +120,12 @@ describe(ruleName, () => {
         const message = getFailureMessage({
           className: 'Test',
           decoratorName: AngularClassDecorators.Injectable,
-          methodName: AngularLifecycleMethods.ngOnChanges
+          methodName: AngularLifecycleMethods.ngOnChanges,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -140,12 +140,12 @@ describe(ruleName, () => {
         const message = getFailureMessage({
           className: 'Test',
           decoratorName: AngularClassDecorators.Injectable,
-          methodName: AngularLifecycleMethods.ngOnInit
+          methodName: AngularLifecycleMethods.ngOnInit,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
     });
@@ -162,12 +162,12 @@ describe(ruleName, () => {
         const message = getFailureMessage({
           className: 'Test',
           decoratorName: AngularClassDecorators.NgModule,
-          methodName: AngularLifecycleMethods.ngAfterContentChecked
+          methodName: AngularLifecycleMethods.ngAfterContentChecked,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -182,12 +182,12 @@ describe(ruleName, () => {
         const message = getFailureMessage({
           className: 'Test',
           decoratorName: AngularClassDecorators.NgModule,
-          methodName: AngularLifecycleMethods.ngAfterContentInit
+          methodName: AngularLifecycleMethods.ngAfterContentInit,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -202,12 +202,12 @@ describe(ruleName, () => {
         const message = getFailureMessage({
           className: 'Test',
           decoratorName: AngularClassDecorators.NgModule,
-          methodName: AngularLifecycleMethods.ngAfterViewChecked
+          methodName: AngularLifecycleMethods.ngAfterViewChecked,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -222,12 +222,12 @@ describe(ruleName, () => {
         const message = getFailureMessage({
           className: 'Test',
           decoratorName: AngularClassDecorators.NgModule,
-          methodName: AngularLifecycleMethods.ngAfterViewInit
+          methodName: AngularLifecycleMethods.ngAfterViewInit,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -242,12 +242,12 @@ describe(ruleName, () => {
         const message = getFailureMessage({
           className: 'Test',
           decoratorName: AngularClassDecorators.NgModule,
-          methodName: AngularLifecycleMethods.ngDoCheck
+          methodName: AngularLifecycleMethods.ngDoCheck,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -262,12 +262,12 @@ describe(ruleName, () => {
         const message = getFailureMessage({
           className: 'Test',
           decoratorName: AngularClassDecorators.NgModule,
-          methodName: AngularLifecycleMethods.ngOnChanges
+          methodName: AngularLifecycleMethods.ngOnChanges,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -282,12 +282,12 @@ describe(ruleName, () => {
         const message = getFailureMessage({
           className: 'Test',
           decoratorName: AngularClassDecorators.NgModule,
-          methodName: AngularLifecycleMethods.ngOnInit
+          methodName: AngularLifecycleMethods.ngOnInit,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -302,12 +302,12 @@ describe(ruleName, () => {
         const message = getFailureMessage({
           className: 'Test',
           decoratorName: AngularClassDecorators.NgModule,
-          methodName: AngularLifecycleMethods.ngOnDestroy
+          methodName: AngularLifecycleMethods.ngOnDestroy,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
     });
@@ -324,12 +324,12 @@ describe(ruleName, () => {
         const message = getFailureMessage({
           className: 'Test',
           decoratorName: AngularClassDecorators.Pipe,
-          methodName: AngularLifecycleMethods.ngAfterContentChecked
+          methodName: AngularLifecycleMethods.ngAfterContentChecked,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -344,12 +344,12 @@ describe(ruleName, () => {
         const message = getFailureMessage({
           className: 'Test',
           decoratorName: AngularClassDecorators.Pipe,
-          methodName: AngularLifecycleMethods.ngAfterContentInit
+          methodName: AngularLifecycleMethods.ngAfterContentInit,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -364,12 +364,12 @@ describe(ruleName, () => {
         const message = getFailureMessage({
           className: 'Test',
           decoratorName: AngularClassDecorators.Pipe,
-          methodName: AngularLifecycleMethods.ngAfterViewChecked
+          methodName: AngularLifecycleMethods.ngAfterViewChecked,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -384,12 +384,12 @@ describe(ruleName, () => {
         const message = getFailureMessage({
           className: 'Test',
           decoratorName: AngularClassDecorators.Pipe,
-          methodName: AngularLifecycleMethods.ngAfterViewInit
+          methodName: AngularLifecycleMethods.ngAfterViewInit,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -404,12 +404,12 @@ describe(ruleName, () => {
         const message = getFailureMessage({
           className: 'Test',
           decoratorName: AngularClassDecorators.Pipe,
-          methodName: AngularLifecycleMethods.ngDoCheck
+          methodName: AngularLifecycleMethods.ngDoCheck,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -424,12 +424,12 @@ describe(ruleName, () => {
         const message = getFailureMessage({
           className: 'Test',
           decoratorName: AngularClassDecorators.Pipe,
-          methodName: AngularLifecycleMethods.ngOnChanges
+          methodName: AngularLifecycleMethods.ngOnChanges,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -444,12 +444,12 @@ describe(ruleName, () => {
         const message = getFailureMessage({
           className: 'Test',
           decoratorName: AngularClassDecorators.Pipe,
-          methodName: AngularLifecycleMethods.ngOnInit
+          methodName: AngularLifecycleMethods.ngOnInit,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
     });
@@ -476,12 +476,12 @@ describe(ruleName, () => {
           const message = getFailureMessage({
             className: 'Test',
             decoratorName: AngularClassDecorators.Pipe,
-            methodName: AngularLifecycleMethods.ngDoCheck
+            methodName: AngularLifecycleMethods.ngDoCheck,
           });
           assertAnnotated({
             message,
             ruleName,
-            source
+            source,
           });
         }
       );

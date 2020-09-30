@@ -20,7 +20,7 @@ export enum CssTokenType {
   AtKeyword,
   Character,
   Whitespace,
-  Invalid
+  Invalid,
 }
 
 export enum CssLexerMode {
@@ -37,7 +37,7 @@ export enum CssLexerMode {
   STYLE_BLOCK,
   STYLE_VALUE,
   STYLE_VALUE_FUNCTION,
-  STYLE_CALC_FUNCTION
+  STYLE_CALC_FUNCTION,
 }
 
 export class LexedCssResult {

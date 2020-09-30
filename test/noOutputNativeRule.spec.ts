@@ -2,7 +2,7 @@ import { getFailureMessage, Rule } from '../src/noOutputNativeRule';
 import { assertAnnotated, assertSuccess } from './testHelper';
 
 const {
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {
@@ -18,12 +18,12 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          propertyName: 'change'
+          propertyName: 'change',
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -37,12 +37,12 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          propertyName: '_change'
+          propertyName: '_change',
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
     });
@@ -58,12 +58,12 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          propertyName: 'change'
+          propertyName: 'change',
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -77,12 +77,12 @@ describe(ruleName, () => {
         `;
         const message = getFailureMessage({
           className: 'Test',
-          propertyName: '_change'
+          propertyName: '_change',
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
     });

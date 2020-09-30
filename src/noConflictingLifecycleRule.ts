@@ -9,7 +9,7 @@ import {
   AngularLifecycleMethodKeys,
   AngularLifecycleMethods,
   getDeclaredAngularLifecycleInterfaces,
-  getDeclaredAngularLifecycleMethods
+  getDeclaredAngularLifecycleMethods,
 } from './util/utils';
 
 interface FailureParameters {
@@ -18,11 +18,11 @@ interface FailureParameters {
 
 const LIFECYCLE_INTERFACES: ReadonlyArray<AngularLifecycleInterfaceKeys> = [
   AngularLifecycleInterfaces.DoCheck,
-  AngularLifecycleInterfaces.OnChanges
+  AngularLifecycleInterfaces.OnChanges,
 ];
 const LIFECYCLE_METHODS: ReadonlyArray<AngularLifecycleMethodKeys> = [
   AngularLifecycleMethods.ngDoCheck,
-  AngularLifecycleMethods.ngOnChanges
+  AngularLifecycleMethods.ngOnChanges,
 ];
 
 export const getFailureMessage = (failureParameters: FailureParameters): string => sprintf(failureParameters.message);
@@ -40,7 +40,7 @@ export class Rule extends AbstractRule {
     `,
     ruleName: 'no-conflicting-lifecycle',
     type: 'maintainability',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING_INTERFACE_HOOK = dedent`
@@ -62,14 +62,14 @@ const validateClassDeclaration = (context: WalkContext, node: ClassDeclaration):
 
 const validateInterfaces = (context: WalkContext, node: ClassDeclaration): void => {
   const declaredAngularLifecycleInterfaces = getDeclaredAngularLifecycleInterfaces(node);
-  const hasConflictingLifecycle = LIFECYCLE_INTERFACES.every(lifecycleInterface =>
+  const hasConflictingLifecycle = LIFECYCLE_INTERFACES.every((lifecycleInterface) =>
     declaredAngularLifecycleInterfaces.includes(lifecycleInterface)
   );
 
   if (!hasConflictingLifecycle) return;
 
   const failure = getFailureMessage({
-    message: Rule.FAILURE_STRING_INTERFACE_HOOK
+    message: Rule.FAILURE_STRING_INTERFACE_HOOK,
   });
 
   context.addFailureAtNode(node, failure);
@@ -77,12 +77,12 @@ const validateInterfaces = (context: WalkContext, node: ClassDeclaration): void 
 
 const validateMethods = (context: WalkContext, node: ClassDeclaration): void => {
   const declaredAngularLifecycleMethods = getDeclaredAngularLifecycleMethods(node);
-  const hasConflictingLifecycle = LIFECYCLE_METHODS.every(lifecycleMethod => declaredAngularLifecycleMethods.includes(lifecycleMethod));
+  const hasConflictingLifecycle = LIFECYCLE_METHODS.every((lifecycleMethod) => declaredAngularLifecycleMethods.includes(lifecycleMethod));
 
   if (!hasConflictingLifecycle) return;
 
   const failure = getFailureMessage({
-    message: Rule.FAILURE_STRING_METHOD_HOOK
+    message: Rule.FAILURE_STRING_METHOD_HOOK,
   });
 
   context.addFailureAtNode(node, failure);

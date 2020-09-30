@@ -11,7 +11,7 @@ export class Rule extends AbstractRule {
     rationale: "Imports are easier for the reader to look at when they're tidy.",
     ruleName: 'import-destructuring-spacing',
     type: 'style',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = "Import statement's curly braces must be spaced exactly by a space to the right and a space to the left";

@@ -21,7 +21,7 @@ const dummyMetadataFactory = (declaration: DirectiveDeclaration) => {
       diDeps: [],
       lifecycleHooks: [],
       isHost: false,
-      reference: ++refId + '-ref'
+      reference: ++refId + '-ref',
     },
     isComponent: false,
     selector: declaration.selector,
@@ -35,8 +35,8 @@ const dummyMetadataFactory = (declaration: DirectiveDeclaration) => {
       isSummary: true,
       animations: [],
       ngContentSelectors: [],
-      encapsulation: 0
-    }
+      encapsulation: 0,
+    },
   };
 };
 
@@ -48,7 +48,7 @@ class Console {
 let defaultDirectives: DirectiveDeclaration[] = [];
 
 export const parseTemplate = (template: string, directives: DirectiveDeclaration[] = []) => {
-  defaultDirectives = directives.map(d => dummyMetadataFactory(d));
+  defaultDirectives = directives.map((d) => dummyMetadataFactory(d));
 
   const TemplateParser = compiler.TemplateParser as any;
   const expressionParser = new compiler.Parser(new compiler.Lexer());
@@ -109,12 +109,12 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
     toSummary() {
       return {
         isSummary: true,
-        animations: this.animations.map(anim => anim.name),
+        animations: this.animations.map((anim) => anim.name),
         ngContentSelectors: this.ngContentSelectors,
         encapsulation: this.encapsulation,
-        summaryKind: summaryKind
+        summaryKind: summaryKind,
       };
-    }
+    },
   };
 
   // Make sure it works with 2.2.x & 2.3.x
@@ -129,7 +129,7 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
     prefix: '',
     moduleUrl: '',
     value: '',
-    identifier: null
+    identifier: null,
   };
   let result;
   try {
@@ -137,7 +137,7 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
       result = tmplParser.tryParse(
         (compiler.CompileDirectiveMetadata as any).create({
           type,
-          template: templateMetadata
+          template: templateMetadata,
         }),
         template,
         defaultDirectives,
@@ -167,7 +167,7 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
             guards: [],
             componentViewType: null,
             rendererType: null,
-            componentFactory: null
+            componentFactory: null,
           }),
           template,
           defaultDirectives,
@@ -197,7 +197,7 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
             guards: [],
             componentViewType: null,
             rendererType: null,
-            componentFactory: null
+            componentFactory: null,
           }),
           template,
           defaultDirectives,
@@ -227,7 +227,7 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
             guards: [],
             componentViewType: null,
             rendererType: null,
-            componentFactory: null
+            componentFactory: null,
           }),
           template,
           defaultDirectives,
@@ -258,7 +258,7 @@ export const parseTemplate = (template: string, directives: DirectiveDeclaration
             componentViewType: null,
             rendererType: null,
             componentFactory: null,
-            guards: {}
+            guards: {},
           }),
           template,
           defaultDirectives,

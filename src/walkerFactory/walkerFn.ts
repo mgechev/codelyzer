@@ -20,16 +20,16 @@ export interface ComponentValidator {
 }
 
 export function validate(syntaxKind: ts.SyntaxKind): F1<ValidateFn<ts.Node>, NodeValidator> {
-  return validateFn => ({
+  return (validateFn) => ({
     kind: 'Node',
-    validate: (node: ts.Node, options: WalkerOptions) => (node.kind === syntaxKind ? validateFn(node, options) : Maybe.nothing)
+    validate: (node: ts.Node, options: WalkerOptions) => (node.kind === syntaxKind ? validateFn(node, options) : Maybe.nothing),
   });
 }
 
 export function validateComponent(validate: F2<ComponentMetadata, WalkerOptions, Maybe<Failure[] | undefined>>): ComponentValidator {
   return {
     kind: 'NgComponent',
-    validate
+    validate,
   };
 }
 
@@ -37,18 +37,18 @@ export function all(...validators: Validator[]): F2<ts.SourceFile, IOptions, NgW
   return (sourceFile, options) => {
     const e = class extends NgWalker {
       visitNgComponent(meta: ComponentMetadata) {
-        validators.forEach(v => {
+        validators.forEach((v) => {
           if (v.kind === 'NgComponent') {
-            v.validate(meta, this.getOptions()).fmap(failures => failures!.forEach(f => this.generateFailure(f)));
+            v.validate(meta, this.getOptions()).fmap((failures) => failures!.forEach((f) => this.generateFailure(f)));
           }
         });
         super.visitNgComponent(meta);
       }
 
       visitNode(node: ts.Node) {
-        validators.forEach(v => {
+        validators.forEach((v) => {
           if (v.kind === 'Node') {
-            v.validate(node, this.getOptions()).fmap(failures => failures!.forEach(f => this.generateFailure(f)));
+            v.validate(node, this.getOptions()).fmap((failures) => failures!.forEach((f) => this.generateFailure(f)));
           }
         });
         super.visitNode(node);

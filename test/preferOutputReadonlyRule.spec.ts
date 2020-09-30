@@ -14,7 +14,7 @@ describe(ruleName, () => {
       assertAnnotated({
         ruleName,
         message: 'Prefer to declare `@Output` as readonly since they are not supposed to be reassigned',
-        source
+        source,
       });
     });
   });

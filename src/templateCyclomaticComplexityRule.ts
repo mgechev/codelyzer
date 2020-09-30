@@ -12,17 +12,17 @@ export class Rule extends Rules.AbstractRule {
     optionExamples: [true, [true, 6]],
     options: {
       items: {
-        type: 'string'
+        type: 'string',
       },
       maxLength: 1,
       minLength: 0,
-      type: 'array'
+      type: 'array',
     },
     optionsDescription: 'Determine the maximum number of the cyclomatic complexity.',
     rationale: 'Cyclomatic complexity over some threshold indicates that the logic should be moved outside the template.',
     ruleName: 'template-cyclomatic-complexity',
     type: 'maintainability',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = "The cyclomatic complexity exceeded the defined limit (cost '%s'). Your template should be refactored.";
@@ -38,8 +38,8 @@ export class Rule extends Rules.AbstractRule {
   isEnabled(): boolean {
     const {
       metadata: {
-        options: { maxLength, minLength }
-      }
+        options: { maxLength, minLength },
+      },
     } = Rule;
     const { length, [0]: maxComplexity } = this.ruleArguments;
 
@@ -76,8 +76,8 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
     const {
       sourceSpan: {
         end: { offset: endOffset },
-        start: { offset: startOffset }
-      }
+        start: { offset: startOffset },
+      },
     } = prop;
     this.addFailureFromStartToEnd(startOffset, endOffset, getFailureMessage(maxComplexity));
   }

@@ -16,7 +16,7 @@ export class Rule extends Rules.AbstractRule {
     rationale: 'Elements should not use invalid aria attributes (AX_ARIA_11)',
     ruleName: 'template-accessibility-valid-aria',
     type: 'functionality',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   apply(sourceFile: SourceFile): RuleFailure[] {
@@ -57,8 +57,8 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
     const {
       sourceSpan: {
         end: { offset: endOffset },
-        start: { offset: startOffset }
-      }
+        start: { offset: startOffset },
+      },
     } = ast;
     this.addFailureFromStartToEnd(startOffset, endOffset, getFailureMessage(ast.name));
   }

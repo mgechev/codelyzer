@@ -271,7 +271,7 @@ describe('no-unused-css', () => {
       assertAnnotated({
         ruleName: 'no-unused-css',
         message: 'Unused styles',
-        source
+        source,
       });
     });
 
@@ -308,7 +308,7 @@ describe('no-unused-css', () => {
       assertAnnotated({
         ruleName: 'no-unused-css',
         message: 'Unused styles',
-        source
+        source,
       });
     });
 
@@ -340,7 +340,7 @@ describe('no-unused-css', () => {
       assertAnnotated({
         ruleName: 'no-unused-css',
         message: 'Unused styles',
-        source
+        source,
       });
     });
 
@@ -372,7 +372,7 @@ describe('no-unused-css', () => {
       assertAnnotated({
         ruleName: 'no-unused-css',
         message: 'Unused styles',
-        source
+        source,
       });
     });
 
@@ -405,7 +405,7 @@ describe('no-unused-css', () => {
         assertAnnotated({
           ruleName: 'no-unused-css',
           message: 'Unused styles',
-          source
+          source,
         });
       });
     });
@@ -466,7 +466,7 @@ describe('no-unused-css', () => {
       assertAnnotated({
         ruleName: 'no-unused-css',
         message: 'Unused styles',
-        source
+        source,
       });
     });
   });
@@ -526,7 +526,7 @@ describe('no-unused-css', () => {
       assertAnnotated({
         ruleName: 'no-unused-css',
         message: 'Unused styles',
-        source
+        source,
       });
     });
 
@@ -584,7 +584,7 @@ describe('no-unused-css', () => {
       assertAnnotated({
         ruleName: 'no-unused-css',
         message: 'Unused styles',
-        source
+        source,
       });
     });
   });
@@ -644,7 +644,7 @@ describe('no-unused-css', () => {
       assertAnnotated({
         ruleName: 'no-unused-css',
         message: 'Unused styles',
-        source
+        source,
       });
     });
   });
@@ -711,7 +711,7 @@ describe('no-unused-css', () => {
       assertAnnotated({
         ruleName: 'no-unused-css',
         message: 'Unused styles',
-        source
+        source,
       });
     });
 
@@ -736,7 +736,7 @@ describe('no-unused-css', () => {
       assertAnnotated({
         ruleName: 'no-unused-css',
         message: 'Unused styles',
-        source
+        source,
       });
     });
 
@@ -761,7 +761,7 @@ describe('no-unused-css', () => {
       assertAnnotated({
         ruleName: 'no-unused-css',
         message: 'Unused styles',
-        source
+        source,
       });
     });
   });
@@ -771,7 +771,7 @@ describe('no-unused-css', () => {
       const result = renderSync({
         sourceMap: true,
         data: source,
-        sourceMapEmbed: true
+        sourceMapEmbed: true,
       });
       const code = result.css.toString();
       const base64Map = code.match(/\/\*(.*?)\*\//)![1].replace('# sourceMappingURL=data:application/json;base64,', '');
@@ -804,9 +804,9 @@ describe('no-unused-css', () => {
     assertAnnotated({
       ruleName: 'no-unused-css',
       message: 'Unused styles',
-      source
+      source,
     });
-    Config.transformStyle = code => ({ code, map: undefined });
+    Config.transformStyle = (code) => ({ code, map: undefined });
   });
 
   describe('inconsistencies with template', () => {
@@ -855,12 +855,12 @@ describe('no-unused-css', () => {
           message: 'Unused styles',
           startPosition: {
             line: 7,
-            character: 14
+            character: 14,
           },
           endPosition: {
             line: 9,
-            character: 15
-          }
+            character: 15,
+          },
         },
         null
       )!;
@@ -871,11 +871,11 @@ describe('no-unused-css', () => {
     });
 
     it('should work with SASS', () => {
-      Config.transformStyle = source => {
+      Config.transformStyle = (source) => {
         const result = renderSync({
           sourceMap: true,
           data: source,
-          sourceMapEmbed: true
+          sourceMapEmbed: true,
         });
         const code = result.css.toString();
         const base64Map = code.match(/\/\*(.*?)\*\//)![1].replace('# sourceMappingURL=data:application/json;base64,', '');
@@ -907,12 +907,12 @@ describe('no-unused-css', () => {
         message: 'Unused styles',
         startPosition: {
           line: 6,
-          character: 13
+          character: 13,
         },
         endPosition: {
           line: 10,
-          character: 18
-        }
+          character: 18,
+        },
       })!;
       Config.transformStyle = (code: string) => ({ code, map: undefined });
       const replacement = failures[0].getFix() as Replacement;

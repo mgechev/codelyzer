@@ -12,7 +12,7 @@ export class Rule extends Rules.AbstractRule {
     rationale: 'Two names for the same property (one private, one public) is inherently confusing.',
     ruleName: 'no-output-rename',
     type: 'maintainability',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = '@Outputs should not be renamed';

@@ -2,7 +2,7 @@ import { getFailureMessage, Rule } from '../src/templateConditionalComplexityRul
 import { assertAnnotated, assertSuccess } from './testHelper';
 
 const {
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {

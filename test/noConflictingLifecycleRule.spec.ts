@@ -4,34 +4,34 @@ import { assertFailures, assertSuccess, ExpectedFailure } from './testHelper';
 const {
   FAILURE_STRING_INTERFACE_HOOK,
   FAILURE_STRING_METHOD_HOOK,
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 const failures: ExpectedFailure = {
   endPosition: {
     character: 9,
-    line: 4
+    line: 4,
   },
   message: '',
   startPosition: {
     character: 8,
-    line: 1
-  }
+    line: 1,
+  },
 };
 const interfaceFailures: ExpectedFailure[] = [
   {
     ...failures,
     message: getFailureMessage({
-      message: FAILURE_STRING_INTERFACE_HOOK
-    })
-  }
+      message: FAILURE_STRING_INTERFACE_HOOK,
+    }),
+  },
 ];
 const methodFailures: ExpectedFailure[] = [
   {
     ...failures,
     message: getFailureMessage({
-      message: FAILURE_STRING_METHOD_HOOK
-    })
-  }
+      message: FAILURE_STRING_METHOD_HOOK,
+    }),
+  },
 ];
 
 describe(ruleName, () => {

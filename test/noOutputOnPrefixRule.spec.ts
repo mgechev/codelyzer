@@ -13,7 +13,7 @@ describe('no-output-on-prefix', () => {
       assertAnnotated({
         ruleName: 'no-output-on-prefix',
         message: 'In the class "ButtonComponent", the output property "onChange" should not be prefixed with on',
-        source
+        source,
       });
     });
 
@@ -28,7 +28,7 @@ describe('no-output-on-prefix', () => {
       assertAnnotated({
         ruleName: 'no-output-on-prefix',
         message: 'In the class "ButtonDirective", the output property "onChange" should not be prefixed with on',
-        source
+        source,
       });
     });
 
@@ -43,7 +43,7 @@ describe('no-output-on-prefix', () => {
       assertAnnotated({
         ruleName: 'no-output-on-prefix',
         message: 'In the class "ButtonDirective", the output property "on" should not be prefixed with on',
-        source
+        source,
       });
     });
   });

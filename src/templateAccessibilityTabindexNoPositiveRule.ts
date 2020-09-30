@@ -13,7 +13,7 @@ export class Rule extends Rules.AbstractRule {
     rationale: 'positive values for tabindex attribute should be avoided because they mess up with the order of focus (AX_FOCUS_03)',
     ruleName: 'template-accessibility-tabindex-no-positive',
     type: 'functionality',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_MESSAGE = 'tabindex attribute cannot be positive';
@@ -40,8 +40,8 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
         const {
           sourceSpan: {
             end: { offset: endOffset },
-            start: { offset: startOffset }
-          }
+            start: { offset: startOffset },
+          },
         } = element;
         this.addFailureFromStartToEnd(startOffset, endOffset, Rule.FAILURE_MESSAGE);
       }

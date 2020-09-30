@@ -14,7 +14,7 @@ describe('pipe-prefix', () => {
         ruleName: 'pipe-prefix',
         message: 'The name of the Pipe decorator of class Test should start with prefix ng, however its value is "foo-bar"',
         source,
-        options: ['ng']
+        options: ['ng'],
       });
     });
 
@@ -30,7 +30,7 @@ describe('pipe-prefix', () => {
         ruleName: 'pipe-prefix',
         message: 'The name of the Pipe decorator of class Test should start' + ' with prefix ng,mg,sg, however its value is "foo-bar"',
         source,
-        options: ['ng', 'mg', 'sg']
+        options: ['ng', 'mg', 'sg'],
       });
     });
   });

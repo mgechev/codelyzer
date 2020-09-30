@@ -5,7 +5,7 @@ import { assertFailure, assertFailures, assertSuccess } from './testHelper';
 type PropertyPairArray = ReadonlyArray<PropertyPair>;
 
 const {
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 const filePath = `${__dirname}/../../test/fixtures/inlineTemplateMaxLines/foo.ts`;
 
@@ -44,7 +44,7 @@ describe(ruleName, () => {
         assertFailure(ruleName, source, {
           endPosition: { character: 15, line: 21 },
           message: getAnimationsFailure(17),
-          startPosition: { character: 14, line: 3 }
+          startPosition: { character: 14, line: 3 },
         });
       });
 
@@ -70,7 +70,7 @@ describe(ruleName, () => {
           {
             endPosition: { character: 15, line: 9 },
             message: getAnimationsFailure(5, options[0].animations),
-            startPosition: { character: 14, line: 3 }
+            startPosition: { character: 14, line: 3 },
           },
           options
         );
@@ -120,7 +120,7 @@ describe(ruleName, () => {
         assertFailure(ruleName, source, {
           endPosition: { character: 15, line: 8 },
           message: getStylesFailure(4),
-          startPosition: { character: 14, line: 3 }
+          startPosition: { character: 14, line: 3 },
         });
       });
 
@@ -149,13 +149,13 @@ describe(ruleName, () => {
           {
             endPosition: { character: 15, line: 8 },
             message,
-            startPosition: { character: 14, line: 3 }
+            startPosition: { character: 14, line: 3 },
           },
           {
             endPosition: { character: 15, line: 14 },
             message,
-            startPosition: { character: 14, line: 9 }
-          }
+            startPosition: { character: 14, line: 9 },
+          },
         ]);
       });
 
@@ -173,7 +173,7 @@ describe(ruleName, () => {
           {
             endPosition: { character: 45, line: 2 },
             message: getStylesFailure(1, options[0].styles),
-            startPosition: { character: 21, line: 2 }
+            startPosition: { character: 21, line: 2 },
           },
           options
         );
@@ -246,7 +246,7 @@ describe(ruleName, () => {
         assertFailure(ruleName, source, {
           endPosition: { character: 13, line: 7 },
           message: getTemplateFailure(4),
-          startPosition: { character: 22, line: 2 }
+          startPosition: { character: 22, line: 2 },
         });
       });
 
@@ -264,7 +264,7 @@ describe(ruleName, () => {
           {
             endPosition: { character: 45, line: 2 },
             message: getTemplateFailure(1, options[0].template),
-            startPosition: { character: 22, line: 2 }
+            startPosition: { character: 22, line: 2 },
           },
           options
         );

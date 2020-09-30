@@ -12,7 +12,7 @@ export class Rule extends Rules.AbstractRule {
     rationale: 'Keyboard is important for users with physical disabilities who cannot use mouse.',
     ruleName: 'template-mouse-events-have-key-events',
     type: 'functionality',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING_MOUSE_OVER = 'mouseover must be accompanied by focus event for accessibility';
@@ -33,10 +33,10 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   }
 
   private validateElement(el: ElementAst): void {
-    const hasMouseOver = el.outputs.some(output => output.name === 'mouseover');
-    const hasMouseOut = el.outputs.some(output => output.name === 'mouseout');
-    const hasFocus = el.outputs.some(output => output.name === 'focus');
-    const hasBlur = el.outputs.some(output => output.name === 'blur');
+    const hasMouseOver = el.outputs.some((output) => output.name === 'mouseover');
+    const hasMouseOut = el.outputs.some((output) => output.name === 'mouseout');
+    const hasFocus = el.outputs.some((output) => output.name === 'focus');
+    const hasBlur = el.outputs.some((output) => output.name === 'blur');
 
     if (!hasMouseOver && !hasMouseOut) {
       return;
@@ -45,8 +45,8 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
     const {
       sourceSpan: {
         end: { offset: endOffset },
-        start: { offset: startOffset }
-      }
+        start: { offset: startOffset },
+      },
     } = el;
 
     if (hasMouseOver && !hasFocus) {

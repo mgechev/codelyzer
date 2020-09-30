@@ -5,7 +5,7 @@ import { assertAnnotated, assertSuccess } from './testHelper';
 
 const {
   FAILURE_STRING,
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {
@@ -18,7 +18,7 @@ describe(ruleName, () => {
       assertAnnotated({
         message: FAILURE_STRING,
         ruleName,
-        source
+        source,
       });
     });
 
@@ -30,7 +30,7 @@ describe(ruleName, () => {
       assertAnnotated({
         message: FAILURE_STRING,
         ruleName,
-        source
+        source,
       });
     });
 
@@ -42,7 +42,7 @@ describe(ruleName, () => {
       assertAnnotated({
         message: FAILURE_STRING,
         ruleName,
-        source
+        source,
       });
     });
 
@@ -54,7 +54,7 @@ describe(ruleName, () => {
       assertAnnotated({
         message: FAILURE_STRING,
         ruleName,
-        source
+        source,
       });
     });
   });
@@ -131,7 +131,10 @@ describe(ruleName, () => {
 
       if (!Array.isArray(failures)) return;
 
-      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+      const replacement = Replacement.applyFixes(
+        source,
+        failures.map((f) => f.getFix()!)
+      );
       const expectedSource = `
         import { Foo } from './foo';
                ~~~~~
@@ -148,12 +151,15 @@ describe(ruleName, () => {
       const failures = assertAnnotated({
         message: FAILURE_STRING,
         ruleName,
-        source
+        source,
       });
 
       if (!Array.isArray(failures)) return;
 
-      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+      const replacement = Replacement.applyFixes(
+        source,
+        failures.map((f) => f.getFix()!)
+      );
       const expectedSource = `
         import { Bar, BarFoo, Foo } from './foo';
                ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -170,12 +176,15 @@ describe(ruleName, () => {
       const failures = assertAnnotated({
         message: FAILURE_STRING,
         ruleName,
-        source
+        source,
       });
 
       if (!Array.isArray(failures)) return;
 
-      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+      const replacement = Replacement.applyFixes(
+        source,
+        failures.map((f) => f.getFix()!)
+      );
       const expectedSource = `
         import { Bar, BarFoo, Foo } from './foo';
                ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -193,7 +202,10 @@ describe(ruleName, () => {
 
       if (!Array.isArray(failures)) return;
 
-      const replacement = Replacement.applyFixes(source, failures.map(f => f.getFix()!));
+      const replacement = Replacement.applyFixes(
+        source,
+        failures.map((f) => f.getFix()!)
+      );
       const expectedSource = `
         import { Bar, BarFoo, Foo } from './foo';
                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

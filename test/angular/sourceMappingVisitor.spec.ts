@@ -39,12 +39,12 @@ describe('SourceMappingVisitor', () => {
         disabledIntervals: [],
         ruleArguments: [],
         ruleName: 'foo',
-        ruleSeverity: 'warning'
+        ruleSeverity: 'warning',
       },
       {
         code: result.css.toString(),
         map: JSON.parse(result.map.toString()),
-        source: scss
+        source: scss,
       },
       styleNode.getStart() + 1
     );

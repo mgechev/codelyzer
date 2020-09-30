@@ -3,7 +3,7 @@ import { AngularClassDecorators } from '../src/util/utils';
 import { assertAnnotated, assertMultipleAnnotated, assertSuccess } from './testHelper';
 
 const {
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {
@@ -29,10 +29,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Injectable
+              classDecoratorName: AngularClassDecorators.Injectable,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -55,10 +55,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Injectable
+              classDecoratorName: AngularClassDecorators.Injectable,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -77,10 +77,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Injectable
+              classDecoratorName: AngularClassDecorators.Injectable,
             }),
             ruleName,
-            source
+            source,
           });
         });
       });
@@ -101,10 +101,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Injectable
+              classDecoratorName: AngularClassDecorators.Injectable,
             }),
             ruleName,
-            source
+            source,
           });
         });
       });
@@ -124,10 +124,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Injectable
+              classDecoratorName: AngularClassDecorators.Injectable,
             }),
             ruleName,
-            source
+            source,
           });
         });
       });
@@ -145,10 +145,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Injectable
+              classDecoratorName: AngularClassDecorators.Injectable,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -164,10 +164,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Injectable
+              classDecoratorName: AngularClassDecorators.Injectable,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -183,10 +183,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Injectable
+              classDecoratorName: AngularClassDecorators.Injectable,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -202,10 +202,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Injectable
+              classDecoratorName: AngularClassDecorators.Injectable,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -221,10 +221,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Injectable
+              classDecoratorName: AngularClassDecorators.Injectable,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -240,10 +240,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Injectable
+              classDecoratorName: AngularClassDecorators.Injectable,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -259,10 +259,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Injectable
+              classDecoratorName: AngularClassDecorators.Injectable,
             }),
             ruleName,
-            source
+            source,
           });
         });
       });
@@ -319,34 +319,34 @@ describe(ruleName, () => {
             }
           `;
           const msg = getFailureMessage({
-            classDecoratorName: AngularClassDecorators.Injectable
+            classDecoratorName: AngularClassDecorators.Injectable,
           });
           const failures = [
             {
               char: '~',
-              msg
+              msg,
             },
             {
               char: '^',
-              msg
+              msg,
             },
             {
               char: '#',
-              msg
+              msg,
             },
             {
               char: '%',
-              msg
+              msg,
             },
             {
               char: '¶',
-              msg
-            }
+              msg,
+            },
           ];
           assertMultipleAnnotated({
             failures,
             ruleName,
-            source
+            source,
           });
         });
       });
@@ -373,10 +373,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.NgModule
+              classDecoratorName: AngularClassDecorators.NgModule,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -399,10 +399,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.NgModule
+              classDecoratorName: AngularClassDecorators.NgModule,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -421,10 +421,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.NgModule
+              classDecoratorName: AngularClassDecorators.NgModule,
             }),
             ruleName,
-            source
+            source,
           });
         });
       });
@@ -445,10 +445,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.NgModule
+              classDecoratorName: AngularClassDecorators.NgModule,
             }),
             ruleName,
-            source
+            source,
           });
         });
       });
@@ -468,10 +468,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.NgModule
+              classDecoratorName: AngularClassDecorators.NgModule,
             }),
             ruleName,
-            source
+            source,
           });
         });
       });
@@ -489,10 +489,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.NgModule
+              classDecoratorName: AngularClassDecorators.NgModule,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -508,10 +508,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.NgModule
+              classDecoratorName: AngularClassDecorators.NgModule,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -527,10 +527,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.NgModule
+              classDecoratorName: AngularClassDecorators.NgModule,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -546,10 +546,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.NgModule
+              classDecoratorName: AngularClassDecorators.NgModule,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -565,10 +565,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.NgModule
+              classDecoratorName: AngularClassDecorators.NgModule,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -584,10 +584,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.NgModule
+              classDecoratorName: AngularClassDecorators.NgModule,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -603,10 +603,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.NgModule
+              classDecoratorName: AngularClassDecorators.NgModule,
             }),
             ruleName,
-            source
+            source,
           });
         });
       });
@@ -663,34 +663,34 @@ describe(ruleName, () => {
             }
           `;
           const msg = getFailureMessage({
-            classDecoratorName: AngularClassDecorators.NgModule
+            classDecoratorName: AngularClassDecorators.NgModule,
           });
           const failures = [
             {
               char: '~',
-              msg
+              msg,
             },
             {
               char: '^',
-              msg
+              msg,
             },
             {
               char: '#',
-              msg
+              msg,
             },
             {
               char: '%',
-              msg
+              msg,
             },
             {
               char: '¶',
-              msg
-            }
+              msg,
+            },
           ];
           assertMultipleAnnotated({
             failures,
             ruleName,
-            source
+            source,
           });
         });
       });
@@ -717,10 +717,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Pipe
+              classDecoratorName: AngularClassDecorators.Pipe,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -743,10 +743,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Pipe
+              classDecoratorName: AngularClassDecorators.Pipe,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -765,10 +765,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Pipe
+              classDecoratorName: AngularClassDecorators.Pipe,
             }),
             ruleName,
-            source
+            source,
           });
         });
       });
@@ -789,10 +789,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Pipe
+              classDecoratorName: AngularClassDecorators.Pipe,
             }),
             ruleName,
-            source
+            source,
           });
         });
       });
@@ -812,10 +812,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Pipe
+              classDecoratorName: AngularClassDecorators.Pipe,
             }),
             ruleName,
-            source
+            source,
           });
         });
       });
@@ -833,10 +833,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Pipe
+              classDecoratorName: AngularClassDecorators.Pipe,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -852,10 +852,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Pipe
+              classDecoratorName: AngularClassDecorators.Pipe,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -871,10 +871,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Pipe
+              classDecoratorName: AngularClassDecorators.Pipe,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -890,10 +890,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Pipe
+              classDecoratorName: AngularClassDecorators.Pipe,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -909,10 +909,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Pipe
+              classDecoratorName: AngularClassDecorators.Pipe,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -928,10 +928,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Pipe
+              classDecoratorName: AngularClassDecorators.Pipe,
             }),
             ruleName,
-            source
+            source,
           });
         });
 
@@ -947,10 +947,10 @@ describe(ruleName, () => {
           `;
           assertAnnotated({
             message: getFailureMessage({
-              classDecoratorName: AngularClassDecorators.Pipe
+              classDecoratorName: AngularClassDecorators.Pipe,
             }),
             ruleName,
-            source
+            source,
           });
         });
       });
@@ -1007,34 +1007,34 @@ describe(ruleName, () => {
             }
           `;
           const msg = getFailureMessage({
-            classDecoratorName: AngularClassDecorators.Pipe
+            classDecoratorName: AngularClassDecorators.Pipe,
           });
           const failures = [
             {
               char: '~',
-              msg
+              msg,
             },
             {
               char: '^',
-              msg
+              msg,
             },
             {
               char: '#',
-              msg
+              msg,
             },
             {
               char: '%',
-              msg
+              msg,
             },
             {
               char: '¶',
-              msg
-            }
+              msg,
+            },
           ];
           assertMultipleAnnotated({
             failures,
             ruleName,
-            source
+            source,
           });
         });
       });
@@ -1059,12 +1059,12 @@ describe(ruleName, () => {
           }
         `;
         const message = getFailureMessage({
-          classDecoratorName: AngularClassDecorators.Pipe
+          classDecoratorName: AngularClassDecorators.Pipe,
         });
         assertAnnotated({
           message,
           ruleName,
-          source
+          source,
         });
       });
     });

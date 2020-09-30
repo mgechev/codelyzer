@@ -14,7 +14,7 @@ export class Rule extends AbstractRule {
     optionsDescription: 'Not configurable.',
     ruleName: 'use-component-view-encapsulation',
     type: 'maintainability',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = `Using ViewEncapsulation.${NONE} makes your styles global, which may have an unintended effect`;

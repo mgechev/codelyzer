@@ -9,7 +9,7 @@ import {
   AngularLifecycleMethodKeys,
   getDeclaredAngularLifecycleInterfaces,
   getLifecycleInterfaceByMethodName,
-  isAngularLifecycleMethod
+  isAngularLifecycleMethod,
 } from './util/utils';
 
 interface FailureParameters {
@@ -31,7 +31,7 @@ export class Rule extends AbstractRule {
     rationale: 'Interfaces prescribe typed method signatures. Use those signatures to flag spelling and syntax mistakes.',
     ruleName: 'use-lifecycle-interface',
     type: 'functionality',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = `Lifecycle interface %s should be implemented for method %s. (${STYLE_GUIDE_LINK})`;

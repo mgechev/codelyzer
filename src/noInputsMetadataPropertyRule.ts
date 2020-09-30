@@ -21,7 +21,7 @@ export class Rule extends MetadataPropertyBase {
     `,
     ruleName: 'no-inputs-metadata-property',
     type: 'style',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = dedent`
@@ -32,7 +32,7 @@ export class Rule extends MetadataPropertyBase {
     super(
       {
         errorMessage: Rule.FAILURE_STRING,
-        propertyName: METADATA_PROPERTY_NAME
+        propertyName: METADATA_PROPERTY_NAME,
       },
       options
     );

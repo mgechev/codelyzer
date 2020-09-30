@@ -3,7 +3,7 @@ import { assertAnnotated, assertSuccess } from './testHelper';
 
 const {
   FAILURE_MESSAGE,
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {
@@ -21,7 +21,7 @@ describe(ruleName, () => {
       assertAnnotated({
         message: FAILURE_MESSAGE,
         ruleName,
-        source
+        source,
       });
     });
 
@@ -38,7 +38,7 @@ describe(ruleName, () => {
       assertAnnotated({
         message: FAILURE_MESSAGE,
         ruleName,
-        source
+        source,
       });
     });
   });

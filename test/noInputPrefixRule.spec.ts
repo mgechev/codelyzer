@@ -2,7 +2,7 @@ import { getFailureMessage, Rule } from '../src/noInputPrefixRule';
 import { assertAnnotated, assertSuccess } from './testHelper';
 
 const {
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {
@@ -20,7 +20,7 @@ describe(ruleName, () => {
         message: getFailureMessage(blacklistedPrefixes),
         options: blacklistedPrefixes,
         ruleName,
-        source
+        source,
       });
     });
 
@@ -37,7 +37,7 @@ describe(ruleName, () => {
         message: getFailureMessage(blacklistedPrefixes),
         options: blacklistedPrefixes,
         ruleName,
-        source
+        source,
       });
     });
 
@@ -54,7 +54,7 @@ describe(ruleName, () => {
         message: getFailureMessage(blacklistedPrefixes),
         options: blacklistedPrefixes,
         ruleName,
-        source
+        source,
       });
     });
 
@@ -71,7 +71,7 @@ describe(ruleName, () => {
         message: getFailureMessage(blacklistedPrefixes),
         options: blacklistedPrefixes,
         ruleName,
-        source
+        source,
       });
     });
 
@@ -88,7 +88,7 @@ describe(ruleName, () => {
         message: getFailureMessage(blacklistedPrefixes),
         options: blacklistedPrefixes,
         ruleName,
-        source
+        source,
       });
     });
   });

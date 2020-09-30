@@ -9,15 +9,18 @@ import { getDecoratorArgument } from './util/utils';
 export class Rule extends Lint.Rules.AbstractRule {
   static readonly metadata: Lint.IRuleMetadata = {
     description: 'Enforce consistent prefix for pipes.',
-    optionExamples: [[true, 'myPrefix'], [true, 'myPrefix', 'myOtherPrefix']],
+    optionExamples: [
+      [true, 'myPrefix'],
+      [true, 'myPrefix', 'myOtherPrefix'],
+    ],
     options: {
       items: [
         {
-          type: 'string'
-        }
+          type: 'string',
+        },
       ],
       minLength: 1,
-      type: 'array'
+      type: 'array',
     },
     optionsDescription: Lint.Utils.dedent`
       * The list of arguments are supported prefixes (given as strings).
@@ -25,7 +28,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     rationale: 'Consistent conventions make it easy to quickly identify and reference assets of different types.',
     ruleName: 'pipe-prefix',
     type: 'style',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static FAILURE_STRING = `The name of the Pipe decorator of class %s should start with prefix %s, however its value is "%s"`;
@@ -54,8 +57,8 @@ export class Rule extends Lint.Rules.AbstractRule {
   isEnabled(): boolean {
     const {
       metadata: {
-        options: { minLength }
-      }
+        options: { minLength },
+      },
     } = Rule;
     const { length } = this.ruleArguments;
 
@@ -82,7 +85,7 @@ class Walker extends NgWalker {
     const argument = getDecoratorArgument(pipe)!;
 
     argument.properties
-      .filter(p => p.name && ts.isIdentifier(p.name) && p.name.text === 'name')
+      .filter((p) => p.name && ts.isIdentifier(p.name) && p.name.text === 'name')
       .forEach(this.validateProperty.bind(this, className));
   }
 

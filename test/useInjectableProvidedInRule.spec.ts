@@ -3,7 +3,7 @@ import { assertAnnotated, assertSuccess } from './testHelper';
 
 const {
   metadata: { ruleName },
-  FAILURE_STRING
+  FAILURE_STRING,
 } = Rule;
 
 describe(ruleName, () => {
@@ -17,7 +17,7 @@ describe(ruleName, () => {
       assertAnnotated({
         message: FAILURE_STRING,
         ruleName,
-        source
+        source,
       });
     });
   });

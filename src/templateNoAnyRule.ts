@@ -19,7 +19,7 @@ export class Rule extends AbstractRule {
     `,
     ruleName: 'template-no-any',
     type: 'functionality',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = `Avoid using '${ANY_TYPE_CAST_FUNCTION_NAME}' in templates`;
@@ -40,7 +40,7 @@ class ExpressionVisitorCtrl extends RecursiveAngularExpressionVisitor {
 
   private generateFailure(ast: MethodCall): void {
     const {
-      span: { end: endSpan, start: startSpan }
+      span: { end: endSpan, start: startSpan },
     } = ast;
 
     this.addFailureFromStartToEnd(startSpan, endSpan, Rule.FAILURE_STRING);

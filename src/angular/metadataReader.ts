@@ -15,7 +15,7 @@ import {
   ModuleMetadata,
   PipeMetadata,
   StyleMetadata,
-  TemplateMetadata
+  TemplateMetadata,
 } from './metadata';
 import { AbstractResolver, MetadataUrls } from './urlResolvers/abstractResolver';
 import { PathResolver } from './urlResolvers/pathResolver';
@@ -38,7 +38,7 @@ export class MetadataReader {
 
   read(d: ts.ClassDeclaration): DirectiveMetadata | ComponentMetadata | PipeMetadata | ModuleMetadata | InjectableMetadata | undefined {
     const componentMetadata = unwrapFirst<ComponentMetadata | undefined>(
-      maybeNodeArray(ts.createNodeArray(d.decorators)).map(dec => {
+      maybeNodeArray(ts.createNodeArray(d.decorators)).map((dec) => {
         return Maybe.lift(dec)
           .bind(callExpression)
           .bind(withIdentifier('Component') as any)
@@ -47,7 +47,7 @@ export class MetadataReader {
     );
 
     const directiveMetadata = unwrapFirst<DirectiveMetadata | undefined>(
-      maybeNodeArray(ts.createNodeArray(d.decorators)).map(dec =>
+      maybeNodeArray(ts.createNodeArray(d.decorators)).map((dec) =>
         Maybe.lift(dec)
           .bind(callExpression)
           .bind(withIdentifier('Directive') as any)
@@ -56,7 +56,7 @@ export class MetadataReader {
     );
 
     const pipeMetadata = unwrapFirst<PipeMetadata | undefined>(
-      maybeNodeArray(ts.createNodeArray(d.decorators)).map(dec =>
+      maybeNodeArray(ts.createNodeArray(d.decorators)).map((dec) =>
         Maybe.lift(dec)
           .bind(callExpression)
           .bind(withIdentifier('Pipe') as any)
@@ -65,7 +65,7 @@ export class MetadataReader {
     );
 
     const moduleMetadata = unwrapFirst<ModuleMetadata | undefined>(
-      maybeNodeArray(ts.createNodeArray(d.decorators)).map(dec =>
+      maybeNodeArray(ts.createNodeArray(d.decorators)).map((dec) =>
         Maybe.lift(dec)
           .bind(callExpression)
           .bind(withIdentifier('NgModule') as any)
@@ -74,7 +74,7 @@ export class MetadataReader {
     );
 
     const injectableMetadata = unwrapFirst<InjectableMetadata | undefined>(
-      maybeNodeArray(ts.createNodeArray(d.decorators)).map(dec =>
+      maybeNodeArray(ts.createNodeArray(d.decorators)).map((dec) =>
         Maybe.lift(dec)
           .bind(callExpression)
           .bind(withIdentifier('Injectable') as any)
@@ -117,8 +117,8 @@ export class MetadataReader {
     const directiveMetadata = this.readDirectiveMetadata(d, dec);
     const external_M = expr.fmap(() => this.urlResolver!.resolve(dec));
     const animations_M = external_M.bind(() => this.readComponentAnimationsMetadata(dec));
-    const style_M = external_M.bind(external => this.readComponentStylesMetadata(dec, external!));
-    const template_M = external_M.bind(external => this.readComponentTemplateMetadata(dec, external!));
+    const style_M = external_M.bind((external) => this.readComponentStylesMetadata(dec, external!));
+    const template_M = external_M.bind((external) => this.readComponentTemplateMetadata(dec, external!));
 
     return new ComponentMetadata(
       directiveMetadata.controller,
@@ -135,10 +135,10 @@ export class MetadataReader {
   }
 
   protected readComponentAnimationsMetadata(dec: ts.Decorator): Maybe<(AnimationMetadata | undefined)[] | undefined> {
-    return getAnimations(dec).fmap(inlineAnimations =>
-      inlineAnimations!.elements.filter(isStringLiteralLike).map<AnimationMetadata>(inlineAnimation => ({
+    return getAnimations(dec).fmap((inlineAnimations) =>
+      inlineAnimations!.elements.filter(isStringLiteralLike).map<AnimationMetadata>((inlineAnimation) => ({
         animation: normalizeTransformed({ code: (inlineAnimation as ts.StringLiteral).text }),
-        node: inlineAnimation as ts.Node
+        node: inlineAnimation as ts.Node,
       }))
     );
   }
@@ -146,18 +146,18 @@ export class MetadataReader {
   protected readComponentTemplateMetadata(dec: ts.Decorator, external: MetadataUrls): Maybe<TemplateMetadata | undefined> {
     // Resolve Inline template
     return getTemplate(dec)
-      .fmap<TemplateMetadata>(inlineTemplate => ({
+      .fmap<TemplateMetadata>((inlineTemplate) => ({
         node: inlineTemplate,
         template: normalizeTransformed(Config.transformTemplate(inlineTemplate!.text)),
-        url: undefined
+        url: undefined,
       }))
       .catch(() =>
         // If there's no valid inline template, we resolve external template
-        Maybe.lift(external.templateUrl).bind(url =>
-          this._resolve(url!).fmap<TemplateMetadata>(template => ({
+        Maybe.lift(external.templateUrl).bind((url) =>
+          this._resolve(url!).fmap<TemplateMetadata>((template) => ({
             node: undefined,
             template: normalizeTransformed(Config.transformTemplate(template!, url)),
-            url
+            url,
           }))
         )
       );
@@ -165,29 +165,29 @@ export class MetadataReader {
 
   protected readComponentStylesMetadata(dec: ts.Decorator, external: MetadataUrls): Maybe<(StyleMetadata | undefined)[] | undefined> {
     return getInlineStyle(dec)
-      .fmap(inlineStyles =>
+      .fmap((inlineStyles) =>
         // Resolve Inline styles
-        inlineStyles!.elements.filter(isStringLiteralLike).map<StyleMetadata>(inlineStyle => ({
+        inlineStyles!.elements.filter(isStringLiteralLike).map<StyleMetadata>((inlineStyle) => ({
           node: inlineStyle,
-          style: normalizeTransformed(Config.transformStyle((inlineStyle as ts.StringLiteral).text))
+          style: normalizeTransformed(Config.transformStyle((inlineStyle as ts.StringLiteral).text)),
         }))
       )
       .catch(() =>
         // If there's no valid inline styles, we resolve external styles
         Maybe.lift(external.styleUrls)
-          .fmap(urls =>
+          .fmap((urls) =>
             urls.map((
               url // Resolve each style URL and transform to metadata
             ) =>
-              this._resolve(url).fmap<StyleMetadata>(style => ({
+              this._resolve(url).fmap<StyleMetadata>((style) => ({
                 node: undefined,
                 style: normalizeTransformed(Config.transformStyle(style!, url)),
-                url
+                url,
               }))
             )
           )
           // merge Maybe<StyleMetadata>[] to Maybe<StyleMetadata[]>
-          .bind(url => listToMaybe(url as any) as any)
+          .bind((url) => listToMaybe(url as any) as any)
       );
   }
 

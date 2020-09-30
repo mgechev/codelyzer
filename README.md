@@ -200,9 +200,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'codelyzer',
-  template: `
-    <h1>Hello {{ name }}!</h1>
-  `
+  template: ` <h1>Hello {{ name }}!</h1> `,
 })
 class Codelyzer {
   name: string = 'World';
@@ -355,7 +353,7 @@ import { Component } from '@angular/core';
 /* tslint:disable:template-use-track-by-function */
 @Component({
   selector: 'codelyzer',
-  templateUrl: './codelyzer.component.html'
+  templateUrl: './codelyzer.component.html',
 })
 class Codelyzer {}
 ```
@@ -408,7 +406,7 @@ module.exports = {
   predefinedDirectives: [{ selector: 'form', exportAs: 'ngForm' }],
 
   // None = 0b000, Error = 0b001, Info = 0b011, Debug = 0b111
-  logLevel: 0b111
+  logLevel: 0b111,
 };
 ```
 

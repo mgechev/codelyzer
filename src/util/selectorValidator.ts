@@ -20,7 +20,7 @@ export const SelectorValidator = {
   prefix(prefix: string, selectorStyle: SelectorStyle): (selector: string) => boolean {
     const regex = new RegExp(`^\\[?(${prefix})`);
 
-    return selector => {
+    return (selector) => {
       if (!prefix) return true;
 
       if (!regex.test(selector)) return false;
@@ -35,5 +35,5 @@ export const SelectorValidator = {
 
       throw Error('Invalid selector style!');
     };
-  }
+  },
 };

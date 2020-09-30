@@ -17,7 +17,7 @@ export class Rule extends AbstractRule {
     rationale: "The use of 'trackBy' is considered a good practice.",
     ruleName: 'template-use-track-by-function',
     type: 'maintainability',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = 'Missing trackBy function in ngFor directive';
@@ -46,8 +46,8 @@ class TemplateUseTrackByFunctionVisitor extends BasicTemplateAstVisitor {
     const {
       sourceSpan: {
         end: { offset: endOffset },
-        start: { offset: startOffset }
-      }
+        start: { offset: startOffset },
+      },
     } = prop;
 
     if (PATTERN.test((context.codeWithMap.source || '').substr(currentOffset))) {
@@ -62,11 +62,11 @@ class TemplateUseTrackByFunctionVisitor extends BasicTemplateAstVisitor {
 
 class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   private readonly visitors: ReadonlySet<BasicTemplateAstVisitor> = new Set([
-    new TemplateUseTrackByFunctionVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart)
+    new TemplateUseTrackByFunctionVisitor(this.getSourceFile(), this.getOptions(), this.context, this.templateStart),
   ]);
 
   visitDirectiveProperty(prop: BoundDirectivePropertyAst, context: BasicTemplateAstVisitor): any {
-    this.visitors.forEach(visitor => visitor.visitDirectiveProperty(prop, this));
+    this.visitors.forEach((visitor) => visitor.visitDirectiveProperty(prop, this));
     super.visitDirectiveProperty(prop, context);
   }
 }

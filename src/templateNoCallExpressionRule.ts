@@ -16,7 +16,7 @@ export class Rule extends AbstractRule {
     rationale: 'Calling expressions in templates causes it to run on every change detection cycle and may cause performance issues.',
     ruleName: 'template-no-call-expression',
     type: 'maintainability',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = 'Avoid calling expressions in templates';
@@ -24,7 +24,7 @@ export class Rule extends AbstractRule {
   apply(sourceFile: SourceFile): RuleFailure[] {
     const walkerConfig: NgWalkerConfig = {
       expressionVisitorCtrl: ExpressionVisitorCtrl,
-      templateVisitorCtrl: TemplateVisitorCtrl
+      templateVisitorCtrl: TemplateVisitorCtrl,
     };
     const walker = new NgWalker(sourceFile, this.getOptions(), walkerConfig);
 
@@ -44,7 +44,7 @@ class ExpressionVisitorCtrl extends RecursiveAngularExpressionVisitor {
 
   private generateFailure(ast: MethodCall): void {
     const {
-      span: { end: endSpan, start: startSpan }
+      span: { end: endSpan, start: startSpan },
     } = ast;
 
     this.addFailureFromStartToEnd(startSpan, endSpan, Rule.FAILURE_STRING);

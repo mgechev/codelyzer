@@ -12,7 +12,7 @@ export class Rule extends AbstractRule {
     rationale: "Explicit calls to lifecycle methods could be confusing. Invoke them is an Angular's responsability.",
     ruleName: 'no-lifecycle-call',
     type: 'functionality',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = 'Avoid explicit calls to lifecycle methods';
@@ -37,7 +37,7 @@ class Walker extends NgWalker {
 
     const {
       expression,
-      name: { text: methodName }
+      name: { text: methodName },
     } = nodeExpression;
     const isLifecycleCall = isAngularLifecycleMethod(methodName);
     const isSuperCall = expression.kind === SyntaxKind.SuperKeyword;
