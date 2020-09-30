@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.0.1](https://github.com/mgechev/codelyzer/compare/6.0.0-next.2...6.0.1) (2020-09-30)
+
+### Bug Fixes
+
+- add Angular v11 in peer dependencies ([#979](https://github.com/mgechev/codelyzer/issues/979)) ([cd88bd5](https://github.com/mgechev/codelyzer/commit/cd88bd5dafd95d3e175605a09f5a8bb3b5d3c802))
+
 ## [6.0.0](https://github.com/mgechev/codelyzer/compare/6.0.0-next.2...6.0.0) (2020-09-30)
 
 ### Bug Fixes
