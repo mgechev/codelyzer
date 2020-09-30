@@ -22,13 +22,13 @@ export class UrlResolver extends AbstractResolver {
         templateUrl: Config.resolveUrl(this.pathResolver.resolve(templateUrl!, componentPath))!,
         styleUrls: styleUrls.map((p: string) => {
           return Config.resolveUrl(this.pathResolver.resolve(p, componentPath))!;
-        })
+        }),
       };
     }
 
     return {
       templateUrl: Config.resolveUrl(null)!,
-      styleUrls: []
+      styleUrls: [],
     };
   }
 

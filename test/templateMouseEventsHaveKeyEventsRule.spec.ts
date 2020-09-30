@@ -4,7 +4,7 @@ import { assertAnnotated, assertSuccess } from './testHelper';
 const {
   FAILURE_STRING_MOUSE_OUT,
   FAILURE_STRING_MOUSE_OVER,
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {
@@ -22,7 +22,7 @@ describe(ruleName, () => {
       assertAnnotated({
         message: FAILURE_STRING_MOUSE_OVER,
         ruleName,
-        source
+        source,
       });
     });
 
@@ -39,7 +39,7 @@ describe(ruleName, () => {
       assertAnnotated({
         message: FAILURE_STRING_MOUSE_OUT,
         ruleName,
-        source
+        source,
       });
     });
   });

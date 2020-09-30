@@ -10,7 +10,7 @@ export function convertRuleOptions(ruleConfiguration: Map<string, Partial<IOptio
       disabledIntervals: [], // deprecated, so just provide an empty array.
       ruleArguments: ruleArguments || [],
       ruleName,
-      ruleSeverity: ruleSeverity || 'error'
+      ruleSeverity: ruleSeverity || 'error',
     };
     output.push(options);
   });
@@ -80,7 +80,7 @@ function loadCachedRule(directory: string, ruleName: string, isCustomPath?: bool
 function findRule(name: string, rulesDirectories?: string | string[]): any | undefined {
   const camelizedName = transformName(name);
 
-  return find(arrayify(rulesDirectories), dir => loadCachedRule(dir, camelizedName, true));
+  return find(arrayify(rulesDirectories), (dir) => loadCachedRule(dir, camelizedName, true));
 }
 
 export function loadRules(ruleOptionsList: IOptions[], rulesDirectories?: string | string[], isJs = false): IRule[] {

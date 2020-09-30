@@ -21,7 +21,7 @@ export class Rule extends AbstractRule {
     `,
     ruleName: 'template-no-negated-async',
     type: 'functionality',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING_NEGATED_PIPE =
@@ -52,7 +52,7 @@ class ExpressionVisitorCtrl extends RecursiveAngularExpressionVisitor {
     errorMessage: typeof Rule.FAILURE_STRING_NEGATED_PIPE | typeof Rule.FAILURE_STRING_UNSTRICT_EQUALITY
   ): void {
     const {
-      span: { end: spanEnd, start: spanStart }
+      span: { end: spanEnd, start: spanStart },
     } = ast;
 
     this.addFailureFromStartToEnd(spanStart, spanEnd, errorMessage);

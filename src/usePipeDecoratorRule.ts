@@ -17,7 +17,7 @@ export class Rule extends AbstractRule {
     optionsDescription: 'Not configurable.',
     ruleName: 'use-pipe-decorator',
     type: 'maintainability',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = dedent`

@@ -18,7 +18,7 @@ export class Rule extends Rules.AbstractRule {
     rationale: 'Keyboard is important for users with physical disabilities who cannot use mouse.',
     ruleName: 'template-click-events-have-key-events',
     type: 'functionality',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = 'click must be accompanied by either keyup, keydown or keypress event for accessibility';
@@ -38,7 +38,7 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   }
 
   private validateElement(el: ElementAst): void {
-    const hasClick = el.outputs.some(output => output.name === 'click');
+    const hasClick = el.outputs.some((output) => output.name === 'click');
     if (!hasClick) {
       return;
     }
@@ -57,7 +57,7 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
       return;
     }
     const hasKeyEvent = el.outputs.some(
-      output => output.name.startsWith('keyup') || output.name.startsWith('keydown') || output.name.startsWith('keypress')
+      (output) => output.name.startsWith('keyup') || output.name.startsWith('keydown') || output.name.startsWith('keypress')
     );
 
     if (hasKeyEvent) {
@@ -67,8 +67,8 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
     const {
       sourceSpan: {
         end: { offset: endOffset },
-        start: { offset: startOffset }
-      }
+        start: { offset: startOffset },
+      },
     } = el;
 
     this.addFailureFromStartToEnd(startOffset, endOffset, Rule.FAILURE_STRING);

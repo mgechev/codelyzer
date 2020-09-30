@@ -2,7 +2,7 @@ import { getErrorMessage, Rule } from '../src/templateAccessibilityElementsConte
 import { assertAnnotated, assertSuccess } from './testHelper';
 
 const {
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {
@@ -20,7 +20,7 @@ describe(ruleName, () => {
       assertAnnotated({
         message: getErrorMessage('h1'),
         ruleName,
-        source
+        source,
       });
     });
 
@@ -37,7 +37,7 @@ describe(ruleName, () => {
       assertAnnotated({
         message: getErrorMessage('a'),
         ruleName,
-        source
+        source,
       });
     });
 
@@ -54,7 +54,7 @@ describe(ruleName, () => {
       assertAnnotated({
         message: getErrorMessage('button'),
         ruleName,
-        source
+        source,
       });
     });
   });

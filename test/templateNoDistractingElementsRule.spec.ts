@@ -2,7 +2,7 @@ import { getFailureMessage, Rule } from '../src/templateNoDistractingElementsRul
 import { assertAnnotated, assertSuccess } from './testHelper';
 
 const {
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {
@@ -20,7 +20,7 @@ describe(ruleName, () => {
       assertAnnotated({
         message: getFailureMessage('marquee'),
         ruleName,
-        source
+        source,
       });
     });
 
@@ -37,7 +37,7 @@ describe(ruleName, () => {
       assertAnnotated({
         message: getFailureMessage('blink'),
         ruleName,
-        source
+        source,
       });
     });
   });

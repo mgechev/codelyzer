@@ -33,7 +33,7 @@ import {
   CssStylesBlockAst,
   CssUnknownRuleAst,
   CssUnknownTokenListAst,
-  mergeTokens
+  mergeTokens,
 } from './cssAst';
 
 const SPACE_OPERATOR = ' ';
@@ -334,12 +334,12 @@ export class CssParser {
           token
         );
 
-        this._collectUntilDelim(delimiters | LBRACE_DELIM_FLAG | SEMICOLON_DELIM_FLAG).forEach(token => {
+        this._collectUntilDelim(delimiters | LBRACE_DELIM_FLAG | SEMICOLON_DELIM_FLAG).forEach((token) => {
           listOfTokens.push(token);
         });
         if (this._scanner!.peek == chars.$LBRACE) {
           listOfTokens.push(this._consume(CssTokenType.Character, '{'));
-          this._collectUntilDelim(delimiters | RBRACE_DELIM_FLAG | LBRACE_DELIM_FLAG).forEach(token => {
+          this._collectUntilDelim(delimiters | RBRACE_DELIM_FLAG | LBRACE_DELIM_FLAG).forEach((token) => {
             listOfTokens.push(token);
           });
           listOfTokens.push(this._consume(CssTokenType.Character, '}'));
@@ -518,7 +518,7 @@ export class CssParser {
         }
 
         // :host(a, b, c) {
-        this._parseSelectors(innerDelims).forEach(selector => {
+        this._parseSelectors(innerDelims).forEach((selector) => {
           innerSelectors.push(selector);
         });
       } else {
@@ -877,7 +877,7 @@ export class CssParser {
 
           const remainingTokens = this._collectUntilDelim(delimiters | COLON_DELIM_FLAG | SEMICOLON_DELIM_FLAG, CssTokenType.Identifier);
           if (remainingTokens.length > 0) {
-            remainingTokens.forEach(token => {
+            remainingTokens.forEach((token) => {
               propStr.push(token.strValue);
             });
           }

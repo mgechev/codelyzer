@@ -4,7 +4,7 @@ import { assertAnnotated, assertMultipleAnnotated, assertSuccess } from './testH
 const {
   FAILURE_STRING_NEGATED_PIPE,
   FAILURE_STRING_UNSTRICT_EQUALITY,
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {
@@ -23,7 +23,7 @@ describe(ruleName, () => {
       assertAnnotated({
         message: FAILURE_STRING_NEGATED_PIPE,
         ruleName,
-        source
+        source,
       });
     });
 
@@ -41,7 +41,7 @@ describe(ruleName, () => {
       assertAnnotated({
         message: FAILURE_STRING_NEGATED_PIPE,
         ruleName,
-        source
+        source,
       });
     });
 
@@ -59,7 +59,7 @@ describe(ruleName, () => {
       assertAnnotated({
         message: FAILURE_STRING_UNSTRICT_EQUALITY,
         ruleName,
-        source
+        source,
       });
     });
 
@@ -77,7 +77,7 @@ describe(ruleName, () => {
       assertAnnotated({
         message: FAILURE_STRING_NEGATED_PIPE,
         ruleName,
-        source
+        source,
       });
     });
 
@@ -109,19 +109,19 @@ describe(ruleName, () => {
         failures: [
           {
             char: '~',
-            msg: FAILURE_STRING_NEGATED_PIPE
+            msg: FAILURE_STRING_NEGATED_PIPE,
           },
           {
             char: '^',
-            msg: FAILURE_STRING_UNSTRICT_EQUALITY
+            msg: FAILURE_STRING_UNSTRICT_EQUALITY,
           },
           {
             char: '#',
-            msg: FAILURE_STRING_UNSTRICT_EQUALITY
-          }
+            msg: FAILURE_STRING_UNSTRICT_EQUALITY,
+          },
         ],
         ruleName,
-        source
+        source,
       });
     });
   });

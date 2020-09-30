@@ -2,7 +2,7 @@ import { getFailureMessage, Rule } from '../src/noPipeImpureRule';
 import { assertAnnotated, assertSuccess } from './testHelper';
 
 const {
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {
@@ -17,12 +17,12 @@ describe(ruleName, () => {
         class Test {}
       `;
       const message = getFailureMessage({
-        className: 'Test'
+        className: 'Test',
       });
       assertAnnotated({
         message,
         ruleName,
-        source
+        source,
       });
     });
   });

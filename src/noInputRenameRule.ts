@@ -16,7 +16,7 @@ export class Rule extends AbstractRule {
     rationale: 'Two names for the same property (one private, one public) is inherently confusing.',
     ruleName: 'no-input-rename',
     type: 'maintainability',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = dedent`
@@ -73,7 +73,7 @@ const whiteListAliases = new Set<string>([
   'aria-valuemax',
   'aria-valuemin',
   'aria-valuenow',
-  'aria-valuetext'
+  'aria-valuetext',
 ]);
 
 class Walker extends NgWalker {
@@ -93,7 +93,7 @@ class Walker extends NgWalker {
     return !!(
       (propertyAlias !== propertyName &&
         this.directiveSelectors &&
-        this.directiveSelectors.some(x => new RegExp(`^${x}((${toTitleCase(propertyName)}$)|(?=$))`).test(propertyAlias))) ||
+        this.directiveSelectors.some((x) => new RegExp(`^${x}((${toTitleCase(propertyName)}$)|(?=$))`).test(propertyAlias))) ||
       (whiteListAliases.has(propertyAlias) && propertyName === kebabToCamelCase(propertyAlias))
     );
   }

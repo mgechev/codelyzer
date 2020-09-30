@@ -13,7 +13,7 @@ export class Rule extends Rules.AbstractRule {
     rationale: 'Elements that can be visually distracting can cause accessibility issues with visually impaired users.',
     ruleName: 'template-no-distracting-elements',
     type: 'functionality',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = 'Avoid using <%s/> elements as they create visual accessibility issues.';
@@ -41,8 +41,8 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
       const {
         sourceSpan: {
           end: { offset: endOffset },
-          start: { offset: startOffset }
-        }
+          start: { offset: startOffset },
+        },
       } = el;
       this.addFailureFromStartToEnd(startOffset, endOffset, getFailureMessage(el.name));
     }

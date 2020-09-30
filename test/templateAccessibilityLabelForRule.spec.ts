@@ -3,7 +3,7 @@ import { assertAnnotated, assertSuccess } from './testHelper';
 
 const {
   FAILURE_STRING,
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {
@@ -22,7 +22,7 @@ describe(ruleName, () => {
       assertAnnotated({
         message: FAILURE_STRING,
         ruleName,
-        source
+        source,
       });
     });
 
@@ -39,15 +39,15 @@ describe(ruleName, () => {
       const options = [
         {
           labelAttributes: ['id'],
-          labelComponents: ['app-label']
-        }
+          labelComponents: ['app-label'],
+        },
       ];
 
       assertAnnotated({
         message: FAILURE_STRING,
         options,
         ruleName,
-        source
+        source,
       });
     });
 
@@ -64,15 +64,15 @@ describe(ruleName, () => {
       const options = [
         {
           controlComponents: ['app-input'],
-          labelComponents: ['app-label']
-        }
+          labelComponents: ['app-label'],
+        },
       ];
 
       assertAnnotated({
         message: FAILURE_STRING,
         options,
         ruleName,
-        source
+        source,
       });
     });
   });
@@ -107,8 +107,8 @@ describe(ruleName, () => {
       const options = [
         {
           labelAttributes: ['id'],
-          labelComponents: ['app-label']
-        }
+          labelComponents: ['app-label'],
+        },
       ];
 
       assertSuccess(ruleName, source, options);
@@ -140,8 +140,8 @@ describe(ruleName, () => {
       const options = [
         {
           controlComponents: ['app-input'],
-          labelComponents: ['app-label']
-        }
+          labelComponents: ['app-label'],
+        },
       ];
 
       assertSuccess(ruleName, source, options);

@@ -12,7 +12,7 @@ export class Rule extends Rules.AbstractRule {
     rationale: 'autofocus attribute reduces usability and accessibility for users.',
     ruleName: 'template-no-autofocus',
     type: 'functionality',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = 'autofocus attribute should not be used, as it reduces usability and accessibility for users.';
@@ -41,8 +41,8 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
       const {
         sourceSpan: {
           end: { offset: endOffset },
-          start: { offset: startOffset }
-        }
+          start: { offset: startOffset },
+        },
       } = ast;
       this.addFailureFromStartToEnd(startOffset, endOffset, Rule.FAILURE_STRING);
     }

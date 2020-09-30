@@ -2,7 +2,7 @@ import { getFailureMessage, Rule } from '../src/noInputRenameRule';
 import { assertAnnotated, assertSuccess } from './testHelper';
 
 const {
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {
@@ -21,7 +21,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: getFailureMessage('TestComponent', 'label'),
           ruleName,
-          source
+          source,
         });
       });
 
@@ -38,7 +38,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: getFailureMessage('TestComponent', 'label'),
           ruleName,
-          source
+          source,
         });
       });
     });
@@ -57,7 +57,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: getFailureMessage('TestDirective', 'label'),
           ruleName,
-          source
+          source,
         });
       });
 
@@ -74,7 +74,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: getFailureMessage('TestDirective', 'label'),
           ruleName,
-          source
+          source,
         });
       });
 
@@ -91,7 +91,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: getFailureMessage('TestDirective', 'label'),
           ruleName,
-          source
+          source,
         });
       });
 
@@ -108,7 +108,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: getFailureMessage('TestDirective', 'ariaBusy'),
           ruleName,
-          source
+          source,
         });
       });
 
@@ -125,7 +125,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: getFailureMessage('TestDirective', 'colors'),
           ruleName,
-          source
+          source,
         });
       });
 
@@ -142,7 +142,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: getFailureMessage('TestDirective', 'color'),
           ruleName,
-          source
+          source,
         });
       });
     });

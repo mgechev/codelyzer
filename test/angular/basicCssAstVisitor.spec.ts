@@ -24,7 +24,7 @@ describe('basicCssAstVisitor', () => {
       ruleName: 'foo',
       ruleArguments: ['foo'],
       disabledIntervals: [],
-      ruleSeverity: 'warning'
+      ruleSeverity: 'warning',
     };
     let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
@@ -53,7 +53,7 @@ describe('basicCssAstVisitor', () => {
       ruleName: 'foo',
       ruleArguments: ['foo'],
       disabledIntervals: [],
-      ruleSeverity: 'warning'
+      ruleSeverity: 'warning',
     };
     let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);

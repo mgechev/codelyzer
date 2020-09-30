@@ -121,7 +121,7 @@ export class RecursiveAngularExpressionVisitor extends SourceMappingVisitor impl
   }
 
   visitAll(asts: e.AST[], context: any): any {
-    asts.forEach(ast => ast.visit(this, context));
+    asts.forEach((ast) => ast.visit(this, context));
     return null;
   }
 

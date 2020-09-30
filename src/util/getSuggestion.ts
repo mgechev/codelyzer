@@ -11,7 +11,7 @@ export const getSuggestion = (word: string, dictionary: string[] = [], limit = 2
   }, {});
 
   return Object.keys(distances)
-    .filter(suggestion => distances[suggestion] <= THRESHOLD)
+    .filter((suggestion) => distances[suggestion] <= THRESHOLD)
     .sort((a, b) => distances[a] - distances[b])
     .slice(0, limit);
 };

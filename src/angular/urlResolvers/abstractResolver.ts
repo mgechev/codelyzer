@@ -22,6 +22,6 @@ export abstract class AbstractResolver {
 
     if (!styleUrlsExpression || !isArrayLiteralExpression(styleUrlsExpression)) return [];
 
-    return styleUrlsExpression.elements.filter(isStringLiteralLike).map(element => element.text);
+    return styleUrlsExpression.elements.filter(isStringLiteralLike).map((element) => element.text);
   }
 }

@@ -12,7 +12,7 @@ export class Rule extends Rules.AbstractRule {
     options: null,
     optionsDescription: 'Not configurable.',
     type: 'maintainability',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = 'The ./ prefix is standard syntax for relative URLs. (https://angular.io/styleguide#style-05-04)';
@@ -31,7 +31,7 @@ class Walker extends NgWalker {
 
   visitClassDecorator(decorator: ts.Decorator) {
     if (ts.isCallExpression(decorator.expression) && decorator.expression.arguments) {
-      decorator.expression.arguments.forEach(arg => {
+      decorator.expression.arguments.forEach((arg) => {
         if (ts.isObjectLiteralExpression(arg) && arg.properties) {
           arg.properties.forEach((prop: any) => {
             if (prop && prop.name.text === 'templateUrl') {
@@ -39,7 +39,7 @@ class Walker extends NgWalker {
               this.checkTemplateUrl(url, prop.initializer);
             } else if (prop && prop.name.text === 'styleUrls') {
               if (prop.initializer.elements.length > 0) {
-                prop.initializer.elements.forEach(e => {
+                prop.initializer.elements.forEach((e) => {
                   this.checkStyleUrls(e);
                 });
               }

@@ -59,7 +59,7 @@ function computeLineAndCharacterOfPosition(lineStarts: number[], position: numbe
   }
   return {
     character: position - lineStarts[lineNumber],
-    line: lineNumber
+    line: lineNumber,
   };
 }
 

@@ -81,5 +81,5 @@ export const ExpTypes = {
 
   ASTWithSource(ast: any) {
     return ast.constructor.name === 'ASTWithSource';
-  }
+  },
 };

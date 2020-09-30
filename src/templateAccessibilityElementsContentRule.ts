@@ -17,15 +17,15 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
     }
 
     const hasContent = element.children.length;
-    const hasInnerContent = element.inputs.some(input => input.name === 'innerHTML' || input.name === 'innerText');
+    const hasInnerContent = element.inputs.some((input) => input.name === 'innerHTML' || input.name === 'innerText');
     if (hasContent || hasInnerContent) {
       return;
     }
     const {
       sourceSpan: {
         end: { offset: endOffset },
-        start: { offset: startOffset }
-      }
+        start: { offset: startOffset },
+      },
     } = element;
     this.addFailureFromStartToEnd(startOffset, endOffset, getErrorMessage(element.name));
   }
@@ -43,7 +43,7 @@ export class Rule extends Rules.AbstractRule {
     rationale: 'Heading, anchor and button elements should have content to be accessible by screen readers',
     ruleName: 'template-accessibility-elements-content',
     type: 'functionality',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = '<%s/> element should have content';

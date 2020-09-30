@@ -2,7 +2,7 @@ import { Rule } from '../src/directiveSelectorRule';
 import { assertAnnotated, assertMultipleAnnotated, assertSuccess } from './testHelper';
 
 const {
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {
@@ -20,7 +20,7 @@ describe(ruleName, () => {
           message: `The selector should be prefixed by "bar" (https://angular.io/guide/styleguide#style-02-08)`,
           options: ['element', 'bar', 'kebab-case'],
           ruleName,
-          source
+          source,
         });
       });
 
@@ -36,7 +36,7 @@ describe(ruleName, () => {
           message: `The selector should be prefixed by one of the prefixes: "cd, ng" (https://angular.io/guide/styleguide#style-02-08)`,
           options: ['attribute', ['cd', 'ng'], 'kebab-case'],
           ruleName,
-          source
+          source,
         });
       });
 
@@ -52,7 +52,7 @@ describe(ruleName, () => {
           message: `The selector should be prefixed by one of the prefixes: "foo, cd, ng" (https://angular.io/guide/styleguide#style-02-08)`,
           options: ['element', ['foo', 'cd', 'ng'], 'kebab-case'],
           ruleName,
-          source
+          source,
         });
       });
 
@@ -68,16 +68,16 @@ describe(ruleName, () => {
           failures: [
             {
               char: '~',
-              msg
+              msg,
             },
             {
               char: '^',
-              msg
-            }
+              msg,
+            },
           ],
           options: ['element', ['ap', 'cd', 'ng'], 'kebab-case'],
           ruleName,
-          source
+          source,
         });
       });
     });
@@ -96,7 +96,7 @@ describe(ruleName, () => {
             message: `The selector should be camelCased (https://angular.io/guide/styleguide#style-02-06)`,
             options: ['attribute', 'app', 'camelCase'],
             ruleName,
-            source
+            source,
           });
         });
       });
@@ -114,7 +114,7 @@ describe(ruleName, () => {
             message: `The selector should be kebab-cased and include a dash (https://angular.io/guide/styleguide#style-02-06)`,
             options: ['element', 'app', 'kebab-case'],
             ruleName,
-            source
+            source,
           });
         });
 
@@ -130,7 +130,7 @@ describe(ruleName, () => {
             message: `The selector should be kebab-cased and include a dash (https://angular.io/guide/styleguide#style-02-06)`,
             options: ['element', 'app', 'kebab-case'],
             ruleName,
-            source
+            source,
           });
         });
       });
@@ -150,7 +150,7 @@ describe(ruleName, () => {
             message: `The selector should be used as an attribute (https://angular.io/guide/styleguide#style-02-06)`,
             options: ['attribute', ['app', 'ng'], 'kebab-case'],
             ruleName,
-            source
+            source,
           });
         });
       });
@@ -168,7 +168,7 @@ describe(ruleName, () => {
             message: `The selector should be used as an element (https://angular.io/guide/styleguide#style-02-06)`,
             options: ['element', ['app', 'ng'], 'camelCase'],
             ruleName,
-            source
+            source,
           });
         });
       });

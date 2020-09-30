@@ -15,7 +15,7 @@ import {
   Node,
   ParameterPropertyDeclaration,
   PropertyDeclaration,
-  SourceFile
+  SourceFile,
 } from 'typescript';
 import { isNotNullOrUndefined } from './util/isNotNullOrUndefined';
 import {
@@ -26,7 +26,7 @@ import {
   getDecoratorName,
   getNextToLastParentNode,
   isAngularClassDecorator,
-  isAngularInnerClassDecorator
+  isAngularInnerClassDecorator,
 } from './util/utils';
 
 interface FailureParameters {
@@ -51,7 +51,7 @@ export class Rule extends AbstractRule {
     `,
     ruleName: 'contextual-decorator',
     type: 'functionality',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = 'Decorator out of context for "@%s()"';
@@ -66,10 +66,7 @@ const callbackHandler = (walkContext: WalkContext, node: Node): void => {
 };
 
 const getClassDecoratorName = (klass: Node): AngularClassDecoratorKeys | undefined => {
-  return createNodeArray(klass.decorators)
-    .map(getDecoratorName)
-    .filter(isNotNullOrUndefined)
-    .find(isAngularClassDecorator);
+  return createNodeArray(klass.decorators).map(getDecoratorName).filter(isNotNullOrUndefined).find(isAngularClassDecorator);
 };
 
 const isDeclarationLike = (node: Node): node is DeclarationLike => {
@@ -82,7 +79,7 @@ const validateDeclaration = (walkContext: WalkContext, node: DeclarationLike): v
 
   if (!classDecoratorName) return;
 
-  createNodeArray(node.decorators).forEach(decorator => validateDecorator(walkContext, decorator, classDecoratorName));
+  createNodeArray(node.decorators).forEach((decorator) => validateDecorator(walkContext, decorator, classDecoratorName));
 };
 
 const validateDecorator = (walkContext: WalkContext, node: Decorator, classDecoratorName: AngularClassDecoratorKeys): void => {

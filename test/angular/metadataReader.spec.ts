@@ -185,7 +185,7 @@ describe('metadataReader', () => {
       let invoked = false;
       const bak = Config.resolveUrl;
       try {
-        Config.resolveUrl = url => {
+        Config.resolveUrl = (url) => {
           invoked = true;
           expect(url!.startsWith(normalize(join(__dirname, '../..')))).eq(true);
           return url;
@@ -221,7 +221,7 @@ describe('metadataReader', () => {
       let invoked = false;
       const bak = Config.transformTemplate;
       try {
-        Config.transformTemplate = code => {
+        Config.transformTemplate = (code) => {
           invoked = true;
           expect(code.trim()).eq('<div></div>');
           return { code };
@@ -257,7 +257,7 @@ describe('metadataReader', () => {
       let invoked = false;
       const bak = Config.transformStyle;
       try {
-        Config.transformStyle = code => {
+        Config.transformStyle = (code) => {
           invoked = true;
           expect(code).eq('baz');
           return { code };

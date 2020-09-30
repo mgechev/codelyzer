@@ -19,7 +19,7 @@ describe('ngWalker', () => {
       ruleName: 'foo',
       ruleArguments: ['foo'],
       disabledIntervals: [],
-      ruleSeverity: 'warning'
+      ruleSeverity: 'warning',
     };
     let properties: FlatSymbolTable = {};
     let methods: FlatSymbolTable = {};

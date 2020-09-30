@@ -15,14 +15,14 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
       return;
     }
 
-    const hasScopeInput = element.inputs.some(input => input.name === 'scope');
-    const hasScopeAttr = element.attrs.some(attr => attr.name === 'scope');
+    const hasScopeInput = element.inputs.some((input) => input.name === 'scope');
+    const hasScopeAttr = element.attrs.some((attr) => attr.name === 'scope');
     if (hasScopeInput || hasScopeAttr) {
       const {
         sourceSpan: {
           end: { offset: endOffset },
-          start: { offset: startOffset }
-        }
+          start: { offset: startOffset },
+        },
       } = element;
       this.addFailureFromStartToEnd(startOffset, endOffset, Rule.FAILURE_MESSAGE);
     }
@@ -40,7 +40,7 @@ export class Rule extends Rules.AbstractRule {
     `,
     ruleName: 'template-accessibility-table-scope',
     type: 'functionality',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_MESSAGE = 'Scope attribute can only be on <th> element';

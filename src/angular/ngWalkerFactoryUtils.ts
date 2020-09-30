@@ -14,7 +14,7 @@ export const ngWalkerFactoryUtils = {
     return {
       templateVisitorCtrl: BasicTemplateAstVisitor,
       expressionVisitorCtrl: RecursiveAngularExpressionVisitor,
-      cssVisitorCtrl: BasicCssAstVisitor
+      cssVisitorCtrl: BasicCssAstVisitor,
     };
   },
 
@@ -24,5 +24,5 @@ export const ngWalkerFactoryUtils = {
 
   normalizeConfig(config: NgWalkerConfig) {
     return Object.assign(this.defaultConfig(), config || {});
-  }
+  },
 };

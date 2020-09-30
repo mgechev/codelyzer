@@ -182,7 +182,7 @@ const nativeEventNames: ReadonlySet<string> = new Set([
   'visibilitychange',
   'volumechange',
   'waiting',
-  'wheel'
+  'wheel',
 ]);
 
 export const getFailureMessage = (failureParameters: FailureParameters): string =>
@@ -196,7 +196,7 @@ export class Rule extends AbstractRule {
     rationale: 'Listeners subscribed to an output with such a name will also be invoked when the native event is raised.',
     ruleName: 'no-output-native',
     type: 'functionality',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = 'In the class "%s", the output property "%s" should not be named or renamed as a native event';

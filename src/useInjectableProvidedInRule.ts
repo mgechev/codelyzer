@@ -12,7 +12,7 @@ export class Rule extends AbstractRule {
     rationale: "Using the 'providedIn' property makes classes decorated with @Injectable tree shakeable.",
     ruleName: 'use-injectable-provided-in',
     type: 'functionality',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = "Classes decorated with @Injectable should use the 'providedIn' property";

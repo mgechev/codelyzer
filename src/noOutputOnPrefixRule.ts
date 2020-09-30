@@ -14,7 +14,7 @@ export class Rule extends Lint.Rules.AbstractRule {
       'Angular allows for an alternative syntax on-*. If the event itself was prefixed with on this would result in an on-onEvent binding expression.',
     ruleName: 'no-output-on-prefix',
     type: 'maintainability',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = 'In the class "%s", the output property "%s" should not be prefixed with on';

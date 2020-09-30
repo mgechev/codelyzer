@@ -16,12 +16,12 @@ const OPTION_LABEL_COMPONENTS = 'labelComponents';
 const OPTION_SCHEMA_VALUE = {
   properties: {
     items: {
-      type: 'string'
+      type: 'string',
     },
     type: 'array',
-    uniqueItems: true
+    uniqueItems: true,
   },
-  type: 'object'
+  type: 'object',
 };
 
 const DEFAULT_CONTROL_COMPONENTS = ['button', 'input', 'meter', 'output', 'progress', 'select', 'textarea'];
@@ -38,7 +38,7 @@ const getReadableItems = (items: ReadonlyArray<string>): string => {
   if (itemsLength === 1) return `"${items[0]}"`;
 
   return `${items
-    .map(x => `"${x}"`)
+    .map((x) => `"${x}"`)
     .slice(0, itemsLength - 1)
     .join(', ')} and "${[...items].pop()}"`;
 };
@@ -51,26 +51,26 @@ export class Rule extends AbstractRule {
       [
         true,
         {
-          [OPTION_CONTROL_COMPONENTS]: ['app-input']
-        }
+          [OPTION_CONTROL_COMPONENTS]: ['app-input'],
+        },
       ],
       [
         true,
         {
           [OPTION_CONTROL_COMPONENTS]: ['app-input', 'app-select'],
           [OPTION_LABEL_ATTRIBUTES]: ['id'],
-          [OPTION_LABEL_COMPONENTS]: ['app-label']
-        }
-      ]
+          [OPTION_LABEL_COMPONENTS]: ['app-label'],
+        },
+      ],
     ],
     options: {
       additionalProperties: false,
       properties: {
         [OPTION_CONTROL_COMPONENTS]: OPTION_SCHEMA_VALUE,
         [OPTION_LABEL_ATTRIBUTES]: OPTION_SCHEMA_VALUE,
-        [OPTION_LABEL_COMPONENTS]: OPTION_SCHEMA_VALUE
+        [OPTION_LABEL_COMPONENTS]: OPTION_SCHEMA_VALUE,
       },
-      type: 'object'
+      type: 'object',
     },
     optionsDescription: dedent`
       An optional object with optional \`${OPTION_CONTROL_COMPONENTS}\`, \`${OPTION_LABEL_ATTRIBUTES}\` and \`${OPTION_LABEL_COMPONENTS}\` properties.
@@ -84,7 +84,7 @@ export class Rule extends AbstractRule {
     `,
     ruleName: 'template-accessibility-label-for',
     type: 'functionality',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = 'A label component must be associated with a form element';
@@ -108,17 +108,17 @@ export class Rule extends AbstractRule {
     if (ruleArgumentsLength > 1) return false;
 
     const {
-      metadata: { options: ruleOptions }
+      metadata: { options: ruleOptions },
     } = Rule;
     const [ruleArgument] = this.ruleArguments as ReadonlyArray<OptionDictionary>;
     const ruleArgumentsKeys = objectKeys(ruleArgument);
     const propertiesKeys = objectKeys(ruleOptions.properties as OptionDictionary);
 
     return (
-      ruleArgumentsKeys.every(argumentKey => propertiesKeys.includes(argumentKey)) &&
+      ruleArgumentsKeys.every((argumentKey) => propertiesKeys.includes(argumentKey)) &&
       ruleArgumentsKeys
-        .map(argumentKey => ruleArgument[argumentKey])
-        .every(argumentValue => Array.isArray(argumentValue) && argumentValue.length > 0)
+        .map((argumentKey) => ruleArgument[argumentKey])
+        .every((argumentValue) => Array.isArray(argumentValue) && argumentValue.length > 0)
     );
   }
 }
@@ -144,13 +144,13 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   }
 
   private hasControlComponentInsideElement(element: ElementAst): boolean {
-    return Array.from(this.controlComponents).some(controlComponentName => isChildNodeOf(element, controlComponentName));
+    return Array.from(this.controlComponents).some((controlComponentName) => isChildNodeOf(element, controlComponentName));
   }
 
   private hasValidAttrOrInput(element: ElementAst): boolean {
     return [...element.attrs, ...element.inputs]
-      .map(attrOrInput => attrOrInput.name)
-      .some(attrOrInputName => this.labelAttributes.has(attrOrInputName));
+      .map((attrOrInput) => attrOrInput.name)
+      .some((attrOrInputName) => this.labelAttributes.has(attrOrInputName));
   }
 
   private isLabelComponent(element: ElementAst): boolean {
@@ -165,8 +165,8 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
     const {
       sourceSpan: {
         end: { offset: endOffset },
-        start: { offset: startOffset }
-      }
+        start: { offset: startOffset },
+      },
     } = element;
 
     this.addFailureFromStartToEnd(startOffset, endOffset, Rule.FAILURE_STRING);

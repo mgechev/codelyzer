@@ -3,7 +3,7 @@ import { assertAnnotated, assertMultipleAnnotated, assertSuccess } from './testH
 
 const {
   FAILURE_STRING,
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {
@@ -22,7 +22,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -39,7 +39,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -56,7 +56,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -73,7 +73,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -90,7 +90,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -107,7 +107,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -124,7 +124,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
     });
@@ -143,7 +143,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -160,7 +160,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -177,7 +177,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -194,7 +194,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -211,7 +211,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -228,7 +228,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -245,7 +245,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
     });
@@ -264,7 +264,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -281,7 +281,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -298,7 +298,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -315,7 +315,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -332,7 +332,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -349,7 +349,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -366,7 +366,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
     });
@@ -385,7 +385,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -402,7 +402,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -419,7 +419,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -436,7 +436,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -453,7 +453,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -470,7 +470,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -487,7 +487,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
     });
@@ -519,23 +519,23 @@ describe(ruleName, () => {
           failures: [
             {
               char: '~',
-              msg: FAILURE_STRING
+              msg: FAILURE_STRING,
             },
             {
               char: '^',
-              msg: FAILURE_STRING
+              msg: FAILURE_STRING,
             },
             {
               char: '#',
-              msg: FAILURE_STRING
+              msg: FAILURE_STRING,
             },
             {
               char: '%',
-              msg: FAILURE_STRING
-            }
+              msg: FAILURE_STRING,
+            },
           ],
           ruleName,
-          source
+          source,
         });
       });
     });

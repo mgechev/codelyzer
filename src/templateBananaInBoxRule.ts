@@ -18,7 +18,7 @@ export class Rule extends AbstractRule {
     rationale: 'The parentheses "()" should have been inside the brackets "[]".',
     ruleName: 'template-banana-in-box',
     type: 'functionality',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = 'Invalid binding syntax. Use [(expr)] instead';
@@ -45,8 +45,8 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
     const {
       sourceSpan: {
         end: { offset: endOffset },
-        start: { offset: startOffset }
-      }
+        start: { offset: startOffset },
+      },
     } = ast;
     const text = matches[1];
     const absoluteStartPosition = this.getSourcePosition(startOffset);

@@ -3,7 +3,7 @@ import { assertAnnotated, assertFailures, assertSuccess } from './testHelper';
 
 const {
   FAILURE_STRING,
-  metadata: { ruleName }
+  metadata: { ruleName },
 } = Rule;
 
 describe(ruleName, () => {
@@ -28,7 +28,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -88,11 +88,11 @@ describe(ruleName, () => {
               methods: false,
               'parameter-properties': false,
               parameters: false,
-              setters: false
-            }
+              setters: false,
+            },
           ],
           ruleName,
-          source
+          source,
         });
       });
 
@@ -158,16 +158,16 @@ describe(ruleName, () => {
           options: [
             {
               getters: {
-                safelist: ['CustomInput']
+                safelist: ['CustomInput'],
               },
               methods: false,
               'parameter-properties': false,
               parameters: false,
-              setters: false
-            }
+              setters: false,
+            },
           ],
           ruleName,
-          source
+          source,
         });
       });
 
@@ -254,25 +254,25 @@ describe(ruleName, () => {
             {
               endPosition: {
                 character: 13,
-                line: 14
+                line: 14,
               },
               message: FAILURE_STRING,
               startPosition: {
                 character: 12,
-                line: 11
-              }
+                line: 11,
+              },
             },
             {
               endPosition: {
                 character: 13,
-                line: 23
+                line: 23,
               },
               message: FAILURE_STRING,
               startPosition: {
                 character: 12,
-                line: 20
-              }
-            }
+                line: 20,
+              },
+            },
           ],
           [
             {
@@ -280,8 +280,8 @@ describe(ruleName, () => {
               'parameter-properties': false,
               parameters: false,
               properties: false,
-              setters: false
-            }
+              setters: false,
+            },
           ]
         );
       });
@@ -306,7 +306,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -365,11 +365,11 @@ describe(ruleName, () => {
               getters: false,
               'parameter-properties': false,
               parameters: false,
-              setters: false
-            }
+              setters: false,
+            },
           ],
           ruleName,
-          source
+          source,
         });
       });
 
@@ -433,15 +433,15 @@ describe(ruleName, () => {
             {
               getters: false,
               methods: {
-                safelist: ['CmpDecorator']
+                safelist: ['CmpDecorator'],
               },
               'parameter-properties': false,
               parameters: false,
-              setters: false
-            }
+              setters: false,
+            },
           ],
           ruleName,
-          source
+          source,
         });
       });
 
@@ -525,25 +525,25 @@ describe(ruleName, () => {
             {
               endPosition: {
                 character: 13,
-                line: 59
+                line: 59,
               },
               message: FAILURE_STRING,
               startPosition: {
                 character: 12,
-                line: 55
-              }
+                line: 55,
+              },
             },
             {
               endPosition: {
                 character: 13,
-                line: 69
+                line: 69,
               },
               message: FAILURE_STRING,
               startPosition: {
                 character: 12,
-                line: 65
-              }
-            }
+                line: 65,
+              },
+            },
           ],
           [
             {
@@ -551,8 +551,8 @@ describe(ruleName, () => {
               'parameter-properties': false,
               parameters: false,
               properties: false,
-              setters: false
-            }
+              setters: false,
+            },
           ]
         );
       });
@@ -575,7 +575,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -634,11 +634,11 @@ describe(ruleName, () => {
               getters: false,
               methods: false,
               parameters: false,
-              setters: false
-            }
+              setters: false,
+            },
           ],
           ruleName,
-          source
+          source,
         });
       });
 
@@ -705,14 +705,14 @@ describe(ruleName, () => {
               getters: false,
               methods: false,
               'parameter-properties': {
-                safelist: ['NgConstructor']
+                safelist: ['NgConstructor'],
               },
               parameters: false,
-              setters: false
-            }
+              setters: false,
+            },
           ],
           ruleName,
-          source
+          source,
         });
       });
 
@@ -796,25 +796,25 @@ describe(ruleName, () => {
             {
               endPosition: {
                 character: 37,
-                line: 36
+                line: 36,
               },
               message: FAILURE_STRING,
               startPosition: {
                 character: 24,
-                line: 35
-              }
+                line: 35,
+              },
             },
             {
               endPosition: {
                 character: 40,
-                line: 37
+                line: 37,
               },
               message: FAILURE_STRING,
               startPosition: {
                 character: 39,
-                line: 36
-              }
-            }
+                line: 36,
+              },
+            },
           ],
           [
             {
@@ -822,8 +822,8 @@ describe(ruleName, () => {
               methods: false,
               parameters: false,
               properties: false,
-              setters: false
-            }
+              setters: false,
+            },
           ]
         );
       });
@@ -842,7 +842,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -901,11 +901,11 @@ describe(ruleName, () => {
               getters: false,
               methods: false,
               'parameter-properties': false,
-              setters: false
-            }
+              setters: false,
+            },
           ],
           ruleName,
-          source
+          source,
         });
       });
 
@@ -976,13 +976,13 @@ describe(ruleName, () => {
               methods: false,
               'parameter-properties': false,
               parameters: {
-                safelist: ['ParseStr']
+                safelist: ['ParseStr'],
               },
-              setters: false
-            }
+              setters: false,
+            },
           ],
           ruleName,
-          source
+          source,
         });
       });
 
@@ -1065,25 +1065,25 @@ describe(ruleName, () => {
             {
               endPosition: {
                 character: 24,
-                line: 2
+                line: 2,
               },
               message: FAILURE_STRING,
               startPosition: {
                 character: 28,
-                line: 1
-              }
+                line: 1,
+              },
             },
             {
               endPosition: {
                 character: 28,
-                line: 46
+                line: 46,
               },
               message: FAILURE_STRING,
               startPosition: {
                 character: 38,
-                line: 45
-              }
-            }
+                line: 45,
+              },
+            },
           ],
           [
             {
@@ -1091,8 +1091,8 @@ describe(ruleName, () => {
               methods: false,
               'parameter-properties': false,
               properties: false,
-              setters: false
-            }
+              setters: false,
+            },
           ]
         );
       });
@@ -1117,7 +1117,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -1183,11 +1183,11 @@ describe(ruleName, () => {
               methods: false,
               'parameter-properties': false,
               parameters: false,
-              setters: false
-            }
+              setters: false,
+            },
           ],
           ruleName,
-          source
+          source,
         });
       });
 
@@ -1261,13 +1261,13 @@ describe(ruleName, () => {
               'parameter-properties': false,
               parameters: false,
               properties: {
-                safelist: ['MyOutput']
+                safelist: ['MyOutput'],
               },
-              setters: false
-            }
+              setters: false,
+            },
           ],
           ruleName,
-          source
+          source,
         });
       });
 
@@ -1353,25 +1353,25 @@ describe(ruleName, () => {
             {
               endPosition: {
                 character: 69,
-                line: 32
+                line: 32,
               },
               message: FAILURE_STRING,
               startPosition: {
                 character: 12,
-                line: 30
-              }
+                line: 30,
+              },
             },
             {
               endPosition: {
                 character: 70,
-                line: 35
+                line: 35,
               },
               message: FAILURE_STRING,
               startPosition: {
                 character: 12,
-                line: 34
-              }
-            }
+                line: 34,
+              },
+            },
           ],
           [
             {
@@ -1379,8 +1379,8 @@ describe(ruleName, () => {
               methods: false,
               'parameter-properties': false,
               parameters: false,
-              setters: false
-            }
+              setters: false,
+            },
           ]
         );
       });
@@ -1406,7 +1406,7 @@ describe(ruleName, () => {
         assertAnnotated({
           message: FAILURE_STRING,
           ruleName,
-          source
+          source,
         });
       });
 
@@ -1466,11 +1466,11 @@ describe(ruleName, () => {
               getters: false,
               methods: false,
               'parameter-properties': false,
-              parameters: false
-            }
+              parameters: false,
+            },
           ],
           ruleName,
-          source
+          source,
         });
       });
 
@@ -1543,12 +1543,12 @@ describe(ruleName, () => {
               'parameter-properties': false,
               parameters: false,
               setters: {
-                safelist: ['CustomInput']
-              }
-            }
+                safelist: ['CustomInput'],
+              },
+            },
           ],
           ruleName,
-          source
+          source,
         });
       });
 
@@ -1636,25 +1636,25 @@ describe(ruleName, () => {
             {
               endPosition: {
                 character: 13,
-                line: 15
+                line: 15,
               },
               message: FAILURE_STRING,
               startPosition: {
                 character: 12,
-                line: 11
-              }
+                line: 11,
+              },
             },
             {
               endPosition: {
                 character: 13,
-                line: 24
+                line: 24,
               },
               message: FAILURE_STRING,
               startPosition: {
                 character: 12,
-                line: 21
-              }
-            }
+                line: 21,
+              },
+            },
           ],
           [
             {
@@ -1662,8 +1662,8 @@ describe(ruleName, () => {
               methods: false,
               'parameter-properties': false,
               parameters: false,
-              properties: false
-            }
+              properties: false,
+            },
           ]
         );
       });
@@ -1738,8 +1738,8 @@ describe(ruleName, () => {
             methods: false,
             'parameter-properties': false,
             parameters: false,
-            setters: false
-          }
+            setters: false,
+          },
         ]);
       });
 
@@ -1800,13 +1800,13 @@ describe(ruleName, () => {
         assertSuccess(ruleName, source, [
           {
             getters: {
-              safelist: ['CustomGetter', 'CustomInput']
+              safelist: ['CustomGetter', 'CustomInput'],
             },
             methods: false,
             'parameter-properties': false,
             parameters: false,
-            setters: false
-          }
+            setters: false,
+          },
         ]);
       });
 
@@ -1890,8 +1890,8 @@ describe(ruleName, () => {
             'parameter-properties': false,
             parameters: false,
             properties: false,
-            setters: false
-          }
+            setters: false,
+          },
         ]);
       });
     });
@@ -1961,8 +1961,8 @@ describe(ruleName, () => {
             getters: false,
             'parameter-properties': false,
             parameters: false,
-            setters: false
-          }
+            setters: false,
+          },
         ]);
       });
 
@@ -2020,12 +2020,12 @@ describe(ruleName, () => {
           {
             getters: false,
             methods: {
-              safelist: ['CmpDecorator']
+              safelist: ['CmpDecorator'],
             },
             'parameter-properties': false,
             parameters: false,
-            setters: false
-          }
+            setters: false,
+          },
         ]);
       });
 
@@ -2104,8 +2104,8 @@ describe(ruleName, () => {
             'parameter-properties': false,
             parameters: false,
             properties: false,
-            setters: false
-          }
+            setters: false,
+          },
         ]);
       });
     });
@@ -2174,8 +2174,8 @@ describe(ruleName, () => {
             getters: false,
             methods: false,
             parameters: false,
-            setters: false
-          }
+            setters: false,
+          },
         ]);
       });
 
@@ -2238,11 +2238,11 @@ describe(ruleName, () => {
             getters: false,
             methods: false,
             'parameter-properties': {
-              safelist: ['NgConstructor']
+              safelist: ['NgConstructor'],
             },
             parameters: false,
-            setters: false
-          }
+            setters: false,
+          },
         ]);
       });
 
@@ -2324,8 +2324,8 @@ describe(ruleName, () => {
             methods: false,
             parameters: false,
             properties: false,
-            setters: false
-          }
+            setters: false,
+          },
         ]);
       });
     });
@@ -2390,8 +2390,8 @@ describe(ruleName, () => {
             getters: false,
             methods: false,
             'parameter-properties': false,
-            setters: false
-          }
+            setters: false,
+          },
         ]);
       });
 
@@ -2457,10 +2457,10 @@ describe(ruleName, () => {
             methods: false,
             'parameter-properties': false,
             parameters: {
-              safelist: ['ParseStr']
+              safelist: ['ParseStr'],
             },
-            setters: false
-          }
+            setters: false,
+          },
         ]);
       });
 
@@ -2540,8 +2540,8 @@ describe(ruleName, () => {
             methods: false,
             'parameter-properties': false,
             properties: false,
-            setters: false
-          }
+            setters: false,
+          },
         ]);
       });
     });
@@ -2618,8 +2618,8 @@ describe(ruleName, () => {
             methods: false,
             'parameter-properties': false,
             parameters: false,
-            setters: false
-          }
+            setters: false,
+          },
         ]);
       });
 
@@ -2687,10 +2687,10 @@ describe(ruleName, () => {
             'parameter-properties': false,
             parameters: false,
             properties: {
-              safelist: ['MyOutput']
+              safelist: ['MyOutput'],
             },
-            setters: false
-          }
+            setters: false,
+          },
         ]);
       });
 
@@ -2772,8 +2772,8 @@ describe(ruleName, () => {
             methods: false,
             'parameter-properties': false,
             parameters: false,
-            setters: false
-          }
+            setters: false,
+          },
         ]);
       });
     });
@@ -2845,8 +2845,8 @@ describe(ruleName, () => {
             getters: false,
             methods: false,
             'parameter-properties': false,
-            parameters: false
-          }
+            parameters: false,
+          },
         ]);
       });
 
@@ -2913,9 +2913,9 @@ describe(ruleName, () => {
             'parameter-properties': false,
             parameters: false,
             setters: {
-              safelist: ['CustomInput']
-            }
-          }
+              safelist: ['CustomInput'],
+            },
+          },
         ]);
       });
 
@@ -2999,8 +2999,8 @@ describe(ruleName, () => {
             methods: false,
             'parameter-properties': false,
             parameters: false,
-            properties: false
-          }
+            properties: false,
+          },
         ]);
       });
     });

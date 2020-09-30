@@ -85,7 +85,7 @@ export class ParseLocation {
 
       return {
         before: content.substring(startOffset, this.offset),
-        after: content.substring(this.offset, endOffset + 1)
+        after: content.substring(this.offset, endOffset + 1),
       };
     }
 
@@ -107,7 +107,7 @@ export class ParseSourceSpan {
 
 export enum ParseErrorLevel {
   WARNING,
-  ERROR
+  ERROR,
 }
 
 export class ParseError {

@@ -37,7 +37,7 @@ describe('ngWalker', () => {
       ruleName: 'foo',
       ruleArguments: ['foo'],
       disabledIntervals: [],
-      ruleSeverity: 'warning'
+      ruleSeverity: 'warning',
     };
     let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
@@ -78,7 +78,7 @@ describe('ngWalker', () => {
       ruleName: 'foo',
       ruleArguments: ['foo'],
       disabledIntervals: [],
-      ruleSeverity: 'warning'
+      ruleSeverity: 'warning',
     };
     let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
@@ -111,7 +111,7 @@ describe('ngWalker', () => {
       ruleName: 'foo',
       ruleArguments: ['foo'],
       disabledIntervals: [],
-      ruleSeverity: 'warning'
+      ruleSeverity: 'warning',
     };
     let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
@@ -134,11 +134,11 @@ describe('ngWalker', () => {
       ruleName: 'foo',
       ruleArguments: ['foo'],
       disabledIntervals: [],
-      ruleSeverity: 'warning'
+      ruleSeverity: 'warning',
     };
     let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs, {
-      templateVisitorCtrl: BasicTemplateAstVisitor
+      templateVisitorCtrl: BasicTemplateAstVisitor,
     });
     let templateSpy = chaiSpy.on(BasicTemplateAstVisitor.prototype, 'visitElement');
     walker.walk(sf);
@@ -157,7 +157,7 @@ describe('ngWalker', () => {
       ruleName: 'foo',
       ruleArguments: ['foo'],
       disabledIntervals: [],
-      ruleSeverity: 'warning'
+      ruleSeverity: 'warning',
     };
     let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
@@ -179,7 +179,7 @@ describe('ngWalker', () => {
       ruleName: 'foo',
       ruleArguments: ['foo'],
       disabledIntervals: [],
-      ruleSeverity: 'warning'
+      ruleSeverity: 'warning',
     };
     let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
@@ -205,7 +205,7 @@ describe('ngWalker', () => {
       ruleName: 'foo',
       ruleArguments: ['foo'],
       disabledIntervals: [],
-      ruleSeverity: 'warning'
+      ruleSeverity: 'warning',
     };
     let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
@@ -231,7 +231,7 @@ describe('ngWalker', () => {
       ruleName: 'foo',
       ruleArguments: ['foo'],
       disabledIntervals: [],
-      ruleSeverity: 'warning'
+      ruleSeverity: 'warning',
     };
     let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
@@ -256,7 +256,7 @@ describe('ngWalker', () => {
       ruleName: 'foo',
       ruleArguments: ['foo'],
       disabledIntervals: [],
-      ruleSeverity: 'warning'
+      ruleSeverity: 'warning',
     };
     let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
@@ -278,7 +278,7 @@ describe('ngWalker', () => {
       ruleName: 'foo',
       ruleArguments: ['foo'],
       disabledIntervals: [],
-      ruleSeverity: 'warning'
+      ruleSeverity: 'warning',
     };
     let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
@@ -300,7 +300,7 @@ describe('ngWalker', () => {
       ruleName: 'foo',
       ruleArguments: ['foo'],
       disabledIntervals: [],
-      ruleSeverity: 'warning'
+      ruleSeverity: 'warning',
     };
     let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
     let walker = new NgWalker(sf, ruleArgs);
@@ -325,7 +325,7 @@ describe('ngWalker', () => {
         ruleName: 'foo',
         ruleArguments: ['foo'],
         disabledIntervals: [],
-        ruleSeverity: 'warning'
+        ruleSeverity: 'warning',
       };
       let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
       let walker = new NgWalker(sf, ruleArgs);
@@ -349,7 +349,7 @@ describe('ngWalker', () => {
         ruleName: 'foo',
         ruleArguments: ['foo'],
         disabledIntervals: [],
-        ruleSeverity: 'warning'
+        ruleSeverity: 'warning',
       };
       let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
       let walker = new NgWalker(sf, ruleArgs);
@@ -395,7 +395,7 @@ describe('ngWalker', () => {
         ruleName: 'foo',
         ruleArguments: ['foo'],
         disabledIntervals: [],
-        ruleSeverity: 'warning'
+        ruleSeverity: 'warning',
       };
       let sf = ts.createSourceFile('foo', source, ts.ScriptTarget.ES5);
       let walker = new NgWalker(sf, ruleArgs);

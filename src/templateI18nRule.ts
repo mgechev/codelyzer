@@ -26,8 +26,8 @@ const generateFailure = (failureParameters: FailureParameters): void => {
   const {
     sourceSpan: {
       end: { offset: endOffset },
-      start: { offset: startOffset }
-    }
+      start: { offset: startOffset },
+    },
   } = failureParameters.ast;
 
   failureParameters.context.addFailureFromStartToEnd(startOffset, endOffset, failureParameters.message);
@@ -36,15 +36,19 @@ const generateFailure = (failureParameters: FailureParameters): void => {
 export class Rule extends AbstractRule {
   static readonly metadata: IRuleMetadata = {
     description: 'Ensures following best practices for i18n.',
-    optionExamples: [[true, OPTION_CHECK_ID], [true, OPTION_CHECK_TEXT], [true, OPTION_CHECK_ID, OPTION_CHECK_TEXT]],
+    optionExamples: [
+      [true, OPTION_CHECK_ID],
+      [true, OPTION_CHECK_TEXT],
+      [true, OPTION_CHECK_ID, OPTION_CHECK_TEXT],
+    ],
     options: {
       items: {
         enum: [OPTION_CHECK_ID, OPTION_CHECK_TEXT],
-        type: 'string'
+        type: 'string',
       },
       maxLength: 2,
       minLength: 1,
-      type: 'array'
+      type: 'array',
     },
     optionsDescription: dedent`
       One (or both) of the following arguments must be provided:
@@ -54,7 +58,7 @@ export class Rule extends AbstractRule {
     rationale: 'Makes the code more maintainable in i18n sense.',
     ruleName: 'template-i18n',
     type: 'maintainability',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING_ATTR = 'Missing custom message identifier. For more information visit https://angular.io/guide/i18n';
@@ -73,14 +77,14 @@ export class Rule extends AbstractRule {
         options: {
           items: { enum: enumItems },
           maxLength,
-          minLength
-        }
-      }
+          minLength,
+        },
+      },
     } = Rule;
     const { length: argumentsLength } = this.ruleArguments;
     const optionArgument = arrayify(this.ruleArguments).filter(isNotNullOrUndefined);
     const argumentsLengthInRange = argumentsLength >= minLength && argumentsLength <= maxLength;
-    const isOptionArgumentValid = optionArgument.length > 0 && optionArgument.every(argument => enumItems.indexOf(argument) !== -1);
+    const isOptionArgumentValid = optionArgument.length > 0 && optionArgument.every((argument) => enumItems.indexOf(argument) !== -1);
 
     return super.isEnabled() && argumentsLengthInRange && isOptionArgumentValid;
   }
@@ -123,7 +127,7 @@ class TemplateVisitorTextCtrl extends BasicTemplateAstVisitor implements Configu
 
   visitElement(element: ElementAst, context: BasicTemplateAstVisitor): any {
     const originalI18n = this.hasI18n;
-    this.hasI18n = originalI18n || element.attrs.some(e => e.name === 'i18n');
+    this.hasI18n = originalI18n || element.attrs.some((e) => e.name === 'i18n');
     this.nestedElements.push(element.name);
     super.visitElement(element, context);
     this.nestedElements.pop();
@@ -147,7 +151,7 @@ class TemplateVisitorTextCtrl extends BasicTemplateAstVisitor implements Configu
       return;
     }
 
-    const isTextEmpty = !value.ast.strings.some(s => /\w+/.test(s));
+    const isTextEmpty = !value.ast.strings.some((s) => /\w+/.test(s));
 
     if (isTextEmpty) return;
 
@@ -169,7 +173,7 @@ class TemplateVisitorTextCtrl extends BasicTemplateAstVisitor implements Configu
 class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   private readonly visitors: ReadonlyArray<BasicTemplateAstVisitor & ConfigurableVisitor> = [
     new TemplateVisitorAttrCtrl(this.getSourceFile(), this.getOptions(), this.context, this.templateStart),
-    new TemplateVisitorTextCtrl(this.getSourceFile(), this.getOptions(), this.context, this.templateStart)
+    new TemplateVisitorTextCtrl(this.getSourceFile(), this.getOptions(), this.context, this.templateStart),
   ];
 
   visit(node: TemplateAst, context: BasicTemplateAstVisitor): any {
@@ -199,10 +203,10 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   private validateAttr(ast: AttrAst): void {
     const options = this.getOptions();
     this.visitors
-      .filter(v => options.indexOf(v.getCheckOption()) !== -1)
-      .map(v => v.visitAttr(ast, this))
+      .filter((v) => options.indexOf(v.getCheckOption()) !== -1)
+      .map((v) => v.visitAttr(ast, this))
       .filter(isNotNullOrUndefined)
-      .forEach(f =>
+      .forEach((f) =>
         this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
       );
   }
@@ -210,10 +214,10 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   private validateBoundText(text: BoundTextAst): void {
     const options = this.getOptions();
     this.visitors
-      .filter(v => options.indexOf(v.getCheckOption()) !== -1)
-      .map(v => v.visitBoundText(text, this))
+      .filter((v) => options.indexOf(v.getCheckOption()) !== -1)
+      .map((v) => v.visitBoundText(text, this))
       .filter(isNotNullOrUndefined)
-      .forEach(f =>
+      .forEach((f) =>
         this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
       );
   }
@@ -221,10 +225,10 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   private validateElement(element: ElementAst): void {
     const options = this.getOptions();
     this.visitors
-      .filter(v => options.indexOf(v.getCheckOption()) !== -1)
-      .map(v => v.visitElement(element, this))
+      .filter((v) => options.indexOf(v.getCheckOption()) !== -1)
+      .map((v) => v.visitElement(element, this))
       .filter(isNotNullOrUndefined)
-      .forEach(f =>
+      .forEach((f) =>
         this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
       );
   }
@@ -232,10 +236,10 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
   private validateText(text: TextAst): void {
     const options = this.getOptions();
     this.visitors
-      .filter(v => options.indexOf(v.getCheckOption()) !== -1)
-      .map(v => v.visitText(text, this))
+      .filter((v) => options.indexOf(v.getCheckOption()) !== -1)
+      .map((v) => v.visitText(text, this))
       .filter(isNotNullOrUndefined)
-      .forEach(f =>
+      .forEach((f) =>
         this.addFailureFromStartToEnd(f.getStartPosition().getPosition(), f.getEndPosition().getPosition(), f.getFailure(), f.getFix())
       );
   }

@@ -8,7 +8,7 @@ import {
   isConstructorDeclaration,
   Node,
   ParameterDeclaration,
-  SourceFile
+  SourceFile,
 } from 'typescript';
 import { getDecoratorName } from './util/utils';
 
@@ -21,7 +21,7 @@ export class Rule extends AbstractRule {
     optionsDescription: 'Not configurable.',
     ruleName: 'no-attribute-decorator',
     type: 'functionality',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = `@${ATTRIBUTE} is considered bad practice. Use @Input instead.`;
@@ -38,7 +38,7 @@ const callbackHandler = (walkContext: WalkContext, node: Node): void => {
 const isAttributeDecorator = (decorator: Decorator): boolean => getDecoratorName(decorator) === ATTRIBUTE;
 
 const validateConstructor = (walkContext: WalkContext, node: ConstructorDeclaration): void => {
-  node.parameters.forEach(parameter => validateParameter(walkContext, parameter));
+  node.parameters.forEach((parameter) => validateParameter(walkContext, parameter));
 };
 
 const validateDecorator = (walkContext: WalkContext, decorator: Decorator): void => {
@@ -48,7 +48,7 @@ const validateDecorator = (walkContext: WalkContext, decorator: Decorator): void
 };
 
 const validateParameter = (walkContext: WalkContext, node: ParameterDeclaration): void => {
-  createNodeArray(node.decorators).forEach(decorator => validateDecorator(walkContext, decorator));
+  createNodeArray(node.decorators).forEach((decorator) => validateDecorator(walkContext, decorator));
 };
 
 const walk = (walkContext: WalkContext): void => {

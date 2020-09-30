@@ -7,7 +7,7 @@ import {
   OPTION_TYPE_ELEMENT,
   SelectorPropertyBase,
   SelectorStyle,
-  SelectorType
+  SelectorType,
 } from './selectorPropertyBase';
 import { isNotNullOrUndefined } from './util/isNotNullOrUndefined';
 
@@ -22,33 +22,33 @@ export class Rule extends SelectorPropertyBase {
       [true, OPTION_TYPE_ELEMENT, 'my-prefix', OPTION_STYLE_KEBAB_CASE],
       [true, OPTION_TYPE_ELEMENT, ['ng', 'ngx'], OPTION_STYLE_KEBAB_CASE],
       [true, OPTION_TYPE_ATTRIBUTE, 'myPrefix', OPTION_STYLE_CAMEL_CASE],
-      [true, [OPTION_TYPE_ELEMENT, OPTION_TYPE_ATTRIBUTE], 'myPrefix', OPTION_STYLE_CAMEL_CASE]
+      [true, [OPTION_TYPE_ELEMENT, OPTION_TYPE_ATTRIBUTE], 'myPrefix', OPTION_STYLE_CAMEL_CASE],
     ],
     options: {
       items: [
         {
-          enum: [OPTION_TYPE_ATTRIBUTE, OPTION_TYPE_ELEMENT]
+          enum: [OPTION_TYPE_ATTRIBUTE, OPTION_TYPE_ELEMENT],
         },
         {
           oneOf: [
             {
               items: {
-                type: 'string'
+                type: 'string',
               },
-              type: 'array'
+              type: 'array',
             },
             {
-              type: 'string'
-            }
-          ]
+              type: 'string',
+            },
+          ],
         },
         {
-          enum: [OPTION_STYLE_CAMEL_CASE, OPTION_STYLE_KEBAB_CASE]
-        }
+          enum: [OPTION_STYLE_CAMEL_CASE, OPTION_STYLE_KEBAB_CASE],
+        },
       ],
       maxLength: 3,
       minLength: 3,
-      type: 'array'
+      type: 'array',
     },
     optionsDescription: dedent`
       Options accept three obligatory items as an array:
@@ -65,7 +65,7 @@ export class Rule extends SelectorPropertyBase {
     `,
     ruleName: 'directive-selector',
     type: 'style',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   handleType = 'Directive';
@@ -92,19 +92,19 @@ export class Rule extends SelectorPropertyBase {
         options: {
           items: {
             [0]: { enum: enumTypes },
-            [2]: { enum: enumStyles }
+            [2]: { enum: enumStyles },
           },
           maxLength,
-          minLength
-        }
-      }
+          minLength,
+        },
+      },
     } = Rule;
     const { length: argumentsLength } = this.ruleArguments;
     const typeArgument = arrayify<SelectorType>(this.ruleArguments[0]);
     const prefixArgument = arrayify<string>(this.ruleArguments[1]).filter(isNotNullOrUndefined);
     const styleArgument = this.ruleArguments[2] as SelectorStyle;
     const argumentsLengthInRange = argumentsLength >= minLength && argumentsLength <= maxLength;
-    const isTypeArgumentValid = typeArgument.length > 0 && typeArgument.every(argument => enumTypes.indexOf(argument) !== -1);
+    const isTypeArgumentValid = typeArgument.length > 0 && typeArgument.every((argument) => enumTypes.indexOf(argument) !== -1);
     const isPrefixArgumentValid = prefixArgument.length > 0;
     const isStyleArgumentValid = enumStyles.indexOf(styleArgument) !== -1;
 

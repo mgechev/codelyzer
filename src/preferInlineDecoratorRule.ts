@@ -18,7 +18,7 @@ import {
   ParameterPropertyDeclaration,
   PropertyDeclaration,
   SetAccessorDeclaration,
-  SourceFile
+  SourceFile,
 } from 'typescript';
 import { isNotNullOrUndefined } from './util/isNotNullOrUndefined';
 import { objectKeys } from './util/objectKeys';
@@ -36,19 +36,19 @@ const OPTION_SAFELIST = 'safelist';
 const OPTION_SCHEMA_VALUE = {
   oneOf: [
     {
-      type: 'boolean'
+      type: 'boolean',
     },
     {
       properties: {
         items: {
-          type: 'string'
+          type: 'string',
         },
         type: 'array',
-        uniqueItems: true
+        uniqueItems: true,
       },
-      type: 'object'
-    }
-  ]
+      type: 'object',
+    },
+  ],
 };
 
 type OptionKeys =
@@ -79,7 +79,7 @@ const DEFAULT_OPTIONS: OptionDictionary = {
   [OPTION_PARAMETER_PROPERTIES]: true,
   [OPTION_PARAMETERS]: true,
   [OPTION_PROPERTIES]: true,
-  [OPTION_SETTERS]: true
+  [OPTION_SETTERS]: true,
 };
 
 const STYLE_GUIDE_LINK = 'https://angular.io/guide/styleguide#style-05-12';
@@ -95,17 +95,17 @@ export class Rule extends AbstractRule {
         true,
         {
           [OPTION_GETTERS]: {
-            [OPTION_SAFELIST]: [AngularInnerClassDecorators.Input]
+            [OPTION_SAFELIST]: [AngularInnerClassDecorators.Input],
           },
           [OPTION_METHODS]: true,
           [OPTION_PARAMETER_PROPERTIES]: false,
           [OPTION_PARAMETERS]: false,
           [OPTION_PROPERTIES]: {
-            [OPTION_SAFELIST]: [AngularInnerClassDecorators.Output, 'MyCustomDecorator']
+            [OPTION_SAFELIST]: [AngularInnerClassDecorators.Output, 'MyCustomDecorator'],
           },
-          [OPTION_SETTERS]: true
-        }
-      ]
+          [OPTION_SETTERS]: true,
+        },
+      ],
     ],
     options: {
       additionalProperties: false,
@@ -115,9 +115,9 @@ export class Rule extends AbstractRule {
         [OPTION_PARAMETER_PROPERTIES]: OPTION_SCHEMA_VALUE,
         [OPTION_PARAMETERS]: OPTION_SCHEMA_VALUE,
         [OPTION_PROPERTIES]: OPTION_SCHEMA_VALUE,
-        [OPTION_SETTERS]: OPTION_SCHEMA_VALUE
+        [OPTION_SETTERS]: OPTION_SCHEMA_VALUE,
       },
-      type: 'object'
+      type: 'object',
     },
     optionsDescription: dedent`
       An optional object with optional \`${OPTION_GETTERS}\`, \`${OPTION_METHODS}\`, \`${OPTION_PARAMETER_PROPERTIES}\`, \`${OPTION_PARAMETERS}\`, \`${OPTION_PROPERTIES}\` and \`${OPTION_SETTERS}\` properties.
@@ -134,7 +134,7 @@ export class Rule extends AbstractRule {
     rationale: 'Placing the decorator on the same line usually makes for shorter code and still easily identifies the declarations.',
     ruleName: 'prefer-inline-decorator',
     type: 'style',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly FAILURE_STRING = `Place declarations on the same line as its decorator(s) (${STYLE_GUIDE_LINK})`;
@@ -142,7 +142,7 @@ export class Rule extends AbstractRule {
   apply(sourceFile: SourceFile): RuleFailure[] {
     const options: OptionDictionary = {
       ...DEFAULT_OPTIONS,
-      ...this.ruleArguments[0]
+      ...this.ruleArguments[0],
     };
 
     return this.applyWithFunction(sourceFile, walk, options);
@@ -160,17 +160,17 @@ export class Rule extends AbstractRule {
     if (ruleArgumentsLength > 1) return false;
 
     const {
-      metadata: { options: ruleOptions }
+      metadata: { options: ruleOptions },
     } = Rule;
     const [ruleArgument] = this.ruleArguments as ReadonlyArray<OptionDictionary>;
     const ruleArgumentsKeys = objectKeys(ruleArgument);
     const propertiesKeys = objectKeys(ruleOptions.properties as OptionDictionary);
 
     return (
-      ruleArgumentsKeys.every(argumentKey => propertiesKeys.indexOf(argumentKey) !== -1) &&
+      ruleArgumentsKeys.every((argumentKey) => propertiesKeys.indexOf(argumentKey) !== -1) &&
       ruleArgumentsKeys
-        .map(argumentKey => ruleArgument[argumentKey])
-        .every(argumentValue => {
+        .map((argumentKey) => ruleArgument[argumentKey])
+        .every((argumentValue) => {
           if (typeof argumentValue === 'boolean') return true;
 
           if (!argumentValue || typeof argumentValue !== 'object') return false;
@@ -189,7 +189,7 @@ export class Rule extends AbstractRule {
 
 const callbackHandler = (walkContext: WalkContext<OptionDictionary>, node: Node): void => {
   const {
-    options: { getters, methods, [OPTION_PARAMETER_PROPERTIES]: parameterProperties, parameters, properties, setters }
+    options: { getters, methods, [OPTION_PARAMETER_PROPERTIES]: parameterProperties, parameters, properties, setters },
   } = walkContext;
 
   if (getters && isGetAccessorDeclaration(node)) {
@@ -209,7 +209,7 @@ const callbackHandler = (walkContext: WalkContext<OptionDictionary>, node: Node)
 
 const canIgnoreDecorator = (walkContext: WalkContext<OptionDictionary>, decoratorName: string, optionKey: OptionKeys): boolean => {
   const {
-    options: { [optionKey]: optionValue }
+    options: { [optionKey]: optionValue },
   } = walkContext;
 
   return optionValue && typeof optionValue === 'object' && optionValue.safelist.indexOf(decoratorName) !== -1;
@@ -223,7 +223,7 @@ const hasAnyIgnoredDecorator = (
   const nonIgnoredDecoratorNames = decorators
     .map(getDecoratorName)
     .filter(isNotNullOrUndefined)
-    .filter(decoratorName => !canIgnoreDecorator(walkContext, decoratorName, optionKey));
+    .filter((decoratorName) => !canIgnoreDecorator(walkContext, decoratorName, optionKey));
 
   return decorators.length !== nonIgnoredDecoratorNames.length;
 };

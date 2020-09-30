@@ -22,7 +22,7 @@ export enum BlockType {
   Page,
   Document,
   Viewport,
-  Unsupported
+  Unsupported,
 }
 
 export interface CssAstVisitor {
@@ -146,7 +146,7 @@ export class CssSelectorRuleAst extends CssBlockRuleAst {
 
   constructor(location: ParseSourceSpan, public selectors: CssSelectorAst[], block: CssBlockAst) {
     super(location, BlockType.Selector, block);
-    this.strValue = selectors.map(selector => selector.strValue).join(',');
+    this.strValue = selectors.map((selector) => selector.strValue).join(',');
   }
   visit(visitor: CssAstVisitor, context?: any): any {
     return visitor.visitCssSelectorRule(this, context);
@@ -172,7 +172,7 @@ export class CssSelectorAst extends CssSelectorPartAst {
   public strValue: string;
   constructor(location: ParseSourceSpan, public selectorParts: CssSimpleSelectorAst[]) {
     super(location);
-    this.strValue = selectorParts.map(part => part.strValue).join('');
+    this.strValue = selectorParts.map((part) => part.strValue).join('');
   }
   visit(visitor: CssAstVisitor, context?: any): any {
     return visitor.visitCssSelector(this, context);

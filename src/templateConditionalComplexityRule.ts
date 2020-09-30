@@ -11,17 +11,17 @@ export class Rule extends Rules.AbstractRule {
     optionExamples: [true, [true, 4]],
     options: {
       items: {
-        type: 'string'
+        type: 'string',
       },
       maxLength: 1,
       minLength: 0,
-      type: 'array'
+      type: 'array',
     },
     optionsDescription: 'Determine the maximum number of Boolean operators allowed.',
     rationale: 'An important complexity complicates the tests and the maintenance.',
     ruleName: 'template-conditional-complexity',
     type: 'maintainability',
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   static readonly DEFAULT_MAX_COMPLEXITY = 3;
@@ -38,8 +38,8 @@ export class Rule extends Rules.AbstractRule {
   isEnabled(): boolean {
     const {
       metadata: {
-        options: { maxLength, minLength }
-      }
+        options: { maxLength, minLength },
+      },
     } = Rule;
     const { length, [0]: maxComplexity } = this.ruleArguments;
 
@@ -107,8 +107,8 @@ class TemplateVisitorCtrl extends BasicTemplateAstVisitor {
     const {
       sourceSpan: {
         end: { offset: endOffset },
-        start: { offset: startOffset }
-      }
+        start: { offset: startOffset },
+      },
     } = prop;
     this.addFailureFromStartToEnd(startOffset, endOffset, getFailureMessage(totalComplexity, maxComplexity));
   }

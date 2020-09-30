@@ -13,7 +13,7 @@ describe('component-class-suffix', () => {
       assertAnnotated({
         ruleName: 'component-class-suffix',
         message: 'The name of the class Test should end with the suffix Component (https://angular.io/styleguide#style-02-03)',
-        source
+        source,
       });
     });
   });
@@ -108,7 +108,7 @@ describe('component-class-suffix', () => {
         message:
           'The name of the class TestPage should end with the suffix Component,View' + ' (https://angular.io/styleguide#style-02-03)',
         source,
-        options: ['Component', 'View']
+        options: ['Component', 'View'],
       });
     });
 
@@ -124,7 +124,7 @@ describe('component-class-suffix', () => {
         ruleName: 'component-class-suffix',
         message: 'The name of the class TestPage should end with the suffix Component (https://angular.io/styleguide#style-02-03)',
         source,
-        options: ['Component']
+        options: ['Component'],
       });
     });
 
@@ -140,7 +140,7 @@ describe('component-class-suffix', () => {
         ruleName: 'component-class-suffix',
         message: 'The name of the class TestDirective should end with the suffix Page (https://angular.io/styleguide#style-02-03)',
         source,
-        options: ['Page']
+        options: ['Page'],
       });
     });
   });

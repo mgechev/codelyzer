@@ -19,7 +19,7 @@ const getDecoratorStringArgs = (decorator: ts.Decorator): string[] => {
   const { expression } = decorator;
   const args = ts.isCallExpression(expression) ? expression.arguments : ts.createNodeArray();
 
-  return args.filter(ts.isStringLiteral).map(x => x.text);
+  return args.filter(ts.isStringLiteral).map((x) => x.text);
 };
 
 const getPosition = (node: ts.Node) => {
@@ -54,7 +54,7 @@ export class NgWalker extends Lint.RuleWalker {
       {
         cssVisitorCtrl: BasicCssAstVisitor,
         templateVisitorCtrl: BasicTemplateAstVisitor,
-        expressionVisitorCtrl: RecursiveAngularExpressionVisitor
+        expressionVisitorCtrl: RecursiveAngularExpressionVisitor,
       },
       this._config || {}
     );
@@ -132,7 +132,7 @@ export class NgWalker extends Lint.RuleWalker {
         this.visitNgStyleHelper(cssAst, metadata, style!, getPosition(style!.node!));
       } catch (e) {
         const {
-          controller: { name }
+          controller: { name },
         } = metadata;
         const text = name && ts.isIdentifier(name) ? name.text : '';
 
@@ -148,7 +148,7 @@ export class NgWalker extends Lint.RuleWalker {
         this.visitNgTemplateHelper(templateAst, metadata, getPosition(template.node!));
       } catch (e) {
         const {
-          controller: { name }
+          controller: { name },
         } = metadata;
         const text = name && ts.isIdentifier(name) ? name.text : '';
 
@@ -199,9 +199,9 @@ export class NgWalker extends Lint.RuleWalker {
     );
     compiler.templateVisitAll(referenceVisitor, roots, null);
     visitor._variables = referenceVisitor.variables;
-    roots.forEach(r => visitor.visit(r, context.controller));
+    roots.forEach((r) => visitor.visit(r, context.controller));
     // tslint:disable-next-line:deprecation
-    visitor.getFailures().forEach(f => this.addFailure(f));
+    visitor.getFailures().forEach((f) => this.addFailure(f));
   }
 
   protected visitNgStyleHelper(style: CssAst, context: ComponentMetadata, styleMetadata: StyleMetadata, baseStart: number) {
@@ -213,7 +213,7 @@ export class NgWalker extends Lint.RuleWalker {
     const visitor = new this._config!.cssVisitorCtrl!(sourceFile, this._originalOptions, context, styleMetadata, baseStart);
     style.visit(visitor);
     // tslint:disable-next-line:deprecation
-    visitor.getFailures().forEach(f => this.addFailure(f));
+    visitor.getFailures().forEach((f) => this.addFailure(f));
   }
 
   protected getContextSourceFile(path: string, content: string) {

@@ -43,7 +43,7 @@ import {
   ɵstringify as stringify,
   ɵted,
   ɵunv,
-  ɵvid
+  ɵvid,
 } from '@angular/core';
 
 export const MODULE_SUFFIX = '';
