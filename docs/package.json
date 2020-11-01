@@ -16,7 +16,7 @@
   "dependencies": {
     "@angular/compiler": "8.2.11",
     "@angular/core": "8.2.11",
-    "codelyzer": "5.1.2",
+    "codelyzer": "5.2.2",
     "codemirror": "5.51.0",
     "rxjs": "6.5.3",
     "tslint": "5.20.0",
