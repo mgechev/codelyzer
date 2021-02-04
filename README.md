@@ -409,6 +409,45 @@ module.exports = {
 };
 ```
 
+## Debug Tests
+
+1. Generate tests
+
+```
+npm run test
+```
+
+2. In your VSCode - setup config for a single file
+
+```
+
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Mocha Current File",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+            "args": [
+                "--timeout",
+                "999999",
+                "--colors",
+                "${file}"
+            ]
+        }
+    ]
+```
+
+3. Add Breakpoint
+   You can add to any test file, e.g. dist/test/noLifecycleCallRule.spec.js
+
+4. Use Debug sidebar
+   In VSCode use the Run sidebar - to step through - the tests
+
+Happy learning
+
 ## Contributors
 
 | [<img alt="mgechev" src="https://avatars1.githubusercontent.com/u/455023?v=4&s=117" width="117">](https://github.com/mgechev) | [<img alt="wKoza" src="https://avatars2.githubusercontent.com/u/11403260?v=4&s=117" width="117">](https://github.com/wKoza) | [<img alt="rafaelss95" src="https://avatars0.githubusercontent.com/u/11965907?v=4&s=117" width="117">](https://github.com/rafaelss95) | [<img alt="preslavsh" src="https://avatars2.githubusercontent.com/u/6237138?v=4&s=117" width="117">](https://github.com/preslavsh) | [<img alt="mohammedzamakhan" src="https://avatars3.githubusercontent.com/u/2327532?v=4&s=117" width="117">](https://github.com/mohammedzamakhan) | [<img alt="rokerkony" src="https://avatars3.githubusercontent.com/u/156132?v=4&s=117" width="117">](https://github.com/rokerkony) |
