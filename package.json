@@ -1,6 +1,6 @@
 {
   "name": "codelyzer",
-  "version": "6.0.1",
+  "version": "6.0.2",
   "description": "Linting for Angular applications, following angular.io/styleguide.",
   "main": "index.js",
   "scripts": {
@@ -89,8 +89,8 @@
     "typescript": "3.9.6"
   },
   "peerDependencies": {
-    "@angular/compiler": ">=2.3.1 <12.0.0 || ^11.0.0-next || ^11.1.0-next || ^11.2.0-next",
-    "@angular/core": ">=2.3.1 <12.0.0 || ^11.0.0-next || ^11.1.0-next || ^11.2.0-next",
+    "@angular/compiler": ">=2.3.1 <13.0.0 || ^12.0.0-next || ^12.1.0-next || ^12.2.0-next",
+    "@angular/core": ">=2.3.1 <13.0.0 || ^12.0.0-next || ^12.1.0-next || ^12.2.0-next",
     "tslint": "^5.0.0 || ^6.0.0"
   },
   "dependencies": {
