@@ -64,9 +64,9 @@
   "devDependencies": {
     "@commitlint/cli": "8.2.0",
     "@commitlint/config-angular": "8.2.0",
-    "@types/chai": "4.2.4",
+    "@types/chai": "4.2.13",
     "@types/mocha": "5.2.7",
-    "@types/node": "11.15.10",
+    "@types/node": "11.15.50",
     "@types/node-sass": "4.11.0",
     "@types/sprintf-js": "1.1.2",
     "cat": "0.2.0",
@@ -79,14 +79,14 @@
     "lint-staged": "9.4.2",
     "mocha": "6.2.1",
     "ncp": "2.0.0",
-    "node-sass": "4.13.0",
+    "node-sass": "4.13.1",
     "prettier": "2.1.2",
     "rimraf": "3.0.0",
     "rxjs": "6.5.3",
-    "standard-version": "7.1.0",
+    "standard-version": "8.0.1",
     "ts-node": "8.5.4",
     "tslint": "5.20.0",
-    "typescript": "3.9.6"
+    "typescript": "3.9.7"
   },
   "peerDependencies": {
     "@angular/compiler": ">=2.3.1 <13.0.0 || ^12.0.0-next || ^12.1.0-next || ^12.2.0-next",
