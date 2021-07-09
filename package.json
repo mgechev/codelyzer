@@ -81,7 +81,7 @@
     "ncp": "2.0.0",
     "node-sass": "4.14.1",
     "prettier": "2.3.2",
-    "rimraf": "3.0.0",
+    "rimraf": "3.0.2",
     "rxjs": "6.5.3",
     "standard-version": "8.0.1",
     "ts-node": "8.5.4",
