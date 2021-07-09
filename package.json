@@ -83,7 +83,7 @@
     "prettier": "2.3.2",
     "rimraf": "3.0.0",
     "rxjs": "6.5.3",
-    "standard-version": "8.0.1",
+    "standard-version": "8.0.2",
     "ts-node": "8.5.4",
     "tslint": "5.20.0",
     "typescript": "3.9.7"
