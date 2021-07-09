@@ -106,7 +106,7 @@
     "cssauron": "^1.4.0",
     "damerau-levenshtein": "^1.0.4",
     "semver-dsl": "^1.0.1",
-    "source-map": "^0.5.7",
+    "source-map": "^0.7.0",
     "sprintf-js": "^1.1.2"
   }
 }
