@@ -101,7 +101,7 @@
     "rxjs": "^6.5.3",
     "app-root-path": "^3.0.0",
     "aria-query": "^4.0.0",
-    "axobject-query": "2.0.2",
+    "axobject-query": "2.2.0",
     "css-selector-tokenizer": "^0.7.1",
     "cssauron": "^1.4.0",
     "damerau-levenshtein": "^1.0.4",
