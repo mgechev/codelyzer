@@ -94,7 +94,7 @@
     "tslint": "^5.0.0 || ^6.0.0"
   },
   "dependencies": {
-    "@angular/core": "9.0.0",
+    "@angular/core": "11.0.5",
     "@angular/compiler": "9.0.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.3",
