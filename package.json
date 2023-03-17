@@ -77,7 +77,7 @@
     "js-yaml": "3.13.1",
     "json-stringify-pretty-compact": "2.0.0",
     "lint-staged": "9.4.2",
-    "mocha": "6.2.1",
+    "mocha": "8.2.0",
     "ncp": "2.0.0",
     "node-sass": "4.14.1",
     "prettier": "2.3.2",
